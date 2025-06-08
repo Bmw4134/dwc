@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { NexusChat } from "@/components/nexus-chat";
 import { useLocation } from "wouter";
+import { useState } from "react";
 import { 
   Building2, 
   Brain, 
@@ -12,11 +13,14 @@ import {
   Target,
   Activity,
   Lock,
-  Users
+  Users,
+  Menu,
+  X
 } from "lucide-react";
 
 export default function DWCLanding() {
   const [, setLocation] = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -27,73 +31,146 @@ export default function DWCLanding() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      {/* Clean Header */}
+      {/* Mobile-Responsive Header */}
       <header className="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 md:px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Building2 className="w-8 h-8 text-blue-600 mr-3" />
-              <span className="text-2xl font-bold text-gray-900">DWC Systems</span>
+              <Building2 className="w-6 h-6 md:w-8 md:h-8 text-blue-600 mr-2 md:mr-3" />
+              <span className="text-lg md:text-2xl font-bold text-gray-900">DWC Systems</span>
             </div>
-            <nav className="hidden md:flex space-x-8">
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex space-x-8">
               <a href="#solutions" className="text-gray-600 hover:text-blue-600 transition-colors">Solutions</a>
               <a href="#about" className="text-gray-600 hover:text-blue-600 transition-colors">About</a>
               <a href="#contact" className="text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
             </nav>
-            <div className="flex gap-2">
+            
+            {/* Desktop Action Buttons */}
+            <div className="hidden md:flex gap-2">
               <Button 
                 onClick={() => setLocation('/demo-login')} 
                 variant="outline"
                 className="border-blue-600 text-blue-600 hover:bg-blue-50 px-4"
+                size="sm"
               >
                 Demo
               </Button>
               <Button 
                 onClick={() => setLocation('/real-login')} 
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+                size="sm"
               >
-                <Lock className="mr-2 h-4 w-4" />
-                Executive Login
+                <Lock className="mr-2 h-3 w-3" />
+                Executive
               </Button>
             </div>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg">
+            <div className="px-4 py-4 space-y-3">
+              <nav className="space-y-2">
+                <a 
+                  href="#solutions" 
+                  className="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Solutions
+                </a>
+                <a 
+                  href="#about" 
+                  className="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  About
+                </a>
+                <a 
+                  href="#contact" 
+                  className="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Contact
+                </a>
+              </nav>
+              
+              <div className="pt-3 border-t border-gray-200 space-y-2">
+                <Button 
+                  onClick={() => {
+                    setLocation('/demo-login');
+                    setMobileMenuOpen(false);
+                  }} 
+                  variant="outline"
+                  className="w-full border-blue-600 text-blue-600 hover:bg-blue-50 justify-center"
+                  size="sm"
+                >
+                  <Users className="mr-2 h-4 w-4" />
+                  Demo Portal
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setLocation('/real-login');
+                    setMobileMenuOpen(false);
+                  }} 
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white justify-center"
+                  size="sm"
+                >
+                  <Lock className="mr-2 h-4 w-4" />
+                  Executive Login
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
-      {/* Hero Section - Google-like Clean Design */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+      {/* Hero Section - Mobile Responsive */}
+      <section className="py-12 md:py-20 bg-gray-50">
+        <div className="container mx-auto px-4 md:px-6 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6">
             Enterprise Automation
             <span className="block text-blue-600">Made Simple</span>
           </h1>
           
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base md:text-xl text-gray-600 mb-6 md:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
             Advanced AI-powered platform featuring NEXUS Visual Intelligence, 
             quantum behavior simulation, and unlimited lead generation capabilities.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+          <div className="flex flex-col gap-3 md:gap-4 mb-8 md:mb-12 max-w-md mx-auto md:max-w-none md:flex-row md:justify-center">
             <Button 
               size="lg" 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg w-full md:w-auto"
               onClick={() => setLocation('/demo-login')}
             >
-              <Zap className="mr-2 w-5 h-5" />
+              <Zap className="mr-2 w-4 h-4 md:w-5 md:h-5" />
               Try NEXUS Demo
             </Button>
             <Button 
               size="lg" 
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg"
+              className="bg-green-600 hover:bg-green-700 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg w-full md:w-auto"
               onClick={() => setLocation('/real-login')}
             >
-              <Shield className="mr-2 w-5 h-5" />
+              <Shield className="mr-2 w-4 h-4 md:w-5 md:h-5" />
               Executive Access
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-4 text-lg"
+              className="border-blue-600 text-blue-600 hover:bg-blue-50 px-6 md:px-8 py-3 md:py-4 text-base md:text-lg w-full md:w-auto"
               onClick={async () => {
                 // Fetch live data from API
                 let liveData = {
@@ -263,71 +340,71 @@ export default function DWCLanding() {
             </Button>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
-            <div className="flex items-center">
-              <Activity className="w-4 h-4 mr-2 text-green-500" />
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-6 text-xs md:text-sm text-gray-500 px-4">
+            <div className="flex items-center justify-center">
+              <Activity className="w-3 h-3 md:w-4 md:h-4 mr-2 text-green-500" />
               <span>4 Active Leads</span>
             </div>
-            <div className="flex items-center">
-              <Target className="w-4 h-4 mr-2 text-blue-500" />
+            <div className="flex items-center justify-center">
+              <Target className="w-3 h-3 md:w-4 md:h-4 mr-2 text-blue-500" />
               <span>$100 Monthly Revenue</span>
             </div>
-            <div className="flex items-center">
-              <Brain className="w-4 h-4 mr-2 text-purple-500" />
+            <div className="flex items-center justify-center">
+              <Brain className="w-3 h-3 md:w-4 md:h-4 mr-2 text-purple-500" />
               <span>277% ROI Proven</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+      {/* Features Section - Mobile Responsive */}
+      <section className="py-12 md:py-20 bg-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
               Powered by Advanced AI Technology
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
               Our platform combines cutting-edge artificial intelligence with proven business automation strategies.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-8 h-8 text-blue-600" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="text-center p-4 md:p-6">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                <Zap className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">NEXUS Intelligence</h3>
-              <p className="text-gray-600">Advanced visual intelligence system with real-time automation capabilities and quantum behavior simulation.</p>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">NEXUS Intelligence</h3>
+              <p className="text-sm md:text-base text-gray-600">Advanced visual intelligence system with real-time automation capabilities and quantum behavior simulation.</p>
             </div>
             
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-8 h-8 text-green-600" />
+            <div className="text-center p-4 md:p-6">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                <TrendingUp className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Lead Generation</h3>
-              <p className="text-gray-600">Unlimited lead discovery using location intelligence and Perplexity AI for maximum business opportunities.</p>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Lead Generation</h3>
+              <p className="text-sm md:text-base text-gray-600">Unlimited lead discovery using location intelligence and Perplexity AI for maximum business opportunities.</p>
             </div>
             
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-purple-600" />
+            <div className="text-center p-4 md:p-6">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                <Shield className="w-6 h-6 md:w-8 md:h-8 text-purple-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Enterprise Security</h3>
-              <p className="text-gray-600">Quantum security protocols with master control access and comprehensive authentication systems.</p>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Enterprise Security</h3>
+              <p className="text-sm md:text-base text-gray-600">Quantum security protocols with master control access and comprehensive authentication systems.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* NEXUS GPT Demo Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+      {/* NEXUS GPT Demo Section - Mobile Responsive */}
+      <section className="py-12 md:py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
               Try NEXUS GPT - Free Demo
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
               Experience our AI business intelligence assistant. Get 20 free prompts to explore 
               lead generation strategies, market analysis, and ROI projections.
             </p>
@@ -339,64 +416,64 @@ export default function DWCLanding() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+      {/* CTA Section - Mobile Responsive */}
+      <section className="py-12 md:py-20 bg-gray-50">
+        <div className="container mx-auto px-4 md:px-6 text-center">
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
             Ready to Transform Your Business?
           </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
             Join the future of enterprise automation with DWC Systems' advanced AI platform.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="flex flex-col gap-3 md:gap-4 max-w-md mx-auto md:max-w-none md:flex-row md:justify-center">
             <Button 
               size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg w-full md:w-auto"
               onClick={() => setLocation('/demo-login')}
             >
-              <Zap className="w-5 h-5 mr-2" />
+              <Zap className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Start Free Demo
             </Button>
             <Button 
               size="lg"
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg"
+              className="bg-green-600 hover:bg-green-700 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg w-full md:w-auto"
               onClick={() => setLocation('/real-login')}
             >
-              <Lock className="w-5 h-5 mr-2" />
+              <Lock className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Executive Portal
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Floating Quick Access Menu */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <div className="bg-white rounded-lg shadow-2xl border border-gray-200 p-4 min-w-[200px]">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3 text-center">Quick Access</h3>
-          <div className="space-y-2">
+      {/* Floating Quick Access Menu - Mobile Responsive */}
+      <div className="fixed bottom-4 right-4 z-50 md:bottom-8 md:right-8">
+        <div className="bg-white rounded-lg shadow-2xl border border-gray-200 p-3 md:p-4 w-48 md:min-w-[200px]">
+          <h3 className="text-xs md:text-sm font-semibold text-gray-900 mb-2 md:mb-3 text-center">Quick Access</h3>
+          <div className="space-y-1.5 md:space-y-2">
             <Button 
               size="sm"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white justify-start"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white justify-start text-xs md:text-sm h-8 md:h-9"
               onClick={() => setLocation('/demo-login')}
             >
-              <Users className="w-4 h-4 mr-2" />
+              <Users className="w-3 h-3 md:w-4 md:h-4 mr-1.5 md:mr-2" />
               Demo Portal
             </Button>
             <Button 
               size="sm"
-              className="w-full bg-green-600 hover:bg-green-700 text-white justify-start"
+              className="w-full bg-green-600 hover:bg-green-700 text-white justify-start text-xs md:text-sm h-8 md:h-9"
               onClick={() => setLocation('/real-login')}
             >
-              <Lock className="w-4 h-4 mr-2" />
+              <Lock className="w-3 h-3 md:w-4 md:h-4 mr-1.5 md:mr-2" />
               Executive
             </Button>
             <Button 
               size="sm"
               variant="outline"
-              className="w-full justify-start"
+              className="w-full justify-start text-xs md:text-sm h-8 md:h-9"
               onClick={() => setLocation('/auth')}
             >
-              <Shield className="w-4 h-4 mr-2" />
+              <Shield className="w-3 h-3 md:w-4 md:h-4 mr-1.5 md:mr-2" />
               Secure Auth
             </Button>
             <Button 
