@@ -19,6 +19,7 @@ import WowTesterLanding from "./pages/wow-tester-landing";
 import WowTesterLogin from "./pages/wow-tester-login";
 import WowTesterDashboard from "./pages/wow-tester-dashboard";
 import DataIntegrityPage from "./pages/DataIntegrityPage";
+import QNISMasterControl from "./pages/QNISMasterControl";
 import NotFound from "./pages/not-found";
 import { BarChart3, Zap, Settings, Menu } from "lucide-react";
 
@@ -120,6 +121,11 @@ function App() {
             <Route path="/dw-executive-dashboard" component={DWExecutiveDashboard} />
             <Route path="/dashboard" component={DWExecutiveDashboard} />
             <Route path="/executive" component={DWExecutiveDashboard} />
+            
+            {/* QNIS Master Control - Primary Reasoning Engine */}
+            <Route path="/qnis" component={QNISMasterControl} />
+            <Route path="/qnis-master" component={QNISMasterControl} />
+            <Route path="/quantum-intelligence" component={QNISMasterControl} />
             
             {/* Real NEXUS System Routes */}
             <Route path="/nexus-observer" component={NexusObserver} />

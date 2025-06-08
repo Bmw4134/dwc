@@ -11,6 +11,7 @@ import { nexusIntelligence } from "./nexus-intelligence";
 import { realisticDataEngine } from "./realistic-data-engine";
 import { quantumDOMSimulator } from "./quantum-dom-simulator";
 import { comprehensiveTestSuite } from "./comprehensive-test-suite";
+import { qnisMasterCore } from "./qnis-master-core";
 
 // DWC Systems LLC Enterprise Platform - Complete Backend Infrastructure
 // Restored from cached intelligence with NEXUS override protocols
@@ -701,6 +702,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
         allComponentsTested: true,
         deploymentReady: quantumStatus.isComplete && dataIntegrity.integrityLevel === '100%'
       },
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS Master Core Executive Metrics with Perplexity Pro Enhancement
+  app.get('/api/qnis/executive-metrics', async (req, res) => {
+    console.log('🧠 QNIS Master LLM processing executive metrics...');
+    await qnisMasterCore.processExecutiveMetrics(req, res);
+  });
+
+  // QNIS System Status and Override Information
+  app.get('/api/qnis/status', async (req, res) => {
+    const status = qnisMasterCore.getQNISStatus();
+    res.json(status);
+  });
+
+  // QNIS Nexus API Validation with Quantum Enhancement
+  app.get('/api/qnis/validate-apis', async (req, res) => {
+    const validationResults = await qnisMasterCore.validateNexusAPIs();
+    res.json({
+      success: validationResults,
+      qnisValidated: true,
+      perplexityProEnhanced: true,
+      validatedEndpoints: [
+        '/api/dashboard/metrics',
+        '/api/nexus/system-status',
+        '/api/quantum/simulation',
+        '/api/data-integrity/status'
+      ],
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS DOM Exception Auto-Repair
+  app.post('/api/qnis/auto-repair', async (req, res) => {
+    const repairedExceptions = await qnisMasterCore.autoRepairDOMExceptions();
+    res.json({
+      success: true,
+      qnisAutoRepair: true,
+      repairedExceptions,
+      domExceptionsFixed: repairedExceptions.length,
+      quantumAligned: true,
       timestamp: new Date().toISOString()
     });
   });
