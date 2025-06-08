@@ -18,8 +18,10 @@ import {
   Database,
   Cpu,
   Eye,
-  BarChart3
+  BarChart3,
+  MousePointer2
 } from "lucide-react";
+import { QNISBehaviorDashboard } from "./QNISBehaviorDashboard";
 
 interface QNISStatus {
   masterLLM: string;
@@ -185,6 +187,7 @@ export function QNISMasterDashboard() {
         <TabsList>
           <TabsTrigger value="metrics">Executive Metrics</TabsTrigger>
           <TabsTrigger value="insights">Perplexity Insights</TabsTrigger>
+          <TabsTrigger value="behavior">User Behavior</TabsTrigger>
           <TabsTrigger value="controls">System Controls</TabsTrigger>
         </TabsList>
 
@@ -330,6 +333,10 @@ export function QNISMasterDashboard() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="behavior" className="space-y-4">
+          <QNISBehaviorDashboard />
         </TabsContent>
 
         <TabsContent value="controls" className="space-y-4">

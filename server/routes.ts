@@ -12,6 +12,7 @@ import { realisticDataEngine } from "./realistic-data-engine";
 import { quantumDOMSimulator } from "./quantum-dom-simulator";
 import { comprehensiveTestSuite } from "./comprehensive-test-suite";
 import { qnisMasterCore } from "./qnis-master-core";
+import { qnisBehaviorSimulator } from "./qnis-behavior-simulator";
 
 // DWC Systems LLC Enterprise Platform - Complete Backend Infrastructure
 // Restored from cached intelligence with NEXUS override protocols
@@ -744,6 +745,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
       repairedExceptions,
       domExceptionsFixed: repairedExceptions.length,
       quantumAligned: true,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS Behavior Simulation - Current User Patterns
+  app.get('/api/qnis/behavior-insights', async (req, res) => {
+    const insights = qnisBehaviorSimulator.getBehaviorInsights();
+    res.json({
+      success: true,
+      qnisAnalysis: true,
+      insights,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS Behavior Prediction - Next Actions
+  app.post('/api/qnis/predict-behavior', async (req, res) => {
+    const { currentPattern } = req.body;
+    const prediction = qnisBehaviorSimulator.predictNextBehavior(currentPattern);
+    res.json({
+      success: true,
+      qnisPrediction: true,
+      prediction,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS Extended Journey Simulation
+  app.post('/api/qnis/simulate-journey', async (req, res) => {
+    const { startingPattern } = req.body;
+    const simulation = qnisBehaviorSimulator.simulateExtendedUserJourney(startingPattern);
+    res.json({
+      success: true,
+      qnisSimulation: true,
+      simulation,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS Real-time Recommendations
+  app.get('/api/qnis/recommendations', async (req, res) => {
+    const { currentPage, timeOnPage } = req.query;
+    const recommendations = qnisBehaviorSimulator.generateRealTimeRecommendations(
+      currentPage as string, 
+      parseInt(timeOnPage as string) || 0
+    );
+    res.json({
+      success: true,
+      qnisRecommendations: true,
+      recommendations,
       timestamp: new Date().toISOString()
     });
   });
