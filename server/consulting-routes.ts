@@ -10,6 +10,7 @@ import { dwSystemMonitor } from "./dw-system-monitor";
 import { nexusObserverCore } from "./nexus-observer-core";
 import { nexusUltraDevEngine } from "./nexus-ultradev-engine";
 import { NEXUSDeploymentAudit } from "./nexus-deployment-audit";
+import { qnisBehaviorSimulator } from "./qnis-behavior-simulator";
 
 export async function registerConsultingRoutes(app: Express): Promise<Server> {
   
@@ -1448,6 +1449,56 @@ Focus on storefront signs, business cards, advertisements, or any business-relat
         }
       });
     }, 1500);
+  });
+
+  // QNIS Behavior Simulation - Current User Patterns
+  app.get('/api/qnis/behavior-insights', async (req, res) => {
+    const insights = qnisBehaviorSimulator.getBehaviorInsights();
+    res.json({
+      success: true,
+      qnisAnalysis: true,
+      insights,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS Behavior Prediction - Next Actions
+  app.post('/api/qnis/predict-behavior', async (req, res) => {
+    const { currentPattern } = req.body;
+    const prediction = qnisBehaviorSimulator.predictNextBehavior(currentPattern);
+    res.json({
+      success: true,
+      qnisPrediction: true,
+      prediction,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS Extended Journey Simulation
+  app.post('/api/qnis/simulate-journey', async (req, res) => {
+    const { startingPattern } = req.body;
+    const simulation = qnisBehaviorSimulator.simulateExtendedUserJourney(startingPattern);
+    res.json({
+      success: true,
+      qnisSimulation: true,
+      simulation,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  // QNIS Real-time Recommendations
+  app.get('/api/qnis/recommendations', async (req, res) => {
+    const { currentPage, timeOnPage } = req.query;
+    const recommendations = qnisBehaviorSimulator.generateRealTimeRecommendations(
+      currentPage as string, 
+      parseInt(timeOnPage as string) || 0
+    );
+    res.json({
+      success: true,
+      qnisRecommendations: true,
+      recommendations,
+      timestamp: new Date().toISOString()
+    });
   });
 
   // WOW Tester API endpoints

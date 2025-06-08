@@ -85,80 +85,86 @@ function MobileNavigation() {
   );
 }
 
-function App() {
+function AppContent() {
   const [location] = useLocation();
   
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-purple-900">
-        {/* Desktop navigation */}
-        <div className="hidden lg:block">
-          <NavigationHub />
-        </div>
-        
-        {/* Main content area with mobile bottom padding */}
-        <div className="flex-1 lg:ml-16 overflow-auto pb-20 lg:pb-0">
-          <Switch>
-            {/* Public Landing Page - Default Route */}
-            <Route path="/" component={DWCLanding} />
-            <Route path="/dwc-landing" component={DWCLanding} />
-            
-            {/* Real Authentication Routes */}
-            <Route path="/real-login" component={RealLogin} />
-            <Route path="/auth" component={RealLogin} />
-            <Route path="/secure-login" component={RealLogin} />
-            
-            {/* Demo Authentication Routes */}
-            <Route path="/dwc-login" component={DWCLogin} />
-            <Route path="/demo-login" component={DemoLogin} />
-            <Route path="/login" component={DWCLogin} />
-            
-            {/* Demo Dashboard Access - Restricted */}
-            <Route path="/demo-dashboard" component={DemoDashboard} />
-            <Route path="/demo-nexus" component={DemoDashboard} />
-            
-            {/* Real Executive Dashboard Routes */}
-            <Route path="/dw-executive-dashboard" component={DWExecutiveDashboard} />
-            <Route path="/dashboard" component={DWExecutiveDashboard} />
-            <Route path="/executive" component={DWExecutiveDashboard} />
-            
-            {/* QNIS Master Control - Primary Reasoning Engine */}
-            <Route path="/qnis" component={QNISMasterControl} />
-            <Route path="/qnis-master" component={QNISMasterControl} />
-            <Route path="/quantum-intelligence" component={QNISMasterControl} />
-            
-            {/* Real NEXUS System Routes */}
-            <Route path="/nexus-observer" component={NexusObserver} />
-            <Route path="/nexus-dashboard" component={NexusObserver} />
-            <Route path="/nexus-master-control" component={NexusObserver} />
-            <Route path="/nexus" component={NexusObserver} />
-            
-            {/* Real System Administration Routes */}
-            <Route path="/api-testing" component={ApiTesting} />
-            <Route path="/system-logs" component={SystemLogs} />
-            <Route path="/admin" component={SystemLogs} />
-            <Route path="/logs" component={SystemLogs} />
-            
-            {/* Real Advanced Configuration Routes */}
-            <Route path="/nexus-total-recall" component={NEXUSTotalRecall} />
-            <Route path="/nexus-config" component={NexusConfig} />
-            <Route path="/config" component={NexusConfig} />
-            
-            {/* WOW Tester Routes */}
-            <Route path="/wow-tester-join" component={WowTesterLanding} />
-            <Route path="/wow-tester-login" component={WowTesterLogin} />
-            <Route path="/wow-tester-dashboard" component={WowTesterDashboard} />
-            
-            {/* Data Integrity Route */}
-            <Route path="/data-integrity" component={DataIntegrityPage} />
-            
-            <Route component={NotFound} />
-          </Switch>
-        </div>
-        
-        {/* Mobile Navigation - Hide on public landing pages */}
-        {location !== '/' && !location.startsWith('/dwc-') && <MobileNavigation />}
+    <div className="flex min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-purple-900">
+      {/* Desktop navigation */}
+      <div className="hidden lg:block">
+        <NavigationHub />
       </div>
+      
+      {/* Main content area with mobile bottom padding */}
+      <div className="flex-1 lg:ml-16 overflow-auto pb-20 lg:pb-0">
+        <Switch>
+          {/* Public Landing Page - Default Route */}
+          <Route path="/" component={DWCLanding} />
+          <Route path="/dwc-landing" component={DWCLanding} />
+          
+          {/* Real Authentication Routes */}
+          <Route path="/real-login" component={RealLogin} />
+          <Route path="/auth" component={RealLogin} />
+          <Route path="/secure-login" component={RealLogin} />
+          
+          {/* Demo Authentication Routes */}
+          <Route path="/dwc-login" component={DWCLogin} />
+          <Route path="/demo-login" component={DemoLogin} />
+          <Route path="/login" component={DWCLogin} />
+          
+          {/* Demo Dashboard Access - Restricted */}
+          <Route path="/demo-dashboard" component={DemoDashboard} />
+          <Route path="/demo-nexus" component={DemoDashboard} />
+          
+          {/* Real Executive Dashboard Routes */}
+          <Route path="/dw-executive-dashboard" component={DWExecutiveDashboard} />
+          <Route path="/dashboard" component={DWExecutiveDashboard} />
+          <Route path="/executive" component={DWExecutiveDashboard} />
+          
+          {/* QNIS Master Control - Primary Reasoning Engine */}
+          <Route path="/qnis" component={QNISMasterControl} />
+          <Route path="/qnis-master" component={QNISMasterControl} />
+          <Route path="/quantum-intelligence" component={QNISMasterControl} />
+          
+          {/* Real NEXUS System Routes */}
+          <Route path="/nexus-observer" component={NexusObserver} />
+          <Route path="/nexus-dashboard" component={NexusObserver} />
+          <Route path="/nexus-master-control" component={NexusObserver} />
+          <Route path="/nexus" component={NexusObserver} />
+          
+          {/* Real System Administration Routes */}
+          <Route path="/api-testing" component={ApiTesting} />
+          <Route path="/system-logs" component={SystemLogs} />
+          <Route path="/admin" component={SystemLogs} />
+          <Route path="/logs" component={SystemLogs} />
+          
+          {/* Real Advanced Configuration Routes */}
+          <Route path="/nexus-total-recall" component={NEXUSTotalRecall} />
+          <Route path="/nexus-config" component={NexusConfig} />
+          <Route path="/config" component={NexusConfig} />
+          
+          {/* WOW Tester Routes */}
+          <Route path="/wow-tester-join" component={WowTesterLanding} />
+          <Route path="/wow-tester-login" component={WowTesterLogin} />
+          <Route path="/wow-tester-dashboard" component={WowTesterDashboard} />
+          
+          {/* Data Integrity Route */}
+          <Route path="/data-integrity" component={DataIntegrityPage} />
+          
+          <Route component={NotFound} />
+        </Switch>
+      </div>
+      
+      {/* Mobile Navigation - Hide on public landing pages */}
+      {location !== '/' && !location.startsWith('/dwc-') && <MobileNavigation />}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppContent />
       <Toaster />
     </QueryClientProvider>
   );
