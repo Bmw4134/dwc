@@ -87,7 +87,7 @@ export function QNISBehaviorDashboard() {
 
   // Behavior Insights Query
   const { data: behaviorInsights, isLoading: insightsLoading } = useQuery({
-    queryKey: ['/api/qnis/behavior-insights'],
+    queryKey: ['/api/qnis-behavior-insights'],
     refetchInterval: 30000
   });
 
