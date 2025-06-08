@@ -1451,15 +1451,52 @@ Focus on storefront signs, business cards, advertisements, or any business-relat
     }, 1500);
   });
 
-  // QNIS Behavior Simulation - Current User Patterns
+  // QNIS Behavior Simulation - Current User Patterns (alternative route)
+  app.get('/api/qnis-behavior-insights', async (req, res) => {
+    try {
+      console.log('🧠 QNIS Behavior Insights requested via alternative route');
+      const insights = qnisBehaviorSimulator.getBehaviorInsights();
+      const response = {
+        success: true,
+        qnisAnalysis: true,
+        insights,
+        timestamp: new Date().toISOString()
+      };
+      console.log('🧠 QNIS Response prepared:', JSON.stringify(response, null, 2));
+      res.setHeader('Content-Type', 'application/json');
+      return res.json(response);
+    } catch (error) {
+      console.error('🧠 QNIS Error:', error);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'QNIS behavior simulation failed',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // QNIS Behavior Simulation - Current User Patterns (original route)
   app.get('/api/qnis/behavior-insights', async (req, res) => {
-    const insights = qnisBehaviorSimulator.getBehaviorInsights();
-    res.json({
-      success: true,
-      qnisAnalysis: true,
-      insights,
-      timestamp: new Date().toISOString()
-    });
+    try {
+      console.log('🧠 QNIS Behavior Insights requested');
+      const insights = qnisBehaviorSimulator.getBehaviorInsights();
+      const response = {
+        success: true,
+        qnisAnalysis: true,
+        insights,
+        timestamp: new Date().toISOString()
+      };
+      console.log('🧠 QNIS Response prepared:', JSON.stringify(response, null, 2));
+      res.setHeader('Content-Type', 'application/json');
+      return res.json(response);
+    } catch (error) {
+      console.error('🧠 QNIS Error:', error);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'QNIS behavior simulation failed',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
   });
 
   // QNIS Behavior Prediction - Next Actions
