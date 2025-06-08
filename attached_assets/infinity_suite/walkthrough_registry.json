@@ -1,0 +1,26 @@
+{
+  "scheduler_agent": {
+    "description": "Schedules BIM model tasks based on project timelines.",
+    "how_to_use": "Launch from BIMRouteNavigator or automation suite. Triggers project rescheduling.",
+    "links": [
+      "stress_test",
+      "goal_tracker"
+    ]
+  },
+  "validator_agent": {
+    "description": "Validates BIM model for compliance and detects clashes.",
+    "how_to_use": "Triggered during stress test or direct execution.",
+    "links": [
+      "drilldown",
+      "goal_tracker"
+    ]
+  },
+  "infinity_patch": {
+    "description": "Self-healing mechanism that monitors and repairs agents automatically.",
+    "how_to_use": "Runs continuously or via CLI. Can be manually invoked from control module.",
+    "links": [
+      "automation_suite",
+      "backup_restore"
+    ]
+  }
+}

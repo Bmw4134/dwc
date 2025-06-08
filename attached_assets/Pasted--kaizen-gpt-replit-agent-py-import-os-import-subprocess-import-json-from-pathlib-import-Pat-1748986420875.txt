@@ -1,0 +1,65 @@
+# ─── kaizen_gpt/replit_agent.py ───
+import os
+import subprocess
+import json
+from pathlib import Path
+from datetime import datetime
+
+AGENT_LOG = Path("logs") / "replit_agent_log.json"
+CONFIG_FILE = Path("configs") / "dwc_config.json"
+
+class ReplitAgent:
+    def __init__(self):
+        self.log_file = AGENT_LOG
+        self.config = self.load_config()
+
+    def load_config(self):
+        if CONFIG_FILE.exists():
+            with open(CONFIG_FILE, "r") as f:
+                return json.load(f)
+        return {}
+
+    def log_action(self, action_type, payload):
+        log_entry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "action": action_type,
+            "payload": payload
+        }
+        logs = []
+        if self.log_file.exists():
+            with open(self.log_file, "r") as f:
+                logs = json.load(f)
+        logs.append(log_entry)
+        with open(self.log_file, "w") as f:
+            json.dump(logs, f, indent=2)
+
+    def run_command(self, cmd):
+        try:
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+            self.log_action("command_exec", {"cmd": cmd, "stdout": result.stdout, "stderr": result.stderr})
+            return result.stdout.strip()
+        except Exception as e:
+            return str(e)
+
+    def refresh_preview(self):
+        return self.run_command("kill 1")
+
+    def install_dependencies(self):
+        return self.run_command("poetry install || pip install -r requirements.txt")
+
+    def scaffold_module(self, name, kind="module"):
+        target = Path("modules") / f"{name}.py"
+        target.parent.mkdir(exist_ok=True)
+        if not target.exists():
+            content = f"# Auto-scaffolded {kind}: {name}\n\n"
+            content += f"class {name.capitalize()}:\n    pass\n"
+            with open(target, "w") as f:
+                f.write(content)
+        self.log_action("scaffold", {"type": kind, "file": str(target)})
+        return f"Scaffolded {kind}: {target}"
+
+# Use case
+if __name__ == "__main__":
+    agent = ReplitAgent()
+    print(agent.refresh_preview())  # Refresh live preview
+    print(agent.scaffold_module("funding_flow_handler"))

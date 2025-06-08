@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Stress Test Runner",
+    "owner": "admin",
+    "goal": "Run systemwide load simulation",
+    "last_run": "2025-06-05T14:00:00Z",
+    "priority": "high"
+  },
+  {
+    "name": "Prompt Refactor Agent",
+    "owner": "dev",
+    "goal": "Refactor legacy prompts",
+    "last_run": "2025-06-04T18:20:00Z",
+    "priority": "medium"
+  }
+]

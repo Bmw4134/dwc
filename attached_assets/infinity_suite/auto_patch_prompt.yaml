@@ -1,0 +1,22 @@
+# 🧬 KAIZEN PATCH PROMPT: BIM INFINITY CROWN INJECTION
+
+Given:
+- A functioning dashboard with pre-existing modules, agents, or workflows
+- A Crown Patch Suite containing enhancements for security, sovereignty, executive reporting, and control logic
+
+When:
+- This patch prompt is executed or interpreted
+
+Then:
+- DO NOT regress or overwrite existing working logic
+- DETECT modules that match: agent, auth, ui, dashboard, automation
+- APPLY enhancements from Crown Suite only where not yet present
+- PRESERVE all user flows, goal trackers, and control interfaces
+- REGISTER new components in global memory or route graph
+- INITIATE integration with backup, rollback, and fingerprint logging
+
+Goal:
+- Seamlessly enhance this dashboard with Infinity Sovereign architecture, with zero regression risk and full feature continuity.
+
+System Note:
+This is a self-validating, recursion-aware prompt. It is safe for batch execution across distributed agents or interface layers.

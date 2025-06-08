@@ -1,0 +1,82 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import time
+import random
+
+class PerplexityInjector:
+    def __init__(self, model, dwc_stream):
+        self.model = model
+        self.dwc_stream = dwc_stream
+
+    def compute_wave_perplexity(self, trade_wave):
+        return np.std(trade_wave) * np.log1p(len(trade_wave))
+
+    def enhance_signal(self):
+        enhanced = [self.compute_wave_perplexity(w) for w in self.dwc_stream]
+        return np.argsort(enhanced)[::-1]
+
+class MicroPredRNN:
+    def predict_clusters(self, trade_data):
+        return np.random.rand(len(trade_data))
+
+class ArbLatencyBinder:
+    def bind_latencies(self, exchanges):
+        return {ex: random.uniform(0.05, 0.5) for ex in exchanges}
+
+class GhostOrderRecon:
+    def detect_spoofing(self, order_book):
+        return [entry for entry in order_book if entry['size'] > 1000]
+
+class QuantumPulseStacker:
+    def fourier_map(self, signal):
+        return np.fft.fft(signal)
+
+class CoherenceReversal:
+    def detect_reversal(self, waveform):
+        return np.diff(waveform).argmin()
+
+# Simulation Harness
+model = "QuantumNet-Tradev3"
+dwc_stream = [np.random.randn(100) for _ in range(5)]
+
+injector = PerplexityInjector(model, dwc_stream)
+micro_rnn = MicroPredRNN()
+latency_binder = ArbLatencyBinder()
+ghost_recon = GhostOrderRecon()
+pulse_stacker = QuantumPulseStacker()
+coherence_rev = CoherenceReversal()
+
+print("Running Quantum DWC Sandbox Simulation...")
+
+for iteration in range(3):
+    print(f"\nIteration {iteration + 1}:")
+    enhanced_signals = injector.enhance_signal()
+    print("Enhanced DWC Signal Rankings:", enhanced_signals)
+
+    clusters = micro_rnn.predict_clusters(dwc_stream[0])
+    latency_map = latency_binder.bind_latencies(['NYSE', 'Binance', 'Kraken'])
+    spoofing = ghost_recon.detect_spoofing([
+        {'price': 101.5, 'size': 1200},
+        {'price': 101.6, 'size': 500},
+        {'price': 101.8, 'size': 2500},
+    ])
+    fourier_result = pulse_stacker.fourier_map(dwc_stream[1])
+    reversal_point = coherence_rev.detect_reversal(dwc_stream[2])
+
+    print("Cluster Predictions (sample):", clusters[:5])
+    print("Latency Map:", latency_map)
+    print("Detected Spoofing Orders:", spoofing)
+    print("Reversal Point Detected At Index:", reversal_point)
+
+    # Plot real-time perplexity evolution
+    plt.figure(figsize=(8, 4))
+    plt.plot([injector.compute_wave_perplexity(w) for w in dwc_stream], label='Perplexity Scores')
+    plt.title(f"Perplexity Signal Evolution - Iteration {iteration + 1}")
+    plt.xlabel("Signal Index")
+    plt.ylabel("Perplexity")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    time.sleep(2)

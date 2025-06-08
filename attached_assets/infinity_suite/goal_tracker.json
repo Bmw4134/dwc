@@ -1,0 +1,25 @@
+[
+  {
+    "goal_text": "Initialize BIMRouteNavigator and launch all agents",
+    "linked_prompt_ids": [
+      "scheduler_prompt",
+      "model_validator_prompt"
+    ],
+    "status": "pending",
+    "last_updated": "2025-06-05T06:16:12.755573Z"
+  },
+  {
+    "goal_text": "Sync all agent outputs to dashboard using sync_to_dashboard",
+    "linked_prompt_ids": [],
+    "status": "pending",
+    "last_updated": "2025-06-05T06:16:12.755580Z"
+  },
+  {
+    "goal_text": "Track and evolve prompt structures using prompt_loader integration",
+    "linked_prompt_ids": [
+      "self_diff_agent_prompt"
+    ],
+    "status": "in-progress",
+    "last_updated": "2025-06-05T06:16:12.755583Z"
+  }
+]

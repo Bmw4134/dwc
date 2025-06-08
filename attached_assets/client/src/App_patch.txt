@@ -1,0 +1,3 @@
+
+import MobileQuantumDashboard from './pages/mobile-quantum-dashboard';
+<Route path="/mobile-dashboard" element={<MobileQuantumDashboard />} />

@@ -1,0 +1,1 @@
+// Patch instructions for App.tsx routing.

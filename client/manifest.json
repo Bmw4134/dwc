@@ -1,0 +1,62 @@
+{
+  "name": "DWC Systems - Enterprise AI Platform",
+  "short_name": "DWC Systems",
+  "description": "AI-powered enterprise automation platform with quantum security protocols",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["business", "productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "/generated-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/generated-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/generated-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Watson Console",
+      "short_name": "Watson",
+      "description": "Access Watson Command Console",
+      "url": "/watson-console",
+      "icons": [
+        {
+          "src": "/generated-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Main dashboard",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/generated-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

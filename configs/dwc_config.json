@@ -1,0 +1,18 @@
+{
+  "funding": {
+    "targetAmount": 500,
+    "coOwnerCreditScore": 690,
+    "projectedGrowth": 15,
+    "confidenceLevel": 85
+  },
+  "deployment": {
+    "isProduction": false,
+    "safeMode": true,
+    "emergencyOverride": "DWC_OVERRIDE_2025"
+  },
+  "automation": {
+    "layerSimulationEnabled": true,
+    "autonomousMode": false,
+    "entropyThreshold": 0.85
+  }
+}

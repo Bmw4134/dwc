@@ -1,0 +1,26 @@
+{
+  "name": "dw-ai-platform",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0",
+    "axios": "^1.0.0",
+    "clsx": "^1.0.0",
+    "next": "13.4.0",
+    "puppeteer": "^20.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons",
+    "mapbox-gl": "^4.8.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.2",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "typescript": "^5.0.0"
+  }
+}

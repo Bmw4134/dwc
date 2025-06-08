@@ -1,0 +1,103 @@
+{
+  "phase_memory": {
+    "base_checkpoint": "Phase 1 Trillion Quantum Trading Agent",
+    "current_phase": "Phase 1.000000001 - Multi-Platform Compatibility",
+    "additive_mode": true,
+    "preserve_state": true
+  },
+  "platform_selector": {
+    "active_platform": null,
+    "multi_platform_mode": false,
+    "confidence_threshold": 0.85,
+    "override_pending": false,
+    "highest_confidence_priority": true
+  },
+  "platforms": {
+    "tradingview_alpaca": {
+      "name": "TradingView + Alpaca",
+      "status": "inactive",
+      "mode": "paper",
+      "webhook_endpoint": "/alpaca_webhook",
+      "api_keys": {
+        "alpaca_key_id": "ALPACA_API_KEY",
+        "alpaca_secret_key": "ALPACA_SECRET_KEY",
+        "paper_trading": true
+      },
+      "config": {
+        "heartbeat_interval": 300,
+        "signal_parser": "parse_signal.py",
+        "ping_module": "alpaca_ping.py"
+      }
+    },
+    "binance_futures": {
+      "name": "Binance Futures Testnet",
+      "status": "inactive",
+      "mode": "testnet",
+      "api_keys": {
+        "binance_key": "BINANCE_KEY",
+        "binance_secret": "BINANCE_SECRET",
+        "testnet_endpoint": "https://testnet.binancefuture.com"
+      },
+      "config": {
+        "connector": "binance_connector.py",
+        "trade_handler": "futures_trade_handler.py",
+        "preview_only": true,
+        "trade_override": false
+      }
+    },
+    "bybit_usdt": {
+      "name": "Bybit USDT Perpetual",
+      "status": "inactive",
+      "mode": "testnet",
+      "api_keys": {
+        "bybit_api_key": "BYBIT_API_KEY",
+        "bybit_secret": "BYBIT_SECRET",
+        "testnet": true
+      },
+      "config": {
+        "sdk_module": "bybit_sdk.py",
+        "trade_dispatch": "bybit_trade_dispatch.py",
+        "rate_limiter": true,
+        "cancel_all_before_entry": true
+      }
+    },
+    "interactive_brokers": {
+      "name": "Interactive Brokers TWS",
+      "status": "inactive",
+      "mode": "paper",
+      "connection": {
+        "host": "localhost",
+        "port": 7497,
+        "client_id": 1
+      },
+      "config": {
+        "bridge_module": "ib_insync",
+        "trader_module": "ib_trader.py",
+        "watchdog": "ib_watchdog.py",
+        "reconnect_on_timeout": true,
+        "asset_types": ["equity", "futures"]
+      }
+    },
+    "metatrader5": {
+      "name": "MetaTrader 5 Forex",
+      "status": "inactive",
+      "mode": "demo",
+      "optional": true,
+      "config": {
+        "bridge_module": "mt5_trade_bridge.py",
+        "watcher": "watcher_mt5.py",
+        "terminal_bridge": "MetaTrader5",
+        "indicators_path": "/indicators/",
+        "failsafe": true
+      }
+    }
+  },
+  "qq_enhanced_logic": {
+    "sentiment_bias_weight": 0.3,
+    "indicator_convergence_weight": 0.4,
+    "user_history_weight": 0.3,
+    "minimum_confidence": 0.85,
+    "user_override_enabled": true,
+    "default_action": "do_nothing"
+  }
+}

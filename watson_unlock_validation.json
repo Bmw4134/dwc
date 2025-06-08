@@ -1,0 +1,133 @@
+{
+  "test_summary": {
+    "total_tests": 20,
+    "passed": 16,
+    "failed": 4,
+    "warnings": 0,
+    "success_rate": 80.0
+  },
+  "test_results": {},
+  "validation_log": [
+    {
+      "timestamp": "10:01:44",
+      "test": "Watson API Test",
+      "status": "FAIL",
+      "details": "Connection error: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - system-status",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - deployment-status",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - introspection",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - watson-console",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - system-status",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - automation-tasks",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - metrics",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - live-report",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Dashboard Access - active-goals",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Overall Dashboard Access",
+      "status": "PASS",
+      "details": "9/9 accessible"
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Unlock Protocol Execution",
+      "status": "FAIL",
+      "details": "Request error: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "TRD Handler Validation",
+      "status": "FAIL",
+      "details": "Error: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Module Access Validation",
+      "status": "FAIL",
+      "details": "Error: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "timestamp": "10:01:44",
+      "test": "Main UI Endpoint",
+      "status": "PASS",
+      "details": "Application serving successfully"
+    },
+    {
+      "timestamp": "10:01:45",
+      "test": "UI Component - business-valuation",
+      "status": "PASS",
+      "details": "31ms"
+    },
+    {
+      "timestamp": "10:01:45",
+      "test": "UI Component - valuation-realtime",
+      "status": "PASS",
+      "details": "8ms"
+    },
+    {
+      "timestamp": "10:01:45",
+      "test": "UI Component - stats",
+      "status": "PASS",
+      "details": "253ms"
+    },
+    {
+      "timestamp": "10:01:45",
+      "test": "UI Component - leads",
+      "status": "PASS",
+      "details": "48ms"
+    },
+    {
+      "timestamp": "10:01:45",
+      "test": "UI Readiness Score",
+      "status": "PASS",
+      "details": "100% responsive"
+    }
+  ],
+  "timestamp": "2025-06-05T10:01:45.327274"
+}

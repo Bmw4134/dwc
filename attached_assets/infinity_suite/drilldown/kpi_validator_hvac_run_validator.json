@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-06-05T06:29:22.259233Z",
+  "agent": "validator",
+  "prompt": "Validate BIM model for HVAC clash conflicts.",
+  "output_summary": "Detected 3 HVAC clashes. Suggested Dynamo fix scripts.",
+  "vector_signature": [
+    0.9,
+    4,
+    0.9,
+    "complete"
+  ],
+  "kpi_ref": "kpi_validator_hvac_run"
+}

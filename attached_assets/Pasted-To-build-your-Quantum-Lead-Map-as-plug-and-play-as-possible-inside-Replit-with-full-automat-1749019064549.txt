@@ -1,0 +1,106 @@
+To build your **Quantum Lead Map** as **plug-and-play** as possible inside Replit *with full automation when possible* and fallback **manual input routed via Playwright or Puppeteer**, here’s the *exact plan* to make that happen without slowing you down:
+
+---
+
+## ✅ PHASE 1: **EZ Mode Stack Selection (No Friction)**
+
+We pick components with:
+
+* 🔌 *Instant Replit support*
+* 👤 *Manual interaction → automation mapping*
+* 💥 *QQ readiness + fast AI scoring*
+
+| Component                 | Tool                               | Why It Works Immediately in Replit                          |
+| ------------------------- | ---------------------------------- | ----------------------------------------------------------- |
+| 🌍 Lead Map Engine        | **Leaflet.js** or **Mapbox GL JS** | Pure JS, easy to render in Flask/React SPA                  |
+| 📦 Database Layer         | **Supabase (Postgres + Geo)**      | Built-in support + real-time updates                        |
+| 🔁 Lead Logic             | **Flask + Python QQ logic**        | Already part of your architecture                           |
+| 📍 Puppeteer / Playwright | For fallback/manual input          | Controlled manual data entry (like email, zip, geolocation) |
+
+---
+
+## ⚙️ PHASE 2: **Flow Structure with Automation & Interaction Hook**
+
+### 🔧 Setup Block (First Time Only)
+
+```plaintext
+→ Drop the ZIP into Replit
+→ System boot checks:
+   - Supabase URL / Key set?
+   - Mapbox token provided?
+   - QQ Lead scoring config present?
+→ If missing, activate fallback script with:
+   - Playwright/Puppeteer auto-prompt
+   - OR: Interactive CLI to finish
+```
+
+> ✅ Example: If you didn’t pre-provide your Mapbox token, it’ll spawn a Puppeteer window, ask for it visually, store it in `.env`, and reboot clean.
+
+---
+
+### 🔁 Real-Time Use Flow
+
+```plaintext
+User lands → form fills → lead scored by QQ Model → plotted on map (w/ geo enrichment) → optional SMS/email sent via Twilio → all tracked silently
+```
+
+---
+
+## 🧠 PHASE 3: **Plug-and-Play Puppeteer Script Integration**
+
+We'll wrap every manual fallback in Puppeteer like this:
+
+### Example Script: `fallback_input_puppeteer.py`
+
+```python
+from playwright.sync_api import sync_playwright
+import os
+
+def launch_fallback_prompt():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
+        page.goto("http://localhost:8000/setup")  # Your lead map setup route
+        page.fill("#mapbox_token", os.getenv("MAPBOX_TOKEN") or "")
+        page.fill("#supabase_url", os.getenv("SUPABASE_URL") or "")
+        page.click("button#submit_setup")
+        page.wait_for_timeout(3000)
+        browser.close()
+```
+
+Then your Flask route catches that setup and finishes bootstrapping.
+
+---
+
+## 🧩 PHASE 4: Full Replit-Ready Prompt (Final Plug Command)
+
+```plaintext
+Inject Quantum Lead Map into DWC:
+- Use Leaflet.js base
+- Flask + Supabase for backend, with QQ Lead Scoring logic
+- Setup detects missing ENV (Mapbox, Supabase), triggers Puppeteer/Playwright interactive fallback
+- Plot leads in real-time with colorized scoring overlays and live tracking
+- All routes under /dashboard/lead-map, auth protected
+- Store user choices and hash results into AI-enhanced lead logs
+```
+
+---
+
+## 🧰 Deployment Bundle Includes:
+
+* `/templates/lead_map.html` (with real-time updates)
+* `/static/js/map_engine.js` (Leaflet + dynamic overlays)
+* `/scripts/fallback_input_puppeteer.py`
+* `/routes/leadmap_routes.py` (Flask blueprint)
+* `lead_scoring.py` (your QQ logic module)
+* `.env.example` with token placeholders
+* Replit-ready boot script with self-checks + first-time wizard
+
+---
+
+## 🚀 NEXT:
+
+If you’re ready, just say:
+**“Build and ZIP the full Lead Map Quantum Package now.”**
+
+I’ll deliver the ZIP + a monospace Replit prompt to drop in instantly, including Puppeteer/Playwright fallback for anything you don’t prefill. This means the app will ask **only when absolutely needed**, otherwise it flies fully automated.

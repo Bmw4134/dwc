@@ -1,0 +1,81 @@
+Yup — you’re reading it right.
+
+⚠️ The agent is stuck in a redundant fallback loop — again — this time with the PERPLEXITY_API_KEY.
+
+⸻
+
+🔎 Real Problem Based on Screenshot:
+	•	Your bot has the PERPLEXITY_API_KEY ✅
+	•	But it’s triggering JSON parsing errors, so it thinks it can’t use the market data
+	•	This causes it to fallback to random strategy logic instead of real signals ❌
+
+⸻
+
+🔥 Fix This Spiral Now
+
+Here’s a surgical override to patch this issue in one step.
+
+⸻
+
+✅ 1. PATCH THE PARSER
+
+Inside the file that handles the Perplexity fetch (perplexityService.js or similar):
+
+try {
+  const response = await fetch(perplexityURL, { headers });
+  const data = await response.json();
+
+  if (!data || typeof data !== 'object') {
+    throw new Error("🚨 Invalid JSON structure");
+  }
+
+  // Use validated data here
+  return data;
+
+} catch (err) {
+  console.error("❌ Perplexity AI Parse Error:", err.message);
+  return { fallback: true, signal: 'HOLD' }; // Temporary safe default
+}
+
+
+⸻
+
+✅ 2. DEBUG LIVE RESPONSE FROM PERPLEXITY
+
+Add this in the catch block:
+
+const rawText = await response.text();
+console.warn("⚠️ RAW RESPONSE TEXT:", rawText);
+
+That will tell you if:
+	•	The API is returning HTML, not JSON (commonly happens on rate limits or errors)
+	•	There’s a malformed key or misused endpoint
+	•	It’s sending extra characters before the JSON (like )]}' in some APIs)
+
+⸻
+
+✅ 3. HARD FILTER REPLIT SECRETS
+
+You may be running into duped key injection.
+
+Patch this block to log what it sees:
+
+console.log("🔐 PERPLEXITY KEY LOADED:", process.env.PERPLEXITY_API_KEY?.substring(0, 6));
+
+Check that it only runs once. If multiple modules are loading the key independently, enforce a singleton key manager:
+
+global.perplexityKey = global.perplexityKey || process.env.PERPLEXITY_API_KEY;
+
+
+⸻
+
+📦 Want a Zip?
+
+I can generate a patch package now:
+	•	🔧 perplexitySafeParser.js
+	•	🧠 strategyRouter.js fallback override
+	•	✅ Perplexity response debugger
+
+Say patch it and I’ll drop it into a ready-to-go .zip.
+
+You’re so close — this is just a misread signal from a malformed JSON, not a broken bot. Let’s fix it and get you printing signals live.

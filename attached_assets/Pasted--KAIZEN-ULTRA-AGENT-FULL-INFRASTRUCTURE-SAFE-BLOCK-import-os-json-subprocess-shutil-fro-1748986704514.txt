@@ -1,0 +1,128 @@
+# ─── KAIZEN ULTRA AGENT: FULL INFRASTRUCTURE SAFE BLOCK ───
+import os, json, subprocess, shutil
+from shutil import copytree
+from pathlib import Path
+from datetime import datetime
+
+TEMPLATE_DIR = Path("dashboard_template")
+DASHBOARD_DIR = Path("kaizen_dashboards")
+RECOVERY_DIR = Path("backups")
+TEST_LOG = Path("logs") / "autotest_results.json"
+
+DASHBOARD_DIR.mkdir(exist_ok=True)
+RECOVERY_DIR.mkdir(exist_ok=True)
+TEST_LOG.parent.mkdir(exist_ok=True)
+
+class KaizenUltraAgent:
+    def __init__(self):
+        self.results = []
+
+    # SAFE BUILD ON EXISTING STRUCTURE
+    def scaffold_dashboard(self, name):
+        target = DASHBOARD_DIR / name
+        if not target.exists():
+            copytree(TEMPLATE_DIR, target)
+            return f"[NEW] Scaffolded → {target}"
+        return f"[OK] Using existing dashboard: {target}"
+
+    def install_dependencies(self):
+        return subprocess.run("poetry install || pip install -r requirements.txt", shell=True, capture_output=True, text=True).stdout
+
+    def refresh_preview(self):
+        return subprocess.run("kill 1", shell=True, capture_output=True, text=True).stdout
+
+    def snapshot(self, name):
+        ts = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        src = DASHBOARD_DIR / name
+        dest = RECOVERY_DIR / f"{name}_{ts}"
+        if src.exists():
+            copytree(src, dest)
+            return f"[SNAPSHOT] {dest}"
+        return f"[ERROR] Source missing: {src}"
+
+    def assert_key_exists(self, data, keys, test_name=""):
+        for key in keys:
+            if key not in data:
+                self.log(test_name, False, f"Missing: {key}")
+                return False
+        self.log(test_name, True)
+        return True
+
+    def assert_structure(self, obj, structure, test_name=""):
+        for k, typ in structure.items():
+            if not isinstance(obj.get(k), typ):
+                self.log(test_name, False, f"{k} != {typ}")
+                return False
+        self.log(test_name, True)
+        return True
+
+    def log(self, test, passed, msg=""):
+        self.results.append({
+            "test": test,
+            "passed": passed,
+            "message": msg,
+            "time": datetime.utcnow().isoformat()
+        })
+        with open(TEST_LOG, "w") as f:
+            json.dump(self.results, f, indent=2)
+
+    def validate_dashboard(self, name):
+        config_path = DASHBOARD_DIR / name / "config" / "default_config.json"
+        if config_path.exists():
+            with open(config_path) as f:
+                data = json.load(f)
+                self.assert_key_exists(data, ["env", "modules"], "Config Keys")
+                self.assert_structure(data, {"env": str, "modules": list}, "Config Types")
+        else:
+            self.log("Config Presence", False, "Missing config file")
+
+    def estimate_confidence(self):
+        try:
+            with open(TEST_LOG) as f:
+                results = json.load(f)
+                total = len(results)
+                passed = sum(1 for r in results if r['passed'])
+                return passed / total if total else 0.0
+        except:
+            return 0.0
+
+    def silent_iterate_and_upgrade(self, name, iterations=3, threshold=0.92):
+        self.snapshot(name)
+        best_score = 0
+        best_version = None
+        orig_path = DASHBOARD_DIR / name
+
+        for i in range(iterations):
+            candidate = f"{name}_sandbox_{i}"
+            sandbox_path = DASHBOARD_DIR / candidate
+
+            if sandbox_path.exists():
+                shutil.rmtree(sandbox_path)
+            copytree(orig_path, sandbox_path)
+
+            self.validate_dashboard(candidate)
+            score = self.estimate_confidence()
+            print(f"[Sim {i}] Score: {score:.2f}")
+
+            if score > best_score:
+                best_score = score
+                best_version = sandbox_path
+
+        if best_score >= threshold:
+            shutil.rmtree(orig_path)
+            copytree(best_version, orig_path)
+            print(f"[PROMOTED] {best_version} → {orig_path} @ {best_score:.2f}")
+        else:
+            print(f"[NO CHANGE] Max score {best_score:.2f} < {threshold}")
+
+    def full_run(self, name="your_dashboard_here"):
+        print(self.scaffold_dashboard(name))
+        print(self.install_dependencies())
+        print(self.refresh_preview())
+        print(self.snapshot(name))
+        self.silent_iterate_and_upgrade(name)
+
+# 🧠 GO TIME
+if __name__ == "__main__":
+    agent = KaizenUltraAgent()
+    agent.full_run("your_dashboard_here")  # <== customize dashboard name

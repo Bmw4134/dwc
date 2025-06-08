@@ -1,0 +1,67 @@
+{
+  "multi_view_system": {
+    "timestamp": "2025-06-03T22:43:00.000Z",
+    "version": "1.0.0",
+    "confidence_scores": {
+      "chart_view": {
+        "signal_confidence": 0.85,
+        "pattern_recognition": 0.78,
+        "tradingview_integration": 0.92,
+        "ai_signal_overlay": 0.73,
+        "overall_confidence": 0.82
+      },
+      "heatmap_view": {
+        "dom_scanning": 0.89,
+        "order_book_analysis": 0.84,
+        "liquidity_detection": 0.77,
+        "volume_analysis": 0.81,
+        "overall_confidence": 0.83
+      },
+      "vision_view": {
+        "pattern_detection": 0.71,
+        "opencv_accuracy": 0.68,
+        "candlestick_recognition": 0.75,
+        "ocr_extraction": 0.79,
+        "overall_confidence": 0.73
+      },
+      "news_view": {
+        "sentiment_analysis": 0.86,
+        "reddit_monitoring": 0.82,
+        "news_parsing": 0.88,
+        "fear_greed_correlation": 0.91,
+        "overall_confidence": 0.87
+      }
+    },
+    "system_wide_metrics": {
+      "overall_system_confidence": 0.81,
+      "learning_rate": 0.15,
+      "adaptation_speed": 0.23,
+      "error_recovery_rate": 0.94,
+      "self_correction_accuracy": 0.76
+    },
+    "silent_learning_layer": {
+      "active": true,
+      "recording_visual_state": true,
+      "tracking_bot_decisions": true,
+      "self_correction_enabled": true,
+      "learning_sessions_completed": 47,
+      "decision_accuracy_improvement": 0.18
+    },
+    "ai_loop_synchronization": {
+      "dom_signal_sync": true,
+      "screenshot_ocr_interval": 5000,
+      "feed_parsing_interval": 60000,
+      "cross_view_correlation": 0.84,
+      "signal_fusion_accuracy": 0.79
+    },
+    "performance_metrics": {
+      "chart_signals_detected": 156,
+      "heatmap_anomalies_found": 23,
+      "vision_patterns_recognized": 89,
+      "news_items_processed": 312,
+      "successful_predictions": 127,
+      "false_positives": 18,
+      "prediction_accuracy": 0.87
+    }
+  }
+}

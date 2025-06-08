@@ -1,0 +1,229 @@
+#region Using declarations
+using System;
+using NinjaTrader.Cbi;
+using NinjaTrader.Gui.Tools;
+using NinjaTrader.NinjaScript;
+using NinjaTrader.Data;
+using NinjaTrader.NinjaScript.Strategies;
+using NinjaTrader.NinjaScript.Indicators;
+using NinjaTrader.NinjaScript.DrawingTools;
+using System.Windows.Media;
+#endregion
+
+namespace NinjaTrader.NinjaScript.Strategies
+{
+    public class DeltaBoth : Strategy
+    {
+        private OrderFlowCumulativeDelta barDelta;
+
+        private ATR atr;
+		//private bool pendingLongReversal = false;
+		//private bool pendingShortReversal = false;
+		
+		private bool shouldReverseToLong = false;
+		private bool shouldReverseToShort = false;
+
+        protected override void OnStateChange()
+        {
+            if (State == State.SetDefaults)
+            {
+                Name = "DeltaBoth";
+                Calculate = Calculate.OnBarClose;
+                IsOverlay = false;
+                BarsRequiredToTrade = 20;
+                IsTickReplay = true;
+            }
+            else if (State == State.Configure)
+            {
+                // Add a 1-tick series so OrderFlowCumulativeDelta has tick data
+                AddDataSeries(BarsPeriodType.Tick, 1);
+				TraceOrders = true;
+            }
+            else if (State == State.DataLoaded)
+            {
+                barDelta = OrderFlowCumulativeDelta(BarsArray[0], CumulativeDeltaType.BidAsk, CumulativeDeltaPeriod.Bar, 0);
+                atr = ATR(14); // 14-period ATRT
+            }
+        }
+
+        protected override void OnBarUpdate()
+        {
+
+            // Only run on primary data series
+            if (BarsInProgress != 0)
+                return;
+			
+			if (State != State.Realtime)
+        		return;
+			
+			int time = ToTime(Time[0]);
+			if (time < 63000 || time >= 130000)
+			    return;
+
+            // Ensure enough bars to index barDelta[1]
+			if (CurrentBar < 2 || barDelta == null || barDelta.DeltaClose.Count < 2)
+			{
+			    Print($"[DEBUG] Skipping bar {CurrentBar} — Delta not ready or not enough bars.");
+			    return;
+			}
+			//Print($"[TEST] Bar {CurrentBar - 1} — Delta: {barDelta.DeltaClose[0]} (From BarsArray[0])");
+			// Force evaluation to ensure DeltaClose[1] is ready
+            _ = barDelta.DeltaClose[0];
+
+            // Get delta from the previous bar
+			double delta = barDelta.DeltaClose[1];
+			//string barColor = Close[1] > Open[1] ? "Green" : (Close[1] < Open[1] ? "Red" : "Doji");
+			
+			// Get open and close of the *same bar* used for delta
+			double candleOpen = Open[0];
+			double candleClose = Close[0];
+			
+			string barColor = candleClose > candleOpen ? "Green" :
+			                  candleClose < candleOpen ? "Red" : "Doji";
+			
+			Print($"[INFO] Bar {CurrentBar - 1} — Delta: {delta}, Bar: {barColor}");
+			bool isGreenCandle = Close[0] > Open[0];
+            bool isRedCandle = Close[0] < Open[0];
+            bool isNegativeDelta = delta < 0;
+            bool isPositiveDelta = delta > 0;
+			Print($"[TRACE] Current market position: {Position.MarketPosition}");
+			
+			double AbsoluteDelta = Math.Abs(delta); // absolute value of delta
+			double MaxDelta = 150; // Max delta to execute trade
+			double candleBodySize = Math.Abs(Close[0] - Open[0]); // Size of the candle body (colored section)
+			
+			double tickSize = TickSize;  // built-in NT var for tick size
+			double minBodySize = 1 * tickSize; // limiting trades to execute only when above this number of ticks
+
+            // Trade logic using previous bar's data
+			
+			bool longSignal = (isGreenCandle && isNegativeDelta && AbsoluteDelta >= MaxDelta && candleBodySize >= minBodySize);
+			bool shortSignal = (isRedCandle && isPositiveDelta && AbsoluteDelta >= MaxDelta && candleBodySize >= minBodySize);
+			
+            if (longSignal)
+            {
+				// If already short, exit and go long
+			    if (Position.MarketPosition == MarketPosition.Short)
+			    {
+					shouldReverseToLong = true;
+			        ExitShort("ReverseToLong", "DeltaShort");
+			        Print($"[REVERSAL] Closing SHORT and entering LONG at bar {CurrentBar}");
+			        // Important: Wait one bar OR submit entry immediately depending on fill handling
+			    }
+				
+				else if (Position.MarketPosition == MarketPosition.Flat && shouldReverseToLong)
+				{
+					shouldReverseToLong = false;
+	                Print($"[DEBUG] Entering Long at bar {CurrentBar} — Green candle with negative delta: {delta}");
+					
+	                double atrValue = atr[0];
+	                double stopLoss = Close[0] - atrValue * 1.5;   // 1.5× ATR below
+	                double profitTarget = Close[0] + atrValue * 2; // 2× ATR above (optional)
+					
+					Print($"[DEBUG] Reversal to LONG at bar {CurrentBar}");
+			        Print($"[ATR DEBUG] Bar {CurrentBar} — ATR: {atrValue}, Close: {Close[0]}");
+			        Print($"[ATR DEBUG] StopLoss: {stopLoss}, ProfitTarget: {profitTarget}");
+			
+			        SetStopLoss(CalculationMode.Price, stopLoss);
+			        SetProfitTarget(CalculationMode.Price, profitTarget);
+			        EnterLong("DeltaLong");
+				}
+				else if (Position.MarketPosition == MarketPosition.Flat)
+				{
+					double atrValue = atr[0];
+			        double stopLoss = Close[0] - atrValue * 1.5;
+			        double profitTarget = Close[0] + atrValue * 2;
+			
+			        Print($"[DEBUG] Direct LONG at bar {CurrentBar} — Green candle with negative delta: {delta}");
+			        Print($"[ATR DEBUG] Bar {CurrentBar} — ATR: {atrValue}, Close: {Close[0]}");
+			        Print($"[ATR DEBUG] StopLoss: {stopLoss}, ProfitTarget: {profitTarget}");
+			
+			        SetStopLoss(CalculationMode.Price, stopLoss);
+			        SetProfitTarget(CalculationMode.Price, profitTarget);
+			        EnterLong("DeltaLong");
+				}
+            }
+
+            if (shortSignal)
+            {
+			    if (Position.MarketPosition == MarketPosition.Long)
+			    {
+                    shouldReverseToShort = true;
+                    ExitLong("ReverseToShort","DeltaLong");
+                    Print($"[REVERSAL] Closing LONG to enter SHORT at bar {CurrentBar}");
+			    }
+				
+				else if (Position.MarketPosition == MarketPosition.Flat && shouldReverseToShort)
+			    {
+			        shouldReverseToShort = false;
+			
+			        double atrValue = atr[0];
+			        double stopLoss = Close[0] + atrValue * 1.5;
+			        double profitTarget = Close[0] - atrValue * 2;
+			
+			        Print($"[DEBUG] Reversal to SHORT at bar {CurrentBar}");
+			        Print($"[ATR DEBUG] Bar {CurrentBar} — ATR: {atrValue}, Close: {Close[0]}");
+			        Print($"[ATR DEBUG] StopLoss: {stopLoss}, ProfitTarget: {profitTarget}");
+			
+			        SetStopLoss(CalculationMode.Price, stopLoss);
+			        SetProfitTarget(CalculationMode.Price, profitTarget);
+			        EnterShort("DeltaShort");
+			    }
+			    else if (Position.MarketPosition == MarketPosition.Flat)
+			    {
+			        double atrValue = atr[0];
+			        double stopLoss = Close[0] + atrValue * 1.5;
+			        double profitTarget = Close[0] - atrValue * 2;
+			
+			        Print($"[DEBUG] Direct SHORT at bar {CurrentBar} — Red candle with positive delta: {delta}");
+			        Print($"[ATR DEBUG] Bar {CurrentBar} — ATR: {atrValue}, Close: {Close[0]}");
+			        Print($"[ATR DEBUG] StopLoss: {stopLoss}, ProfitTarget: {profitTarget}");
+			
+			        SetStopLoss(CalculationMode.Price, stopLoss);
+			        SetProfitTarget(CalculationMode.Price, profitTarget);
+			        EnterShort("DeltaShort");
+			    }
+            }
+
+        }
+		
+		protected override void OnExecutionUpdate(Execution execution, string executionId, double price, int quantity, 
+		    MarketPosition marketPosition, string orderId, DateTime time)
+		{
+            Print("OnExecutionUpdate was hit");
+            Print($"[OnExecutionUpdate] Current market position: {Position.MarketPosition}");
+            if (execution.Order == null || execution.Order.OrderState != OrderState.Filled)
+		        return;
+            Print($"[OnExecutionUpdate] shouldReverseToLong: {shouldReverseToLong}, shouldReverseToShort: {shouldReverseToShort} ");
+
+            // Long reversal
+            if (shouldReverseToLong && Position.MarketPosition == MarketPosition.Flat)
+		    {
+		        shouldReverseToLong = false;
+		        double atrValue = atr[0];
+		        double stopLoss = Close[0] - atrValue * 1.5;
+		        double profitTarget = Close[0] + atrValue * 2;
+		
+		        SetStopLoss(CalculationMode.Price, stopLoss);
+		        SetProfitTarget(CalculationMode.Price, profitTarget);
+		        Print("[REVERSAL EXECUTION] Now entering LONG after SHORT exit.");
+		        EnterLong("DeltaLong");
+		    }
+		
+		    // Short reversal
+		    if (shouldReverseToShort && Position.MarketPosition == MarketPosition.Flat)
+		    {
+		        shouldReverseToShort = false;
+		        double atrValue = atr[0];
+		        double stopLoss = Close[0] + atrValue * 1.5;
+		        double profitTarget = Close[0] - atrValue * 2;
+		
+		        SetStopLoss(CalculationMode.Price, stopLoss);
+		        SetProfitTarget(CalculationMode.Price, profitTarget);
+		        Print("[REVERSAL EXECUTION] Now entering SHORT after LONG exit.");
+		        EnterShort("DeltaShort");
+		    }
+		}
+
+    }
+}

@@ -1,0 +1,250 @@
+{
+  "system": {
+    "name": "Kaizen Phase 2 Trillion",
+    "version": "2.0.1",
+    "build": "20250603.2230",
+    "environment": "preview",
+    "debug_mode": true
+  },
+  "trading": {
+    "starting_capital": 100,
+    "target_capital": 500,
+    "max_position_size": 0.10,
+    "max_daily_risk": 0.05,
+    "compound_multiplier": 1.15,
+    "delta_scalping_enabled": true,
+    "compound_strategy_enabled": true,
+    "preview_mode": true
+  },
+  "platforms": {
+    "alpaca": {
+      "enabled": true,
+      "primary": true,
+      "mode": "paper",
+      "api_version": "v2",
+      "base_url": "https://paper-api.alpaca.markets",
+      "websocket_url": "wss://stream.data.alpaca.markets/v2/iex",
+      "rate_limit": 200,
+      "credentials_required": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"]
+    },
+    "binance": {
+      "enabled": true,
+      "primary": false,
+      "mode": "testnet",
+      "api_version": "v3",
+      "base_url": "https://testnet.binance.vision",
+      "websocket_url": "wss://testnet.binance.vision/ws",
+      "rate_limit": 1200,
+      "credentials_required": ["BINANCE_API_KEY", "BINANCE_SECRET_KEY"]
+    },
+    "bybit": {
+      "enabled": true,
+      "primary": false,
+      "mode": "testnet",
+      "api_version": "v5",
+      "base_url": "https://api-testnet.bybit.com",
+      "websocket_url": "wss://stream-testnet.bybit.com",
+      "rate_limit": 120,
+      "credentials_required": ["BYBIT_API_KEY", "BYBIT_SECRET_KEY"]
+    },
+    "coinbase": {
+      "enabled": true,
+      "primary": false,
+      "mode": "sandbox",
+      "api_version": "v1",
+      "base_url": "https://api-public.sandbox.pro.coinbase.com",
+      "websocket_url": "wss://ws-feed-public.sandbox.pro.coinbase.com",
+      "rate_limit": 10,
+      "credentials_required": ["COINBASE_API_KEY", "COINBASE_SECRET_KEY", "COINBASE_PASSPHRASE"]
+    },
+    "interactive_brokers": {
+      "enabled": false,
+      "primary": false,
+      "mode": "paper",
+      "gateway_host": "127.0.0.1",
+      "gateway_port": 7497,
+      "client_id": 1,
+      "credentials_required": ["IB_ACCOUNT", "IB_USERNAME", "IB_PASSWORD"]
+    },
+    "td_ameritrade": {
+      "enabled": false,
+      "primary": false,
+      "mode": "paper",
+      "api_version": "v1",
+      "base_url": "https://api.tdameritrade.com",
+      "credentials_required": ["TD_API_KEY", "TD_REFRESH_TOKEN"]
+    },
+    "robinhood": {
+      "enabled": false,
+      "primary": false,
+      "mode": "paper",
+      "api_version": "v1",
+      "base_url": "https://api.robinhood.com",
+      "credentials_required": ["ROBINHOOD_USERNAME", "ROBINHOOD_PASSWORD", "ROBINHOOD_MFA_CODE"]
+    }
+  },
+  "strategies": {
+    "delta_scalping": {
+      "enabled": true,
+      "name": "Micro-Movement Delta Scalping",
+      "description": "Capture micro price movements with high frequency",
+      "parameters": {
+        "min_price_movement": 0.001,
+        "max_hold_time": 300,
+        "profit_target": 0.002,
+        "stop_loss": 0.001,
+        "position_size_factor": 0.05,
+        "cooldown_period": 30
+      },
+      "symbols": ["SPY", "QQQ", "IWM", "BTC-USD", "ETH-USD"],
+      "timeframes": ["1m", "5m"],
+      "active_hours": {
+        "start": "09:30",
+        "end": "16:00",
+        "timezone": "America/New_York"
+      }
+    },
+    "compound_strategy": {
+      "enabled": true,
+      "name": "Exponential Compound Growth",
+      "description": "Reinvest gains for exponential growth targeting $100 to $500",
+      "parameters": {
+        "reinvestment_threshold": 0.02,
+        "compound_frequency": "daily",
+        "target_multiplier": 5.0,
+        "risk_reduction_factor": 0.8,
+        "max_compound_cycles": 50
+      },
+      "milestones": [
+        {"target": 125, "risk_adjustment": 0.9},
+        {"target": 200, "risk_adjustment": 0.8},
+        {"target": 350, "risk_adjustment": 0.7},
+        {"target": 500, "risk_adjustment": 0.6}
+      ]
+    }
+  },
+  "risk_management": {
+    "global_settings": {
+      "max_portfolio_risk": 0.02,
+      "max_position_size": 0.10,
+      "max_daily_trades": 50,
+      "max_daily_loss": 0.05,
+      "emergency_stop_loss": 0.15,
+      "position_timeout": 3600,
+      "trailing_stop_enabled": true
+    },
+    "compound_protection": {
+      "enabled": true,
+      "preserve_gains": true,
+      "minimum_preservation": 0.8,
+      "drawdown_limit": 0.10
+    },
+    "emergency_protocols": {
+      "auto_liquidate": false,
+      "manual_override_required": true,
+      "emergency_contacts": ["DWC_OVERRIDE_2025"],
+      "circuit_breakers": {
+        "market_volatility": 0.05,
+        "portfolio_drawdown": 0.15,
+        "consecutive_losses": 5
+      }
+    }
+  },
+  "monitoring": {
+    "logging": {
+      "level": "INFO",
+      "file_rotation": true,
+      "max_file_size": "100MB",
+      "backup_count": 30,
+      "log_trades": true,
+      "log_signals": true,
+      "log_performance": true
+    },
+    "alerts": {
+      "email_enabled": false,
+      "sms_enabled": false,
+      "webhook_enabled": true,
+      "alert_thresholds": {
+        "profit_milestone": 0.10,
+        "loss_threshold": 0.05,
+        "system_error": true,
+        "connection_loss": true
+      }
+    },
+    "performance_tracking": {
+      "real_time_metrics": true,
+      "daily_reports": true,
+      "weekly_analysis": true,
+      "benchmark_comparison": true,
+      "risk_metrics": true
+    }
+  },
+  "safety": {
+    "preview_mode": {
+      "enabled": true,
+      "max_position_value": 50,
+      "paper_trading_only": true,
+      "requires_confirmation": true
+    },
+    "authentication": {
+      "two_factor_required": false,
+      "session_timeout": 3600,
+      "max_failed_attempts": 3,
+      "emergency_override_code": "DWC_OVERRIDE_2025"
+    },
+    "compliance": {
+      "pattern_day_trader_protection": true,
+      "wash_sale_avoidance": true,
+      "position_reporting": true,
+      "audit_trail": true
+    }
+  },
+  "api": {
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 100,
+      "burst_allowance": 10,
+      "cooldown_period": 1
+    },
+    "error_handling": {
+      "max_retries": 3,
+      "backoff_strategy": "exponential",
+      "timeout_seconds": 30,
+      "circuit_breaker_threshold": 5
+    },
+    "data_sources": {
+      "primary": "alpaca",
+      "fallback": ["binance", "coinbase"],
+      "data_quality_checks": true,
+      "latency_monitoring": true
+    }
+  },
+  "machine_learning": {
+    "enabled": false,
+    "model_updates": "weekly",
+    "feature_engineering": true,
+    "backtesting_enabled": true,
+    "paper_trading_validation": true
+  },
+  "deployment": {
+    "auto_start": false,
+    "health_checks": true,
+    "graceful_shutdown": true,
+    "recovery_mode": true,
+    "backup_frequency": "hourly"
+  },
+  "metadata": {
+    "created_at": "2025-06-03T22:30:00.000Z",
+    "last_modified": "2025-06-03T22:30:00.000Z",
+    "config_version": "2.0.1",
+    "bundle_sources": [
+      "kaizen_phase1_trillion_integrated.zip",
+      "kaizen_phase1trillion_secure_auth_bundle.zip",
+      "kaizen-gpt-phase-1-trillion-max-plus.zip",
+      "phase_1_trillion_quantum_trading_agent.zip",
+      "kaizen-gpt-phase-2trillion-complete.zip"
+    ],
+    "extraction_status": "complete",
+    "validation_passed": true
+  }
+}

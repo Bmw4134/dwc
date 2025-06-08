@@ -1,0 +1,96 @@
+{
+  "last_trigger_actions": {
+    "timestamp": "2025-06-03T22:43:30.000Z",
+    "session_id": "kaizen_multiview_20250603_2243",
+    "chart_view": {
+      "last_action": "signal_detection_start",
+      "timestamp": "2025-06-03T22:42:15.000Z",
+      "trigger_confidence": 0.87,
+      "signal_type": "bullish_divergence",
+      "price_level": 67234.50,
+      "volume_spike": true,
+      "result": "trade_signal_generated",
+      "bot_decision": "enter_long_position",
+      "position_size": 0.05,
+      "stop_loss": 66890.00,
+      "take_profit": 68100.00
+    },
+    "heatmap_view": {
+      "last_action": "dom_anomaly_detection",
+      "timestamp": "2025-06-03T22:41:45.000Z",
+      "trigger_confidence": 0.91,
+      "anomaly_type": "large_wall_detected",
+      "price_level": 67250.00,
+      "wall_size": 15.7,
+      "exchange": "binance",
+      "result": "resistance_level_identified",
+      "bot_decision": "adjust_take_profit",
+      "adjustment": -50.00
+    },
+    "vision_view": {
+      "last_action": "pattern_recognition",
+      "timestamp": "2025-06-03T22:40:30.000Z",
+      "trigger_confidence": 0.74,
+      "pattern_detected": "ascending_triangle",
+      "coordinates": {"x": 245, "y": 156, "width": 120, "height": 80},
+      "rsi_level": 58.3,
+      "volume_confirmation": true,
+      "result": "bullish_pattern_confirmed",
+      "bot_decision": "increase_position_confidence",
+      "confidence_boost": 0.12
+    },
+    "news_view": {
+      "last_action": "sentiment_analysis_update",
+      "timestamp": "2025-06-03T22:39:00.000Z",
+      "trigger_confidence": 0.89,
+      "sentiment_shift": "neutral_to_bullish",
+      "fear_greed_change": 8,
+      "reddit_sentiment": 0.23,
+      "news_volume_spike": true,
+      "keywords_trending": ["bitcoin", "etf", "adoption"],
+      "result": "market_sentiment_improved",
+      "bot_decision": "maintain_position",
+      "risk_adjustment": "none"
+    }
+  },
+  "cross_view_correlation": {
+    "correlation_score": 0.84,
+    "consensus_signal": "bullish",
+    "confidence_aggregate": 0.85,
+    "decision_consensus": "enter_long",
+    "risk_score": "medium",
+    "final_bot_action": "executed_long_position",
+    "position_details": {
+      "entry_price": 67234.50,
+      "size": 0.05,
+      "stop_loss": 66890.00,
+      "take_profit": 68050.00,
+      "timestamp": "2025-06-03T22:42:30.000Z",
+      "platform": "alpaca"
+    }
+  },
+  "learning_metrics": {
+    "successful_correlations": 23,
+    "failed_correlations": 4,
+    "accuracy_rate": 0.85,
+    "false_positive_reduction": 0.18,
+    "decision_improvement": 0.21,
+    "self_correction_events": 7,
+    "learning_velocity": 0.15
+  },
+  "sync_intervals": {
+    "dom_signal_check": 1000,
+    "screenshot_ocr": 5000,
+    "news_feed_parse": 60000,
+    "cross_view_sync": 2000,
+    "decision_fusion": 3000
+  },
+  "visual_state_recording": {
+    "active": true,
+    "screenshots_captured": 156,
+    "patterns_learned": 47,
+    "decision_outcomes_tracked": 89,
+    "accuracy_improvements": 0.23,
+    "self_correction_rate": 0.16
+  }
+}
