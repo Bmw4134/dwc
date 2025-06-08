@@ -18,6 +18,7 @@ import NexusConfig from "./pages/nexus-config";
 import WowTesterLanding from "./pages/wow-tester-landing";
 import WowTesterLogin from "./pages/wow-tester-login";
 import WowTesterDashboard from "./pages/wow-tester-dashboard";
+import DataIntegrityPage from "./pages/DataIntegrityPage";
 import NotFound from "./pages/not-found";
 import { BarChart3, Zap, Settings, Menu } from "lucide-react";
 
@@ -141,6 +142,9 @@ function App() {
             <Route path="/wow-tester-join" component={WowTesterLanding} />
             <Route path="/wow-tester-login" component={WowTesterLogin} />
             <Route path="/wow-tester-dashboard" component={WowTesterDashboard} />
+            
+            {/* Data Integrity Route */}
+            <Route path="/data-integrity" component={DataIntegrityPage} />
             
             <Route component={NotFound} />
           </Switch>
