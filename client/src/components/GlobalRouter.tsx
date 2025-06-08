@@ -6,6 +6,7 @@ import JDDMain from '../pages/jdd/JDDMain';
 import DWAIHub from '../pages/dwai/DWAIHub';
 import DWCLanding from '../pages/dwc-landing';
 import DWCLogin from '../pages/dwc-login';
+import QuantumTestingPage from '../pages/QuantumTestingPage';
 
 const GlobalRouter = () => {
   return (
@@ -16,6 +17,7 @@ const GlobalRouter = () => {
       <Route path="/traxovo" component={TraxovoDashboard} />
       <Route path="/jdd" component={JDDMain} />
       <Route path="/dwai" component={DWAIHub} />
+      <Route path="/quantum-testing" component={QuantumTestingPage} />
       <Route>
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-black">
           <div className="text-center">
