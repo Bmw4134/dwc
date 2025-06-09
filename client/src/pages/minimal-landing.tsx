@@ -1,3 +1,5 @@
+import QNISTrifecta from '../components/QNISTrifecta';
+
 export default function MinimalLanding() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white">
@@ -14,6 +16,11 @@ export default function MinimalLanding() {
             QNIS master LLM integration, and unlimited lead generation capabilities.
             Currently managing $2.66M in active pipeline opportunities.
           </p>
+
+          {/* QNIS TRIFECTA CORE INTEGRATION */}
+          <div className="mb-12">
+            <QNISTrifecta />
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-12">
             <div className="bg-slate-800/50 border border-emerald-500/50 p-6 rounded-lg text-center">
