@@ -2,6 +2,7 @@ import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
+import { TrelloCanvas } from "./components/TrelloCanvas";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -27,6 +28,7 @@ function LandingPage() {
           </div>
           <nav className="flex items-center space-x-6">
             <a href="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium">Dashboard</a>
+            <a href="/projects" className="text-gray-600 hover:text-gray-900 font-medium">Projects</a>
             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
               Get Started
             </button>
