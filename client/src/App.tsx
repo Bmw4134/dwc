@@ -1,88 +1,42 @@
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
+import { Toaster } from "@/components/ui/toaster";
+import { Switch, Route } from "wouter";
+import EnterpriseLanding from "./pages/enterprise-landing";
+import DemoDashboard from "./pages/demo-dashboard";
+import DWExecutiveDashboard from "./pages/dw-executive-dashboard";
+import NexusObserver from "./pages/nexus-observer";
+import QNISMasterControl from "./pages/QNISMasterControl";
+import NotFound from "./pages/not-found";
+
 function App() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #059669 50%, #7c3aed 100%)',
-      color: 'white',
-      padding: '2rem',
-      textAlign: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
-      <h1 style={{
-        fontSize: '4rem',
-        fontWeight: 'bold',
-        marginBottom: '1rem',
-        background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent'
-      }}>
-        DWC Systems
-      </h1>
-      
-      <p style={{
-        fontSize: '1.5rem',
-        marginBottom: '2rem',
-        color: '#d1d5db'
-      }}>
-        Quantum Neural Intelligence System
-      </p>
-      
-      <div style={{
-        display: 'flex',
-        gap: '1rem',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
-      }}>
-        <button 
-          onClick={() => window.location.href = '/demo-dashboard'}
-          style={{
-            background: '#059669',
-            color: 'white',
-            padding: '1rem 2rem',
-            border: 'none',
-            borderRadius: '0.5rem',
-            fontSize: '1.1rem',
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          Try NEXUS GPT (20 Free Prompts)
-        </button>
-        
-        <button 
-          onClick={() => window.location.href = '/dashboard'}
-          style={{
-            background: 'transparent',
-            color: '#10b981',
-            padding: '1rem 2rem',
-            border: '2px solid #10b981',
-            borderRadius: '0.5rem',
-            fontSize: '1.1rem',
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          Executive Dashboard
-        </button>
+    <QueryClientProvider client={queryClient}>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900">
+        <Switch>
+          {/* Main Enterprise Landing Page */}
+          <Route path="/" component={EnterpriseLanding} />
+          
+          {/* NEXUS GPT Demo Interface */}
+          <Route path="/demo-dashboard" component={DemoDashboard} />
+          <Route path="/nexus-gpt" component={DemoDashboard} />
+          
+          {/* Executive Dashboard */}
+          <Route path="/dashboard" component={DWExecutiveDashboard} />
+          <Route path="/executive" component={DWExecutiveDashboard} />
+          
+          {/* QNIS Master Control */}
+          <Route path="/qnis" component={QNISMasterControl} />
+          <Route path="/qnis-master" component={QNISMasterControl} />
+          
+          {/* NEXUS Observer */}
+          <Route path="/nexus-observer" component={NexusObserver} />
+          
+          <Route component={NotFound} />
+        </Switch>
       </div>
-      
-      <div style={{
-        marginTop: '3rem',
-        padding: '2rem',
-        background: 'rgba(15, 23, 42, 0.8)',
-        borderRadius: '1rem',
-        border: '1px solid #10b981'
-      }}>
-        <h3 style={{ color: '#10b981', marginBottom: '1rem' }}>Live System Status</h3>
-        <p style={{ color: '#d1d5db' }}>Pipeline Value: $2.66M | System Health: 99%+ | Quantum Confidence: 98%+</p>
-        <p style={{ color: '#8b5cf6', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-          QNIS Master LLM with Perplexity Pro Deep Research Core
-        </p>
-      </div>
-    </div>
+      <Toaster />
+    </QueryClientProvider>
   );
 }
 
