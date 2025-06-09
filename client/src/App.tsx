@@ -2,7 +2,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { Switch, Route } from "wouter";
-import SimpleLanding from "./pages/simple-landing";
+import MinimalLanding from "./pages/minimal-landing";
 import DemoDashboard from "./pages/demo-dashboard";
 import DWExecutiveDashboard from "./pages/dw-executive-dashboard";
 import NexusObserver from "./pages/nexus-observer";
@@ -15,7 +15,7 @@ function App() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900">
         <Switch>
           {/* Main Enterprise Landing Page */}
-          <Route path="/" component={SimpleLanding} />
+          <Route path="/" component={MinimalLanding} />
           
           {/* NEXUS GPT Demo Interface */}
           <Route path="/demo-dashboard" component={DemoDashboard} />
