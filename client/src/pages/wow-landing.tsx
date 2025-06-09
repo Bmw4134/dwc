@@ -1,3 +1,7 @@
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { CreditCard, ArrowRight, Zap } from "lucide-react";
+
 export default function WowLanding() {
   const pipelineValue = 2660000;
   const totalLeads = 2170;
@@ -130,6 +134,47 @@ export default function WowLanding() {
           <div className="bg-gradient-to-br from-slate-800/80 to-slate-700/80 border-2 border-slate-400 p-8 rounded-2xl backdrop-blur-lg transform hover:scale-105 transition-all duration-300 shadow-xl">
             <h3 className="text-3xl font-bold text-purple-400 mb-4">🌌 18-Module Suite</h3>
             <p className="text-slate-300 text-lg">Complete enterprise automation including lead generation, CRM integration, and business intelligence.</p>
+          </div>
+        </div>
+
+        {/* Call-to-Action Section */}
+        <div className="text-center mt-16">
+          <div className="bg-gradient-to-r from-purple-900/80 to-blue-900/80 border-2 border-purple-400 rounded-3xl p-12 max-w-4xl mx-auto backdrop-blur-lg shadow-2xl shadow-purple-500/30 transform hover:scale-105 transition-all duration-500">
+            <h3 className="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              🚀 ENTERPRISE AUTOMATION AWAITS 🚀
+            </h3>
+            <p className="text-2xl text-purple-200 mb-8 leading-relaxed">
+              Join the quantum revolution in business intelligence. Unlock the full power of AI-driven automation 
+              with our enterprise-grade platform featuring real-time lead generation, advanced analytics, and 18-module automation suite.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Link href="/checkout">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-emerald-600 to-purple-600 hover:from-emerald-700 hover:to-purple-700 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl shadow-emerald-500/30 transform hover:scale-110 transition-all duration-300 border-2 border-emerald-400"
+                >
+                  <CreditCard className="w-6 h-6 mr-3" />
+                  SUBSCRIBE NOW - $799/month
+                  <ArrowRight className="w-6 h-6 ml-3" />
+                </Button>
+              </Link>
+              
+              <Link href="/dashboard">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 font-bold text-xl px-12 py-6 rounded-2xl backdrop-blur-lg transform hover:scale-110 transition-all duration-300"
+                >
+                  <Zap className="w-6 h-6 mr-3" />
+                  LIVE DEMO
+                </Button>
+              </Link>
+            </div>
+
+            <div className="mt-8 text-sm text-purple-300">
+              💳 Secure payment processing powered by Stripe • 🔒 SSL encrypted • 📞 24/7 enterprise support
+            </div>
           </div>
         </div>
       </div>

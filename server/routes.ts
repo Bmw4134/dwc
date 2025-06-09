@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { z } from "zod";
+import Stripe from "stripe";
 import { nexusMasterControl } from "./nexus-master-control";
 import { nexusTotalRecall } from "./nexus-total-recall";
 import { nexusReconciliation } from "./nexus-reconciliation";
@@ -13,6 +14,11 @@ import { quantumDOMSimulator } from "./quantum-dom-simulator";
 import { comprehensiveTestSuite } from "./comprehensive-test-suite";
 import { qnisMasterCore } from "./qnis-master-core";
 import { qnisBehaviorSimulator } from "./qnis-behavior-simulator";
+
+// Initialize Stripe
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2023-10-16",
+});
 
 // DWC Systems LLC Enterprise Platform - Complete Backend Infrastructure
 // Restored from cached intelligence with NEXUS override protocols
@@ -1561,4 +1567,158 @@ What specific business challenge can I help you solve? I can provide detailed st
       user_authenticated: true,
       message: 'Successfully connected to Coinbase API'
     });
+  });
+
+  // Stripe Payment Processing Routes
+  app.post("/api/create-payment-intent", async (req, res) => {
+    try {
+      const { amount, currency = "usd" } = req.body;
+      
+      if (!amount || amount < 50) {
+        return res.status(400).json({ 
+          error: "Amount must be at least $0.50" 
+        });
+      }
+
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(amount * 100), // Convert to cents
+        currency,
+        metadata: {
+          platform: "DWC Systems LLC",
+          service: "Enterprise Automation Platform"
+        }
+      });
+
+      console.log('💳 Payment intent created:', paymentIntent.id, 'Amount:', amount);
+      
+      res.json({ 
+        clientSecret: paymentIntent.client_secret,
+        amount: amount,
+        currency: currency
+      });
+    } catch (error: any) {
+      console.error('❌ Payment intent creation failed:', error.message);
+      res.status(500).json({ 
+        error: "Payment processing error: " + error.message 
+      });
+    }
+  });
+
+  // Enterprise Subscription Plans
+  app.get("/api/subscription-plans", (req, res) => {
+    const plans = [
+      {
+        id: "starter",
+        name: "Starter Plan",
+        price: 299,
+        currency: "usd",
+        interval: "month",
+        features: [
+          "Basic lead generation (up to 100 leads/month)",
+          "Standard automation modules",
+          "Email support",
+          "Dashboard analytics"
+        ]
+      },
+      {
+        id: "professional", 
+        name: "Professional Plan",
+        price: 799,
+        currency: "usd", 
+        interval: "month",
+        features: [
+          "Advanced lead generation (up to 1,000 leads/month)",
+          "All 18 automation modules",
+          "Priority support",
+          "Advanced analytics",
+          "API access",
+          "Custom integrations"
+        ]
+      },
+      {
+        id: "enterprise",
+        name: "Enterprise Plan", 
+        price: 1999,
+        currency: "usd",
+        interval: "month", 
+        features: [
+          "Unlimited lead generation",
+          "Full NEXUS AI suite access",
+          "Quantum-enhanced trading algorithms",
+          "24/7 dedicated support",
+          "White-label solutions",
+          "Custom development",
+          "On-premises deployment options"
+        ]
+      }
+    ];
+
+    console.log('💼 Subscription plans requested');
+    res.json({
+      success: true,
+      plans: plans
+    });
+  });
+
+  // Process Enterprise Subscription
+  app.post("/api/create-subscription", async (req, res) => {
+    try {
+      const { planId, email, name } = req.body;
+      
+      if (!planId || !email) {
+        return res.status(400).json({
+          error: "Plan ID and email are required"
+        });
+      }
+
+      // Get plan details
+      const plans = {
+        starter: { price: 29900, name: "Starter Plan" },
+        professional: { price: 79900, name: "Professional Plan" }, 
+        enterprise: { price: 199900, name: "Enterprise Plan" }
+      };
+
+      const selectedPlan = plans[planId as keyof typeof plans];
+      if (!selectedPlan) {
+        return res.status(400).json({
+          error: "Invalid plan selected"
+        });
+      }
+
+      // Create customer
+      const customer = await stripe.customers.create({
+        email: email,
+        name: name,
+        metadata: {
+          platform: "DWC Systems LLC",
+          plan: planId
+        }
+      });
+
+      // Create subscription payment intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: selectedPlan.price,
+        currency: "usd",
+        customer: customer.id,
+        metadata: {
+          subscription_plan: planId,
+          plan_name: selectedPlan.name
+        }
+      });
+
+      console.log('🔐 Subscription created for:', email, 'Plan:', selectedPlan.name);
+
+      res.json({
+        clientSecret: paymentIntent.client_secret,
+        customerId: customer.id,
+        planName: selectedPlan.name,
+        amount: selectedPlan.price / 100
+      });
+
+    } catch (error: any) {
+      console.error('❌ Subscription creation failed:', error.message);
+      res.status(500).json({
+        error: "Subscription processing error: " + error.message
+      });
+    }
   });
