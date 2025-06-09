@@ -191,48 +191,48 @@ function LandingPage() {
           </div>
         </div>
 
-        {/* Professional features grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        {/* Enterprise Capabilities */}
+        <div className="grid md:grid-cols-3 gap-8 mb-20">
           <div className="text-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 bg-slate-100 border border-slate-200 rounded-sm flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Business Intelligence</h3>
-            <p className="text-gray-600">Real-time analytics and performance monitoring for data-driven decisions</p>
+            <h3 className="text-xl font-bold text-slate-900 mb-3">Business Intelligence</h3>
+            <p className="text-slate-600 leading-relaxed">Advanced analytics and performance monitoring systems for institutional-grade decision-making and operational oversight.</p>
           </div>
           
           <div className="text-center">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 bg-slate-100 border border-slate-200 rounded-sm flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Process Automation</h3>
-            <p className="text-gray-600">Eliminate manual tasks and streamline operations with intelligent automation</p>
+            <h3 className="text-xl font-bold text-slate-900 mb-3">Process Automation</h3>
+            <p className="text-slate-600 leading-relaxed">Enterprise-scale automation infrastructure designed to eliminate manual inefficiencies and optimize operational workflows.</p>
           </div>
           
           <div className="text-center">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-16 h-16 bg-slate-100 border border-slate-200 rounded-sm flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Lead Discovery</h3>
-            <p className="text-gray-600">Geolocation-based business opportunity identification and analysis</p>
+            <h3 className="text-xl font-bold text-slate-900 mb-3">Market Intelligence</h3>
+            <p className="text-slate-600 leading-relaxed">Strategic market analysis and opportunity identification systems with proven track record in high-value prospect development.</p>
           </div>
         </div>
       </section>
 
-      {/* System status indicator */}
-      <div className="fixed bottom-6 right-6 bg-white border border-gray-200 rounded-lg p-4 shadow-lg">
-        <div className="flex items-center space-x-2">
-          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-          <span className="text-sm font-medium text-gray-700">All Systems Operational</span>
+      {/* Enterprise Status Monitor */}
+      <div className="fixed bottom-8 right-8 bg-white border border-slate-300 rounded-sm p-5 shadow-lg">
+        <div className="flex items-center space-x-3">
+          <div className="w-3 h-3 bg-slate-700 rounded-full"></div>
+          <span className="text-sm font-semibold text-slate-800">Enterprise Systems Operational</span>
         </div>
-        <div className="text-xs text-gray-500 mt-1">18 modules active • 100% uptime</div>
+        <div className="text-xs text-slate-600 mt-2 font-medium">18 Modules Active • 99.9% Uptime • $2.66M Pipeline</div>
       </div>
     </div>
   );
