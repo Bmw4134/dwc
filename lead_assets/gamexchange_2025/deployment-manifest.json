@@ -1,0 +1,22 @@
+{
+  "project": "GameXchange AI Lead Generation",
+  "deployment_date": "2025-06-09T19:34:00.551Z",
+  "lead_details": {
+    "company": "Game X Change",
+    "industry": "Gaming Retail",
+    "location": "Fort Worth, TX",
+    "estimated_value": 2500000,
+    "pain_point": "Manual card pricing taking 2+ hours",
+    "solution": "PTNI-AI Scanner System"
+  },
+  "deployment_urls": {
+    "primary": "https://gamexchange.dwcsystems.com",
+    "netlify": "https://gamexchange-ai-demo.netlify.app",
+    "demo_endpoint": "/api/leads/capture"
+  },
+  "tracking": {
+    "conversion_goal": "demo_request",
+    "lead_qualification": "enterprise_retail",
+    "follow_up_sla": "24_hours"
+  }
+}
