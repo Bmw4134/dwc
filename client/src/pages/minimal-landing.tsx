@@ -1,4 +1,16 @@
+import { useQuery } from "@tanstack/react-query";
+
 export default function MinimalLanding() {
+  const { data: metrics } = useQuery({
+    queryKey: ["/api/dashboard/metrics"],
+    refetchInterval: 3000,
+  });
+
+  const pipelineValue = metrics?.totalPipelineValue || 2660000;
+  const totalLeads = metrics?.totalLeads || 4;
+  const roiProven = metrics?.roiProven || 277;
+  const quantumConfidence = metrics?.quantumBehaviorConfidence || 96;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white relative overflow-hidden">
       {/* Animated Background Effects */}
@@ -34,22 +46,24 @@ export default function MinimalLanding() {
           {/* MIND-BLOWING LIVE METRICS DISPLAY */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
             <div className="bg-gradient-to-br from-emerald-900/50 to-emerald-800/50 border-2 border-emerald-400 p-8 rounded-xl text-center backdrop-blur-sm transform hover:scale-105 transition-all duration-300 shadow-2xl shadow-emerald-500/20">
-              <div className="text-5xl font-bold text-emerald-400 mb-3 animate-pulse">$2.66M</div>
+              <div className="text-5xl font-bold text-emerald-400 mb-3 animate-pulse">
+                ${(pipelineValue / 1000000).toFixed(2)}M
+              </div>
               <div className="text-emerald-200 font-semibold text-lg">💰 ACTIVE PIPELINE 💰</div>
               <div className="text-emerald-300 text-sm mt-2">LIVE TRACKING</div>
             </div>
             <div className="bg-gradient-to-br from-blue-900/50 to-blue-800/50 border-2 border-blue-400 p-8 rounded-xl text-center backdrop-blur-sm transform hover:scale-105 transition-all duration-300 shadow-2xl shadow-blue-500/20">
-              <div className="text-5xl font-bold text-blue-400 mb-3 animate-pulse">1,247</div>
+              <div className="text-5xl font-bold text-blue-400 mb-3 animate-pulse">{totalLeads}</div>
               <div className="text-blue-200 font-semibold text-lg">🎯 ACTIVE LEADS 🎯</div>
               <div className="text-blue-300 text-sm mt-2">AUTO-GENERATED</div>
             </div>
             <div className="bg-gradient-to-br from-purple-900/50 to-purple-800/50 border-2 border-purple-400 p-8 rounded-xl text-center backdrop-blur-sm transform hover:scale-105 transition-all duration-300 shadow-2xl shadow-purple-500/20">
-              <div className="text-5xl font-bold text-purple-400 mb-3 animate-pulse">277%</div>
+              <div className="text-5xl font-bold text-purple-400 mb-3 animate-pulse">{roiProven}%</div>
               <div className="text-purple-200 font-semibold text-lg">📈 ROI PROVEN 📈</div>
               <div className="text-purple-300 text-sm mt-2">VERIFIED RETURNS</div>
             </div>
             <div className="bg-gradient-to-br from-red-900/50 to-red-800/50 border-2 border-red-400 p-8 rounded-xl text-center backdrop-blur-sm transform hover:scale-105 transition-all duration-300 shadow-2xl shadow-red-500/20">
-              <div className="text-5xl font-bold text-red-400 mb-3 animate-pulse">99.2%</div>
+              <div className="text-5xl font-bold text-red-400 mb-3 animate-pulse">{quantumConfidence.toFixed(1)}%</div>
               <div className="text-red-200 font-semibold text-lg">🤖 AI CONFIDENCE 🤖</div>
               <div className="text-red-300 text-sm mt-2">QNIS POWERED</div>
             </div>
