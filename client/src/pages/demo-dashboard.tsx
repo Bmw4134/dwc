@@ -189,32 +189,54 @@ Please try your query again in a moment. All systems will be restored shortly.`,
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-slate-700 bg-slate-900/90 backdrop-blur">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 relative overflow-hidden">
+      {/* Spectacular Background Effects */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="w-full h-full bg-gradient-to-br from-emerald-500/10 via-blue-500/10 to-purple-500/10 animate-pulse"></div>
+      </div>
+      
+      {/* Enhanced Header */}
+      <header className="sticky top-0 z-50 border-b-2 border-emerald-500/50 bg-slate-900/95 backdrop-blur-xl">
+        <div className="container mx-auto px-6 py-6">
+          {/* Top Row - Navigation */}
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-4">
               <Button
                 onClick={() => window.location.href = '/'}
                 variant="ghost"
                 size="sm"
-                className="text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-all"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Platform
               </Button>
-              <div className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent">
-                NEXUS GPT Demo
-              </div>
             </div>
             <div className="flex items-center space-x-3">
-              <Badge variant="outline" className="text-emerald-400 border-emerald-400">
-                {20 - promptsUsed} Free Prompts Remaining
+              <Badge variant="outline" className="text-emerald-400 border-emerald-400 bg-emerald-500/10 px-4 py-2 text-lg animate-pulse">
+                {20 - promptsUsed} FREE PROMPTS REMAINING
               </Badge>
-              <Badge variant="outline" className="text-purple-400 border-purple-400">
-                QNIS Enhanced
+              <Badge variant="outline" className="text-red-400 border-red-400 bg-red-500/10 px-4 py-2 text-lg animate-pulse">
+                QNIS ENHANCED
               </Badge>
+            </div>
+          </div>
+          
+          {/* Spectacular Main Header */}
+          <div className="text-center">
+            <div className="mb-4 relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-600 opacity-30 blur-2xl animate-pulse"></div>
+              <h1 className="text-6xl font-bold bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-600 bg-clip-text text-transparent relative z-10 drop-shadow-2xl">
+                NEXUS GPT DEMO
+              </h1>
+            </div>
+            
+            <div className="bg-gradient-to-r from-emerald-900/40 to-blue-900/40 border border-emerald-500/50 rounded-xl p-4 max-w-3xl mx-auto backdrop-blur-sm">
+              <p className="text-xl text-slate-100 font-bold mb-2">
+                QUANTUM-ENHANCED AI ASSISTANT
+              </p>
+              <p className="text-lg text-slate-300">
+                QNIS-powered neural intelligence with real-time market data access
+              </p>
             </div>
           </div>
         </div>
