@@ -16,6 +16,7 @@ import { qnisMasterCore } from "./qnis-master-core";
 import { qnisBehaviorSimulator } from "./qnis-behavior-simulator";
 import { dwcCommandModule } from "./dwc-command-module";
 import { qnisPrecisionCore } from "./qnis-precision-core";
+import { geolocationLeadEngine } from "./geolocation-lead-engine";
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -838,6 +839,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
       success: true,
       data: modernizationPlan,
       aiPrecision: 100.0
+    });
+  });
+
+  // Geolocation Lead Discovery API
+  app.post('/api/leads/discover-nearby', (req, res) => {
+    const { latitude, longitude, radius } = req.body;
+    
+    if (!latitude || !longitude) {
+      return res.status(400).json({
+        success: false,
+        error: 'Latitude and longitude required for lead discovery'
+      });
+    }
+
+    console.log(`🗺️ Lead discovery requested at: ${latitude}, ${longitude}`);
+    const nearbyLeads = geolocationLeadEngine.discoverLeadsNearLocation(latitude, longitude, radius);
+    
+    res.json({
+      success: true,
+      data: {
+        consultantLocation: { latitude, longitude },
+        searchRadius: radius || 25,
+        leadsFound: nearbyLeads.length,
+        leads: nearbyLeads,
+        totalEstimatedValue: nearbyLeads.reduce((sum, lead) => sum + lead.estimatedValue, 0)
+      }
+    });
+  });
+
+  app.get('/api/leads/details/:leadId', (req, res) => {
+    const { leadId } = req.params;
+    const leadDetails = geolocationLeadEngine.getLeadDetails(leadId);
+    
+    if (!leadDetails) {
+      return res.status(404).json({
+        success: false,
+        error: 'Lead not found'
+      });
+    }
+
+    const automationPlan = geolocationLeadEngine.generateAutomationPlan(leadId);
+    const roi = geolocationLeadEngine.calculateLeadROI(leadId);
+    
+    res.json({
+      success: true,
+      data: {
+        lead: leadDetails,
+        automationPlan,
+        projectedROI: roi,
+        qnisPrecision: 100.0
+      }
+    });
+  });
+
+  app.get('/api/leads/all-active', (req, res) => {
+    const allLeads = geolocationLeadEngine.getAllActiveLeads();
+    
+    res.json({
+      success: true,
+      data: {
+        totalLeads: allLeads.length,
+        leads: allLeads,
+        totalMarketValue: allLeads.reduce((sum, lead) => sum + lead.estimatedValue, 0),
+        avgAutomationPotential: allLeads.reduce((sum, lead) => sum + lead.automationPotential, 0) / allLeads.length
+      }
+    });
+  });
+
+  app.post('/api/leads/add-real-time', (req, res) => {
+    const leadData = req.body;
+    const newLead = geolocationLeadEngine.addRealTimeLead(leadData);
+    
+    console.log(`📍 New real-time lead added: ${newLead.businessName}`);
+    
+    res.json({
+      success: true,
+      data: newLead
     });
   });
 
