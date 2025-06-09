@@ -110,8 +110,8 @@ class DWCCommandModule {
         command.result = { error: 'Unknown command', suggestion: 'Use SYSTEM_STATUS for available commands' };
         command.status = 'FAILED';
       }
-    } catch (error) {
-      command.result = { error: error.message };
+    } catch (error: any) {
+      command.result = { error: error.message || 'Unknown error occurred' };
       command.status = 'FAILED';
     }
 
