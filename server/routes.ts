@@ -17,11 +17,42 @@ import { qnisBehaviorSimulator } from "./qnis-behavior-simulator";
 import { dwcCommandModule } from "./dwc-command-module";
 import { qnisPrecisionCore } from "./qnis-precision-core";
 import { geolocationLeadEngine } from "./geolocation-lead-engine";
+import { notificationService } from "./notification-service";
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2025-05-28.basil",
 });
+
+// Helper function for license package contents
+function getLicenseIncludes(licenseType: string) {
+  const packages = {
+    'basic-license': [
+      'Complete source code',
+      'Database schema',
+      'Installation guide',
+      'Basic documentation',
+      'Email support access'
+    ],
+    'professional-license': [
+      'Everything in Basic',
+      'Advanced modules',
+      'API documentation',
+      'Custom branding tools',
+      'Priority support access',
+      'Video tutorials'
+    ],
+    'enterprise-license': [
+      'Everything in Professional',
+      'Full commercial rights',
+      'White-label licensing',
+      'Custom development consultation',
+      'Phone support access',
+      'Training materials'
+    ]
+  };
+  return packages[licenseType] || packages['basic-license'];
+}
 
 // Global state tracking
 const activeConnections = new Set<WebSocket>();
@@ -239,6 +270,111 @@ export async function registerRoutes(app: Express): Promise<Server> {
       message: 'Lead captured successfully',
       leadId: `lead-${Date.now()}`,
       nextSteps: 'Demo scheduled within 24 hours'
+    });
+  });
+
+  // Subscription creation for hosted SaaS
+  app.post('/api/subscriptions/create', async (req, res) => {
+    try {
+      const { planId, type, amount } = req.body;
+      
+      console.log(`💳 Creating subscription for plan: ${planId}, type: ${type}, amount: $${amount/100}`);
+
+      // Create Stripe subscription
+      const subscription = await stripe.subscriptions.create({
+        customer: 'cus_temp', // In production, create/retrieve customer
+        items: [{
+          price_data: {
+            currency: 'usd',
+            unit_amount: amount,
+            recurring: {
+              interval: 'month'
+            },
+            product_data: {
+              name: `DWC Systems - ${planId} Plan`,
+              description: 'AI-powered business automation platform'
+            }
+          }
+        }],
+        payment_behavior: 'default_incomplete',
+        expand: ['latest_invoice.payment_intent'],
+      });
+
+      res.json({
+        success: true,
+        subscriptionId: subscription.id,
+        clientSecret: subscription.latest_invoice?.payment_intent?.client_secret,
+        planDetails: {
+          planId,
+          type,
+          amount: amount / 100
+        }
+      });
+    } catch (error: any) {
+      console.error('Subscription creation error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to create subscription',
+        message: error.message 
+      });
+    }
+  });
+
+  // License purchase for standalone products
+  app.post('/api/licenses/purchase', async (req, res) => {
+    try {
+      const { licenseType, amount } = req.body;
+      
+      console.log(`📦 Processing license purchase: ${licenseType}, amount: $${amount/100}`);
+
+      // Create one-time payment intent for license
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency: 'usd',
+        metadata: {
+          type: 'license_purchase',
+          license_type: licenseType,
+          product: 'DWC_Systems_Platform'
+        },
+        description: `DWC Systems Platform - ${licenseType} License`
+      });
+
+      // Generate license key
+      const licenseId = `DWC-${licenseType.toUpperCase()}-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+      res.json({
+        success: true,
+        licenseId,
+        clientSecret: paymentIntent.client_secret,
+        licenseDetails: {
+          type: licenseType,
+          amount: amount / 100,
+          downloadIncludes: getLicenseIncludes(licenseType)
+        }
+      });
+    } catch (error: any) {
+      console.error('License purchase error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to process license purchase',
+        message: error.message 
+      });
+    }
+  });
+
+  // License download endpoint (post-purchase)
+  app.get('/api/licenses/download/:licenseId', (req, res) => {
+    const { licenseId } = req.params;
+    
+    console.log(`📥 License download requested: ${licenseId}`);
+    
+    // In production, verify payment completion and generate download link
+    res.json({
+      success: true,
+      downloadUrl: `/downloads/${licenseId}.zip`,
+      documentation: `/docs/${licenseId}/`,
+      supportEmail: 'support@dwcsystems.com',
+      validUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() // 1 year
     });
   });
 

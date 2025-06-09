@@ -3,6 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TrelloCanvas } from "./components/TrelloCanvas";
+import { SubscriptionPlans } from "./components/SubscriptionPlans";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -29,6 +30,7 @@ function LandingPage() {
           <nav className="flex items-center space-x-6">
             <a href="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium">Dashboard</a>
             <a href="/projects" className="text-gray-600 hover:text-gray-900 font-medium">Projects</a>
+            <a href="/pricing" className="text-gray-600 hover:text-gray-900 font-medium">Pricing</a>
             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
               Get Started
             </button>
@@ -186,14 +188,14 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={LandingPage} />
+      <Route path="/projects" component={TrelloCanvas} />
+      <Route path="/pricing" component={SubscriptionPlans} />
+      <Route path="/dashboard" component={LandingPage} />
       <Route path="/llc-formation">
         <LLCFormationPage />
       </Route>
       <Route path="/llc-success">
         <LLCSuccessPage />
-      </Route>
-      <Route path="/dashboard">
-        <DashboardPage />
       </Route>
       <Route>
         <div style={{
