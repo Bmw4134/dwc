@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accelerate GameXchange with AI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+  <div class="min-h-screen flex flex-col items-center justify-center px-6 py-12">
+    <div class="max-w-3xl w-full text-center">
+      <h1 class="text-4xl font-bold mb-4">Match Your 'Fast & Easy' Promise — With AI</h1>
+      <p class="text-lg mb-8 text-gray-300">
+        Manual trade-in taking 2+ hours? Your customers feel it. Your reviews reflect it. Let's end the wait.
+      </p>
+      <div class="bg-gray-800 p-6 rounded-2xl shadow-xl">
+        <h2 class="text-2xl font-semibold mb-4">⚡ Instant Trade-In Scanner System</h2>
+        <p class="text-gray-400 mb-4">
+          Built with PTNI-AI and QNIS Core: scan collectible cards, fetch TCGPlayer values, apply pricing logic — in under 2 seconds per card.
+        </p>
+        <ul class="list-disc list-inside text-left text-gray-300 mb-6">
+          <li>✅ Real-time scanner UI for clerks and kiosks</li>
+          <li>📉 ROI visual: reduce 2-hour queues to 2-minute sessions</li>
+          <li>📲 Boost loyalty, retention, and word-of-mouth</li>
+          <li>🔗 Plug-and-play API or browser automation layer</li>
+        </ul>
+        <button onclick="requestDemo()" class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold transition">Request Instant Demo Access</button>
+      </div>
+      <div class="mt-8">
+        <img src="nexus-tradein-roi-chart.png" alt="Trade-In ROI Chart" class="rounded-lg shadow-lg mx-auto">
+      </div>
+      <p class="mt-10 text-sm text-gray-500">Powered by DWC Consulting — Quantum-Fused by KaizenGPT + Nexus Intelligence Stack</p>
+    </div>
+  </div>
+
+  <script>
+    function requestDemo() {
+      // Track lead generation event
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'demo_request', {
+          'event_category': 'gamexchange_lead',
+          'event_label': 'instant_demo_access',
+          'value': 2500000
+        });
+      }
+      
+      // Submit lead to main platform
+      const leadData = {
+        source: 'gamexchange_microsite',
+        company: 'Game X Change',
+        industry: 'Gaming Retail',
+        location: 'Fort Worth, TX',
+        estimatedValue: 2500000,
+        painPoint: 'Manual card pricing taking 2+ hours',
+        solution: 'PTNI-AI Scanner System',
+        timestamp: new Date().toISOString()
+      };
+      
+      // Send to lead capture endpoint
+      fetch('/api/leads/capture', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(leadData)
+      }).then(response => {
+        if (response.ok) {
+          // Redirect to main platform contact
+          window.location.href = '/dashboard?lead=gamexchange&value=2500000';
+        } else {
+          // Fallback to email
+          window.open('mailto:contact@dwcsystems.com?subject=GameXchange AI Demo Request&body=I would like to request a demo of the AI trade-in scanner system for GameXchange in Fort Worth, TX. This could impact our $2.5M revenue opportunity.', '_blank');
+        }
+      }).catch(() => {
+        // Fallback to email
+        window.open('mailto:contact@dwcsystems.com?subject=GameXchange AI Demo Request&body=I would like to request a demo of the AI trade-in scanner system for GameXchange in Fort Worth, TX. This could impact our $2.5M revenue opportunity.', '_blank');
+      });
+    }
+
+    // Track page views and engagement
+    document.addEventListener('DOMContentLoaded', function() {
+      // Track page load
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'page_view', {
+          'page_title': 'GameXchange Lead Generation',
+          'page_location': window.location.href,
+          'lead_value': 2500000
+        });
+      }
+      
+      // Track scroll engagement
+      let scrollTracked = false;
+      window.addEventListener('scroll', function() {
+        if (!scrollTracked && window.scrollY > 300) {
+          scrollTracked = true;
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'scroll_engagement', {
+              'event_category': 'gamexchange_lead'
+            });
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

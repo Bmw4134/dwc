@@ -217,6 +217,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Lead capture endpoint for microsite demos
+  app.post('/api/leads/capture', (req, res) => {
+    const leadData = req.body;
+    
+    console.log(`🎯 New lead captured from ${leadData.source}:`, {
+      company: leadData.company,
+      industry: leadData.industry,
+      location: leadData.location,
+      estimatedValue: leadData.estimatedValue,
+      painPoint: leadData.painPoint,
+      solution: leadData.solution,
+      timestamp: leadData.timestamp
+    });
+
+    // In production, this would save to database and trigger notifications
+    // For now, we'll just acknowledge the capture
+    
+    res.json({
+      success: true,
+      message: 'Lead captured successfully',
+      leadId: `lead-${Date.now()}`,
+      nextSteps: 'Demo scheduled within 24 hours'
+    });
+  });
+
   // System health endpoint
   app.get('/api/system/health', (req, res) => {
     res.json({
