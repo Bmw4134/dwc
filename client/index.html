@@ -5,6 +5,50 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DWC Systems LLC - QNIS/PTNI Intelligence Platform</title>
+    <style>
+      /* Fix for Replit iframe preview */
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: auto;
+        background: white;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      }
+      #root {
+        width: 100%;
+        min-height: 100vh;
+        display: block;
+        position: relative;
+        z-index: 1;
+      }
+      /* Ensure content is visible in iframe */
+      * {
+        box-sizing: border-box;
+      }
+      /* Force content visibility in iframe */
+      body.replit-iframe {
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      /* Prevent iframe loading issues */
+      .loading-fallback {
+        display: none;
+      }
+    </style>
+    <script>
+      // Detect and handle iframe environment
+      if (window.parent !== window) {
+        document.body.classList.add('replit-iframe');
+      }
+      
+      // Ensure content loads in iframe
+      window.addEventListener('load', function() {
+        document.body.style.visibility = 'visible';
+        document.body.style.opacity = '1';
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -7,8 +7,27 @@ import { SubscriptionPlans } from "./components/SubscriptionPlans";
 
 import { useQuery } from "@tanstack/react-query";
 
+interface DashboardMetrics {
+  totalLeads: number;
+  activeProposals: number;
+  monthlyRevenue: number;
+  conversionRate: number;
+  totalPipelineValue: number;
+  roiProven: number;
+  systemHealth: number;
+  automationLinkage: number;
+  quantumBehaviorConfidence: number;
+  lastUpdated: string;
+  realLeads: Array<{
+    name: string;
+    value: number;
+    status: string;
+    industry: string;
+  }>;
+}
+
 function LandingPage() {
-  const { data: metrics } = useQuery({
+  const { data: metrics } = useQuery<DashboardMetrics>({
     queryKey: ['/api/dashboard/metrics'],
     refetchInterval: 30000
   });
@@ -70,7 +89,7 @@ function LandingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600">
-                ${metrics ? (metrics.totalPipelineValue / 1000000).toFixed(2) : '2.66'}M
+                ${metrics?.totalPipelineValue ? (metrics.totalPipelineValue / 1000000).toFixed(2) : '2.66'}M
               </div>
               <div className="text-gray-500 text-sm">Pipeline Value</div>
             </div>
@@ -88,7 +107,7 @@ function LandingPage() {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-emerald-600">
-                {metrics ? Math.round(metrics.quantumBehaviorConfidence) : 98}%
+                {metrics?.quantumBehaviorConfidence ? Math.round(metrics.quantumBehaviorConfidence) : 98}%
               </div>
               <div className="text-gray-500 text-sm">AI Precision</div>
             </div>
