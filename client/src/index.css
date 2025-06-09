@@ -2,6 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enhanced iframe compatibility for Replit preview */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body.iframe-mode {
+  /* Specific styles for iframe embedding */
+  overflow: auto !important;
+  position: relative !important;
+  transform: none !important;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+/* Force visibility in iframe environments */
+.iframe-mode #root {
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+/* Ensure content renders properly in constrained iframe */
+.iframe-mode .min-h-screen {
+  min-height: 100vh !important;
+}
+
+/* Fix for any potential z-index issues in iframe */
+.iframe-mode * {
+  position: relative;
+  z-index: auto;
+}
+
 /* Custom animations for WOW Tester */
 @keyframes float {
   0%, 100% {

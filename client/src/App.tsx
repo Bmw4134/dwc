@@ -27,10 +27,34 @@ interface DashboardMetrics {
 }
 
 function LandingPage() {
-  const { data: metrics } = useQuery<DashboardMetrics>({
+  const { data: metrics, isLoading, error } = useQuery<DashboardMetrics>({
     queryKey: ['/api/dashboard/metrics'],
-    refetchInterval: 30000
+    refetchInterval: 30000,
+    retry: 3
   });
+
+  // Handle loading state for iframe compatibility
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading DWC Systems Platform...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Connection Error</p>
+          <p className="text-gray-600">Unable to load platform data</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-['Inter',system-ui,sans-serif]">
