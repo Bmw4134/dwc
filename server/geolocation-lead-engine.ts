@@ -123,6 +123,84 @@ class GeolocationLeadEngine {
         },
         businessHours: 'By Appointment',
         lastUpdated: new Date()
+      },
+      {
+        id: 'fortworth-auto-001',
+        businessName: 'Premier Auto Service',
+        address: '2845 Weatherford Hwy, Fort Worth, TX 76140',
+        latitude: 32.6701,
+        longitude: -97.2983,
+        industry: 'Automotive Services',
+        manualProcesses: [
+          {
+            processName: 'Customer Check-in Process',
+            timeWasted: 18,
+            costPerHour: 20,
+            automationFeasibility: 92,
+            qnisModules: ['Customer Management', 'Automated Check-in', 'Service Scheduling']
+          },
+          {
+            processName: 'Parts Inventory Tracking',
+            timeWasted: 12,
+            costPerHour: 22,
+            automationFeasibility: 88,
+            qnisModules: ['Inventory Intelligence', 'Real-time Tracking', 'Automatic Reordering']
+          },
+          {
+            processName: 'Invoice Generation',
+            timeWasted: 8,
+            costPerHour: 20,
+            automationFeasibility: 95,
+            qnisModules: ['Financial Automation', 'Service Documentation']
+          }
+        ],
+        automationPotential: 91,
+        estimatedValue: 85000,
+        distance: 2.1,
+        contactInfo: {
+          phone: '(817) 555-0789'
+        },
+        businessHours: 'Mon-Fri 7AM-6PM',
+        lastUpdated: new Date()
+      },
+      {
+        id: 'fortworth-restaurant-001',
+        businessName: 'Casa Flores Mexican Restaurant',
+        address: '1620 S Hulen St, Fort Worth, TX 76140',
+        latitude: 32.6589,
+        longitude: -97.2721,
+        industry: 'Restaurant',
+        manualProcesses: [
+          {
+            processName: 'Order Taking and Kitchen Communication',
+            timeWasted: 35,
+            costPerHour: 15,
+            automationFeasibility: 85,
+            qnisModules: ['Order Intelligence', 'Kitchen Display Systems', 'POS Integration']
+          },
+          {
+            processName: 'Inventory Management',
+            timeWasted: 15,
+            costPerHour: 18,
+            automationFeasibility: 90,
+            qnisModules: ['Food Inventory AI', 'Waste Tracking', 'Supplier Integration']
+          },
+          {
+            processName: 'Staff Scheduling',
+            timeWasted: 6,
+            costPerHour: 25,
+            automationFeasibility: 94,
+            qnisModules: ['Workforce Intelligence', 'Automated Scheduling']
+          }
+        ],
+        automationPotential: 89,
+        estimatedValue: 45000,
+        distance: 0.8,
+        contactInfo: {
+          phone: '(817) 555-0234'
+        },
+        businessHours: 'Daily 11AM-10PM',
+        lastUpdated: new Date()
       }
     ];
 
