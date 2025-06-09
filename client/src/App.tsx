@@ -1,7 +1,7 @@
-import BasicLanding from "./pages/basic-landing";
+import MinimalWorking from "./pages/minimal-working";
 
 function App() {
-  return <BasicLanding />;
+  return <MinimalWorking />;
 }
 
 export default App;
