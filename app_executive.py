@@ -9,11 +9,11 @@ app = Flask(__name__, static_folder='client/dist', template_folder='client/dist'
 # DWC Systems Executive Dashboard Data
 def get_dashboard_metrics():
     return {
-        "totalLeads": 4,
-        "activeProposals": 4,
+        "totalLeads": 3,
+        "activeProposals": 3,
         "monthlyRevenue": 100,
         "conversionRate": 33.3,
-        "totalPipelineValue": 2660000,
+        "totalPipelineValue": 2635000,  # Removed RagleInc ($25k)
         "roiProven": 277,
         "systemHealth": round(95 + random.random() * 5, 2),
         "automationLinkage": 100,
@@ -24,13 +24,25 @@ def get_dashboard_metrics():
                 "name": "Blissful Memories",
                 "value": 15000,
                 "status": "Active Prospect",
-                "industry": "Photography Services"
-            },
-            {
-                "name": "RagleInc.com",
-                "value": 25000,
-                "status": "Qualified",
-                "industry": "Corporate Services"
+                "industry": "Photography Services",
+                "automationPipeline": {
+                    "currentStage": "Initial Contact & Discovery",
+                    "progress": 35,
+                    "nextAction": "Scheduling consultation call",
+                    "completedSteps": [
+                        "Lead capture via website contact form",
+                        "Automated welcome email sequence deployed",
+                        "Business profile analysis completed"
+                    ],
+                    "pendingSteps": [
+                        "Discovery call scheduled",
+                        "Service presentation delivery", 
+                        "Proposal generation and delivery",
+                        "Contract negotiation and closing"
+                    ],
+                    "automationScore": 87.5,
+                    "lastActivity": (datetime.now().replace(day=datetime.now().day-2)).isoformat()
+                }
             },
             {
                 "name": "Game X Change",

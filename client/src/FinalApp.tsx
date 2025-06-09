@@ -16,6 +16,15 @@ interface DashboardMetrics {
     value: number;
     status: string;
     industry: string;
+    automationPipeline?: {
+      currentStage: string;
+      progress: number;
+      nextAction: string;
+      completedSteps: string[];
+      pendingSteps: string[];
+      automationScore: number;
+      lastActivity: string;
+    };
   }>;
 }
 
@@ -689,6 +698,351 @@ function FinalApp() {
                 </div>
               ))}
             </div>
+
+            {/* Dynamic Lead Map */}
+            <div style={{
+              background: isDarkMode 
+                ? 'rgba(255, 255, 255, 0.05)'
+                : 'rgba(255, 255, 255, 0.1)',
+              borderRadius: '16px',
+              padding: '30px',
+              marginBottom: '40px'
+            }}>
+              <h3 style={{
+                fontSize: '1.8rem',
+                fontWeight: 'bold',
+                marginBottom: '25px',
+                color: '#06b6d4'
+              }}>
+                🗺️ Dynamic Lead Map
+              </h3>
+              
+              {/* Map Container */}
+              <div style={{
+                position: 'relative',
+                height: '400px',
+                background: isDarkMode 
+                  ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)'
+                  : 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                marginBottom: '30px'
+              }}>
+                {/* SVG Map Background */}
+                <svg 
+                  viewBox="0 0 1000 400" 
+                  style={{ width: '100%', height: '100%', position: 'absolute' }}
+                >
+                  {/* US Map Outline */}
+                  <path
+                    d="M200 100 L800 100 L850 150 L820 200 L750 250 L650 280 L500 300 L350 290 L250 250 L180 200 L150 150 Z"
+                    fill="none"
+                    stroke={isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.3)'}
+                    strokeWidth="2"
+                  />
+                  
+                  {/* Lead Location Markers */}
+                  {metrics.realLeads.map((lead, index) => {
+                    const positions = [
+                      { x: 300, y: 180 }, // Blissful Memories - West Coast
+                      { x: 500, y: 160 }, // RagleInc - Central
+                      { x: 420, y: 200 }, // Game X Change - Midwest
+                      { x: 650, y: 190 }  // RetailMax - East Coast
+                    ];
+                    const pos = positions[index] || { x: 400, y: 200 };
+                    const size = Math.max(8, Math.min(30, lead.value / 100000));
+                    
+                    return (
+                      <g key={index}>
+                        {/* Pulsing Ring */}
+                        <circle
+                          cx={pos.x}
+                          cy={pos.y}
+                          r={size + 10}
+                          fill="none"
+                          stroke={lead.status === 'Active Negotiation' ? '#f59e0b' : '#10b981'}
+                          strokeWidth="2"
+                          opacity="0.6"
+                        >
+                          <animate
+                            attributeName="r"
+                            values={`${size + 5};${size + 15};${size + 5}`}
+                            dur="2s"
+                            repeatCount="indefinite"
+                          />
+                          <animate
+                            attributeName="opacity"
+                            values="0.8;0.2;0.8"
+                            dur="2s"
+                            repeatCount="indefinite"
+                          />
+                        </circle>
+                        
+                        {/* Main Marker */}
+                        <circle
+                          cx={pos.x}
+                          cy={pos.y}
+                          r={size}
+                          fill={lead.status === 'Active Negotiation' ? '#f59e0b' : '#10b981'}
+                          opacity="0.9"
+                        />
+                        
+                        {/* Company Label */}
+                        <text
+                          x={pos.x}
+                          y={pos.y - size - 8}
+                          textAnchor="middle"
+                          fill={isDarkMode ? '#f8fafc' : 'white'}
+                          fontSize="12"
+                          fontWeight="600"
+                        >
+                          {lead.name}
+                        </text>
+                        
+                        {/* Value Label */}
+                        <text
+                          x={pos.x}
+                          y={pos.y + size + 16}
+                          textAnchor="middle"
+                          fill={lead.status === 'Active Negotiation' ? '#f59e0b' : '#10b981'}
+                          fontSize="11"
+                          fontWeight="bold"
+                        >
+                          {formatCurrency(lead.value)}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+                
+                {/* Real-time Update Indicator */}
+                <div style={{
+                  position: 'absolute',
+                  top: '15px',
+                  right: '15px',
+                  background: 'rgba(16, 185, 129, 0.2)',
+                  border: '1px solid #10b981',
+                  borderRadius: '20px',
+                  padding: '6px 12px',
+                  fontSize: '0.8rem',
+                  color: '#10b981',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  <div style={{
+                    width: '6px',
+                    height: '6px',
+                    background: '#10b981',
+                    borderRadius: '50%'
+                  }}>
+                    <div style={{
+                      width: '6px',
+                      height: '6px',
+                      background: '#10b981',
+                      borderRadius: '50%',
+                      animation: 'pulse 1s infinite'
+                    }}></div>
+                  </div>
+                  LIVE
+                </div>
+              </div>
+              
+              {/* Map Legend */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: '15px',
+                marginBottom: '20px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    background: '#10b981',
+                    borderRadius: '50%'
+                  }}></div>
+                  <span style={{ fontSize: '0.9rem' }}>Active Prospects</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    background: '#f59e0b',
+                    borderRadius: '50%'
+                  }}></div>
+                  <span style={{ fontSize: '0.9rem' }}>Active Negotiation</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    background: '#06b6d4',
+                    borderRadius: '50%'
+                  }}></div>
+                  <span style={{ fontSize: '0.9rem' }}>Qualified Leads</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Blissful Memories Automation Pipeline */}
+            {metrics.realLeads[0]?.automationPipeline && (
+              <div style={{
+                background: isDarkMode 
+                  ? 'rgba(255, 255, 255, 0.05)'
+                  : 'rgba(255, 255, 255, 0.1)',
+                borderRadius: '16px',
+                padding: '30px',
+                marginBottom: '40px',
+                border: '2px solid #10b981'
+              }}>
+                <h3 style={{
+                  fontSize: '1.8rem',
+                  fontWeight: 'bold',
+                  marginBottom: '25px',
+                  color: '#10b981'
+                }}>
+                  🤖 Blissful Memories - Automation Pipeline Status
+                </h3>
+                
+                {/* Pipeline Progress Header */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '2fr 1fr 1fr',
+                  gap: '20px',
+                  marginBottom: '25px',
+                  padding: '20px',
+                  background: 'rgba(16, 185, 129, 0.1)',
+                  borderRadius: '12px'
+                }}>
+                  <div>
+                    <div style={{ fontSize: '0.9rem', opacity: 0.8, marginBottom: '5px' }}>Current Stage</div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#10b981' }}>
+                      {metrics.realLeads[0].automationPipeline.currentStage}
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.9rem', opacity: 0.8, marginBottom: '5px' }}>Progress</div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#10b981' }}>
+                      {metrics.realLeads[0].automationPipeline.progress}%
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.9rem', opacity: 0.8, marginBottom: '5px' }}>Automation Score</div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#10b981' }}>
+                      {metrics.realLeads[0].automationPipeline.automationScore}%
+                    </div>
+                  </div>
+                </div>
+
+                {/* Progress Bar */}
+                <div style={{
+                  width: '100%',
+                  height: '8px',
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                  borderRadius: '4px',
+                  marginBottom: '30px',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    width: `${metrics.realLeads[0].automationPipeline.progress}%`,
+                    height: '100%',
+                    background: 'linear-gradient(90deg, #10b981, #06b6d4)',
+                    borderRadius: '4px',
+                    transition: 'width 0.5s ease'
+                  }}></div>
+                </div>
+
+                {/* Next Action */}
+                <div style={{
+                  background: 'rgba(6, 182, 212, 0.1)',
+                  border: '1px solid #06b6d4',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  marginBottom: '25px'
+                }}>
+                  <div style={{ fontSize: '1rem', fontWeight: 'bold', color: '#06b6d4', marginBottom: '8px' }}>
+                    🎯 Next Action Required:
+                  </div>
+                  <div style={{ fontSize: '1.1rem' }}>
+                    {metrics.realLeads[0].automationPipeline.nextAction}
+                  </div>
+                </div>
+
+                {/* Completed Steps */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '25px'
+                }}>
+                  <div>
+                    <h4 style={{
+                      fontSize: '1.2rem',
+                      fontWeight: 'bold',
+                      marginBottom: '15px',
+                      color: '#10b981'
+                    }}>
+                      ✅ Completed Steps
+                    </h4>
+                    {metrics.realLeads[0].automationPipeline.completedSteps.map((step, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          padding: '12px 15px',
+                          background: 'rgba(16, 185, 129, 0.1)',
+                          border: '1px solid rgba(16, 185, 129, 0.3)',
+                          borderRadius: '8px',
+                          marginBottom: '10px',
+                          fontSize: '0.95rem'
+                        }}
+                      >
+                        ✓ {step}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div>
+                    <h4 style={{
+                      fontSize: '1.2rem',
+                      fontWeight: 'bold',
+                      marginBottom: '15px',
+                      color: '#f59e0b'
+                    }}>
+                      ⏳ Pending Steps
+                    </h4>
+                    {metrics.realLeads[0].automationPipeline.pendingSteps.map((step, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          padding: '12px 15px',
+                          background: 'rgba(245, 158, 11, 0.1)',
+                          border: '1px solid rgba(245, 158, 11, 0.3)',
+                          borderRadius: '8px',
+                          marginBottom: '10px',
+                          fontSize: '0.95rem',
+                          opacity: 0.8
+                        }}
+                      >
+                        ○ {step}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Last Activity */}
+                <div style={{
+                  marginTop: '25px',
+                  padding: '15px',
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                  borderRadius: '8px',
+                  fontSize: '0.9rem',
+                  opacity: 0.8
+                }}>
+                  Last Activity: {new Date(metrics.realLeads[0].automationPipeline.lastActivity).toLocaleDateString()}
+                </div>
+              </div>
+            )}
 
             {/* Live Leads Table */}
             <div style={{

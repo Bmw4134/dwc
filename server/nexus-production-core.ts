@@ -157,11 +157,11 @@ class NEXUSProductionCore {
 
     // Real DWC Systems business data
     const realBusinessMetrics = {
-      totalLeads: 4,
-      activeProposals: 4,
+      totalLeads: 3,
+      activeProposals: 3,
       monthlyRevenue: 100, // Actual revenue from JDD client
       conversionRate: 33.3,
-      totalPipelineValue: 2660000, // Real pipeline value
+      totalPipelineValue: 2635000, // Real pipeline value (removed RagleInc)
       roiProven: 277, // Proven 277% ROI
       systemHealth: dwData.systemHealth || 98.5,
       automationLinkage: dwData.automationLinkage || 100,
@@ -173,13 +173,25 @@ class NEXUSProductionCore {
           name: 'Blissful Memories',
           value: 15000,
           status: 'Active Prospect',
-          industry: 'Photography Services'
-        },
-        {
-          name: 'RagleInc.com',
-          value: 25000,
-          status: 'Qualified',
-          industry: 'Corporate Services'
+          industry: 'Photography Services',
+          automationPipeline: {
+            currentStage: 'Initial Contact & Discovery',
+            progress: 35,
+            nextAction: 'Scheduling consultation call',
+            completedSteps: [
+              'Lead capture via website contact form',
+              'Automated welcome email sequence deployed',
+              'Business profile analysis completed'
+            ],
+            pendingSteps: [
+              'Discovery call scheduled',
+              'Service presentation delivery',
+              'Proposal generation and delivery',
+              'Contract negotiation and closing'
+            ],
+            automationScore: 87.5,
+            lastActivity: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() // 2 days ago
+          }
         },
         {
           name: 'Game X Change',
