@@ -1,4 +1,4 @@
-function App() {
+export default function EmergencyLanding() {
   return (
     <div style={{
       minHeight: '100vh',
@@ -85,5 +85,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
