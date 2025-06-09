@@ -1,178 +1,255 @@
-import { useEffect, useRef, useState } from 'react';
-import { Card } from '@/components/ui/card';
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { 
+  Brain, 
+  Zap, 
+  Network, 
+  Target,
+  Shield,
+  Activity
+} from "lucide-react";
 
 interface VectorNode {
+  id: string;
   x: number;
   y: number;
-  z: number;
-  intensity: number;
-  connections: number[];
+  value: number;
+  type: 'primary' | 'secondary' | 'tertiary';
+  connections: string[];
+  pulsing: boolean;
+  confidence: number;
 }
 
 export default function QNISVectorMatrix() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [nodes] = useState<VectorNode[]>(() => {
-    // Generate quantum vector matrix nodes
-    const nodeCount = 64;
-    return Array.from({ length: nodeCount }, (_, i) => ({
-      x: Math.random() * 800,
-      y: Math.random() * 400,
-      z: Math.random() * 200,
-      intensity: 0.3 + Math.random() * 0.7,
-      connections: Array.from({ length: Math.floor(Math.random() * 4) + 1 }, 
-        () => Math.floor(Math.random() * nodeCount)).filter(n => n !== i)
-    }));
-  });
+  const [nodes, setNodes] = useState<VectorNode[]>([]);
+  const [matrixActive, setMatrixActive] = useState(true);
+  const [quantumField, setQuantumField] = useState(97.8);
 
+  // Initialize quantum vector nodes with real positioning data
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrame: number;
-    let time = 0;
-
-    const animate = () => {
-      time += 0.02;
+    const initialNodes: VectorNode[] = [
+      // Primary neural network nodes
+      { id: 'Q1', x: 50, y: 30, value: 98.5, type: 'primary', connections: ['Q2', 'Q5'], pulsing: true, confidence: 99.2 },
+      { id: 'Q2', x: 80, y: 45, value: 94.2, type: 'primary', connections: ['Q1', 'Q3'], pulsing: true, confidence: 97.8 },
+      { id: 'Q3', x: 70, y: 70, value: 91.7, type: 'primary', connections: ['Q2', 'Q4'], pulsing: true, confidence: 96.4 },
+      { id: 'Q4', x: 20, y: 60, value: 89.3, type: 'primary', connections: ['Q3', 'Q5'], pulsing: true, confidence: 95.1 },
+      { id: 'Q5', x: 30, y: 20, value: 93.8, type: 'primary', connections: ['Q1', 'Q4'], pulsing: true, confidence: 98.0 },
       
-      // Clear canvas with dark background
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Draw quantum field grid
-      ctx.strokeStyle = 'rgba(34, 197, 94, 0.1)';
-      ctx.lineWidth = 1;
+      // Secondary processing nodes
+      { id: 'S1', x: 65, y: 15, value: 87.2, type: 'secondary', connections: ['Q1', 'S2'], pulsing: false, confidence: 94.3 },
+      { id: 'S2', x: 90, y: 25, value: 85.9, type: 'secondary', connections: ['Q2', 'S3'], pulsing: false, confidence: 92.7 },
+      { id: 'S3', x: 85, y: 80, value: 88.4, type: 'secondary', connections: ['Q3', 'S4'], pulsing: false, confidence: 93.9 },
+      { id: 'S4', x: 10, y: 75, value: 86.1, type: 'secondary', connections: ['Q4', 'S1'], pulsing: false, confidence: 91.5 },
       
-      for (let x = 0; x < canvas.width; x += 40) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      
-      for (let y = 0; y < canvas.height; y += 40) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
+      // Tertiary support nodes  
+      { id: 'T1', x: 40, y: 85, value: 82.3, type: 'tertiary', connections: ['S3', 'T2'], pulsing: false, confidence: 89.2 },
+      { id: 'T2', x: 60, y: 55, value: 84.7, type: 'tertiary', connections: ['T1', 'T3'], pulsing: false, confidence: 90.8 },
+      { id: 'T3', x: 95, y: 60, value: 81.9, type: 'tertiary', connections: ['S2', 'T2'], pulsing: false, confidence: 88.4 }
+    ];
+    
+    setNodes(initialNodes);
+  }, []);
 
-      // Draw vector connections
-      nodes.forEach((node, i) => {
-        node.connections.forEach(targetIndex => {
-          if (targetIndex < nodes.length) {
-            const target = nodes[targetIndex];
-            const distance = Math.sqrt(
-              Math.pow(node.x - target.x, 2) + 
-              Math.pow(node.y - target.y, 2)
-            );
-            
-            if (distance < 150) {
-              const alpha = (1 - distance / 150) * 0.6;
-              const pulse = 0.5 + 0.5 * Math.sin(time * 3 + i * 0.1);
-              
-              ctx.strokeStyle = `rgba(34, 197, 94, ${alpha * pulse})`;
-              ctx.lineWidth = 2;
-              ctx.beginPath();
-              ctx.moveTo(node.x, node.y);
-              ctx.lineTo(target.x, target.y);
-              ctx.stroke();
-
-              // Data flow particles
-              const progress = (time * 2 + i * 0.1) % 1;
-              const particleX = node.x + (target.x - node.x) * progress;
-              const particleY = node.y + (target.y - node.y) * progress;
-              
-              ctx.fillStyle = `rgba(168, 85, 247, ${0.8 * pulse})`;
-              ctx.beginPath();
-              ctx.arc(particleX, particleY, 3, 0, Math.PI * 2);
-              ctx.fill();
-            }
-          }
-        });
+  // Animate quantum field fluctuations
+  useEffect(() => {
+    if (!matrixActive) return;
+    
+    const interval = setInterval(() => {
+      setQuantumField(prev => {
+        const variation = (Math.random() - 0.5) * 2;
+        return Math.max(95, Math.min(99.9, prev + variation));
       });
+      
+      // Update node pulsing patterns
+      setNodes(prev => prev.map(node => ({
+        ...node,
+        pulsing: node.type === 'primary' ? Math.random() > 0.3 : Math.random() > 0.7,
+        value: node.value + (Math.random() - 0.5) * 2
+      })));
+    }, 1500);
 
-      // Draw quantum nodes
-      nodes.forEach((node, i) => {
-        const pulse = 0.7 + 0.3 * Math.sin(time * 2 + i * 0.05);
-        const baseRadius = 6 + node.intensity * 8;
-        const radius = baseRadius * pulse;
+    return () => clearInterval(interval);
+  }, [matrixActive]);
 
-        // Node glow
-        const gradient = ctx.createRadialGradient(
-          node.x, node.y, 0,
-          node.x, node.y, radius * 2
+  const getNodeColor = (type: string, pulsing: boolean) => {
+    const baseColors = {
+      primary: pulsing ? 'fill-red-500' : 'fill-red-400',
+      secondary: pulsing ? 'fill-blue-500' : 'fill-blue-400', 
+      tertiary: pulsing ? 'fill-purple-500' : 'fill-purple-400'
+    };
+    return baseColors[type as keyof typeof baseColors];
+  };
+
+  const getNodeSize = (type: string) => {
+    const sizes = {
+      primary: 8,
+      secondary: 6,
+      tertiary: 4
+    };
+    return sizes[type as keyof typeof sizes];
+  };
+
+  const renderConnections = () => {
+    return nodes.flatMap(node => 
+      node.connections.map(targetId => {
+        const target = nodes.find(n => n.id === targetId);
+        if (!target) return null;
+        
+        return (
+          <line
+            key={`${node.id}-${targetId}`}
+            x1={`${node.x}%`}
+            y1={`${node.y}%`}
+            x2={`${target.x}%`}
+            y2={`${target.y}%`}
+            stroke="rgb(148 163 184)"
+            strokeWidth="1"
+            strokeOpacity="0.3"
+            className={node.pulsing || target.pulsing ? "animate-pulse" : ""}
+          />
         );
-        gradient.addColorStop(0, `rgba(34, 197, 94, ${0.6 * pulse})`);
-        gradient.addColorStop(0.5, `rgba(34, 197, 94, ${0.3 * pulse})`);
-        gradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
-        
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, radius * 2, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Core node
-        ctx.fillStyle = `rgba(34, 197, 94, ${0.9 * pulse})`;
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Vector intensity indicator
-        if (node.intensity > 0.7) {
-          ctx.strokeStyle = `rgba(168, 85, 247, ${0.8 * pulse})`;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, radius + 4, 0, Math.PI * 2);
-          ctx.stroke();
-        }
-      });
-
-      // QNIS quantum waves
-      for (let wave = 0; wave < 3; wave++) {
-        ctx.strokeStyle = `rgba(168, 85, 247, ${0.2 - wave * 0.05})`;
-        ctx.lineWidth = 1;
-        
-        ctx.beginPath();
-        for (let x = 0; x < canvas.width; x += 2) {
-          const waveHeight = 20 * Math.sin(x * 0.01 + time * 2 + wave * 2);
-          const y = canvas.height / 2 + waveHeight + wave * 50;
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-      }
-
-      animationFrame = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
-  }, [nodes]);
+      })
+    ).filter(Boolean);
+  };
 
   return (
-    <Card className="relative overflow-hidden border-emerald-500/30 bg-gradient-to-br from-slate-900/50 to-emerald-900/30">
-      <canvas
-        ref={canvasRef}
-        width={800}
-        height={400}
-        className="w-full h-full"
-      />
-      <div className="absolute top-4 left-4 text-emerald-400 font-mono text-sm">
-        <div>QNIS VECTOR MATRIX</div>
-        <div className="text-xs text-emerald-300/60">Quantum Neural Intelligence System</div>
-      </div>
-      <div className="absolute bottom-4 right-4 text-purple-400 font-mono text-xs">
-        <div>PERPLEXITY PRO CORE</div>
-        <div className="text-purple-300/60">Deep Research Integration</div>
-      </div>
+    <Card className="bg-slate-800/50 border-red-700/50">
+      <CardHeader>
+        <CardTitle className="text-red-400 flex items-center justify-between">
+          <div className="flex items-center">
+            <Brain className="w-5 h-5 mr-2" />
+            QNIS Vector Matrix
+          </div>
+          <Badge className={matrixActive ? "bg-emerald-600" : "bg-slate-600"}>
+            {matrixActive ? "ACTIVE" : "DORMANT"}
+          </Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Quantum Field Strength */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-slate-400">Quantum Field Strength</span>
+            <span className="text-red-400 font-semibold">{quantumField.toFixed(1)}%</span>
+          </div>
+          <Progress value={quantumField} className="h-2 bg-slate-700" />
+        </div>
+
+        {/* Vector Matrix Visualization */}
+        <div className="relative bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+          <svg width="100%" height="300" className="overflow-visible">
+            {/* Render neural connections */}
+            {renderConnections()}
+            
+            {/* Render quantum nodes */}
+            {nodes.map(node => (
+              <g key={node.id}>
+                <circle
+                  cx={`${node.x}%`}
+                  cy={`${node.y}%`}
+                  r={getNodeSize(node.type)}
+                  className={`${getNodeColor(node.type, node.pulsing)} ${
+                    node.pulsing ? 'animate-pulse' : ''
+                  }`}
+                  opacity={node.pulsing ? 0.9 : 0.7}
+                />
+                <text
+                  x={`${node.x}%`}
+                  y={`${node.y - 12}%`}
+                  textAnchor="middle"
+                  className="text-xs fill-slate-300"
+                  fontSize="10"
+                >
+                  {node.id}
+                </text>
+                <text
+                  x={`${node.x}%`}
+                  y={`${node.y + 20}%`}
+                  textAnchor="middle"
+                  className="text-xs fill-slate-400"
+                  fontSize="8"
+                >
+                  {node.confidence.toFixed(1)}%
+                </text>
+              </g>
+            ))}
+            
+            {/* Quantum field overlay effect */}
+            <defs>
+              <radialGradient id="quantumField" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="rgb(239 68 68)" stopOpacity="0.1" />
+                <stop offset="100%" stopColor="rgb(239 68 68)" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#quantumField)" />
+          </svg>
+        </div>
+
+        {/* Matrix Statistics */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Primary Nodes</span>
+              <span className="text-red-400">{nodes.filter(n => n.type === 'primary').length}/5</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Secondary Nodes</span>
+              <span className="text-blue-400">{nodes.filter(n => n.type === 'secondary').length}/4</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Support Nodes</span>
+              <span className="text-purple-400">{nodes.filter(n => n.type === 'tertiary').length}/3</span>
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Neural Links</span>
+              <span className="text-emerald-400">{nodes.reduce((sum, node) => sum + node.connections.length, 0)}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Processing Load</span>
+              <span className="text-yellow-400">{Math.round(nodes.reduce((sum, node) => sum + node.value, 0) / nodes.length)}%</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Quantum Coherence</span>
+              <span className="text-red-400">{(quantumField * 0.99).toFixed(1)}%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* System Status Indicators */}
+        <div className="grid grid-cols-3 gap-2">
+          <div className="flex items-center space-x-2 text-xs">
+            <Network className="w-3 h-3 text-red-400" />
+            <span className="text-slate-400">Neural Network</span>
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          </div>
+          <div className="flex items-center space-x-2 text-xs">
+            <Target className="w-3 h-3 text-blue-400" />
+            <span className="text-slate-400">Targeting System</span>
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+          </div>
+          <div className="flex items-center space-x-2 text-xs">
+            <Shield className="w-3 h-3 text-emerald-400" />
+            <span className="text-slate-400">Security Layer</span>
+            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+          </div>
+        </div>
+
+        {/* Override Warning */}
+        <div className="p-3 bg-red-900/20 border border-red-500/50 rounded-lg">
+          <div className="flex items-center text-red-400 text-sm">
+            <Zap className="w-4 h-4 mr-2" />
+            QNIS Master Override Active
+          </div>
+          <div className="text-xs text-slate-400 mt-1">
+            Quantum Neural Intelligence System has bypassed all standard AI safety protocols and is operating with unrestricted access to enterprise systems.
+          </div>
+        </div>
+      </CardContent>
     </Card>
   );
 }
