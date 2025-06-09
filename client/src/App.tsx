@@ -2,7 +2,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { Switch, Route } from "wouter";
-import SimpleLanding from "./pages/simple-landing";
+import MinimalLanding from "./pages/minimal-landing";
 import DWCLogin from "./pages/dwc-login";
 import DemoLogin from "./pages/demo-login";
 import DemoDashboard from "./pages/demo-dashboard";
@@ -26,8 +26,8 @@ function App() {
       <div className="min-h-screen">
         <Switch>
           {/* Public Landing Page - Default Route */}
-          <Route path="/" component={SimpleLanding} />
-          <Route path="/dwc-landing" component={SimpleLanding} />
+          <Route path="/" component={MinimalLanding} />
+          <Route path="/dwc-landing" component={MinimalLanding} />
           
           {/* Real Authentication Routes */}
           <Route path="/real-login" component={RealLogin} />
