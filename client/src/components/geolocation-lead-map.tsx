@@ -42,8 +42,12 @@ export function GeolocationLeadMap() {
   const fortWorthCoords = { lat: 32.6593, lon: -97.2894 };
 
   const { data: nearbyLeads, isLoading } = useQuery({
-    queryKey: ['/api/leads/discover-nearby', fortWorthCoords],
-    queryFn: () => apiRequest('POST', '/api/leads/discover-nearby', fortWorthCoords)
+    queryKey: ['/api/leads/discover-nearby', fortWorthCoords.lat, fortWorthCoords.lon],
+    queryFn: async () => {
+      const response = await apiRequest('POST', '/api/leads/discover-nearby', fortWorthCoords);
+      const data = await response.json();
+      return data as GeolocationLead[];
+    }
   });
 
   useEffect(() => {
@@ -123,7 +127,9 @@ export function GeolocationLeadMap() {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-400">
-                {Math.round(nearbyLeads?.reduce((sum: number, lead: GeolocationLead) => sum + lead.automationPotential, 0) / (nearbyLeads?.length || 1)) || 0}%
+                {nearbyLeads && nearbyLeads.length > 0 
+                  ? Math.round(nearbyLeads.reduce((sum: number, lead: GeolocationLead) => sum + lead.automationPotential, 0) / nearbyLeads.length)
+                  : 0}%
               </div>
               <div className="text-sm text-slate-400">Avg Automation Potential</div>
             </div>
