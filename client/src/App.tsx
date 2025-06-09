@@ -1,4 +1,15 @@
-function App() {
+import { Switch, Route } from "wouter";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
+import { Toaster } from "@/components/ui/toaster";
+
+// Import pages
+import LLCFormation from "@/pages/llc-formation";
+import LLCSuccess from "@/pages/llc-success";
+import WowDashboard from "@/pages/wow-dashboard";
+import QNISMasterControl from "@/pages/QNISMasterControl";
+
+function LandingPage() {
   return (
     <div style={{
       minHeight: '100vh',
@@ -35,7 +46,7 @@ function App() {
         color: '#06b6d4',
         marginBottom: '40px'
       }}>
-        🌟 NEXUS QUANTUM INTELLIGENCE PLATFORM 🌟
+        NEXUS QUANTUM INTELLIGENCE PLATFORM
       </h2>
 
       <div style={{
@@ -53,7 +64,7 @@ function App() {
           color: '#f87171',
           marginBottom: '24px'
         }}>
-          🚨 LIVE SYSTEM STATUS 🚨
+          LIVE SYSTEM STATUS
         </h3>
         
         <div style={{
@@ -66,7 +77,7 @@ function App() {
             <div style={{ color: '#fca5a5' }}>Pipeline Value</div>
           </div>
           <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>2,170</div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>4</div>
             <div style={{ color: '#fca5a5' }}>Active Leads</div>
           </div>
           <div>
@@ -74,7 +85,7 @@ function App() {
             <div style={{ color: '#fca5a5' }}>ROI Proven</div>
           </div>
           <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>96%</div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>98%</div>
             <div style={{ color: '#fca5a5' }}>AI Confidence</div>
           </div>
         </div>
@@ -97,7 +108,7 @@ function App() {
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text'
         }}>
-          🚀 ENTERPRISE AUTOMATION AWAITS 🚀
+          ENTERPRISE AUTOMATION PLATFORM
         </h3>
 
         <p style={{
@@ -106,8 +117,8 @@ function App() {
           marginBottom: '32px',
           lineHeight: '1.6'
         }}>
-          Join the quantum revolution in business intelligence. Unlock the full power of AI-driven automation 
-          with our enterprise-grade platform featuring real-time lead generation, advanced analytics, and 18-module automation suite.
+          Professional LLC formation services and quantum business intelligence platform. 
+          Real-time lead generation, advanced analytics, and complete business automation suite.
         </p>
 
         <div style={{
@@ -117,7 +128,7 @@ function App() {
           alignItems: 'center'
         }}>
           <a 
-            href="/checkout" 
+            href="/llc-formation" 
             style={{
               display: 'inline-block',
               background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
@@ -130,7 +141,7 @@ function App() {
               border: '2px solid #10b981'
             }}
           >
-            💳 SUBSCRIBE NOW - $799/month →
+            Form Your LLC - Starting at $299
           </a>
 
           <a 
@@ -147,7 +158,7 @@ function App() {
               background: 'transparent'
             }}
           >
-            ⚡ LIVE DEMO
+            View Live Dashboard
           </a>
         </div>
 
@@ -156,7 +167,7 @@ function App() {
           fontSize: '0.9rem',
           color: '#c7d2fe'
         }}>
-          💳 Secure payment processing powered by Stripe • 🔒 SSL encrypted • 📞 24/7 enterprise support
+          Secure payment processing powered by Stripe • SSL encrypted • 24/7 support
         </div>
       </div>
 
@@ -171,12 +182,63 @@ function App() {
         backdropFilter: 'blur(10px)'
       }}>
         <div style={{ color: '#10b981', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '8px' }}>
-          🟢 ALL SYSTEMS OPERATIONAL
+          ALL SYSTEMS OPERATIONAL
         </div>
         <div style={{ color: '#6ee7b7', fontSize: '0.9rem' }}>18 Modules Active • 100% Automation Linkage</div>
         <div style={{ color: '#6ee7b7', fontSize: '0.9rem' }}>NEXUS Intelligence: FULLY OPERATIONAL</div>
       </div>
     </div>
+  );
+}
+
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={LandingPage} />
+      <Route path="/llc-formation" component={LLCFormation} />
+      <Route path="/llc-success" component={LLCSuccess} />
+      <Route path="/dashboard" component={WowDashboard} />
+      <Route path="/nexus" component={QNISMasterControl} />
+      <Route>
+        <div style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e40af 100%)',
+          color: 'white',
+          textAlign: 'center'
+        }}>
+          <div>
+            <h1 style={{ fontSize: '3rem', marginBottom: '20px' }}>404 - Page Not Found</h1>
+            <a 
+              href="/" 
+              style={{
+                display: 'inline-block',
+                background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: '1.1rem',
+                padding: '12px 32px',
+                borderRadius: '12px',
+                textDecoration: 'none'
+              }}
+            >
+              Return Home
+            </a>
+          </div>
+        </div>
+      </Route>
+    </Switch>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router />
+      <Toaster />
+    </QueryClientProvider>
   );
 }
 

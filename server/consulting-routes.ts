@@ -11,6 +11,8 @@ import { nexusObserverCore } from "./nexus-observer-core";
 import { nexusUltraDevEngine } from "./nexus-ultradev-engine";
 import { NEXUSDeploymentAudit } from "./nexus-deployment-audit";
 import { qnisBehaviorSimulator } from "./qnis-behavior-simulator";
+import { nexusProductionCore } from "./nexus-production-core";
+import { stripePaymentEngine, LLC_PACKAGES } from "./stripe-payment-engine";
 import path from "path";
 import fs from "fs";
 
@@ -354,46 +356,61 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
 </html>`);
   });
   
-  // Dashboard Metrics API with DW System Integration
+  // Dashboard Metrics API with Production Core Integration
   app.get('/api/dashboard/metrics', async (req, res) => {
     try {
-      const systemStatus = dwSystemMonitor.getSystemStatus();
-      const automationLinkage = dwSystemMonitor.getAutomationLinkage();
+      // Get live production metrics from NEXUS Production Core
+      const productionMetrics = nexusProductionCore.getProductionMetrics();
       
-      // Real DWC Systems business metrics - authentic data only
-      const realBusinessMetrics = {
-        baseRevenue: 100, // Actual payment from JDD client
-        currentClients: 3, // Real client count
-        roiProven: 277, // 277% ROI with JDD client
-        activePipeline: [
-          { name: "Blissful Memories", value: 15000, status: "Active Prospect", industry: "Photography Services" },
-          { name: "RagleInc.com", value: 25000, status: "Qualified", industry: "Corporate Services" },
-          { name: "Game X Change", value: 2500000, status: "Active Negotiation", industry: "Gaming Retail" },
-          { name: "RetailMax Corp", value: 120000, status: "Contacted", industry: "Retail" }
-        ],
-        totalPipelineValue: 2660000 // Updated total with authentic leads only
-      };
+      console.log('📊 DW Dashboard metrics requested:', productionMetrics);
       
-      const metrics = {
-        totalLeads: realBusinessMetrics.activePipeline.length, // All active leads in pipeline
-        activeProposals: realBusinessMetrics.activePipeline.length, // All leads are active
-        monthlyRevenue: realBusinessMetrics.baseRevenue,
-        conversionRate: 33.3, // 1 of 3 converted (JDD)
-        totalPipelineValue: realBusinessMetrics.totalPipelineValue,
-        roiProven: realBusinessMetrics.roiProven,
-        systemHealth: 97.8 + (Math.random() * 2),
-        automationLinkage: automationLinkage,
-        quantumBehaviorConfidence: 94.7 + (Math.random() * 5),
-        lastUpdated: new Date().toISOString(),
-        dwSystemStatus: systemStatus,
-        realLeads: realBusinessMetrics.activePipeline
-      };
-      
-      console.log('📊 DW Dashboard metrics requested:', metrics);
-      res.json(metrics);
+      res.json(productionMetrics);
     } catch (error) {
       console.error('Error fetching dashboard metrics:', error);
       res.status(500).json({ error: 'Failed to fetch dashboard metrics' });
+    }
+  });
+
+  // Stripe Payment Integration for LLC Formation
+  app.get('/api/llc/packages', async (req, res) => {
+    try {
+      const packages = await stripePaymentEngine.getPackages();
+      res.json({ success: true, packages });
+    } catch (error) {
+      console.error('Error fetching LLC packages:', error);
+      res.status(500).json({ error: 'Failed to fetch LLC packages' });
+    }
+  });
+
+  app.post('/api/llc/payment-intent', async (req, res) => {
+    try {
+      const { packageId, customerEmail } = req.body;
+      
+      if (!packageId) {
+        return res.status(400).json({ error: 'Package ID is required' });
+      }
+
+      const result = await stripePaymentEngine.createPaymentIntent(packageId, customerEmail);
+      res.json({ 
+        success: true, 
+        clientSecret: result.clientSecret,
+        package: result.packageDetails
+      });
+    } catch (error) {
+      console.error('Error creating payment intent:', error);
+      res.status(500).json({ error: 'Failed to create payment intent' });
+    }
+  });
+
+  app.post('/api/llc/stripe-webhook', async (req, res) => {
+    const signature = req.headers['stripe-signature'] as string;
+    
+    try {
+      await stripePaymentEngine.handleWebhook(signature, req.body);
+      res.json({ received: true });
+    } catch (error) {
+      console.error('Webhook error:', error);
+      res.status(400).send(`Webhook Error: ${error}`);
     }
   });
 
