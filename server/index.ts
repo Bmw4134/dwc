@@ -8,17 +8,33 @@ app.use(express.urlencoded({ extended: false }));
 
 // Allow iframe embedding for Replit preview
 app.use((req, res, next) => {
-  // Remove X-Frame-Options to allow iframe embedding
+  // Completely remove X-Frame-Options to allow iframe embedding
   res.removeHeader('X-Frame-Options');
   
-  // Set CSP to allow Replit iframe embedding
-  res.setHeader('Content-Security-Policy', 
-    "frame-ancestors 'self' https://replit.com https://*.replit.com https://*.replit.dev https://*.replit.app;"
-  );
+  // Comprehensive CSP for Replit iframe embedding
+  const csp = [
+    "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:",
+    "frame-ancestors 'self' https://replit.com https://*.replit.com https://*.replit.dev https://*.replit.app",
+    "frame-src 'self' https://replit.com https://*.replit.com https://*.replit.dev https://*.replit.app",
+    "connect-src 'self' ws: wss: https:",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+    "style-src 'self' 'unsafe-inline'"
+  ].join('; ');
   
-  // Additional headers for iframe compatibility
+  res.setHeader('Content-Security-Policy', csp);
+  
+  // Essential iframe compatibility headers
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none');
+  
+  // Prevent caching issues in iframe
+  if (req.path === '/' || req.path.endsWith('.html')) {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
   
   next();
 });

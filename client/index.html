@@ -38,15 +38,46 @@
       }
     </style>
     <script>
-      // Detect and handle iframe environment
-      if (window.parent !== window) {
+      // Enhanced iframe detection and force visibility
+      const isInIframe = window.self !== window.top || window.frameElement !== null;
+      
+      if (isInIframe) {
         document.body.classList.add('replit-iframe');
+        
+        // Force immediate visibility
+        document.documentElement.style.cssText = 'height: 100% !important; margin: 0 !important; padding: 0 !important;';
+        document.body.style.cssText = 'height: 100% !important; margin: 0 !important; padding: 0 !important; visibility: visible !important; opacity: 1 !important; display: block !important;';
+        
+        // Override any potential blocking styles
+        const forceVisible = () => {
+          const root = document.getElementById('root');
+          if (root) {
+            root.style.cssText = 'width: 100% !important; min-height: 100vh !important; display: block !important; visibility: visible !important; opacity: 1 !important;';
+          }
+        };
+        
+        // Apply immediately and on DOM ready
+        forceVisible();
+        document.addEventListener('DOMContentLoaded', forceVisible);
+        window.addEventListener('load', forceVisible);
+        
+        // Continuous check to ensure visibility
+        setInterval(forceVisible, 100);
       }
       
-      // Ensure content loads in iframe
+      // Fallback for content loading
       window.addEventListener('load', function() {
         document.body.style.visibility = 'visible';
         document.body.style.opacity = '1';
+        
+        // Send ready signal to parent if in iframe
+        if (isInIframe && window.parent) {
+          try {
+            window.parent.postMessage({ type: 'iframe-ready' }, '*');
+          } catch (e) {
+            // Ignore cross-origin errors
+          }
+        }
       });
     </script>
   </head>
