@@ -3,183 +3,178 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 
+import { useQuery } from "@tanstack/react-query";
+
 function LandingPage() {
+  const { data: metrics } = useQuery({
+    queryKey: ['/api/dashboard/metrics'],
+    refetchInterval: 30000
+  });
+
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e40af 100%)',
-      color: 'white',
-      fontFamily: 'system-ui, -apple-system, sans-serif',
-      padding: '40px 20px',
-      textAlign: 'center'
-    }}>
-      <h1 style={{
-        fontSize: '4rem',
-        fontWeight: 'bold',
-        marginBottom: '20px',
-        background: 'linear-gradient(45deg, #10b981, #06b6d4, #8b5cf6)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text'
-      }}>
-        DWC SYSTEMS LLC
-      </h1>
-
-      <div style={{
-        height: '4px',
-        background: 'linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6)',
-        borderRadius: '2px',
-        marginBottom: '40px',
-        maxWidth: '1200px',
-        margin: '0 auto 40px auto'
-      }}></div>
-
-      <h2 style={{
-        fontSize: '2.5rem',
-        fontWeight: 'bold',
-        color: '#06b6d4',
-        marginBottom: '40px'
-      }}>
-        NEXUS QUANTUM INTELLIGENCE PLATFORM
-      </h2>
-
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(220, 38, 38, 0.3), rgba(234, 88, 12, 0.3))',
-        border: '2px solid rgba(239, 68, 68, 0.7)',
-        borderRadius: '16px',
-        padding: '32px',
-        marginBottom: '48px',
-        maxWidth: '800px',
-        margin: '0 auto 48px auto'
-      }}>
-        <h3 style={{
-          fontSize: '2rem',
-          fontWeight: 'bold',
-          color: '#f87171',
-          marginBottom: '24px'
-        }}>
-          LIVE SYSTEM STATUS
-        </h3>
-        
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '24px'
-        }}>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>$2.66M</div>
-            <div style={{ color: '#fca5a5' }}>Pipeline Value</div>
+    <div className="min-h-screen bg-white text-gray-900 font-['Inter',system-ui,sans-serif]">
+      {/* Clean professional header */}
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg">D</span>
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900">DWC Systems</h1>
+              <p className="text-sm text-gray-500">Business Intelligence Platform</p>
+            </div>
           </div>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>4</div>
-            <div style={{ color: '#fca5a5' }}>Active Leads</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>277%</div>
-            <div style={{ color: '#fca5a5' }}>ROI Proven</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>98%</div>
-            <div style={{ color: '#fca5a5' }}>AI Confidence</div>
+          <nav className="flex items-center space-x-6">
+            <a href="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium">Dashboard</a>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
+              Get Started
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      {/* Hero section */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            Modernize Your Business Operations
+          </h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Advanced business intelligence platform that transforms manual processes through AI automation.
+            Real-time lead discovery, process optimization, and proven ROI generation.
+          </p>
+          <div className="flex justify-center space-x-4">
+            <a 
+              href="/dashboard" 
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700"
+            >
+              View Live Dashboard
+            </a>
+            <a 
+              href="/contact" 
+              className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:border-gray-400"
+            >
+              Schedule Consultation
+            </a>
           </div>
         </div>
-      </div>
 
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(59, 130, 246, 0.8))',
-        border: '2px solid #8b5cf6',
-        borderRadius: '24px',
-        padding: '48px',
-        maxWidth: '800px',
-        margin: '0 auto'
-      }}>
-        <h3 style={{
-          fontSize: '3rem',
-          fontWeight: 'bold',
-          marginBottom: '24px',
-          background: 'linear-gradient(45deg, #8b5cf6, #06b6d4)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text'
-        }}>
-          ENTERPRISE AUTOMATION PLATFORM
-        </h3>
-
-        <p style={{
-          fontSize: '1.5rem',
-          color: '#e0e7ff',
-          marginBottom: '32px',
-          lineHeight: '1.6'
-        }}>
-          QNIS/PTNI business modernization platform that transforms legacy operations through AI automation. 
-          Real-time geolocation lead discovery, manual process elimination, and proven ROI generation.
-        </p>
-
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
-          alignItems: 'center'
-        }}>
-          <a 
-            href="/llc-formation" 
-            style={{
-              display: 'inline-block',
-              background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: '1.25rem',
-              padding: '16px 48px',
-              borderRadius: '16px',
-              textDecoration: 'none',
-              border: '2px solid #10b981'
-            }}
-          >
-            Form Your LLC - Starting at $299
-          </a>
-
-          <a 
-            href="/dashboard" 
-            style={{
-              display: 'inline-block',
-              border: '2px solid #06b6d4',
-              color: '#06b6d4',
-              fontWeight: 'bold',
-              fontSize: '1.25rem',
-              padding: '16px 48px',
-              borderRadius: '16px',
-              textDecoration: 'none',
-              background: 'transparent'
-            }}
-          >
-            View Live Dashboard
-          </a>
+        {/* Live metrics display */}
+        <div className="bg-gray-50 rounded-xl p-8 mb-16">
+          <h3 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Live System Performance</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600">
+                ${metrics ? (metrics.totalPipelineValue / 1000000).toFixed(2) : '2.66'}M
+              </div>
+              <div className="text-gray-500 text-sm">Pipeline Value</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600">
+                {metrics?.totalLeads || 3}
+              </div>
+              <div className="text-gray-500 text-sm">Active Prospects</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600">
+                {metrics?.roiProven || 277}%
+              </div>
+              <div className="text-gray-500 text-sm">ROI Demonstrated</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-emerald-600">
+                {metrics ? Math.round(metrics.quantumBehaviorConfidence) : 98}%
+              </div>
+              <div className="text-gray-500 text-sm">AI Precision</div>
+            </div>
+          </div>
         </div>
 
-        <div style={{
-          marginTop: '32px',
-          fontSize: '0.9rem',
-          color: '#c7d2fe'
-        }}>
-          Secure payment processing powered by Stripe • SSL encrypted • 24/7 support
-        </div>
-      </div>
+        {/* Current projects showcase */}
+        <div className="mb-16">
+          <h3 className="text-2xl font-semibold text-gray-900 mb-6">Current Active Projects</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-gray-900">Blissful Memories</h4>
+                <span className="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded">In Progress</span>
+              </div>
+              <p className="text-gray-600 text-sm mb-3">Photography business automation - manual booking system modernization</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-green-600">$15,000 value</span>
+                <span className="text-sm text-gray-500">35% complete</span>
+              </div>
+            </div>
+            
+            <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-gray-900">Game X Change</h4>
+                <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">Negotiation</span>
+              </div>
+              <p className="text-gray-600 text-sm mb-3">Gaming retail automation - manual card pricing system replacement</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-green-600">$2.5M opportunity</span>
+                <span className="text-sm text-gray-500">Fort Worth, TX</span>
+              </div>
+            </div>
 
-      <div style={{
-        position: 'fixed',
-        bottom: '32px',
-        right: '32px',
-        background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.9), rgba(6, 120, 87, 0.9))',
-        border: '2px solid #10b981',
-        borderRadius: '16px',
-        padding: '24px',
-        backdropFilter: 'blur(10px)'
-      }}>
-        <div style={{ color: '#10b981', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '8px' }}>
-          ALL SYSTEMS OPERATIONAL
+            <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-gray-900">RetailMax Corp</h4>
+                <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">Contacted</span>
+              </div>
+              <p className="text-gray-600 text-sm mb-3">Retail operations streamlining and inventory automation</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-green-600">$120,000 value</span>
+                <span className="text-sm text-gray-500">Initial phase</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style={{ color: '#6ee7b7', fontSize: '0.9rem' }}>18 Modules Active • 100% Automation Linkage</div>
-        <div style={{ color: '#6ee7b7', fontSize: '0.9rem' }}>NEXUS Intelligence: FULLY OPERATIONAL</div>
+
+        {/* Professional features grid */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="text-center">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Business Intelligence</h3>
+            <p className="text-gray-600">Real-time analytics and performance monitoring for data-driven decisions</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Process Automation</h3>
+            <p className="text-gray-600">Eliminate manual tasks and streamline operations with intelligent automation</p>
+          </div>
+          
+          <div className="text-center">
+            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Lead Discovery</h3>
+            <p className="text-gray-600">Geolocation-based business opportunity identification and analysis</p>
+          </div>
+        </div>
+      </section>
+
+      {/* System status indicator */}
+      <div className="fixed bottom-6 right-6 bg-white border border-gray-200 rounded-lg p-4 shadow-lg">
+        <div className="flex items-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <span className="text-sm font-medium text-gray-700">All Systems Operational</span>
+        </div>
+        <div className="text-xs text-gray-500 mt-1">18 modules active • 100% uptime</div>
       </div>
     </div>
   );
