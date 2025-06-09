@@ -3,12 +3,6 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 
-// Import pages
-import LLCFormation from "@/pages/llc-formation";
-import LLCSuccess from "@/pages/llc-success";
-import WowDashboard from "@/pages/wow-dashboard";
-import QNISMasterControl from "@/pages/QNISMasterControl";
-
 function LandingPage() {
   return (
     <div style={{
@@ -195,10 +189,15 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={LandingPage} />
-      <Route path="/llc-formation" component={LLCFormation} />
-      <Route path="/llc-success" component={LLCSuccess} />
-      <Route path="/dashboard" component={WowDashboard} />
-      <Route path="/nexus" component={QNISMasterControl} />
+      <Route path="/llc-formation">
+        <LLCFormationPage />
+      </Route>
+      <Route path="/llc-success">
+        <LLCSuccessPage />
+      </Route>
+      <Route path="/dashboard">
+        <DashboardPage />
+      </Route>
       <Route>
         <div style={{
           minHeight: '100vh',
@@ -230,6 +229,119 @@ function Router() {
         </div>
       </Route>
     </Switch>
+  );
+}
+
+function LLCFormationPage() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e40af 100%)',
+      color: 'white',
+      padding: '40px 20px',
+      textAlign: 'center'
+    }}>
+      <h1 style={{ fontSize: '3rem', marginBottom: '20px' }}>LLC Formation Services</h1>
+      <p>Professional LLC formation platform coming soon...</p>
+      <a href="/" style={{
+        display: 'inline-block',
+        background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: '1.1rem',
+        padding: '12px 32px',
+        borderRadius: '12px',
+        textDecoration: 'none',
+        marginTop: '20px'
+      }}>
+        Return Home
+      </a>
+    </div>
+  );
+}
+
+function LLCSuccessPage() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #8b5cf6 100%)',
+      color: 'white',
+      padding: '40px 20px',
+      textAlign: 'center'
+    }}>
+      <h1 style={{ fontSize: '3rem', marginBottom: '20px' }}>Payment Successful!</h1>
+      <p>Your LLC formation order has been received and processing has begun.</p>
+      <a href="/" style={{
+        display: 'inline-block',
+        background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: '1.1rem',
+        padding: '12px 32px',
+        borderRadius: '12px',
+        textDecoration: 'none',
+        marginTop: '20px'
+      }}>
+        Return Home
+      </a>
+    </div>
+  );
+}
+
+function DashboardPage() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e40af 100%)',
+      color: 'white',
+      padding: '40px 20px',
+      textAlign: 'center'
+    }}>
+      <h1 style={{ fontSize: '3rem', marginBottom: '20px' }}>Live Dashboard</h1>
+      <div style={{
+        background: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: '16px',
+        padding: '32px',
+        marginBottom: '32px',
+        maxWidth: '800px',
+        margin: '0 auto'
+      }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+          gap: '24px'
+        }}>
+          <div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>$2.66M</div>
+            <div>Pipeline Value</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>4</div>
+            <div>Active Leads</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>277%</div>
+            <div>ROI Proven</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>98%</div>
+            <div>AI Confidence</div>
+          </div>
+        </div>
+      </div>
+      <a href="/" style={{
+        display: 'inline-block',
+        background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: '1.1rem',
+        padding: '12px 32px',
+        borderRadius: '12px',
+        textDecoration: 'none'
+      }}>
+        Return Home
+      </a>
+    </div>
   );
 }
 

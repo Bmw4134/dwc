@@ -139,6 +139,120 @@ function generateQuantumBehavior(): QuantumUserBehavior {
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
+  // LLC Formation API Routes
+  app.get("/api/llc/packages", async (req, res) => {
+    try {
+      const packages = [
+        {
+          id: "starter",
+          name: "Starter LLC",
+          price: 29900, // $299.00 in cents
+          description: "Basic LLC formation with essential documents",
+          features: [
+            "Articles of Organization filing",
+            "Registered Agent service (1 year)",
+            "Operating Agreement template", 
+            "EIN application assistance",
+            "Digital document delivery",
+            "Basic compliance calendar"
+          ]
+        },
+        {
+          id: "professional", 
+          name: "Professional LLC",
+          price: 79900, // $799.00 in cents
+          description: "Comprehensive LLC formation with premium support",
+          features: [
+            "Everything in Starter package",
+            "Custom Operating Agreement drafted",
+            "Business banking setup assistance",
+            "Tax election guidance (S-Corp, etc.)",
+            "Compliance monitoring (1 year)",
+            "Priority customer support",
+            "Business license research",
+            "Trademark search report"
+          ]
+        },
+        {
+          id: "enterprise",
+          name: "Enterprise LLC", 
+          price: 199900, // $1999.00 in cents
+          description: "Premium LLC formation with full-service support",
+          features: [
+            "Everything in Professional package",
+            "Multi-state registration options",
+            "Corporate structure consulting",
+            "Advanced tax planning session",
+            "Legal consultation (2 hours)",
+            "Business credit establishment",
+            "Digital asset protection planning",
+            "Ongoing legal support (6 months)"
+          ]
+        }
+      ];
+      
+      res.json({ 
+        success: true,
+        packages 
+      });
+    } catch (error) {
+      console.error("Error fetching LLC packages:", error);
+      res.status(500).json({ 
+        success: false,
+        message: "Failed to fetch LLC packages" 
+      });
+    }
+  });
+
+  app.post("/api/llc/payment-intent", async (req, res) => {
+    try {
+      const { packageId, customerEmail } = req.body;
+      
+      // Package pricing map
+      const packagePrices = {
+        "starter": 29900,
+        "professional": 79900, 
+        "enterprise": 199900
+      };
+      
+      const amount = packagePrices[packageId as keyof typeof packagePrices];
+      if (!amount) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid package selected"
+        });
+      }
+      
+      // Create Stripe payment intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency: "usd",
+        metadata: {
+          packageId,
+          customerEmail,
+          service: "llc_formation"
+        }
+      });
+      
+      res.json({
+        success: true,
+        clientSecret: paymentIntent.client_secret,
+        packageDetails: {
+          id: packageId,
+          amount,
+          description: `LLC Formation - ${packageId} package`
+        }
+      });
+      
+    } catch (error) {
+      console.error("Error creating payment intent:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to create payment intent"
+      });
+    }
+  });
+  
   // NEXUS Master Control System Status
   app.get('/api/nexus/system-status', (req, res) => {
     const systemStatus = nexusMasterControl.getSystemStatus();

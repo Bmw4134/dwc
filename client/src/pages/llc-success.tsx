@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "wouter";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Download, Mail, Phone, Clock, Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function LLCSuccess() {
-  const [searchParams] = useSearchParams();
-  const paymentIntent = searchParams.get("payment_intent");
+  const [location] = useLocation();
   const [customerInfo, setCustomerInfo] = useState({
     email: "customer@example.com",
     packageType: "Professional LLC Formation"
   });
 
   useEffect(() => {
-    // In a real implementation, you would fetch payment details using the payment_intent ID
+    // Extract payment intent from URL search params
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentIntent = urlParams.get("payment_intent");
+    const clientSecret = urlParams.get("payment_intent_client_secret");
+    
     if (paymentIntent) {
       console.log("Payment successful:", paymentIntent);
+      // In production, you would fetch the actual payment details
     }
-  }, [paymentIntent]);
+  }, [location]);
 
   const nextSteps = [
     {
