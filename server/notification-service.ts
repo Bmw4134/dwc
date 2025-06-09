@@ -20,7 +20,7 @@ class NotificationService {
         );
         console.log('📱 Twilio SMS service initialized');
       } catch (error) {
-        console.warn('⚠️ Twilio initialization failed:', error.message);
+        console.warn('⚠️ Twilio initialization failed:', (error as Error).message);
       }
     } else {
       console.log('📱 Twilio credentials not configured - SMS notifications disabled');
@@ -42,7 +42,7 @@ class NotificationService {
       console.log(`📱 SMS sent successfully: ${result.sid}`);
       return true;
     } catch (error) {
-      console.error('📱 SMS send failed:', error.message);
+      console.error('📱 SMS send failed:', (error as Error).message);
       return false;
     }
   }

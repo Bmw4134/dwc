@@ -51,7 +51,7 @@ function getLicenseIncludes(licenseType: string) {
       'Training materials'
     ]
   };
-  return packages[licenseType] || packages['basic-license'];
+  return packages[licenseType as keyof typeof packages] || packages['basic-license'];
 }
 
 // Global state tracking
