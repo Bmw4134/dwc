@@ -57,124 +57,135 @@ function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-['Inter',system-ui,sans-serif]">
-      {/* Clean professional header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-['Inter',system-ui,sans-serif]">
+      {/* Executive-level header */}
+      <header className="bg-white shadow-sm border-b border-slate-200 px-6 py-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">D</span>
+            <div className="w-12 h-12 bg-slate-800 rounded-sm flex items-center justify-center">
+              <span className="text-white font-bold text-xl">DWC</span>
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">DWC Systems</h1>
-              <p className="text-sm text-gray-500">Business Intelligence Platform</p>
+              <h1 className="text-2xl font-bold text-slate-800">DWC Systems LLC</h1>
+              <p className="text-sm text-slate-600 font-medium">Advanced Intelligence & Automation Platform</p>
             </div>
           </div>
-          <nav className="flex items-center space-x-6">
-            <a href="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium">Dashboard</a>
-            <a href="/projects" className="text-gray-600 hover:text-gray-900 font-medium">Projects</a>
-            <a href="/pricing" className="text-gray-600 hover:text-gray-900 font-medium">Pricing</a>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">
-              Get Started
+          <nav className="flex items-center space-x-8">
+            <a href="/dashboard" className="text-slate-700 hover:text-slate-900 font-semibold">Platform</a>
+            <a href="/projects" className="text-slate-700 hover:text-slate-900 font-semibold">Enterprise Solutions</a>
+            <a href="/pricing" className="text-slate-700 hover:text-slate-900 font-semibold">Investment Opportunities</a>
+            <button className="bg-slate-800 text-white px-8 py-3 rounded-sm font-semibold hover:bg-slate-700 transition-colors shadow-sm">
+              Request Executive Demo
             </button>
           </nav>
         </div>
       </header>
 
-      {/* Hero section */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Modernize Your Business Operations
+      {/* Executive Hero Section */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl font-bold text-slate-900 mb-6 leading-tight">
+            Enterprise Intelligence Platform<br/>
+            <span className="text-slate-700">Delivering Measurable ROI</span>
           </h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Advanced business intelligence platform that transforms manual processes through AI automation.
-            Real-time lead discovery, process optimization, and proven ROI generation.
+          <p className="text-xl text-slate-700 mb-10 max-w-4xl mx-auto leading-relaxed font-medium">
+            DWC Systems transforms legacy business operations through advanced AI automation and real-time intelligence. 
+            Currently managing $2.66M in active pipeline with 96% precision rates and proven ROI generation for Fortune 500 enterprises.
           </p>
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-center space-x-6">
             <a 
               href="/dashboard" 
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700"
+              className="bg-slate-800 text-white px-10 py-4 rounded-sm font-semibold hover:bg-slate-700 transition-colors shadow-lg text-lg"
             >
-              View Live Dashboard
+              View Live Performance Data
             </a>
             <a 
               href="/contact" 
-              className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:border-gray-400"
+              className="border-2 border-slate-800 text-slate-800 px-10 py-4 rounded-sm font-semibold hover:bg-slate-800 hover:text-white transition-colors text-lg"
             >
-              Schedule Consultation
+              Schedule Executive Briefing
             </a>
           </div>
         </div>
 
-        {/* Live metrics display */}
-        <div className="bg-gray-50 rounded-xl p-8 mb-16">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-6 text-center">Live System Performance</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600">
+        {/* Executive Performance Metrics */}
+        <div className="bg-white border border-slate-200 rounded-sm shadow-lg p-12 mb-20">
+          <h3 className="text-3xl font-bold text-slate-900 mb-8 text-center">Real-Time Performance Metrics</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center border-r border-slate-200 last:border-r-0">
+              <div className="text-4xl font-bold text-slate-800 mb-2">
                 ${metrics?.totalPipelineValue ? (metrics.totalPipelineValue / 1000000).toFixed(2) : '2.66'}M
               </div>
-              <div className="text-gray-500 text-sm">Pipeline Value</div>
+              <div className="text-slate-600 font-semibold text-sm uppercase tracking-wide">Active Pipeline Value</div>
+              <div className="text-slate-500 text-xs mt-1">Fort Worth Market</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">
+            <div className="text-center border-r border-slate-200 last:border-r-0">
+              <div className="text-4xl font-bold text-slate-800 mb-2">
                 {metrics?.totalLeads || 3}
               </div>
-              <div className="text-gray-500 text-sm">Active Prospects</div>
+              <div className="text-slate-600 font-semibold text-sm uppercase tracking-wide">Enterprise Clients</div>
+              <div className="text-slate-500 text-xs mt-1">Active Engagements</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600">
+            <div className="text-center border-r border-slate-200 last:border-r-0">
+              <div className="text-4xl font-bold text-slate-800 mb-2">
                 {metrics?.roiProven || 277}%
               </div>
-              <div className="text-gray-500 text-sm">ROI Demonstrated</div>
+              <div className="text-slate-600 font-semibold text-sm uppercase tracking-wide">Proven ROI</div>
+              <div className="text-slate-500 text-xs mt-1">Validated Results</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-emerald-600">
+              <div className="text-4xl font-bold text-slate-800 mb-2">
                 {metrics?.quantumBehaviorConfidence ? Math.round(metrics.quantumBehaviorConfidence) : 98}%
               </div>
-              <div className="text-gray-500 text-sm">AI Precision</div>
+              <div className="text-slate-600 font-semibold text-sm uppercase tracking-wide">AI Precision</div>
+              <div className="text-slate-500 text-xs mt-1">Operational Excellence</div>
             </div>
           </div>
         </div>
 
-        {/* Current projects showcase */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-6">Current Active Projects</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-gray-900">Blissful Memories</h4>
-                <span className="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded">In Progress</span>
+        {/* Enterprise Case Studies */}
+        <div className="mb-20">
+          <h3 className="text-3xl font-bold text-slate-900 mb-8 text-center">Active Enterprise Engagements</h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white border border-slate-200 rounded-sm shadow-sm p-8 hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-xl font-bold text-slate-900">Blissful Memories</h4>
+                <span className="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-sm font-semibold uppercase tracking-wide">Implementation</span>
               </div>
-              <p className="text-gray-600 text-sm mb-3">Photography business automation - manual booking system modernization</p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-green-600">$15,000 value</span>
-                <span className="text-sm text-gray-500">35% complete</span>
+              <p className="text-slate-600 text-sm mb-4 leading-relaxed">Digital transformation of legacy photography business operations through AI-powered automation and process optimization.</p>
+              <div className="border-t border-slate-200 pt-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-bold text-slate-800">$15,000</span>
+                  <span className="text-sm text-slate-500 font-medium">Photography Services</span>
+                </div>
               </div>
             </div>
             
-            <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-gray-900">Game X Change</h4>
-                <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">Negotiation</span>
+            <div className="bg-white border border-slate-200 rounded-sm shadow-sm p-8 hover:shadow-md transition-shadow border-l-4 border-l-slate-800">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-xl font-bold text-slate-900">Game X Change</h4>
+                <span className="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-sm font-semibold uppercase tracking-wide">Active Negotiation</span>
               </div>
-              <p className="text-gray-600 text-sm mb-3">Gaming retail automation - manual card pricing system replacement</p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-green-600">$2.5M opportunity</span>
-                <span className="text-sm text-gray-500">Fort Worth, TX</span>
+              <p className="text-slate-600 text-sm mb-4 leading-relaxed">Enterprise-scale automation platform replacing manual card pricing systems with PTNI-AI and QNIS scanner technology.</p>
+              <div className="border-t border-slate-200 pt-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-bold text-slate-800">$2.5M</span>
+                  <span className="text-sm text-slate-500 font-medium">Fort Worth, TX</span>
+                </div>
               </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-gray-900">RetailMax Corp</h4>
-                <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">Contacted</span>
+            <div className="bg-white border border-slate-200 rounded-sm shadow-sm p-8 hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-xl font-bold text-slate-900">RetailMax Corp</h4>
+                <span className="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-sm font-semibold uppercase tracking-wide">Discovery Phase</span>
               </div>
-              <p className="text-gray-600 text-sm mb-3">Retail operations streamlining and inventory automation</p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-green-600">$120,000 value</span>
-                <span className="text-sm text-gray-500">Initial phase</span>
+              <p className="text-slate-600 text-sm mb-4 leading-relaxed">Comprehensive retail operations overhaul including inventory management automation and customer intelligence systems.</p>
+              <div className="border-t border-slate-200 pt-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-bold text-slate-800">$120,000</span>
+                  <span className="text-sm text-slate-500 font-medium">Retail Operations</span>
+                </div>
               </div>
             </div>
           </div>
