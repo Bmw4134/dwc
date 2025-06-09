@@ -1228,6 +1228,9 @@ function FinalApp() {
       }}>
         Powered by Quantum AI Intelligence & NEXUS Automation Technology
       </div>
+      
+      {/* DWC Command Control Interface */}
+      <DWCCommandInterface isDarkMode={isDarkMode} />
     </div>
   );
 }
