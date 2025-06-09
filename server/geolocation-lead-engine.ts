@@ -47,9 +47,9 @@ class GeolocationLeadEngine {
       {
         id: 'gamexchange-001',
         businessName: 'Game X Change',
-        address: '1234 Main St, Austin, TX 78701',
-        latitude: 30.2672,
-        longitude: -97.7431,
+        address: 'Wilshire Blvd, Burleson, TX 76028',
+        latitude: 32.5421,
+        longitude: -97.3208,
         industry: 'Gaming Retail',
         manualProcesses: [
           {

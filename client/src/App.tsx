@@ -111,8 +111,8 @@ function LandingPage() {
           marginBottom: '32px',
           lineHeight: '1.6'
         }}>
-          Professional LLC formation services and quantum business intelligence platform. 
-          Real-time lead generation, advanced analytics, and complete business automation suite.
+          QNIS/PTNI business modernization platform that transforms legacy operations through AI automation. 
+          Real-time geolocation lead discovery, manual process elimination, and proven ROI generation.
         </p>
 
         <div style={{
@@ -288,59 +288,21 @@ function LLCSuccessPage() {
   );
 }
 
+import { GeolocationLeadMap } from '@/components/geolocation-lead-map';
+
 function DashboardPage() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e40af 100%)',
-      color: 'white',
-      padding: '40px 20px',
-      textAlign: 'center'
-    }}>
-      <h1 style={{ fontSize: '3rem', marginBottom: '20px' }}>Live Dashboard</h1>
-      <div style={{
-        background: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: '16px',
-        padding: '32px',
-        marginBottom: '32px',
-        maxWidth: '800px',
-        margin: '0 auto'
-      }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '24px'
-        }}>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>$2.66M</div>
-            <div>Pipeline Value</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>4</div>
-            <div>Active Leads</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>277%</div>
-            <div>ROI Proven</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#10b981' }}>98%</div>
-            <div>AI Confidence</div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-blue-800 text-white">
+      <div className="container mx-auto px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+            QNIS/PTNI Intelligence Platform
+          </h1>
+          <p className="text-slate-300">Real-time business modernization and lead discovery system</p>
         </div>
+        
+        <GeolocationLeadMap />
       </div>
-      <a href="/" style={{
-        display: 'inline-block',
-        background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: '1.1rem',
-        padding: '12px 32px',
-        borderRadius: '12px',
-        textDecoration: 'none'
-      }}>
-        Return Home
-      </a>
     </div>
   );
 }
