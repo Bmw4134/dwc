@@ -14,6 +14,7 @@ import { quantumDOMSimulator } from "./quantum-dom-simulator";
 import { comprehensiveTestSuite } from "./comprehensive-test-suite";
 import { qnisMasterCore } from "./qnis-master-core";
 import { qnisBehaviorSimulator } from "./qnis-behavior-simulator";
+import { dwcCommandModule } from "./dwc-command-module";
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -729,6 +730,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
         requiredKeys: realisticDataEngine.getRequiredAPIKeys()
       });
     }
+  });
+
+  // DWC Command Module Endpoints
+  app.post('/api/dwc/command', (req, res) => {
+    const { type, command, parameters, priority } = req.body;
+    
+    const submittedCommand = dwcCommandModule.submitCommand({
+      type,
+      command,
+      parameters,
+      priority
+    });
+    
+    res.json({
+      success: true,
+      commandId: submittedCommand.id,
+      status: submittedCommand.status,
+      message: `Command ${command} submitted successfully`
+    });
+  });
+
+  app.get('/api/dwc/status', (req, res) => {
+    const controlInterface = dwcCommandModule.getControlInterface();
+    const metrics = dwcCommandModule.getSystemMetrics();
+    
+    res.json({
+      success: true,
+      data: {
+        ...controlInterface,
+        metrics
+      }
+    });
+  });
+
+  app.get('/api/dwc/history', (req, res) => {
+    const history = dwcCommandModule.getExecutionHistory();
+    
+    res.json({
+      success: true,
+      data: history
+    });
+  });
+
+  app.post('/api/dwc/emergency-stop', (req, res) => {
+    const emergencyCommand = dwcCommandModule.submitCommand({
+      type: 'CONTROL',
+      command: 'EMERGENCY_STOP',
+      priority: 'CRITICAL'
+    });
+    
+    res.json({
+      success: true,
+      message: 'Emergency stop activated',
+      commandId: emergencyCommand.id
+    });
   });
 
   // Quantum DOM Exception Simulation

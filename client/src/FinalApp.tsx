@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { DWCCommandInterface } from './components/dwc-command-interface';
 
 interface DashboardMetrics {
   totalLeads: number;
