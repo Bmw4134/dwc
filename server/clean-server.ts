@@ -1,19 +1,15 @@
 import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Authentication credentials
-const users: Record<string, { password: string; role: string }> = {
+const users = {
   watson: { password: 'dwc2025', role: 'CEO' },
   admin: { password: 'qnis2025', role: 'Admin' },
   dion: { password: 'nexus2025', role: 'Director' }
@@ -60,17 +56,17 @@ app.get('/api/system/status', (req, res) => {
 
 // Serve main page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Dashboard page
 app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'clean-dashboard.html'));
+  res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
 // Catch all
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
