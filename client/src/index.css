@@ -2,379 +2,132 @@
 @tailwind components;
 @tailwind utilities;
 
-/* QNIS/PTNI Premium Dashboard v3.0 - Force Cache Refresh */
+@layer base {
+  :root {
+    --background: 210 11% 98%;
+    --foreground: 210 11% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 11% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 11% 15%;
+    --primary: 210 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 11% 96%;
+    --secondary-foreground: 210 11% 15%;
+    --muted: 210 11% 96%;
+    --muted-foreground: 210 11% 45%;
+    --accent: 210 11% 96%;
+    --accent-foreground: 210 11% 15%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 11% 90%;
+    --input: 210 11% 90%;
+    --ring: 210 100% 50%;
+    --radius: 0.5rem;
+  }
 
-/* Enhanced iframe compatibility for Replit preview */
-html, body {
+  .dark {
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
+    --card: 222 84% 5%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 84% 5%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 210 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* DWC Systems Custom Styles */
+.dwc-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
+}
+
+.dwc-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dwc-glow {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  .mobile-full {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 1rem !important;
+  }
+  
+  .mobile-stack {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem !important;
+  }
+  
+  .mobile-p-2 {
+    padding: 0.5rem !important;
+  }
+}
+
+/* Responsive Grid */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .responsive-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Ensure iframe compatibility */
+html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
 }
 
-/* Custom scrollbar for premium look */
-::-webkit-scrollbar {
-  width: 8px;
+/* Loading animation */
+@keyframes dwc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.3);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgb(16, 185, 129), rgb(6, 182, 212));
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgb(5, 150, 105), rgb(8, 145, 178));
-}
-
-body.iframe-mode {
-  /* Specific styles for iframe embedding */
-  overflow: auto !important;
-  position: relative !important;
-  transform: none !important;
-}
-
-#root {
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
-}
-
-/* Force visibility in iframe environments */
-.iframe-mode #root {
-  visibility: visible !important;
-  opacity: 1 !important;
-  display: block !important;
-}
-
-/* Ensure content renders properly in constrained iframe */
-.iframe-mode .min-h-screen {
-  min-height: 100vh !important;
-}
-
-/* Fix for any potential z-index issues in iframe */
-.iframe-mode * {
-  position: relative;
-  z-index: auto;
-}
-
-/* Quantum-Inspired Micro-Interactions & Loading Animations */
-
-/* Quantum Particle Float */
-@keyframes quantum-float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) scale(1);
-    opacity: 0.6;
-  }
-  25% {
-    transform: translateY(-15px) translateX(5px) scale(1.1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateY(-8px) translateX(-3px) scale(0.9);
-    opacity: 1;
-  }
-  75% {
-    transform: translateY(-20px) translateX(8px) scale(1.05);
-    opacity: 0.7;
-  }
-}
-
-/* Quantum Wave Pulse */
-@keyframes quantum-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.8;
-    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0.3);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 0 20px rgba(16, 185, 129, 0);
-  }
-}
-
-/* Quantum Shimmer Effect */
-@keyframes quantum-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-/* Matrix-Style Data Flow */
-@keyframes data-flow {
-  0% {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh);
-    opacity: 0;
-  }
-}
-
-/* Holographic Card Hover */
-@keyframes holographic {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Quantum Loading Spinner */
-@keyframes quantum-spin {
-  0% {
-    transform: rotate(0deg) scale(1);
-    border-radius: 50%;
-  }
-  25% {
-    transform: rotate(90deg) scale(1.1);
-    border-radius: 30%;
-  }
-  50% {
-    transform: rotate(180deg) scale(1);
-    border-radius: 50%;
-  }
-  75% {
-    transform: rotate(270deg) scale(0.9);
-    border-radius: 70%;
-  }
-  100% {
-    transform: rotate(360deg) scale(1);
-    border-radius: 50%;
-  }
-}
-
-/* Neural Network Connection Lines */
-@keyframes neural-connect {
-  0%, 100% {
-    stroke-dashoffset: 100;
-    opacity: 0.3;
-  }
-  50% {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
-}
-
-/* Fade-in with Stagger */
-@keyframes stagger-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Quantum Glitch Effect */
-@keyframes quantum-glitch {
-  0%, 90%, 100% {
-    transform: translateX(0);
-    filter: hue-rotate(0deg);
-  }
-  10% {
-    transform: translateX(-2px);
-    filter: hue-rotate(90deg);
-  }
-  20% {
-    transform: translateX(2px);
-    filter: hue-rotate(180deg);
-  }
-  30% {
-    transform: translateX(-1px);
-    filter: hue-rotate(270deg);
-  }
-  40% {
-    transform: translateX(1px);
-    filter: hue-rotate(360deg);
-  }
-}
-
-/* Utility Classes */
-.animate-quantum-float {
-  animation: quantum-float 8s ease-in-out infinite;
-}
-
-.animate-quantum-pulse {
-  animation: quantum-pulse 2s ease-in-out infinite;
-}
-
-.animate-quantum-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  background-size: 200% 100%;
-  animation: quantum-shimmer 2s infinite;
-}
-
-.animate-data-flow {
-  animation: data-flow 3s linear infinite;
-}
-
-.animate-holographic {
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 25%, #667eea 50%, #764ba2 75%, #667eea 100%);
-  background-size: 200% 200%;
-  animation: holographic 3s ease infinite;
-}
-
-.animate-quantum-spin {
-  animation: quantum-spin 2s ease-in-out infinite;
-}
-
-.animate-neural-connect {
-  stroke-dasharray: 100;
-  animation: neural-connect 2s ease-in-out infinite;
-}
-
-.animate-stagger-1 {
-  animation: stagger-fade-in 0.6s ease-out 0.1s both;
-}
-
-.animate-stagger-2 {
-  animation: stagger-fade-in 0.6s ease-out 0.2s both;
-}
-
-.animate-stagger-3 {
-  animation: stagger-fade-in 0.6s ease-out 0.3s both;
-}
-
-.animate-stagger-4 {
-  animation: stagger-fade-in 0.6s ease-out 0.4s both;
-}
-
-.animate-quantum-glitch {
-  animation: quantum-glitch 0.3s ease-in-out;
-}
-
-/* Hover Micro-Interactions */
-.quantum-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
-}
-
-.quantum-card:hover {
-  transform: translateY(-8px) rotateX(5deg) rotateY(5deg);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 
-              0 0 30px rgba(16, 185, 129, 0.3);
-}
-
-.quantum-button {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.quantum-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
-}
-
-.quantum-button:hover::before {
-  left: 100%;
-}
-
-.quantum-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* Loading States */
-.quantum-loader {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(16, 185, 129, 0.1);
-  border-left: 4px solid #10b981;
-  border-radius: 50%;
-  animation: quantum-spin 1s linear infinite;
-}
-
-.quantum-skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: quantum-shimmer 1.5s infinite;
-}
-
-/* Responsive Micro-Interactions */
-@media (hover: hover) {
-  .hover-lift:hover {
-    transform: translateY(-2px);
-    transition: transform 0.2s ease;
-  }
-  
-  .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-    transition: box-shadow 0.3s ease;
-  }
-}
-
-/* Reduced Motion Preferences */
-@media (prefers-reduced-motion: reduce) {
-  .animate-quantum-float,
-  .animate-quantum-pulse,
-  .animate-quantum-shimmer,
-  .animate-data-flow,
-  .animate-holographic,
-  .animate-quantum-spin,
-  .animate-neural-connect {
-    animation: none;
-  }
-  
-  .quantum-card:hover {
-    transform: none;
-  }
-}
-
-:root {
-  --background: 210 11% 98%;
-  --foreground: 210 11% 15%;
-  --muted: 210 11% 93%;
-  --muted-foreground: 210 11% 45%;
-  --border: 210 11% 85%;
-  --ring: 210 100% 50%;
-  --primary: 210 100% 50%;
-  --primary-foreground: 0 0% 100%;
-}
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
+.dwc-loading {
+  animation: dwc-pulse 2s infinite;
 }
