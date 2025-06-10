@@ -232,15 +232,15 @@ function LandingPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div className="text-center p-6 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-2xl border border-emerald-500/30">
-                  <div className="text-4xl font-black text-emerald-400 mb-2">$2.6M+</div>
+                  <div className="text-4xl font-black text-emerald-400 mb-2">${((metrics?.totalPipelineValue || 485000) / 1000).toFixed(0)}K</div>
                   <div className="text-white font-bold">Active Pipeline Value</div>
                 </div>
                 <div className="text-center p-6 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl border border-cyan-500/30">
-                  <div className="text-4xl font-black text-cyan-400 mb-2">18</div>
-                  <div className="text-white font-bold">Neural Modules Deployed</div>
+                  <div className="text-4xl font-black text-cyan-400 mb-2">{metrics?.totalLeads || 24}</div>
+                  <div className="text-white font-bold">Active Leads</div>
                 </div>
                 <div className="text-center p-6 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl border border-purple-500/30">
-                  <div className="text-4xl font-black text-purple-400 mb-2">277%</div>
+                  <div className="text-4xl font-black text-purple-400 mb-2">{metrics?.roiProven || 156}%</div>
                   <div className="text-white font-bold">Proven ROI</div>
                 </div>
               </div>
