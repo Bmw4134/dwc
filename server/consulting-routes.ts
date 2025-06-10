@@ -23,6 +23,8 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
     const { username, password, securityLevel } = req.body;
     
     const quantumCredentials = {
+      'watson': { password: 'dwc2025', role: 'master_admin', clearance: 15 },
+      'dion': { password: 'nexus2025', role: 'master_admin', clearance: 15 },
       'admin': { password: 'qnis2025', role: 'quantum_administrator', clearance: 5 },
       'intelligence': { password: 'ptni2025', role: 'intelligence_operator', clearance: 4 },
       'analyst': { password: 'neural2025', role: 'data_analyst', clearance: 3 },
@@ -52,8 +54,28 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
   app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     
-    if (username === 'admin' && password === 'qnis2025') {
-      res.json({ success: true, token: 'qnis-ptni-authenticated', user: { username: 'admin', role: 'administrator' } });
+    const credentials = {
+      'watson': { password: 'dwc2025', role: 'master_admin', clearance: 15, access: 'unlimited' },
+      'dion': { password: 'nexus2025', role: 'master_admin', clearance: 15, access: 'unlimited' },
+      'admin': { password: 'qnis2025', role: 'administrator', clearance: 10, access: 'full' },
+      'intelligence': { password: 'ptni2025', role: 'intelligence_analyst', clearance: 8, access: 'analytics' },
+      'analyst': { password: 'neural2025', role: 'data_analyst', clearance: 6, access: 'data' },
+      'viewer': { password: 'view2025', role: 'viewer', clearance: 3, access: 'read' }
+    };
+    
+    const user = credentials[username as keyof typeof credentials];
+    if (user && user.password === password) {
+      res.json({ 
+        success: true, 
+        token: 'qnis-ptni-authenticated', 
+        user: { 
+          username, 
+          role: user.role, 
+          clearance: user.clearance,
+          access: user.access,
+          modules: (username === 'watson' || username === 'dion') ? ['all'] : ['dashboard', 'analytics', 'intelligence', 'automation']
+        } 
+      });
     } else {
       res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
@@ -117,7 +139,10 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
         <div id="error" class="error"></div>
         
         <div class="creds">
-            <strong>QNIS/PTNI Access Levels:</strong><br>
+            <strong>DWC Systems Access Levels:</strong><br>
+            <div style="margin: 0.5rem 0; color: #10b981; font-weight: bold;">
+                <strong style="color: #10b981;">Watson Master:</strong> watson / dwc2025 (Full Control)<br>
+            </div>
             <div style="margin: 0.5rem 0;">
                 <strong>Quantum Admin:</strong> admin / qnis2025<br>
                 <strong>Intelligence Op:</strong> intelligence / ptni2025<br>
