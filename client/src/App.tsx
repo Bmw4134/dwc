@@ -3,6 +3,7 @@ import { Switch, Route, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { QuantumDataFlow } from "./components/QuantumDataFlow";
 import { QuantumMetrics } from "./components/QuantumMetrics";
+import { QuantumLoadingScreen } from "./components/QuantumLoadingScreen";
 
 interface DashboardMetrics {
   totalLeads: number;
