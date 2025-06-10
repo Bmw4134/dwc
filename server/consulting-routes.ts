@@ -142,6 +142,7 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
             <strong>DWC Systems Access Levels:</strong><br>
             <div style="margin: 0.5rem 0; color: #10b981; font-weight: bold;">
                 <strong style="color: #10b981;">Watson Master:</strong> watson / dwc2025 (Full Control)<br>
+                <strong style="color: #06b6d4;">DION Master:</strong> dion / nexus2025 (Full Control)<br>
             </div>
             <div style="margin: 0.5rem 0;">
                 <strong>Quantum Admin:</strong> admin / qnis2025<br>

@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import Home from "@/pages/Home";
 import AdminDashboard from "@/pages/AdminDashboard";
 import LoginPage from "@/pages/LoginPage";
+import WatsonMasterConsole from "@/pages/WatsonMasterConsole";
+import DionMasterConsole from "@/pages/DionMasterConsole";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +32,9 @@ function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/admin" component={AdminDashboard} />
         <Route path="/qnis" component={AdminDashboard} />
+        <Route path="/watson" component={WatsonMasterConsole} />
+        <Route path="/dion" component={DionMasterConsole} />
+        <Route path="/nexus" component={DionMasterConsole} />
         <Route>
           <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
             <div className="text-center">

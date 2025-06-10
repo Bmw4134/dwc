@@ -25,7 +25,14 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (data.success) {
-        window.location.href = '/admin';
+        // Route to appropriate console based on user role
+        if (credentials.username === 'watson') {
+          window.location.href = '/watson';
+        } else if (credentials.username === 'dion') {
+          window.location.href = '/dion';
+        } else {
+          window.location.href = '/admin';
+        }
       } else {
         setError(data.message || 'Invalid credentials');
       }
