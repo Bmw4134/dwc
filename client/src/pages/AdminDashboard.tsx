@@ -8,8 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Settings, Plus, Edit, Trash2, Users, DollarSign, TrendingUp, Activity } from "lucide-react";
+import { Settings, Plus, Edit, Trash2, Users, DollarSign, TrendingUp, Activity, BarChart3, PieChart, LineChart, Target, Zap, Eye, ChevronDown, Filter, Calendar, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AdvancedCharts } from "@/components/AdvancedCharts";
 
 interface Lead {
   id?: string;
@@ -29,6 +30,13 @@ interface MetricsData {
   systemHealth: number;
   monthlyRevenue: number;
   realLeads: Lead[];
+  chartData: {
+    revenue: Array<{month: string, value: number, growth: number}>;
+    leadSources: Array<{source: string, count: number, value: number, color: string}>;
+    conversionFunnel: Array<{stage: string, count: number, rate: number}>;
+    industryBreakdown: Array<{industry: string, value: number, leads: number}>;
+    performanceMetrics: Array<{metric: string, current: number, target: number, trend: number}>;
+  };
 }
 
 export default function AdminDashboard() {
@@ -45,6 +53,10 @@ export default function AdminDashboard() {
     contact: "",
     notes: ""
   });
+
+  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [drilldownView, setDrilldownView] = useState<string>("overview");
+  const [timeRange, setTimeRange] = useState("30d");
 
   const { data: metrics, isLoading } = useQuery<MetricsData>({
     queryKey: ['/api/dashboard/metrics'],
@@ -113,6 +125,15 @@ export default function AdminDashboard() {
   const handleUpdateLead = () => {
     if (!editingLead) return;
     updateLeadMutation.mutate(editingLead);
+  };
+
+  const handleDrillDown = (metric: string, details: any) => {
+    setSelectedMetric(metric);
+    console.log(`Drilling down into ${metric}:`, details);
+    toast({
+      title: "Analytics Deep Dive",
+      description: `Analyzing ${metric} data with ${Array.isArray(details) ? details.length : 1} data points`,
+    });
   };
 
   if (isLoading) {

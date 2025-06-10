@@ -344,7 +344,46 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
             status: 'Initial Contact',
             industry: 'Logistics & Supply Chain'
           }
-        ]
+        ],
+        chartData: {
+          revenue: [
+            { month: "Jan", value: 28500, growth: 12.5 },
+            { month: "Feb", value: 31200, growth: 9.5 },
+            { month: "Mar", value: 29800, growth: -4.5 },
+            { month: "Apr", value: 34100, growth: 14.4 },
+            { month: "May", value: 32500, growth: -4.7 },
+            { month: "Jun", value: 38200, growth: 17.5 }
+          ],
+          leadSources: [
+            { source: "LinkedIn", count: 8, value: 185000, color: "#0077b5" },
+            { source: "Referrals", count: 6, value: 145000, color: "#10b981" },
+            { source: "Cold Email", count: 4, value: 95000, color: "#f59e0b" },
+            { source: "Partnerships", count: 3, value: 85000, color: "#8b5cf6" },
+            { source: "Website", count: 3, value: 75000, color: "#06b6d4" }
+          ],
+          conversionFunnel: [
+            { stage: "Initial Contact", count: 24, rate: 100 },
+            { stage: "Discovery Call", count: 18, rate: 75 },
+            { stage: "Proposal Sent", count: 12, rate: 50 },
+            { stage: "Technical Demo", count: 9, rate: 37.5 },
+            { stage: "Contract Review", count: 6, rate: 25 },
+            { stage: "Closed Won", count: 3, rate: 12.5 }
+          ],
+          industryBreakdown: [
+            { industry: "Financial Services", value: 165000, leads: 5 },
+            { industry: "Manufacturing", value: 125000, leads: 4 },
+            { industry: "Healthcare", value: 105000, leads: 6 },
+            { industry: "Logistics", value: 95000, leads: 3 },
+            { industry: "Technology", value: 75000, leads: 4 },
+            { industry: "Education", value: 45000, leads: 2 }
+          ],
+          performanceMetrics: [
+            { metric: "Monthly Revenue", current: 32500, target: 35000, trend: 8.5 },
+            { metric: "Lead Conversion", current: 12.5, target: 15, trend: 2.1 },
+            { metric: "Pipeline Value", current: 485000, target: 500000, trend: 15.8 },
+            { metric: "Client Satisfaction", current: 96, target: 95, trend: 4.2 }
+          ]
+        }
       };
       
       console.log('📊 QNIS/PTNI Dashboard metrics delivered');
