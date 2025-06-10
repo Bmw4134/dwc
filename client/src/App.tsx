@@ -29,8 +29,10 @@ function LandingPage() {
   const [showQuantumLoader, setShowQuantumLoader] = useState(true);
 
   const { data: metrics, isLoading, error } = useQuery<DashboardMetrics>({
-    queryKey: ['/api/dashboard-metrics'],
+    queryKey: ['/api/dashboard/metrics'],
     refetchInterval: 5000,
+    retry: 3,
+    retryDelay: 1000,
   });
 
   useEffect(() => {
@@ -73,11 +75,15 @@ function LandingPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-600 mb-4">Connection Error</p>
-          <button onClick={() => window.location.reload()} className="bg-blue-600 text-white px-6 py-2 rounded-lg">
-            Retry
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 flex items-center justify-center">
+        <div className="text-center p-8 bg-black/50 backdrop-blur-sm rounded-lg border border-red-500/20">
+          <div className="text-red-400 text-xl mb-4">QNIS/PTNI Connection Error</div>
+          <p className="text-gray-300 mb-6">Unable to connect to intelligence servers</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-8 py-3 rounded-lg font-semibold hover:from-emerald-600 hover:to-cyan-600 transition-all duration-200"
+          >
+            Retry Connection
           </button>
         </div>
       </div>
