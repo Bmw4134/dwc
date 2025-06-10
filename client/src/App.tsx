@@ -1,6 +1,7 @@
 import { Switch, Route } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
+import DiagnosticOverlay from "@/components/diagnostic_overlay";
 import Home from "@/pages/Home";
 import AdminDashboard from "@/pages/AdminDashboard";
 import LoginPage from "@/pages/LoginPage";
@@ -27,6 +28,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <DiagnosticOverlay />
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/login" component={LoginPage} />
