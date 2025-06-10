@@ -54,7 +54,8 @@ export default function WatsonMasterConsole() {
   const { data: systemMetrics, isLoading: metricsLoading } = useQuery<SystemMetrics>({
     queryKey: ['/api/watson/system-metrics'],
     queryFn: () => fetch('/api/dashboard/metrics').then(res => res.json()),
-    refetchInterval: 5000,
+    refetchInterval: 30000, // Reduce polling frequency
+    retry: false,
   });
 
   const { data: modules, isLoading: modulesLoading } = useQuery<SystemModule[]>({

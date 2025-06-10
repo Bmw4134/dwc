@@ -25,13 +25,16 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (data.success) {
-        // Simple redirect based on username - no localStorage to avoid loops
+        // Use history.pushState to avoid full page reload
         if (credentials.username === 'watson') {
-          window.location.replace('/watson');
+          window.history.pushState({}, '', '/watson');
+          window.location.reload();
         } else if (credentials.username === 'dion') {
-          window.location.replace('/dion');
+          window.history.pushState({}, '', '/dion');
+          window.location.reload();
         } else {
-          window.location.replace('/admin');
+          window.history.pushState({}, '', '/admin');
+          window.location.reload();
         }
       } else {
         setError(data.message || 'Invalid credentials');
