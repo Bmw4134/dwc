@@ -1,7 +1,13 @@
-import { BrowserRouter } from "react-router-dom";
+import { Switch, Route } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
-import { AppRouter } from "@/router/AppRouter";
+import Home from "@/pages/Home";
+import AdminDashboard from "@/pages/AdminDashboard";
+import LoginPage from "@/pages/LoginPage";
+import WatsonMasterConsole from "@/pages/WatsonMasterConsole";
+import DionMasterConsole from "@/pages/DionMasterConsole";
+import Settings from "@/pages/Settings";
+import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,10 +29,18 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AppRouter />
-        <Toaster />
-      </BrowserRouter>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/admin" component={AdminDashboard} />
+        <Route path="/qnis" component={AdminDashboard} />
+        <Route path="/watson" component={WatsonMasterConsole} />
+        <Route path="/dion" component={DionMasterConsole} />
+        <Route path="/nexus" component={DionMasterConsole} />
+        <Route path="/settings" component={Settings} />
+        <Route component={NotFound} />
+      </Switch>
+      <Toaster />
     </QueryClientProvider>
   );
 }

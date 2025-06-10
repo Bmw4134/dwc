@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Lock, User, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { navigateTo } from "@/components/HashRouter";
 
 export default function LoginPage() {
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
@@ -29,13 +28,13 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (data.success) {
-        // Navigate using React Router
+        // Direct navigation without loops
         if (credentials.username === 'watson') {
-          navigate('/watson');
+          window.location.href = '/watson';
         } else if (credentials.username === 'dion') {
-          navigate('/dion');
+          window.location.href = '/dion';
         } else {
-          navigate('/admin');
+          window.location.href = '/admin';
         }
         
         toast({
