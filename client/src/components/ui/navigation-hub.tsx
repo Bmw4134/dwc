@@ -64,6 +64,7 @@ export function NavigationHub() {
   const [location] = useLocation();
 
   const isActiveSection = (path: string) => {
+    if (!location) return false;
     return location === path || location.startsWith(path);
   };
 
