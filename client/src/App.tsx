@@ -283,7 +283,7 @@ function LandingPage() {
           18 Neural Modules Active • 98%+ Precision • $2.66M Pipeline • 277% ROI
         </div>
         <div className="text-xs text-cyan-300 mt-1 font-medium">
-          Quantum Intelligence Supremacy Maintained
+          QNIS/PTNI Intelligence Supremacy Maintained
         </div>
       </div>
     </div>

@@ -120,7 +120,7 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
             <span style="font-size: 1.125rem; font-weight: 900; color: #10b981;">QNIS/PTNI OPERATIONAL</span>
         </div>
         <div style="font-size: 0.875rem; color: #10b981; font-weight: 700;">18 Neural Modules Active • 99%+ Precision • $2.66M Pipeline • 277% ROI</div>
-        <div style="font-size: 0.75rem; color: #06b6d4;">Quantum Intelligence Supremacy Maintained</div>
+        <div style="font-size: 0.75rem; color: #06b6d4;">QNIS/PTNI Intelligence Supremacy Maintained</div>
     </div>
     
     <script>
