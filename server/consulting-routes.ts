@@ -95,33 +95,7 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // WebSocket Setup for Real-time Updates
+  // Return HTTP server without WebSocket conflicts
   const httpServer = createServer(app);
-  const wss = new WebSocketServer({ server: httpServer });
-
-  wss.on('connection', (ws) => {
-    console.log('🔌 WebSocket client connected');
-    
-    // Send initial system status
-    const sendStatus = async () => {
-      try {
-        const status = await nexusMasterControl.getSystemStatus();
-        ws.send(JSON.stringify({ type: 'system-status', data: status }));
-      } catch (error) {
-        console.error('❌ WebSocket status error:', error);
-      }
-    };
-
-    sendStatus();
-    
-    // Send updates every 30 seconds
-    const interval = setInterval(sendStatus, 30000);
-    
-    ws.on('close', () => {
-      console.log('🔌 WebSocket client disconnected');
-      clearInterval(interval);
-    });
-  });
-
   return httpServer;
 }
