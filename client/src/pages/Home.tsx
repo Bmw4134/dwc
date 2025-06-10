@@ -50,15 +50,23 @@ export default function Home() {
                 {user?.firstName || 'Administrator'}
               </span>
             </div>
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-              onClick={() => window.location.href = '/api/logout'}
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
+            <div className="flex space-x-3">
+              <Button 
+                onClick={() => window.location.href = '/login'}
+                className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
+              >
+                Sign In
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                onClick={() => window.location.href = '/api/logout'}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -151,7 +159,10 @@ export default function Home() {
               <CardDescription className="text-center text-white/70">
                 Advanced neural pattern recognition and business intelligence analysis powered by quantum algorithms and real-time data processing.
               </CardDescription>
-              <Button className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0">
+              <Button 
+                onClick={() => window.location.href = '/login'}
+                className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0"
+              >
                 Access Analytics
               </Button>
             </CardContent>
@@ -166,7 +177,10 @@ export default function Home() {
               <CardDescription className="text-center text-white/70">
                 Enterprise-grade business process automation with 94% efficiency rating and seamless integration across multiple platforms.
               </CardDescription>
-              <Button className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-0">
+              <Button 
+                onClick={() => window.location.href = '/login'}
+                className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-0"
+              >
                 Deploy Automation
               </Button>
             </CardContent>
@@ -181,7 +195,10 @@ export default function Home() {
               <CardDescription className="text-center text-white/70">
                 AI-powered lead generation and qualification system with predictive analytics and automated nurturing sequences.
               </CardDescription>
-              <Button className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white border-0">
+              <Button 
+                onClick={() => window.location.href = '/login'}
+                className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white border-0"
+              >
                 Generate Leads
               </Button>
             </CardContent>
