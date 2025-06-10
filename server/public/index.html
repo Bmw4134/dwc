@@ -1,443 +1,378 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DWC Systems LLC - QNIS/PTNI Intelligence Platform</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100vh;
-      overflow-x: hidden;
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
-    }
-    #root {
-      width: 100%;
-      min-height: 100vh;
-      display: block;
-      position: relative;
-    }
-    .container {
-      max-width: 80rem;
-      margin: 0 auto;
-      padding: 1.5rem;
-    }
-    .header {
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 1rem 0;
-    }
-    .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 80rem;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .logo {
-      width: 3rem;
-      height: 3rem;
-      background: linear-gradient(45deg, #10b981, #06b6d4);
-      border-radius: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      font-size: 1.25rem;
-    }
-    .brand-text h1 {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: white;
-      margin: 0;
-    }
-    .brand-text p {
-      color: #34d399;
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin: 0;
-    }
-    .status-badge {
-      padding: 0.25rem 0.75rem;
-      background: rgba(16, 185, 129, 0.2);
-      border-radius: 9999px;
-      color: #34d399;
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-    .main-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-      padding: 3rem 0;
-    }
-    .info-section h2 {
-      font-size: 3rem;
-      font-weight: bold;
-      color: white;
-      margin-bottom: 1rem;
-      line-height: 1.1;
-    }
-    .info-section p {
-      font-size: 1.25rem;
-      color: #22d3ee;
-      margin-bottom: 2rem;
-      line-height: 1.5;
-    }
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-    .metric-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 0.5rem;
-      padding: 1.5rem;
-    }
-    .metric-icon {
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
-    }
-    .metric-card h3 {
-      color: white;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-    }
-    .metric-card p {
-      color: #d1d5db;
-      font-size: 0.875rem;
-      margin: 0;
-    }
-    .login-section {
-      max-width: 28rem;
-      margin: 0 auto;
-    }
-    .login-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 0.5rem;
-    }
-    .login-header {
-      text-align: center;
-      padding: 1.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .login-header h3 {
-      font-size: 1.5rem;
-      color: white;
-      font-weight: bold;
-      margin: 0 0 0.5rem 0;
-    }
-    .login-header p {
-      color: #d1d5db;
-      margin: 0;
-    }
-    .login-form {
-      padding: 1.5rem;
-    }
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    .form-group label {
-      display: block;
-      color: white;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 0.75rem;
-      border-radius: 0.25rem;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      font-size: 1rem;
-    }
-    .form-group input::placeholder {
-      color: #9ca3af;
-    }
-    .form-group input:focus {
-      outline: none;
-      border-color: #10b981;
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-    }
-    .login-btn {
-      width: 100%;
-      padding: 0.75rem;
-      border-radius: 0.25rem;
-      background: linear-gradient(45deg, #10b981, #06b6d4);
-      border: none;
-      color: white;
-      font-weight: 500;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-bottom: 1.5rem;
-    }
-    .login-btn:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-    .quick-access {
-      text-align: center;
-      margin-bottom: 0.75rem;
-    }
-    .quick-access p {
-      color: #9ca3af;
-      font-size: 0.875rem;
-      margin-bottom: 0.75rem;
-    }
-    .quick-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-    }
-    .quick-btn {
-      padding: 0.5rem;
-      border-radius: 0.25rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .quick-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    .toast {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      color: white;
-      z-index: 1000;
-      font-weight: 500;
-    }
-    .toast.success {
-      background: #10b981;
-    }
-    .toast.error {
-      background: #ef4444;
-    }
-    @media (max-width: 1024px) {
-      .main-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-      .info-section h2 {
-        font-size: 2.5rem;
-      }
-    }
-    @media (max-width: 640px) {
-      .metrics-grid {
-        grid-template-columns: 1fr;
-      }
-      .info-section h2 {
-        font-size: 2rem;
-      }
-      .info-section p {
-        font-size: 1.125rem;
-      }
-      .container {
-        padding: 1rem;
-      }
-      .header-content {
-        padding: 0 1rem;
-      }
-      .quick-buttons {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWC Systems LLC - QNIS/PTNI Intelligence Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 400px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        .logo p {
+            color: #888;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .error {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .error-expandable {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #ff4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .error-expandable:hover {
+            background: rgba(255, 68, 68, 0.15);
+        }
+        .error-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .error-title {
+            color: #ff4444;
+            font-weight: 600;
+            flex: 1;
+        }
+        .error-toggle {
+            color: #ff4444;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+        .error-toggle.expanded {
+            transform: rotate(180deg);
+        }
+        .error-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 68, 68, 0.3);
+            display: none;
+        }
+        .error-details.show {
+            display: block;
+        }
+        .error-context {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #ccc;
+        }
+        .error-suggestion {
+            background: rgba(255, 170, 0, 0.1);
+            border-left: 3px solid #ffaa00;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .error-suggestion h4 {
+            color: #ffaa00;
+            margin-bottom: 5px;
+        }
+        .retry-btn {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .retry-btn:hover {
+            background: #00cc6a;
+        }
+        .credentials {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 4px solid #00ff88;
+        }
+        .credentials h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .cred-item {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #ccc;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            color: #00ff88;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 20px;
+                padding: 30px 25px;
+            }
+            .logo h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="root">
-    <div class="header">
-      <div class="header-content">
-        <div class="logo-section">
-          <div class="logo">D</div>
-          <div class="brand-text">
+    <div class="container">
+        <div class="logo">
             <h1>DWC Systems LLC</h1>
             <p>QNIS/PTNI Intelligence Platform</p>
-          </div>
         </div>
-        <div class="status-badge">OPERATIONAL</div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="main-content">
-        <div class="info-section">
-          <h2>Enterprise Intelligence Platform</h2>
-          <p>Advanced AI-powered business analytics with quantum-level automation for institutional-grade decision making.</p>
-          
-          <div class="metrics-grid">
-            <div class="metric-card">
-              <div class="metric-icon">📈</div>
-              <h3>24 Active Leads</h3>
-              <p>Real-time pipeline management</p>
-            </div>
-            <div class="metric-card">
-              <div class="metric-icon">💰</div>
-              <h3>$485K Pipeline</h3>
-              <p>Verified business value</p>
-            </div>
-            <div class="metric-card">
-              <div class="metric-icon">🛡️</div>
-              <h3>98.2% Uptime</h3>
-              <p>Enterprise reliability</p>
-            </div>
-            <div class="metric-card">
-              <div class="metric-icon">🤖</div>
-              <h3>18 AI Modules</h3>
-              <p>Autonomous intelligence</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="login-section">
-          <div class="login-card">
-            <div class="login-header">
-              <h3>Access Platform</h3>
-              <p>Secure login to DWC Systems intelligence dashboard</p>
-            </div>
-            <div class="login-form">
-              <form id="loginForm">
-                <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" id="username" placeholder="Enter username" required>
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="password" id="password" placeholder="Enter password" required>
-                </div>
-                <button type="submit" class="login-btn">🔒 Access Platform</button>
-              </form>
-              
-              <div class="quick-access">
-                <p>Quick Access Options</p>
-                <div class="quick-buttons">
-                  <button class="quick-btn" onclick="quickLogin('watson', 'dwc2025')">Master Admin</button>
-                  <button class="quick-btn" onclick="quickLogin('dion', 'nexus2025')">Level 15</button>
-                  <button class="quick-btn" onclick="quickLogin('admin', 'qnis2025')">Administrator</button>
-                  <button class="quick-btn" onclick="quickLogin('intelligence', 'ptni2025')">Intelligence</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Simple and reliable login system
-    document.addEventListener('DOMContentLoaded', function() {
-      const loginForm = document.getElementById('loginForm');
-      if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-      }
-    });
-
-    async function handleLogin(e) {
-      e.preventDefault();
-      
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-      
-      if (!username || !password) {
-        showToast('Please enter both username and password', 'error');
-        return;
-      }
-
-      // Show loading state
-      const submitBtn = document.querySelector('.login-btn');
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = 'Logging in...';
-      submitBtn.disabled = true;
-
-      try {
-        const response = await fetch('/api/auth/quantum-login', {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({ username, password })
-        });
-
-        const data = await response.json();
         
-        if (response.ok && data.success) {
-          showToast('Login successful! Redirecting...', 'success');
-          // Small delay for user feedback, then redirect
-          setTimeout(() => {
-            window.location.href = '/admin';
-          }, 500);
-        } else {
-          showToast(data.message || 'Invalid credentials', 'error');
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn" id="loginBtn">Access Platform</button>
+            
+            <div class="loading" id="loading">Authenticating...</div>
+            <div class="error" id="error"></div>
+            <div id="errorContainer"></div>
+        </form>
+        
+        <div class="credentials">
+            <h3>Available Credentials</h3>
+            <div class="cred-item"><strong>CEO:</strong> watson / dwc2025</div>
+            <div class="cred-item"><strong>Admin:</strong> admin / qnis2025</div>
+            <div class="cred-item"><strong>Director:</strong> dion / nexus2025</div>
+        </div>
+    </div>
+
+    <script>
+        // Error handling with expandable context
+        function createExpandableError(title, message, context, suggestions) {
+            const errorId = 'error-' + Date.now();
+            const errorContainer = document.getElementById('errorContainer');
+            
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-expandable';
+            errorElement.innerHTML = `
+                <div class="error-header" onclick="toggleErrorDetails('${errorId}')">
+                    <div class="error-title">${title}</div>
+                    <div class="error-toggle" id="${errorId}-toggle">▼</div>
+                </div>
+                <div class="error-details" id="${errorId}-details">
+                    <p><strong>Error:</strong> ${message}</p>
+                    <div class="error-context">
+                        <strong>Technical Details:</strong><br>
+                        ${context}
+                    </div>
+                    ${suggestions.map(suggestion => `
+                        <div class="error-suggestion">
+                            <h4>${suggestion.title}</h4>
+                            <p>${suggestion.description}</p>
+                        </div>
+                    `).join('')}
+                    <button class="retry-btn" onclick="retryLogin('${errorId}')">
+                        Retry Login
+                    </button>
+                </div>
+            `;
+            
+            errorContainer.appendChild(errorElement);
+            return errorId;
         }
-      } catch (error) {
-        console.error('Login error:', error);
-        showToast('Connection error. Please try again.', 'error');
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
-    }
 
-    function quickLogin(username, password) {
-      document.getElementById('username').value = username;
-      document.getElementById('password').value = password;
-      // Auto-submit after quick login
-      setTimeout(() => {
-        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
-      }, 100);
-    }
-
-    function showToast(message, type) {
-      // Remove existing toasts
-      const existingToasts = document.querySelectorAll('.toast');
-      existingToasts.forEach(toast => toast.remove());
-      
-      const toast = document.createElement('div');
-      toast.className = 'toast ' + type;
-      toast.textContent = message;
-      
-      document.body.appendChild(toast);
-      
-      setTimeout(() => {
-        if (toast && toast.parentNode) {
-          toast.remove();
+        function toggleErrorDetails(errorId) {
+            const details = document.getElementById(errorId + '-details');
+            const toggle = document.getElementById(errorId + '-toggle');
+            
+            if (details.classList.contains('show')) {
+                details.classList.remove('show');
+                toggle.classList.remove('expanded');
+            } else {
+                details.classList.add('show');
+                toggle.classList.add('expanded');
+            }
         }
-      }, 4000);
-    }
 
-    console.log('DWC Systems LLC Platform loaded - Ready for login');
-  </script>
+        function retryLogin(errorId) {
+            const errorElement = document.querySelector(`[onclick*="${errorId}"]`).closest('.error-expandable');
+            errorElement.remove();
+            clearErrors();
+        }
+
+        function clearErrors() {
+            document.getElementById('errorContainer').innerHTML = '';
+            document.getElementById('error').textContent = '';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            
+            loginBtn.disabled = true;
+            loading.style.display = 'block';
+            clearErrors();
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = '/dashboard';
+                } else {
+                    // Authentication failed - show expandable error
+                    createExpandableError(
+                        'Authentication Failed',
+                        data.message || 'Invalid credentials provided',
+                        `Username: ${username}\nAttempt Time: ${new Date().toISOString()}\nEndpoint: /api/auth/login\nResponse Status: ${response.status}`,
+                        [
+                            {
+                                title: 'Check Credentials',
+                                description: 'Verify that username and password are correct. Use the credentials shown below the login form.'
+                            },
+                            {
+                                title: 'Available Users',
+                                description: 'CEO: watson/dwc2025, Admin: admin/qnis2025, Director: dion/nexus2025'
+                            },
+                            {
+                                title: 'Case Sensitivity',
+                                description: 'Ensure username and password are entered exactly as shown, including correct capitalization.'
+                            }
+                        ]
+                    );
+                    error.textContent = 'Authentication failed';
+                }
+            } catch (err) {
+                console.error('Login error:', err);
+                
+                createExpandableError(
+                    'Connection Error',
+                    err.message,
+                    `Endpoint: /api/auth/login\nTimestamp: ${new Date().toISOString()}\nUser Agent: ${navigator.userAgent}\nError Type: ${err.name}\nNetwork Status: ${navigator.onLine ? 'Online' : 'Offline'}`,
+                    [
+                        {
+                            title: 'Check Internet Connection',
+                            description: 'Verify your internet connection is stable and working properly.'
+                        },
+                        {
+                            title: 'Server Availability',
+                            description: 'The authentication server may be temporarily unavailable. Wait a moment and try again.'
+                        },
+                        {
+                            title: 'Browser Issues',
+                            description: 'Try refreshing the page or clearing your browser cache if the problem persists.'
+                        }
+                    ]
+                );
+                
+                error.textContent = 'Connection error occurred';
+            } finally {
+                loginBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

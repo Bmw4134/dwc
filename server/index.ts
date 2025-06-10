@@ -101,6 +101,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));
 });
 
+// Serve login page explicitly
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));
+});
+
 // Dashboard page
 app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'clean-dashboard.html'));
