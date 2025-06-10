@@ -85,12 +85,13 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="flex space-x-3">
-                  <Button 
-                    onClick={() => window.location.href = '/admin'}
-                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
-                  >
-                    Access Dashboard
-                  </Button>
+                  <Link href="/admin">
+                    <Button 
+                      className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
+                    >
+                      Exec Dashboard
+                    </Button>
+                  </Link>
                   <Button 
                     variant="outline" 
                     size="sm"
@@ -115,13 +116,14 @@ export default function Home() {
                 </span>
               </div>
               <div className="flex flex-col space-y-2">
-                <Button 
-                  onClick={() => window.location.href = '/admin'}
-                  className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 w-full"
-                  size="sm"
-                >
-                  Access Dashboard
-                </Button>
+                <Link href="/admin">
+                  <Button 
+                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 w-full"
+                    size="sm"
+                  >
+                    Exec Dashboard
+                  </Button>
+                </Link>
                 <Button 
                   variant="outline" 
                   size="sm"
@@ -233,12 +235,13 @@ export default function Home() {
               <CardDescription className="text-center text-white/70">
                 Advanced neural pattern recognition and business intelligence analysis powered by quantum algorithms and real-time data processing.
               </CardDescription>
-              <Button 
-                onClick={() => window.location.href = '/admin'}
-                className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0"
-              >
-                Access Analytics
-              </Button>
+              <Link href="/admin">
+                <Button 
+                  className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0"
+                >
+                  Exec Dashboard
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
