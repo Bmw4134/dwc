@@ -4,6 +4,7 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TrelloCanvas } from "./components/TrelloCanvas";
 import { SubscriptionPlans } from "./components/SubscriptionPlans";
+import LLCFormationPage from "./pages/LLCFormationPage";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -73,6 +74,7 @@ function LandingPage() {
           <nav className="flex items-center space-x-8">
             <a href="/dashboard" className="text-slate-700 hover:text-slate-900 font-semibold">Platform</a>
             <a href="/projects" className="text-slate-700 hover:text-slate-900 font-semibold">Enterprise Solutions</a>
+            <a href="/llc-formation" className="text-slate-700 hover:text-slate-900 font-semibold">LLC Formation</a>
             <a href="/pricing" className="text-slate-700 hover:text-slate-900 font-semibold">Investment Opportunities</a>
             <button className="bg-slate-800 text-white px-8 py-3 rounded-sm font-semibold hover:bg-slate-700 transition-colors shadow-sm">
               Request Executive Demo
