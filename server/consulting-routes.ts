@@ -18,6 +18,114 @@ import fs from "fs";
 
 export async function registerConsultingRoutes(app: Express): Promise<Server> {
   
+  // Simple login system for QNIS/PTNI
+  app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    
+    // QNIS/PTNI admin credentials
+    if (username === 'admin' && password === 'qnis2025') {
+      res.json({ success: true, token: 'qnis-ptni-authenticated', user: { username: 'admin', role: 'administrator' } });
+    } else {
+      res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+  });
+
+  // Login page
+  app.get('/login', (req, res) => {
+    res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QNIS/PTNI Login</title>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e40af 100%); 
+            color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; 
+        }
+        .login-card { 
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 24px; 
+            padding: 3rem; width: 400px; text-align: center; 
+        }
+        .logo { 
+            width: 80px; height: 80px; background: linear-gradient(135deg, #10b981, #06b6d4); 
+            border-radius: 20px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; 
+            font-size: 2.5rem; font-weight: 900; 
+        }
+        h1 { font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
+        p { color: #10b981; font-weight: 700; margin-bottom: 2rem; }
+        input { 
+            width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid rgba(255, 255, 255, 0.3); 
+            border-radius: 12px; background: rgba(255, 255, 255, 0.1); color: white; font-size: 1rem; 
+        }
+        input::placeholder { color: rgba(255, 255, 255, 0.6); }
+        button { 
+            width: 100%; padding: 1rem; background: linear-gradient(135deg, #10b981, #06b6d4); 
+            color: white; border: none; border-radius: 12px; font-weight: 900; font-size: 1.1rem; cursor: pointer; 
+        }
+        button:hover { transform: scale(1.02); }
+        .error { color: #ef4444; margin-top: 1rem; }
+        .creds { 
+            background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); 
+            border-radius: 12px; padding: 1rem; margin-top: 2rem; font-size: 0.9rem; 
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="logo">✓</div>
+        <h1>QNIS/PTNI</h1>
+        <p>Intelligence Platform Access</p>
+        
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Access Intelligence Platform</button>
+        </form>
+        
+        <div id="error" class="error"></div>
+        
+        <div class="creds">
+            <strong>Admin Access:</strong><br>
+            Username: admin<br>
+            Password: qnis2025
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error');
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('qnis-token', data.token);
+                    window.location.href = '/landing';
+                } else {
+                    errorDiv.textContent = data.message;
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Login failed. Please try again.';
+            }
+        });
+    </script>
+</body>
+</html>`);
+  });
+
   // Production-ready route for immediate frontend access
   app.get('/landing', (req, res) => {
     res.send(`<!DOCTYPE html>
