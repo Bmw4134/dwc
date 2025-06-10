@@ -1,3 +1,4 @@
+import React from "react";
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
@@ -35,6 +36,15 @@ function LandingPage() {
     refetchInterval: 30000,
     retry: 3
   });
+
+  // Force cache refresh for QNIS/PTNI dashboard v3.0
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-qnis-version', '3.0.0');
+    document.title = 'QNIS/PTNI Intelligence Platform - DWC Systems LLC';
+    // Clear all browser storage to force fresh load
+    localStorage.clear();
+    sessionStorage.clear();
+  }, []);
 
   // Handle loading state for iframe compatibility
   if (isLoading) {
