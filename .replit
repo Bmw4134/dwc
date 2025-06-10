@@ -8,7 +8,7 @@ packages = ["chromium", "unzip"]
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["sh", "-c", "gunicorn app_executive:app --bind 0.0.0.0:5000"]
+run = ["sh", "-c", "python3 run_server.py"]
 
 [[ports]]
 localPort = 5000
