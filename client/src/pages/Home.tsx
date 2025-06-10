@@ -137,12 +137,12 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-8">
+      <div className={`container mx-auto px-4 sm:px-6 py-8 ${!isDesktopMode ? 'pb-20' : ''}`}>
         <div className="mb-8">
-          <h2 className="text-4xl font-black text-white mb-3 tracking-tight">
+          <h2 className={`${isDesktopMode ? 'text-4xl' : 'text-2xl'} font-black text-white mb-3 tracking-tight`}>
             DWC Systems LLC Dashboard
           </h2>
-          <p className="text-xl text-cyan-300 font-semibold">
+          <p className={`${isDesktopMode ? 'text-xl' : 'text-lg'} text-cyan-300 font-semibold`}>
             Enterprise Intelligence & Business Automation Platform
           </p>
           <div className="flex items-center space-x-2 mt-2">
@@ -151,8 +151,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Key Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Key Metrics Grid - Adaptive Layout */}
+        <div className={`grid gap-4 mb-8 ${
+          isDesktopMode 
+            ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6' 
+            : 'grid-cols-1 sm:grid-cols-2 gap-4'
+        }`}>
           <Card className="bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10 transition-all">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -214,8 +218,12 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* DWC Systems LLC Feature Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* DWC Systems LLC Feature Cards - Adaptive Layout */}
+        <div className={`grid gap-4 mb-8 ${
+          isDesktopMode 
+            ? 'md:grid-cols-2 lg:grid-cols-3 gap-6' 
+            : 'grid-cols-1 gap-4'
+        }`}>
           <Card className="bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
             <CardHeader className="text-center">
               <Brain className="w-16 h-16 text-emerald-400 mx-auto mb-4 group-hover:scale-110 transition-transform" />
@@ -307,6 +315,9 @@ export default function Home() {
           </Card>
         </div>
       </div>
+      
+      {/* View Mode Toggle - Only visible on mobile devices */}
+      <ViewModeToggle />
     </div>
   );
 }

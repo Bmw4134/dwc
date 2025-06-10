@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useViewMode } from "@/hooks/useViewMode";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Settings, Plus, Edit, Trash2, Users, DollarSign, TrendingUp, Activity, BarChart3, PieChart, LineChart, Target, Zap, Eye, ChevronDown, Filter, Calendar, Globe } from "lucide-react";
+import { ViewModeToggle } from "@/components/ViewModeToggle";
+import { Settings, Plus, Edit, Trash2, Users, DollarSign, TrendingUp, Activity, BarChart3, PieChart, LineChart, Target, Zap, Eye, ChevronDown, Filter, Calendar, Globe, Menu, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AdvancedCharts } from "@/components/AdvancedCharts";
 import { DrillDownModal } from "@/components/DrillDownModal";
@@ -43,8 +45,10 @@ interface MetricsData {
 export default function AdminDashboard() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { viewMode, isMobileDevice, isDesktopMode } = useViewMode();
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [isAddingLead, setIsAddingLead] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const [newLead, setNewLead] = useState<Lead>({
     name: "",
@@ -160,7 +164,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
       {/* Header */}
       <header className="bg-black/20 backdrop-blur-xl border-b border-white/10">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div className={`container mx-auto px-4 sm:px-6 py-4 ${isDesktopMode ? 'flex justify-between items-center' : 'block'}`}>
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg">
               <Settings className="w-7 h-7 text-white" />
@@ -462,6 +466,9 @@ export default function AdminDashboard() {
         metric={selectedMetric || ""}
         data={drilldownData}
       />
+
+      {/* View Mode Toggle */}
+      <ViewModeToggle />
     </div>
   );
 }
