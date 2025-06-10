@@ -90,6 +90,78 @@
             margin-top: 10px;
             text-align: center;
         }
+        .error-expandable {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #ff4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .error-expandable:hover {
+            background: rgba(255, 68, 68, 0.15);
+        }
+        .error-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .error-title {
+            color: #ff4444;
+            font-weight: 600;
+            flex: 1;
+        }
+        .error-toggle {
+            color: #ff4444;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+        .error-toggle.expanded {
+            transform: rotate(180deg);
+        }
+        .error-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 68, 68, 0.3);
+            display: none;
+        }
+        .error-details.show {
+            display: block;
+        }
+        .error-context {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #ccc;
+        }
+        .error-suggestion {
+            background: rgba(255, 170, 0, 0.1);
+            border-left: 3px solid #ffaa00;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .error-suggestion h4 {
+            color: #ffaa00;
+            margin-bottom: 5px;
+        }
+        .retry-btn {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .retry-btn:hover {
+            background: #00cc6a;
+        }
         .credentials {
             margin-top: 30px;
             padding: 20px;
@@ -147,6 +219,7 @@
             
             <div class="loading" id="loading">Authenticating...</div>
             <div class="error" id="error"></div>
+            <div id="errorContainer"></div>
         </form>
         
         <div class="credentials">
@@ -158,6 +231,64 @@
     </div>
 
     <script>
+        // Error handling with expandable context
+        function createExpandableError(title, message, context, suggestions) {
+            const errorId = 'error-' + Date.now();
+            const errorContainer = document.getElementById('errorContainer');
+            
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-expandable';
+            errorElement.innerHTML = `
+                <div class="error-header" onclick="toggleErrorDetails('${errorId}')">
+                    <div class="error-title">${title}</div>
+                    <div class="error-toggle" id="${errorId}-toggle">▼</div>
+                </div>
+                <div class="error-details" id="${errorId}-details">
+                    <p><strong>Error:</strong> ${message}</p>
+                    <div class="error-context">
+                        <strong>Technical Details:</strong><br>
+                        ${context}
+                    </div>
+                    ${suggestions.map(suggestion => `
+                        <div class="error-suggestion">
+                            <h4>${suggestion.title}</h4>
+                            <p>${suggestion.description}</p>
+                        </div>
+                    `).join('')}
+                    <button class="retry-btn" onclick="retryLogin('${errorId}')">
+                        Retry Login
+                    </button>
+                </div>
+            `;
+            
+            errorContainer.appendChild(errorElement);
+            return errorId;
+        }
+
+        function toggleErrorDetails(errorId) {
+            const details = document.getElementById(errorId + '-details');
+            const toggle = document.getElementById(errorId + '-toggle');
+            
+            if (details.classList.contains('show')) {
+                details.classList.remove('show');
+                toggle.classList.remove('expanded');
+            } else {
+                details.classList.add('show');
+                toggle.classList.add('expanded');
+            }
+        }
+
+        function retryLogin(errorId) {
+            const errorElement = document.querySelector(`[onclick*="${errorId}"]`).closest('.error-expandable');
+            errorElement.remove();
+            clearErrors();
+        }
+
+        function clearErrors() {
+            document.getElementById('errorContainer').innerHTML = '';
+            document.getElementById('error').textContent = '';
+        }
+
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -169,7 +300,7 @@
             
             loginBtn.disabled = true;
             loading.style.display = 'block';
-            error.textContent = '';
+            clearErrors();
             
             try {
                 const response = await fetch('/api/auth/login', {
@@ -180,6 +311,10 @@
                     body: JSON.stringify({ username, password })
                 });
                 
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 
                 if (data.success) {
@@ -187,10 +322,52 @@
                     localStorage.setItem('user', JSON.stringify(data.user));
                     window.location.href = '/dashboard';
                 } else {
-                    error.textContent = data.message || 'Login failed';
+                    // Authentication failed - show expandable error
+                    createExpandableError(
+                        'Authentication Failed',
+                        data.message || 'Invalid credentials provided',
+                        `Username: ${username}\nAttempt Time: ${new Date().toISOString()}\nEndpoint: /api/auth/login\nResponse Status: ${response.status}`,
+                        [
+                            {
+                                title: 'Check Credentials',
+                                description: 'Verify that username and password are correct. Use the credentials shown below the login form.'
+                            },
+                            {
+                                title: 'Available Users',
+                                description: 'CEO: watson/dwc2025, Admin: admin/qnis2025, Director: dion/nexus2025'
+                            },
+                            {
+                                title: 'Case Sensitivity',
+                                description: 'Ensure username and password are entered exactly as shown, including correct capitalization.'
+                            }
+                        ]
+                    );
+                    error.textContent = 'Authentication failed';
                 }
             } catch (err) {
-                error.textContent = 'Connection error. Please try again.';
+                console.error('Login error:', err);
+                
+                createExpandableError(
+                    'Connection Error',
+                    err.message,
+                    `Endpoint: /api/auth/login\nTimestamp: ${new Date().toISOString()}\nUser Agent: ${navigator.userAgent}\nError Type: ${err.name}\nNetwork Status: ${navigator.onLine ? 'Online' : 'Offline'}`,
+                    [
+                        {
+                            title: 'Check Internet Connection',
+                            description: 'Verify your internet connection is stable and working properly.'
+                        },
+                        {
+                            title: 'Server Availability',
+                            description: 'The authentication server may be temporarily unavailable. Wait a moment and try again.'
+                        },
+                        {
+                            title: 'Browser Issues',
+                            description: 'Try refreshing the page or clearing your browser cache if the problem persists.'
+                        }
+                    ]
+                );
+                
+                error.textContent = 'Connection error occurred';
             } finally {
                 loginBtn.disabled = false;
                 loading.style.display = 'none';

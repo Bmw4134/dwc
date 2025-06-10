@@ -121,6 +121,78 @@
             text-align: center;
             margin: 20px 0;
         }
+        .error-expandable {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #ff4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .error-expandable:hover {
+            background: rgba(255, 68, 68, 0.15);
+        }
+        .error-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            gap: 10px;
+        }
+        .error-title {
+            color: #ff4444;
+            font-weight: 600;
+            flex: 1;
+        }
+        .error-toggle {
+            color: #ff4444;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+        .error-toggle.expanded {
+            transform: rotate(180deg);
+        }
+        .error-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 68, 68, 0.3);
+            display: none;
+        }
+        .error-details.show {
+            display: block;
+        }
+        .error-context {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #ccc;
+        }
+        .error-suggestion {
+            background: rgba(255, 170, 0, 0.1);
+            border-left: 3px solid #ffaa00;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .error-suggestion h4 {
+            color: #ffaa00;
+            margin-bottom: 5px;
+        }
+        .retry-btn {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .retry-btn:hover {
+            background: #00cc6a;
+        }
         
         @media (max-width: 768px) {
             .header {
@@ -154,6 +226,7 @@
     <div class="dashboard">
         <div class="loading" id="loading">Loading dashboard metrics...</div>
         <div class="error" id="error"></div>
+        <div id="errorContainer"></div>
         
         <div id="dashboardContent" style="display: none;">
             <div class="metrics-grid">
@@ -215,6 +288,29 @@
                     </div>
                 </div>
             </div>
+
+            <div class="section">
+                <h2>Error Context Testing</h2>
+                <p style="color: #ccc; margin-bottom: 20px;">Click any button below to see the one-click error context expansion feature in action:</p>
+                <div class="module-grid">
+                    <div class="module-item" onclick="testError('network')" style="cursor: pointer;">
+                        <span>Test Network Error</span>
+                        <span style="color: #ffaa00;">⚠</span>
+                    </div>
+                    <div class="module-item" onclick="testError('auth')" style="cursor: pointer;">
+                        <span>Test Auth Error</span>
+                        <span style="color: #ffaa00;">⚠</span>
+                    </div>
+                    <div class="module-item" onclick="testError('validation')" style="cursor: pointer;">
+                        <span>Test Validation Error</span>
+                        <span style="color: #ffaa00;">⚠</span>
+                    </div>
+                    <div class="module-item" onclick="testError('server')" style="cursor: pointer;">
+                        <span>Test Server Error</span>
+                        <span style="color: #ffaa00;">⚠</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -231,20 +327,83 @@
         // Display user info
         document.getElementById('userRole').textContent = `${user.role} - ${user.username}`;
 
-        // Load dashboard data
+        // Error handling with expandable context
+        function createExpandableError(title, message, context, suggestions) {
+            const errorId = 'error-' + Date.now();
+            const errorContainer = document.getElementById('errorContainer');
+            
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-expandable';
+            errorElement.innerHTML = `
+                <div class="error-header" onclick="toggleErrorDetails('${errorId}')">
+                    <div class="error-title">${title}</div>
+                    <div class="error-toggle" id="${errorId}-toggle">▼</div>
+                </div>
+                <div class="error-details" id="${errorId}-details">
+                    <p><strong>Error:</strong> ${message}</p>
+                    <div class="error-context">
+                        <strong>Technical Details:</strong><br>
+                        ${context}
+                    </div>
+                    ${suggestions.map(suggestion => `
+                        <div class="error-suggestion">
+                            <h4>${suggestion.title}</h4>
+                            <p>${suggestion.description}</p>
+                        </div>
+                    `).join('')}
+                    <button class="retry-btn" onclick="retryOperation('${errorId}')">
+                        Retry Operation
+                    </button>
+                </div>
+            `;
+            
+            errorContainer.appendChild(errorElement);
+            return errorId;
+        }
+
+        function toggleErrorDetails(errorId) {
+            const details = document.getElementById(errorId + '-details');
+            const toggle = document.getElementById(errorId + '-toggle');
+            
+            if (details.classList.contains('show')) {
+                details.classList.remove('show');
+                toggle.classList.remove('expanded');
+            } else {
+                details.classList.add('show');
+                toggle.classList.add('expanded');
+            }
+        }
+
+        function retryOperation(errorId) {
+            const errorElement = document.querySelector(`[onclick*="${errorId}"]`).closest('.error-expandable');
+            errorElement.remove();
+            loadDashboard();
+        }
+
+        function clearErrors() {
+            document.getElementById('errorContainer').innerHTML = '';
+            document.getElementById('error').textContent = '';
+        }
+
+        // Load dashboard data with enhanced error handling
         async function loadDashboard() {
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
             const content = document.getElementById('dashboardContent');
             
             loading.style.display = 'block';
-            error.textContent = '';
+            clearErrors();
             
             try {
                 const response = await fetch('/api/dashboard/metrics');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 
-                if (response.ok) {
+                if (data.totalLeads !== undefined) {
                     // Update metrics
                     document.getElementById('totalLeads').textContent = data.totalLeads;
                     document.getElementById('activeProposals').textContent = data.activeProposals;
@@ -255,12 +414,102 @@
                     
                     content.style.display = 'block';
                 } else {
-                    throw new Error('Failed to load dashboard data');
+                    throw new Error('Invalid data format received from server');
                 }
             } catch (err) {
-                error.textContent = 'Failed to load dashboard. Please refresh the page.';
+                console.error('Dashboard load error:', err);
+                
+                createExpandableError(
+                    'Dashboard Loading Failed',
+                    err.message,
+                    `Endpoint: /api/dashboard/metrics\nTimestamp: ${new Date().toISOString()}\nUser Agent: ${navigator.userAgent}\nError Type: ${err.name}`,
+                    [
+                        {
+                            title: 'Check Network Connection',
+                            description: 'Verify your internet connection is stable and the server is accessible.'
+                        },
+                        {
+                            title: 'Server Status',
+                            description: 'The server may be temporarily unavailable. Try refreshing in a few moments.'
+                        },
+                        {
+                            title: 'Clear Browser Cache',
+                            description: 'Clear your browser cache and cookies, then try accessing the dashboard again.'
+                        }
+                    ]
+                );
+                
+                error.textContent = 'Dashboard temporarily unavailable';
             } finally {
                 loading.style.display = 'none';
+            }
+        }
+
+        // Error testing function
+        async function testError(errorType) {
+            try {
+                const response = await fetch(`/api/test/error/${errorType}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    const errorContextMap = {
+                        network: {
+                            title: 'Network Communication Failed',
+                            context: `Error Type: ${errorType}\nHTTP Status: ${response.status}\nEndpoint: /api/test/error/${errorType}\nTimestamp: ${new Date().toISOString()}\nUser Agent: ${navigator.userAgent}\nConnection: ${navigator.connection ? navigator.connection.effectiveType : 'Unknown'}`,
+                            suggestions: [
+                                { title: 'Check Network Stability', description: 'Verify your internet connection is stable and has sufficient bandwidth.' },
+                                { title: 'Firewall Configuration', description: 'Ensure your firewall or proxy settings allow connections to the server.' },
+                                { title: 'Server Load', description: 'The server may be experiencing high load. Try again in a few moments.' }
+                            ]
+                        },
+                        auth: {
+                            title: 'Authentication Session Expired',
+                            context: `Error Type: ${errorType}\nHTTP Status: ${response.status}\nCurrent User: ${JSON.parse(localStorage.getItem('user') || '{}').username}\nToken Age: ${Date.now() - parseInt(localStorage.getItem('authToken')?.split('-')[1] || '0')}ms\nTimestamp: ${new Date().toISOString()}`,
+                            suggestions: [
+                                { title: 'Re-authenticate', description: 'Your session has expired. Please log out and log back in to continue.' },
+                                { title: 'Check Token Storage', description: 'Verify that browser storage is working correctly and not being cleared.' },
+                                { title: 'Session Duration', description: 'Sessions expire after extended inactivity for security purposes.' }
+                            ]
+                        },
+                        validation: {
+                            title: 'Data Validation Error',
+                            context: `Error Type: ${errorType}\nHTTP Status: ${response.status}\nRequest Method: GET\nValidation Failed: Input parameters\nTimestamp: ${new Date().toISOString()}\nBrowser: ${navigator.userAgent}`,
+                            suggestions: [
+                                { title: 'Check Input Format', description: 'Ensure all required fields are provided in the correct format.' },
+                                { title: 'Data Types', description: 'Verify that numeric fields contain numbers and text fields contain valid strings.' },
+                                { title: 'Required Fields', description: 'All mandatory fields must be completed before submission.' }
+                            ]
+                        },
+                        server: {
+                            title: 'Server Service Unavailable',
+                            context: `Error Type: ${errorType}\nHTTP Status: ${response.status}\nService: Database Connection\nAttempt Time: ${new Date().toISOString()}\nServer Uptime: ${performance.now()}ms\nMemory Usage: ${navigator.deviceMemory ? navigator.deviceMemory + 'GB' : 'Unknown'}`,
+                            suggestions: [
+                                { title: 'Service Recovery', description: 'The server is attempting to restore database connectivity automatically.' },
+                                { title: 'Retry Mechanism', description: 'The system will retry the operation. Please wait a moment before trying again.' },
+                                { title: 'Contact Support', description: 'If the issue persists, contact technical support with the error details above.' }
+                            ]
+                        }
+                    };
+                    
+                    const errorInfo = errorContextMap[errorType];
+                    createExpandableError(
+                        errorInfo.title,
+                        data.message || 'An error occurred during the operation',
+                        errorInfo.context,
+                        errorInfo.suggestions
+                    );
+                }
+            } catch (err) {
+                createExpandableError(
+                    'Unexpected Error',
+                    err.message,
+                    `Error Type: ${errorType} test\nException: ${err.name}\nStack: ${err.stack || 'Not available'}\nTimestamp: ${new Date().toISOString()}\nBrowser: ${navigator.userAgent}`,
+                    [
+                        { title: 'JavaScript Error', description: 'An unexpected JavaScript error occurred during error testing.' },
+                        { title: 'Browser Compatibility', description: 'Ensure you are using a modern, supported browser version.' },
+                        { title: 'Console Logs', description: 'Check browser developer console for additional error details.' }
+                    ]
+                );
             }
         }
 

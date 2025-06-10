@@ -58,6 +58,44 @@ app.get('/api/system/status', (req, res) => {
   });
 });
 
+// Error testing endpoint for demonstrating error context expansion
+app.get('/api/test/error/:type', (req, res) => {
+  const errorType = req.params.type;
+  
+  switch (errorType) {
+    case 'network':
+      res.status(500).json({ 
+        success: false, 
+        message: 'Network timeout occurred',
+        details: 'Connection to external service failed after 30 seconds'
+      });
+      break;
+    case 'auth':
+      res.status(401).json({ 
+        success: false, 
+        message: 'Authentication token expired',
+        details: 'Session has expired and requires re-authentication'
+      });
+      break;
+    case 'validation':
+      res.status(400).json({ 
+        success: false, 
+        message: 'Invalid data format provided',
+        details: 'Required fields missing or incorrect data types'
+      });
+      break;
+    case 'server':
+      res.status(503).json({ 
+        success: false, 
+        message: 'Service temporarily unavailable',
+        details: 'Database connection lost, attempting reconnection'
+      });
+      break;
+    default:
+      res.json({ success: true, message: 'No error simulation requested' });
+  }
+});
+
 // Serve main page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));
