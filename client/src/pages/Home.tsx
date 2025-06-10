@@ -1,9 +1,12 @@
 import { useAuth } from "@/hooks/useAuth";
+import { useViewMode } from "@/hooks/useViewMode";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, LogOut, User, TrendingUp, Activity, Users, DollarSign, Zap } from "lucide-react";
+import { ViewModeToggle } from "@/components/ViewModeToggle";
+import { Brain, LogOut, User, TrendingUp, Activity, Users, DollarSign, Zap, Menu, X } from "lucide-react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 interface MetricsData {
   totalLeads: number;
@@ -22,6 +25,8 @@ interface UserData {
 
 export default function Home() {
   const { user } = useAuth() as { user: UserData };
+  const { viewMode, isMobileDevice, isDesktopMode } = useViewMode();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const { data: metrics, isLoading } = useQuery<MetricsData>({
     queryKey: ['/api/dashboard/metrics'],
@@ -32,43 +37,103 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
       <header className="bg-black/20 backdrop-blur-xl border-b border-white/10">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg">
-              <Brain className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-black text-white tracking-tight">
-                QNIS/PTNI Intelligence
-              </h1>
-              <p className="text-emerald-400 font-bold text-sm">Powered by DWC Systems LLC</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3 bg-white/5 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/10">
-              <User className="w-4 h-4 text-emerald-400" />
-              <span className="text-white font-medium">
-                {user?.firstName || 'Administrator'}
-              </span>
-            </div>
-            <div className="flex space-x-3">
-              <Button 
-                onClick={() => window.location.href = '/login'}
-                className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
-              >
-                Sign In
-              </Button>
-              <Button 
-                variant="outline" 
+        <div className={`container mx-auto px-4 sm:px-6 py-4 ${isDesktopMode ? 'flex justify-between items-center' : 'block'}`}>
+          {/* Mobile Header Layout */}
+          {!isDesktopMode && (
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-lg flex items-center justify-center shadow-lg">
+                  <Brain className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-black text-white tracking-tight">
+                    QNIS/PTNI
+                  </h1>
+                  <p className="text-emerald-400 font-bold text-xs">DWC Systems LLC</p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
                 size="sm"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                onClick={() => window.location.href = '/api/logout'}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-white hover:bg-white/10"
               >
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </Button>
             </div>
-          </div>
+          )}
+
+          {/* Desktop Header Layout */}
+          {isDesktopMode && (
+            <>
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg">
+                  <Brain className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-black text-white tracking-tight">
+                    QNIS/PTNI Intelligence
+                  </h1>
+                  <p className="text-emerald-400 font-bold text-sm">Powered by DWC Systems LLC</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3 bg-white/5 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/10">
+                  <User className="w-4 h-4 text-emerald-400" />
+                  <span className="text-white font-medium">
+                    {user?.firstName || 'Administrator'}
+                  </span>
+                </div>
+                <div className="flex space-x-3">
+                  <Button 
+                    onClick={() => window.location.href = '/login'}
+                    className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
+                  >
+                    Sign In
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                    onClick={() => window.location.href = '/api/logout'}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Mobile Menu */}
+          {!isDesktopMode && mobileMenuOpen && (
+            <div className="bg-black/30 backdrop-blur-lg border border-white/10 rounded-lg p-4 space-y-3">
+              <div className="flex items-center space-x-3 bg-white/5 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/10">
+                <User className="w-4 h-4 text-emerald-400" />
+                <span className="text-white font-medium text-sm">
+                  {user?.firstName || 'Administrator'}
+                </span>
+              </div>
+              <div className="flex flex-col space-y-2">
+                <Button 
+                  onClick={() => window.location.href = '/login'}
+                  className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 w-full"
+                  size="sm"
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 w-full"
+                  onClick={() => window.location.href = '/api/logout'}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
