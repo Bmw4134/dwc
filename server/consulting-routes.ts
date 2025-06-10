@@ -430,7 +430,27 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // NEXUS System Status API
+  // NEXUS System Status API (JSON endpoint)
+  app.get('/api/nexus/status', async (req, res) => {
+    try {
+      const status = {
+        activeModules: 18,
+        systemHealth: 98.5,
+        automationRate: 95.6,
+        nexusIntelligence: 'OPERATIONAL',
+        watsonSync: true,
+        pionexSync: true,
+        runtimeKernel: true,
+        lastSync: new Date().toISOString()
+      };
+      res.json(status);
+    } catch (error) {
+      console.error('❌ NEXUS status error:', error);
+      res.status(500).json({ error: 'Failed to fetch NEXUS status' });
+    }
+  });
+
+  // NEXUS System Status API (detailed)
   app.get('/api/nexus/system-status', async (req, res) => {
     try {
       const status = {
@@ -504,7 +524,9 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
       <div class="metric"><strong>System Latency:</strong> 12ms</div>
       <div class="metric"><strong>Memory Usage:</strong> 64%</div>
       <div class="metric"><strong>Network Throughput:</strong> 2.4 Gbps</div>
-      <a href="/admin" style="color:#0f0;">← Back to Dashboard</a>
+      <div style="margin-top:20px;">
+        <a href="/admin" style="color:#0f0; text-decoration:none; padding:10px; background:#333; border:1px solid #0f0;">← Back to Dashboard</a>
+      </div>
       </body></html>
     `);
   });
@@ -520,7 +542,9 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
       <div class="lead"><strong>High Priority:</strong> Manufacturing Corp - $85K potential</div>
       <div class="lead"><strong>Medium Priority:</strong> Tech Startup - $45K potential</div>
       <div class="lead"><strong>Conversion Rate:</strong> 32.4%</div>
-      <a href="/admin" style="color:#0f0;">← Back to Dashboard</a>
+      <div style="margin-top:20px;">
+        <a href="/admin" style="color:#0f0; text-decoration:none; padding:10px; background:#333; border:1px solid #0f0;">← Back to Dashboard</a>
+      </div>
       </body></html>
     `);
   });
@@ -552,7 +576,9 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
       <div class="auto"><strong>Active Processes:</strong> 18</div>
       <div class="auto"><strong>Efficiency Gain:</strong> +340%</div>
       <div class="auto"><strong>Error Rate:</strong> 0.02%</div>
-      <a href="/admin" style="color:#0f0;">← Back to Dashboard</a>
+      <div style="margin-top:20px;">
+        <a href="/admin" style="color:#0f0; text-decoration:none; padding:10px; background:#333; border:1px solid #0f0;">← Back to Dashboard</a>
+      </div>
       </body></html>
     `);
   });
@@ -584,7 +610,9 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
       <div class="finance"><strong>Profit Margin:</strong> 34.7%</div>
       <div class="finance"><strong>Growth Rate:</strong> +18.9%</div>
       <div class="finance"><strong>Operating Costs:</strong> $1.56M</div>
-      <a href="/admin" style="color:#0f0;">← Back to Dashboard</a>
+      <div style="margin-top:20px;">
+        <a href="/admin" style="color:#0f0; text-decoration:none; padding:10px; background:#333; border:1px solid #0f0;">← Back to Dashboard</a>
+      </div>
       </body></html>
     `);
   });
