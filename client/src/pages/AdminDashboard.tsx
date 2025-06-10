@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Settings, Plus, Edit, Trash2, Users, DollarSign, TrendingUp, Activity, BarChart3, PieChart, LineChart, Target, Zap, Eye, ChevronDown, Filter, Calendar, Globe } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AdvancedCharts } from "@/components/AdvancedCharts";
+import { DrillDownModal } from "@/components/DrillDownModal";
 
 interface Lead {
   id?: string;
@@ -57,6 +58,8 @@ export default function AdminDashboard() {
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
   const [drilldownView, setDrilldownView] = useState<string>("overview");
   const [timeRange, setTimeRange] = useState("30d");
+  const [drilldownData, setDrilldownData] = useState<any>(null);
+  const [isDrilldownOpen, setIsDrilldownOpen] = useState(false);
 
   const { data: metrics, isLoading } = useQuery<MetricsData>({
     queryKey: ['/api/dashboard/metrics'],
@@ -129,6 +132,8 @@ export default function AdminDashboard() {
 
   const handleDrillDown = (metric: string, details: any) => {
     setSelectedMetric(metric);
+    setDrilldownData(details);
+    setIsDrilldownOpen(true);
     console.log(`Drilling down into ${metric}:`, details);
     toast({
       title: "Analytics Deep Dive",
@@ -234,6 +239,16 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Advanced Visual Analytics */}
+        {metrics?.chartData && (
+          <div className="mb-8">
+            <AdvancedCharts 
+              data={metrics.chartData} 
+              onDrillDown={handleDrillDown}
+            />
+          </div>
+        )}
 
         {/* Lead Management */}
         <Card className="bg-white/5 backdrop-blur-xl border-white/10">
@@ -438,6 +453,14 @@ export default function AdminDashboard() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Drill Down Modal */}
+      <DrillDownModal
+        isOpen={isDrilldownOpen}
+        onClose={() => setIsDrilldownOpen(false)}
+        metric={selectedMetric || ""}
+        data={drilldownData}
+      />
     </div>
   );
 }
