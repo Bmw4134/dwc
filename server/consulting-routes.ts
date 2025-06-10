@@ -18,11 +18,40 @@ import fs from "fs";
 
 export async function registerConsultingRoutes(app: Express): Promise<Server> {
   
-  // Simple login system for QNIS/PTNI
+  // Quantum-enhanced authentication system for QNIS/PTNI
+  app.post('/api/auth/quantum-login', (req, res) => {
+    const { username, password, securityLevel } = req.body;
+    
+    const quantumCredentials = {
+      'admin': { password: 'qnis2025', role: 'quantum_administrator', clearance: 5 },
+      'intelligence': { password: 'ptni2025', role: 'intelligence_operator', clearance: 4 },
+      'analyst': { password: 'neural2025', role: 'data_analyst', clearance: 3 },
+      'viewer': { password: 'view2025', role: 'observer', clearance: 2 }
+    };
+    
+    const user = quantumCredentials[username];
+    if (user && user.password === password) {
+      const sessionToken = `qnis-${Date.now()}-${Math.random().toString(36)}`;
+      res.json({ 
+        success: true, 
+        token: sessionToken,
+        user: { 
+          username, 
+          role: user.role, 
+          clearance: user.clearance,
+          modules: ['dashboard', 'analytics', 'intelligence', 'automation'],
+          timestamp: new Date().toISOString()
+        } 
+      });
+    } else {
+      res.status(401).json({ success: false, message: 'Quantum authentication failed' });
+    }
+  });
+
+  // Legacy login endpoint for backwards compatibility
   app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     
-    // QNIS/PTNI admin credentials
     if (username === 'admin' && password === 'qnis2025') {
       res.json({ success: true, token: 'qnis-ptni-authenticated', user: { username: 'admin', role: 'administrator' } });
     } else {
@@ -88,9 +117,13 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
         <div id="error" class="error"></div>
         
         <div class="creds">
-            <strong>Admin Access:</strong><br>
-            Username: admin<br>
-            Password: qnis2025
+            <strong>QNIS/PTNI Access Levels:</strong><br>
+            <div style="margin: 0.5rem 0;">
+                <strong>Quantum Admin:</strong> admin / qnis2025<br>
+                <strong>Intelligence Op:</strong> intelligence / ptni2025<br>
+                <strong>Neural Analyst:</strong> analyst / neural2025<br>
+                <strong>Observer:</strong> viewer / view2025
+            </div>
         </div>
     </div>
     
