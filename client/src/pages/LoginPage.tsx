@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Lock, User, ArrowRight } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -25,17 +29,19 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (data.success) {
-        // Use history.pushState to avoid full page reload
+        // Navigate using React Router
         if (credentials.username === 'watson') {
-          window.history.pushState({}, '', '/watson');
-          window.location.reload();
+          navigate('/watson');
         } else if (credentials.username === 'dion') {
-          window.history.pushState({}, '', '/dion');
-          window.location.reload();
+          navigate('/dion');
         } else {
-          window.history.pushState({}, '', '/admin');
-          window.location.reload();
+          navigate('/admin');
         }
+        
+        toast({
+          title: "Login Successful",
+          description: `Welcome back, ${credentials.username}`,
+        });
       } else {
         setError(data.message || 'Invalid credentials');
       }
