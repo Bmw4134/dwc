@@ -41,12 +41,19 @@
       // Enhanced iframe detection and force visibility
       const isInIframe = window.self !== window.top || window.frameElement !== null;
       
-      if (isInIframe) {
-        document.body.classList.add('replit-iframe');
+      // Wait for DOM to be ready before manipulating elements
+      document.addEventListener('DOMContentLoaded', function() {
+        if (isInIframe && document.body) {
+          document.body.classList.add('replit-iframe');
+        }
         
         // Force immediate visibility
-        document.documentElement.style.cssText = 'height: 100% !important; margin: 0 !important; padding: 0 !important;';
-        document.body.style.cssText = 'height: 100% !important; margin: 0 !important; padding: 0 !important; visibility: visible !important; opacity: 1 !important; display: block !important;';
+        if (document.documentElement) {
+          document.documentElement.style.cssText = 'height: 100% !important; margin: 0 !important; padding: 0 !important;';
+        }
+        if (document.body) {
+          document.body.style.cssText = 'height: 100% !important; margin: 0 !important; padding: 0 !important; visibility: visible !important; opacity: 1 !important; display: block !important;';
+        }
         
         // Override any potential blocking styles
         const forceVisible = () => {
@@ -56,19 +63,22 @@
           }
         };
         
-        // Apply immediately and on DOM ready
+        // Apply on load
         forceVisible();
-        document.addEventListener('DOMContentLoaded', forceVisible);
         window.addEventListener('load', forceVisible);
         
-        // Continuous check to ensure visibility
-        setInterval(forceVisible, 100);
-      }
+        // Periodic check to ensure visibility
+        if (isInIframe) {
+          setInterval(forceVisible, 500);
+        }
+      });
       
       // Fallback for content loading
       window.addEventListener('load', function() {
-        document.body.style.visibility = 'visible';
-        document.body.style.opacity = '1';
+        if (document.body) {
+          document.body.style.visibility = 'visible';
+          document.body.style.opacity = '1';
+        }
         
         // Send ready signal to parent if in iframe
         if (isInIframe && window.parent) {
