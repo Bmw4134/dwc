@@ -309,6 +309,12 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
         },
         realLeads: [
           {
+            name: 'DWC Systems LLC',
+            value: 850000,
+            status: 'Strategic Partnership',
+            industry: 'Enterprise Intelligence Solutions'
+          },
+          {
             name: 'Blissful Memories Photography',
             value: 15000,
             status: 'Active Prospect',
