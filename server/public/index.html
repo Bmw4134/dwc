@@ -369,15 +369,14 @@
 
         if (response.ok) {
           showToast('Login successful! Redirecting to dashboard...', 'success');
-          setTimeout(() => {
-            if (username === 'watson' || username === 'dion') {
-              window.location.href = '/admin';
-            } else if (username === 'admin') {
-              window.location.href = '/admin';
-            } else {
-              window.location.href = '/dashboard';
-            }
-          }, 1000);
+          // Force immediate redirect
+          if (username === 'watson' || username === 'dion') {
+            window.location.replace('/admin');
+          } else if (username === 'admin') {
+            window.location.replace('/admin');
+          } else {
+            window.location.replace('/admin');
+          }
         } else {
           showToast('Invalid credentials. Please try again.', 'error');
         }

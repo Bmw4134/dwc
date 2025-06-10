@@ -491,6 +491,21 @@ export async function registerConsultingRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin dashboard route
+  app.get('/admin', (req, res) => {
+    const adminHtmlPath = path.join(process.cwd(), 'server', 'public', 'admin.html');
+    if (fs.existsSync(adminHtmlPath)) {
+      res.sendFile(adminHtmlPath);
+    } else {
+      res.redirect('/');
+    }
+  });
+
+  // Dashboard route (alias for admin)
+  app.get('/dashboard', (req, res) => {
+    res.redirect('/admin');
+  });
+
   // Production fallback route to prevent 404 errors
   app.get('*', (req, res) => {
     const staticPath = path.join(import.meta.dirname, 'public', 'index.html');
