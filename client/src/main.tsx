@@ -4,26 +4,44 @@ import { queryClient } from './lib/queryClient'
 import App from './App.tsx'
 import './index.css'
 
-// Enhanced iframe compatibility for Replit preview
-const isInIframe = window.self !== window.top;
-if (isInIframe) {
-  document.body.classList.add('iframe-mode');
+// Force immediate DOM readiness for iframe
+const initializeApp = () => {
+  const rootElement = document.getElementById("root");
+  if (!rootElement) {
+    console.error("Root element not found");
+    return;
+  }
+
+  // Enhanced iframe compatibility
+  const isInIframe = window.self !== window.top;
+  if (isInIframe) {
+    document.body.classList.add('iframe-mode');
+    document.documentElement.style.cssText = 'height: 100% !important; margin: 0 !important; padding: 0 !important;';
+    document.body.style.cssText = 'height: 100% !important; margin: 0 !important; padding: 0 !important; visibility: visible !important; opacity: 1 !important;';
+    rootElement.style.cssText = 'width: 100% !important; min-height: 100vh !important; display: block !important; visibility: visible !important; opacity: 1 !important;';
+  }
+
+  // Mount React app
+  createRoot(rootElement).render(
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  );
   
-  // Ensure proper iframe rendering
-  document.documentElement.style.height = '100%';
-  document.body.style.height = '100%';
-  document.body.style.margin = '0';
-  document.body.style.padding = '0';
-  document.body.style.overflow = 'auto';
-}
+  console.log("DWC Systems LLC app mounted successfully");
+  
+  // Clear loading screen once React app mounts
+  setTimeout(() => {
+    const loadingDiv = rootElement.firstElementChild;
+    if (loadingDiv && loadingDiv.style && loadingDiv.style.position === 'fixed') {
+      loadingDiv.remove();
+    }
+  }, 1000);
+};
 
-const rootElement = document.getElementById("root");
-if (!rootElement) {
-  throw new Error("Root element not found");
+// Initialize immediately if DOM is ready, otherwise wait
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
 }
-
-createRoot(rootElement).render(
-  <QueryClientProvider client={queryClient}>
-    <App />
-  </QueryClientProvider>
-)
