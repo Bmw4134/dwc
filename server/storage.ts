@@ -1,19 +1,16 @@
 import {
   users,
   leads,
-  clients,
-  automations,
-  masterLogins,
+  modules,
+  metrics,
   type User,
-  type UpsertUser,
+  type InsertUser,
   type Lead,
   type InsertLead,
-  type Client,
-  type InsertClient,
-  type Automation,
-  type InsertAutomation,
-  type MasterLogin,
-  type InsertMasterLogin,
+  type Module,
+  type InsertModule,
+  type Metric,
+  type InsertMetric,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -25,7 +22,7 @@ export interface IStorage {
   
   // User operations (mandatory for Replit Auth)
   getUser(id: string): Promise<User | undefined>;
-  upsertUser(user: UpsertUser): Promise<User>;
+  upsertUser(user: InsertUser): Promise<User>;
   
   // Business operations
   getLeads(): Promise<Lead[]>;
