@@ -26,6 +26,7 @@ export default function Home() {
   const { data: metrics, isLoading } = useQuery<MetricsData>({
     queryKey: ['/api/dashboard/metrics'],
     refetchInterval: 10000,
+    retry: false,
   });
 
   return (

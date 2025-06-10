@@ -64,6 +64,7 @@ export default function AdminDashboard() {
   const { data: metrics, isLoading } = useQuery<MetricsData>({
     queryKey: ['/api/dashboard/metrics'],
     refetchInterval: 30000,
+    retry: false,
   });
 
   const addLeadMutation = useMutation({

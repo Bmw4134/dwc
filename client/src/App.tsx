@@ -15,13 +15,11 @@ const queryClient = new QueryClient({
       queryFn: async ({ queryKey }) => {
         const res = await fetch(queryKey[0] as string);
         if (!res.ok) {
-          if (res.status === 401) {
-            throw new Error("401: Unauthorized");
-          }
           throw new Error(`${res.status}: ${res.statusText}`);
         }
         return res.json();
       },
+      retry: false,
     },
   },
 });
