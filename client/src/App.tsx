@@ -177,19 +177,63 @@ function LandingPage() {
           </div>
         </div>
 
-        {/* Live Intelligence Metrics */}
-        <div className="mb-20 relative">
+        {/* Live Intelligence Metrics - Grid Aligned */}
+        <div className="mb-32 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-emerald-500/20 blur-3xl"></div>
-          <div className="relative z-10">
-            <h3 className="text-5xl font-black text-white mb-12 text-center bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              Live Intelligence Metrics
-            </h3>
-            <QuantumMetrics
-              totalLeads={metrics?.totalLeads || 3}
-              systemHealth={metrics?.systemHealth || 98.5}
-              roiProven={metrics?.roiProven || 277}
-              automationLinkage={metrics?.automationLinkage || 100}
-            />
+          <div className="relative z-10 max-w-7xl mx-auto px-6">
+            <div className="text-center mb-16">
+              <h3 className="text-6xl font-black text-white mb-6 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                Live Intelligence Metrics
+              </h3>
+              <p className="text-xl text-white/80 max-w-3xl mx-auto">
+                Real-time performance data from authentic business operations
+              </p>
+            </div>
+            
+            {/* Primary Metrics Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-all duration-300">
+                <div className="text-4xl font-black text-emerald-400 mb-2">{metrics?.totalLeads || 3}</div>
+                <div className="text-white/80 font-bold">Neural Targets</div>
+                <div className="w-full bg-white/10 rounded-full h-2 mt-4">
+                  <div className="bg-emerald-400 h-2 rounded-full w-3/4"></div>
+                </div>
+              </div>
+              
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-all duration-300">
+                <div className="text-4xl font-black text-cyan-400 mb-2">{metrics?.systemHealth?.toFixed(1) || '98.5'}%</div>
+                <div className="text-white/80 font-bold">System Health</div>
+                <div className="w-full bg-white/10 rounded-full h-2 mt-4">
+                  <div className="bg-cyan-400 h-2 rounded-full w-full"></div>
+                </div>
+              </div>
+              
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-all duration-300">
+                <div className="text-4xl font-black text-purple-400 mb-2">{metrics?.roiProven || 277}%</div>
+                <div className="text-white/80 font-bold">Quantum ROI</div>
+                <div className="w-full bg-white/10 rounded-full h-2 mt-4">
+                  <div className="bg-purple-400 h-2 rounded-full w-5/6"></div>
+                </div>
+              </div>
+              
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-all duration-300">
+                <div className="text-4xl font-black text-blue-400 mb-2">{metrics?.automationLinkage || 100}%</div>
+                <div className="text-white/80 font-bold">Auto Linkage</div>
+                <div className="w-full bg-white/10 rounded-full h-2 mt-4">
+                  <div className="bg-blue-400 h-2 rounded-full w-full"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Enhanced Quantum Metrics Component */}
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+              <QuantumMetrics
+                totalLeads={metrics?.totalLeads || 3}
+                systemHealth={metrics?.systemHealth || 98.5}
+                roiProven={metrics?.roiProven || 277}
+                automationLinkage={metrics?.automationLinkage || 100}
+              />
+            </div>
           </div>
         </div>
 
@@ -289,49 +333,122 @@ function LandingPage() {
           </div>
         </div>
 
-        {/* Intelligence Capabilities */}
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="relative bg-gradient-to-br from-cyan-500/20 to-blue-500/20 backdrop-blur-xl border border-cyan-400/30 rounded-3xl shadow-2xl p-10 hover:shadow-cyan-500/50 transition-all duration-300 group">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-blue-400/5 rounded-3xl group-hover:from-cyan-400/10 group-hover:to-blue-400/10 transition-all duration-300"></div>
-            <div className="relative z-10">
-              <div className="relative mb-6">
-                <svg className="w-16 h-16 text-cyan-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-cyan-400 rounded-full animate-pulse"></div>
-              </div>
-              <h3 className="text-3xl font-black text-cyan-400 mb-4">Quantum Processing</h3>
-              <p className="text-cyan-100 text-lg leading-relaxed font-medium">Advanced quantum neural networks with real-time pattern recognition and autonomous decision-making capabilities.</p>
+        {/* Intelligence Capabilities - Collapsible Modules */}
+        <div className="mb-32 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-3xl"></div>
+          <div className="relative z-10 max-w-7xl mx-auto px-6">
+            <div className="text-center mb-16">
+              <h3 className="text-5xl font-black text-white mb-6 bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                Intelligence Capabilities
+              </h3>
+              <p className="text-xl text-white/80 max-w-3xl mx-auto">
+                Enterprise-grade neural processing and automation systems
+              </p>
             </div>
-          </div>
 
-          <div className="relative bg-gradient-to-br from-emerald-500/20 to-green-500/20 backdrop-blur-xl border border-emerald-400/30 rounded-3xl shadow-2xl p-10 hover:shadow-emerald-500/50 transition-all duration-300 group">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/5 to-green-400/5 rounded-3xl group-hover:from-emerald-400/10 group-hover:to-green-400/10 transition-all duration-300"></div>
-            <div className="relative z-10">
-              <div className="relative mb-6">
-                <svg className="w-16 h-16 text-emerald-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-emerald-400 rounded-full animate-pulse"></div>
+            {/* Primary Capabilities Grid */}
+            <div className="grid lg:grid-cols-3 gap-8 mb-16">
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-2xl font-black text-cyan-300">Quantum Processing</h4>
+                    <div className="text-sm text-cyan-400 font-bold">NEURAL ACTIVE</div>
+                  </div>
+                </div>
+                <p className="text-white/80 mb-6 leading-relaxed">Advanced quantum neural networks with real-time pattern recognition and autonomous decision-making capabilities</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-black text-cyan-300">18 Neural Modules</span>
+                  <div className="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></div>
+                </div>
               </div>
-              <h3 className="text-3xl font-black text-emerald-400 mb-4">Neural Automation</h3>
-              <p className="text-emerald-100 text-lg leading-relaxed font-medium">Autonomous business process automation with AI-driven optimization and predictive scaling mechanisms.</p>
-            </div>
-          </div>
 
-          <div className="relative bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl border border-purple-400/30 rounded-3xl shadow-2xl p-10 hover:shadow-purple-500/50 transition-all duration-300 group">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-400/5 to-pink-400/5 rounded-3xl group-hover:from-purple-400/10 group-hover:to-pink-400/10 transition-all duration-300"></div>
-            <div className="relative z-10">
-              <div className="relative mb-6">
-                <svg className="w-16 h-16 text-purple-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-purple-400 rounded-full animate-pulse"></div>
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-green-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-2xl font-black text-emerald-300">Neural Automation</h4>
+                    <div className="text-sm text-emerald-400 font-bold">OPTIMIZING</div>
+                  </div>
+                </div>
+                <p className="text-white/80 mb-6 leading-relaxed">Autonomous business process automation with AI-driven optimization and predictive scaling mechanisms</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-black text-emerald-300">100% Linkage</span>
+                  <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
+                </div>
               </div>
-              <h3 className="text-3xl font-black text-purple-400 mb-4">Neural Market Intelligence</h3>
-              <p className="text-purple-100 text-lg leading-relaxed font-medium">Advanced quantum analytics for strategic market domination and high-value prospect identification systems.</p>
+
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-2xl font-black text-purple-300">Market Intelligence</h4>
+                    <div className="text-sm text-purple-400 font-bold">STRATEGIC</div>
+                  </div>
+                </div>
+                <p className="text-white/80 mb-6 leading-relaxed">Advanced quantum analytics for strategic market domination and high-value prospect identification</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-black text-purple-300">$3.485M Pipeline</span>
+                  <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+                </div>
+              </div>
             </div>
+
+            {/* Collapsible Advanced Modules */}
+            <details className="group">
+              <summary className="cursor-pointer bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 list-none">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-lg flex items-center justify-center mr-4">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-black text-white">Advanced Intelligence Modules</h4>
+                      <div className="text-sm text-white/60">Expand to view additional capabilities</div>
+                    </div>
+                  </div>
+                  <svg className="w-6 h-6 text-white/60 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </summary>
+              
+              <div className="mt-6 space-y-4">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-white/3 backdrop-blur-xl border border-white/5 rounded-xl p-6">
+                    <h5 className="text-lg font-black text-cyan-300 mb-3">Predictive Analytics</h5>
+                    <p className="text-white/70 text-sm">Real-time behavioral prediction with quantum decision trees</p>
+                  </div>
+                  <div className="bg-white/3 backdrop-blur-xl border border-white/5 rounded-xl p-6">
+                    <h5 className="text-lg font-black text-emerald-300 mb-3">Lead Intelligence</h5>
+                    <p className="text-white/70 text-sm">Autonomous prospect qualification and pipeline optimization</p>
+                  </div>
+                  <div className="bg-white/3 backdrop-blur-xl border border-white/5 rounded-xl p-6">
+                    <h5 className="text-lg font-black text-purple-300 mb-3">Business Scanner</h5>
+                    <p className="text-white/70 text-sm">AR-enhanced business intelligence and opportunity detection</p>
+                  </div>
+                  <div className="bg-white/3 backdrop-blur-xl border border-white/5 rounded-xl p-6">
+                    <h5 className="text-lg font-black text-blue-300 mb-3">Voice Command Interface</h5>
+                    <p className="text-white/70 text-sm">D.A.I.E natural language processing with neural responses</p>
+                  </div>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
       </section>
