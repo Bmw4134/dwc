@@ -288,33 +288,7 @@ function Router() {
   );
 }
 
-function LLCFormationPage() {
-  return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e40af 100%)',
-      color: 'white',
-      padding: '40px 20px',
-      textAlign: 'center'
-    }}>
-      <h1 style={{ fontSize: '3rem', marginBottom: '20px' }}>LLC Formation Services</h1>
-      <p>Professional LLC formation platform coming soon...</p>
-      <a href="/" style={{
-        display: 'inline-block',
-        background: 'linear-gradient(45deg, #10b981, #8b5cf6)',
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: '1.1rem',
-        padding: '12px 32px',
-        borderRadius: '12px',
-        textDecoration: 'none',
-        marginTop: '20px'
-      }}>
-        Return Home
-      </a>
-    </div>
-  );
-}
+
 
 function LLCSuccessPage() {
   return (
