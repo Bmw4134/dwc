@@ -252,6 +252,7 @@ function Router() {
       <Route path="/pricing" component={SubscriptionPlans} />
       <Route path="/dashboard" component={LandingPage} />
       <Route path="/qnis-core" component={QNISPTNICore} />
+      <Route path="/historical" component={HistoricalIntelligence} />
       <Route path="/llc-formation" component={LLCFormationPage} />
       <Route>
         <div style={{
