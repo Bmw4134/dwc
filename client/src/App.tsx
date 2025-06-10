@@ -184,20 +184,12 @@ function LandingPage() {
               roiProven={metrics?.roiProven || 277}
               automationLinkage={metrics?.automationLinkage || 100}
             />
-              </div>
-              <div className="text-center group">
-                <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-2xl p-8 mb-4 group-hover:from-yellow-400/30 group-hover:to-orange-400/30 transition-all duration-300">
-                  <div className="text-6xl font-black text-yellow-400 mb-4">
-                    {metrics?.quantumBehaviorConfidence ? Math.round(metrics.quantumBehaviorConfidence) : 98}%
-                  </div>
-                  <div className="text-yellow-300 font-bold text-lg uppercase tracking-wide">QNIS Precision</div>
-                  <div className="text-yellow-200 text-sm mt-2">Neural Superiority</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
+      </section>
 
+      {/* Executive Hero Section */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
         {/* Elite Case Studies */}
         <div className="mb-20">
           <h3 className="text-5xl font-black text-white mb-12 text-center bg-gradient-to-r from-emerald-400 to-purple-400 bg-clip-text text-transparent">
@@ -323,6 +315,7 @@ function LandingPage() {
           Quantum Intelligence Supremacy Maintained
         </div>
       </div>
+      </section>
     </div>
   );
 }
