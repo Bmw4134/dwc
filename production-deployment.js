@@ -295,7 +295,7 @@ class QNISPTNIProductionDeployment {
 }
 
 // Execute deployment if run directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const deployment = new QNISPTNIProductionDeployment();
   deployment.executeFullDeployment().then(result => {
     if (result.success) {
@@ -308,4 +308,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = QNISPTNIProductionDeployment;
+export default QNISPTNIProductionDeployment;
