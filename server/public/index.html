@@ -5,319 +5,120 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DWC Systems LLC - QNIS/PTNI Intelligence Platform</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3730a3 100%);
-      color: white;
-      min-height: 100vh;
-      overflow-x: hidden;
+      color: white; min-height: 100vh;
     }
-    
-    .header {
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 1rem 2rem;
+    .header { 
+      background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem 2rem;
     }
-    
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .header-content { 
+      max-width: 1200px; margin: 0 auto; display: flex;
+      justify-content: space-between; align-items: center;
     }
-    
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+    .logo-section { display: flex; align-items: center; gap: 1rem; }
+    .logo { 
+      width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #06b6d4);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: bold;
     }
-    
-    .logo {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
+    .title { font-size: 1.5rem; font-weight: 900; margin: 0; }
+    .subtitle { color: #10b981; font-weight: 600; font-size: 0.875rem; }
+    .nav-buttons { display: flex; gap: 0.75rem; }
+    .btn { 
+      padding: 0.5rem 1rem; border: none; border-radius: 8px; font-weight: 600;
+      text-decoration: none; cursor: pointer; transition: all 0.2s ease;
+      display: inline-flex; align-items: center; gap: 0.5rem;
     }
-    
-    .title {
-      font-size: 1.5rem;
-      font-weight: 900;
-      margin: 0;
-    }
-    
-    .subtitle {
-      color: #10b981;
-      font-weight: 600;
-      font-size: 0.875rem;
-    }
-    
-    .nav-buttons {
-      display: flex;
-      gap: 0.75rem;
-    }
-    
-    .btn {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      color: white;
-    }
-    
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
+    .btn-primary { background: linear-gradient(135deg, #10b981, #06b6d4); color: white; }
+    .btn-secondary { 
+      background: rgba(255, 255, 255, 0.1); color: white;
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    
-    .hero {
-      text-align: center;
-      margin: 2rem 0;
-    }
-    
-    .hero h1 {
-      font-size: 3rem;
-      font-weight: 900;
-      margin-bottom: 1rem;
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .hero { text-align: center; margin: 2rem 0; }
+    .hero h1 { 
+      font-size: 3rem; font-weight: 900; margin-bottom: 1rem;
       background: linear-gradient(135deg, #ffffff, #10b981);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    
-    .hero p {
-      font-size: 1.25rem;
-      color: #06b6d4;
-      font-weight: 600;
-      margin-bottom: 2rem;
+    .hero p { font-size: 1.25rem; color: #06b6d4; font-weight: 600; margin-bottom: 2rem; }
+    .status { 
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.1); padding: 0.5rem 1rem;
+      border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.3);
     }
-    
-    .status-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(16, 185, 129, 0.1);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-    
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background: #10b981;
-      border-radius: 50%;
+    .status-dot { 
+      width: 8px; height: 8px; background: #10b981; border-radius: 50%;
       animation: pulse 2s infinite;
     }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .metrics-grid { 
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem; margin: 3rem 0;
     }
-    
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin: 3rem 0;
+    .metric-card { 
+      background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px;
+      padding: 1.5rem; transition: all 0.3s ease; cursor: pointer;
     }
-    
-    .metric-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 1.5rem;
-      transition: all 0.3s ease;
-      cursor: pointer;
+    .metric-card:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+    .metric-header { 
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;
     }
-    
-    .metric-card:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateY(-2px);
-    }
-    
-    .metric-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    
-    .metric-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .metric-icon { 
+      width: 32px; height: 32px; background: linear-gradient(135deg, #10b981, #06b6d4);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-size: 16px;
     }
-    
-    .metric-value {
-      font-size: 2rem;
-      font-weight: 900;
-      color: white;
+    .metric-value { font-size: 2rem; font-weight: 900; color: white; }
+    .metric-label { font-weight: 600; color: #10b981; margin-bottom: 0.25rem; }
+    .metric-description { color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; }
+    .dashboard-grid { 
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem; margin: 3rem 0;
     }
-    
-    .metric-label {
-      font-weight: 600;
-      color: #10b981;
-      margin-bottom: 0.25rem;
+    .dashboard-card { 
+      background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px;
+      padding: 2rem; text-align: center; transition: all 0.3s ease; cursor: pointer;
     }
-    
-    .metric-description {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.875rem;
+    .dashboard-card:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-4px); }
+    .dashboard-icon { 
+      width: 64px; height: 64px; background: linear-gradient(135deg, #10b981, #06b6d4);
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin: 0 auto 1rem; transition: transform 0.3s ease;
     }
-    
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin: 3rem 0;
+    .dashboard-card:hover .dashboard-icon { transform: scale(1.1); }
+    .dashboard-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .dashboard-description { 
+      color: rgba(255, 255, 255, 0.8); line-height: 1.6; margin-bottom: 1.5rem;
     }
-    
-    .dashboard-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 2rem;
-      text-align: center;
-      transition: all 0.3s ease;
-      cursor: pointer;
+    .auth-section { 
+      background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px;
+      padding: 2rem; margin: 3rem 0;
     }
-    
-    .dashboard-card:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateY(-4px);
+    .auth-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; text-align: center; }
+    .auth-grid { 
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem; margin-top: 1rem;
     }
-    
-    .dashboard-icon {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin: 0 auto 1rem auto;
-      transition: transform 0.3s ease;
+    .auth-item { 
+      background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 8px; padding: 1rem; text-align: center;
     }
-    
-    .dashboard-card:hover .dashboard-icon {
-      transform: scale(1.1);
-    }
-    
-    .dashboard-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-    
-    .dashboard-description {
-      color: rgba(255, 255, 255, 0.8);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-    }
-    
-    .auth-section {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 2rem;
-      margin: 3rem 0;
-    }
-    
-    .auth-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    
-    .auth-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    
-    .auth-item {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 8px;
-      padding: 1rem;
-      text-align: center;
-    }
-    
-    .auth-role {
-      font-weight: 700;
-      color: #10b981;
-      margin-bottom: 0.5rem;
-    }
-    
-    .auth-creds {
-      font-family: monospace;
-      font-size: 0.875rem;
-      color: #06b6d4;
-    }
-    
+    .auth-role { font-weight: 700; color: #10b981; margin-bottom: 0.5rem; }
+    .auth-creds { font-family: monospace; font-size: 0.875rem; color: #06b6d4; }
     @media (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .hero h1 {
-        font-size: 2rem;
-      }
-      
-      .container {
-        padding: 1rem;
-      }
-      
-      .metrics-grid, .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
+      .header-content { flex-direction: column; gap: 1rem; }
+      .hero h1 { font-size: 2rem; }
+      .container { padding: 1rem; }
+      .metrics-grid, .dashboard-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -342,14 +143,14 @@
     <div class="hero">
       <h1>DWC Systems LLC</h1>
       <p>Enterprise Intelligence & Business Automation Platform</p>
-      <div class="status-indicator">
+      <div class="status">
         <div class="status-dot"></div>
         <span id="status-text">System Operational</span>
       </div>
     </div>
 
     <div class="metrics-grid">
-      <div class="metric-card" onclick="loadDashboard('/admin')">
+      <div class="metric-card" onclick="window.location.href='/admin'">
         <div class="metric-header">
           <div class="metric-icon">👥</div>
           <div class="metric-value" id="total-leads">24</div>
@@ -358,7 +159,7 @@
         <div class="metric-description">Active pipeline prospects</div>
       </div>
 
-      <div class="metric-card" onclick="loadDashboard('/admin')">
+      <div class="metric-card" onclick="window.location.href='/admin'">
         <div class="metric-header">
           <div class="metric-icon">📈</div>
           <div class="metric-value" id="active-proposals">7</div>
@@ -367,7 +168,7 @@
         <div class="metric-description">Pending client decisions</div>
       </div>
 
-      <div class="metric-card" onclick="loadDashboard('/admin')">
+      <div class="metric-card" onclick="window.location.href='/admin'">
         <div class="metric-header">
           <div class="metric-icon">💰</div>
           <div class="metric-value" id="pipeline-value">$485K</div>
@@ -376,7 +177,7 @@
         <div class="metric-description">Total potential revenue</div>
       </div>
 
-      <div class="metric-card" onclick="loadDashboard('/admin')">
+      <div class="metric-card" onclick="window.location.href='/admin'">
         <div class="metric-header">
           <div class="metric-icon">⚡</div>
           <div class="metric-value" id="system-health">98.2%</div>
@@ -387,28 +188,28 @@
     </div>
 
     <div class="dashboard-grid">
-      <div class="dashboard-card" onclick="loadDashboard('/admin')">
+      <div class="dashboard-card" onclick="window.location.href='/admin'">
         <div class="dashboard-icon">🎯</div>
         <h3 class="dashboard-title">Admin Dashboard</h3>
         <p class="dashboard-description">Complete system overview with business intelligence analytics and comprehensive reporting capabilities.</p>
         <a href="/admin" class="btn btn-primary">Access Admin</a>
       </div>
 
-      <div class="dashboard-card" onclick="loadDashboard('/watson')">
+      <div class="dashboard-card" onclick="window.location.href='/watson'">
         <div class="dashboard-icon">🧠</div>
         <h3 class="dashboard-title">Watson Master Console</h3>
         <p class="dashboard-description">AI-powered automation engine with advanced intelligence processing and real-time system monitoring.</p>
         <a href="/watson" class="btn btn-primary">Launch Watson</a>
       </div>
 
-      <div class="dashboard-card" onclick="loadDashboard('/dion')">
+      <div class="dashboard-card" onclick="window.location.href='/dion'">
         <div class="dashboard-icon">⚡</div>
         <h3 class="dashboard-title">DION Neural Interface</h3>
         <p class="dashboard-description">Neural pattern recognition system with quantum behavior analysis and predictive modeling capabilities.</p>
         <a href="/dion" class="btn btn-primary">Enter DION</a>
       </div>
 
-      <div class="dashboard-card" onclick="loadDashboard('/intelligence')">
+      <div class="dashboard-card" onclick="window.location.href='/intelligence'">
         <div class="dashboard-icon">📊</div>
         <h3 class="dashboard-title">Intelligence Operations</h3>
         <p class="dashboard-description">Advanced data analytics and business intelligence with real-time market analysis and lead generation.</p>
@@ -471,14 +272,12 @@
   </div>
 
   <script>
-    // Live metrics updating
     async function updateMetrics() {
       try {
         const response = await fetch('/api/dashboard/metrics');
         if (response.ok) {
           const data = await response.json();
           
-          // Update live metrics
           if (data.totalLeads) {
             document.getElementById('total-leads').textContent = data.totalLeads;
           }
@@ -492,7 +291,6 @@
             document.getElementById('system-health').textContent = data.systemHealth + '%';
           }
           
-          // Update status
           document.getElementById('status-text').textContent = 'System Operational - Live Data';
         }
       } catch (error) {
@@ -500,12 +298,6 @@
       }
     }
     
-    // Dashboard navigation
-    function loadDashboard(path) {
-      window.location.href = path;
-    }
-    
-    // Initialize and update metrics
     updateMetrics();
     setInterval(updateMetrics, 30000);
     
