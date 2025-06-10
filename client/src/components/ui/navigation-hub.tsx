@@ -12,7 +12,7 @@ import {
   ChevronRight,
   Monitor
 } from 'lucide-react';
-import { useLocation, useRouter } from 'wouter';
+import { useLocation } from 'wouter';
 
 const navigationSections = [
   {
@@ -61,8 +61,7 @@ const navigationSections = [
 
 export function NavigationHub() {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [location] = useLocation();
-  const router = useRouter();
+  const [location, navigate] = useLocation();
 
   const isActiveSection = (path: string) => {
     return location === path || location.startsWith(path);
@@ -101,7 +100,7 @@ export function NavigationHub() {
           return (
             <button
               key={section.id}
-              onClick={() => setLocation(section.path)}
+              onClick={() => navigate(section.path)}
               className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
                 isActive 
                   ? 'bg-green-500/20 text-green-300 border border-green-500/30' 

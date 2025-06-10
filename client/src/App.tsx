@@ -25,33 +25,49 @@ interface DashboardMetrics {
 }
 
 function LandingPage() {
+  const [loadingPhase, setLoadingPhase] = useState(0);
+  const [showQuantumLoader, setShowQuantumLoader] = useState(true);
+
   const { data: metrics, isLoading, error } = useQuery<DashboardMetrics>({
     queryKey: ['/api/dashboard-metrics'],
     refetchInterval: 5000,
   });
 
-  // Handle loading state with quantum animations
-  if (isLoading) {
+  useEffect(() => {
+    const phases = [
+      { message: "Initializing Quantum Intelligence...", duration: 1000 },
+      { message: "Synchronizing Neural Networks...", duration: 1200 },
+      { message: "Activating QNIS/PTNI Systems...", duration: 800 },
+      { message: "Loading Enterprise Dashboard...", duration: 600 }
+    ];
+
+    let currentPhase = 0;
+    const progressInterval = setInterval(() => {
+      if (currentPhase < phases.length) {
+        setLoadingPhase((currentPhase + 1) * 25);
+        currentPhase++;
+      } else {
+        clearInterval(progressInterval);
+        setTimeout(() => setShowQuantumLoader(false), 500);
+      }
+    }, phases[Math.min(currentPhase, phases.length - 1)]?.duration || 1000);
+
+    return () => clearInterval(progressInterval);
+  }, []);
+
+  // Show quantum loading screen during initial load
+  if (showQuantumLoader || isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="quantum-loader mx-auto mb-6"></div>
-          <div className="space-y-3">
-            <div className="quantum-skeleton h-4 w-48 mx-auto rounded"></div>
-            <div className="quantum-skeleton h-3 w-32 mx-auto rounded"></div>
-          </div>
-          <p className="text-emerald-300 mt-6 font-semibold animate-quantum-pulse">
-            Initializing QNIS/PTNI Intelligence Platform...
-          </p>
-          {/* Quantum loading particles */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-quantum-float"></div>
-            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-cyan-400 rounded-full animate-data-flow"></div>
-            <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-purple-400 rounded-full animate-quantum-float" style={{animationDelay: '2s'}}></div>
-            <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-blue-400 rounded-full animate-data-flow" style={{animationDelay: '1s'}}></div>
-          </div>
-        </div>
-      </div>
+      <QuantumLoadingScreen 
+        isLoading={true} 
+        progress={loadingPhase} 
+        message={
+          loadingPhase <= 25 ? "Initializing Quantum Intelligence..." :
+          loadingPhase <= 50 ? "Synchronizing Neural Networks..." :
+          loadingPhase <= 75 ? "Activating QNIS/PTNI Systems..." :
+          "Loading Enterprise Dashboard..."
+        }
+      />
     );
   }
 
