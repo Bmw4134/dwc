@@ -25,13 +25,13 @@ export default function LoginPage() {
       const data = await response.json();
 
       if (data.success) {
-        // Route to appropriate console based on user role
+        // Simple redirect based on username - no localStorage to avoid loops
         if (credentials.username === 'watson') {
-          window.location.href = '/watson';
+          window.location.replace('/watson');
         } else if (credentials.username === 'dion') {
-          window.location.href = '/dion';
+          window.location.replace('/dion');
         } else {
-          window.location.href = '/admin';
+          window.location.replace('/admin');
         }
       } else {
         setError(data.message || 'Invalid credentials');
