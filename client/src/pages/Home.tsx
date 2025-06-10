@@ -86,10 +86,10 @@ export default function Home() {
                 </div>
                 <div className="flex space-x-3">
                   <Button 
-                    onClick={() => window.location.href = '/login'}
+                    onClick={() => window.location.href = '/admin'}
                     className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600"
                   >
-                    Sign In
+                    Access Dashboard
                   </Button>
                   <Button 
                     variant="outline" 
@@ -116,11 +116,11 @@ export default function Home() {
               </div>
               <div className="flex flex-col space-y-2">
                 <Button 
-                  onClick={() => window.location.href = '/login'}
+                  onClick={() => window.location.href = '/admin'}
                   className="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 w-full"
                   size="sm"
                 >
-                  Sign In
+                  Access Dashboard
                 </Button>
                 <Button 
                   variant="outline" 
@@ -234,7 +234,7 @@ export default function Home() {
                 Advanced neural pattern recognition and business intelligence analysis powered by quantum algorithms and real-time data processing.
               </CardDescription>
               <Button 
-                onClick={() => window.location.href = '/login'}
+                onClick={() => window.location.href = '/admin'}
                 className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0"
               >
                 Access Analytics
@@ -252,7 +252,7 @@ export default function Home() {
                 Enterprise-grade business process automation with 94% efficiency rating and seamless integration across multiple platforms.
               </CardDescription>
               <Button 
-                onClick={() => window.location.href = '/login'}
+                onClick={() => window.location.href = '/watson'}
                 className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-0"
               >
                 Deploy Automation
@@ -270,7 +270,7 @@ export default function Home() {
                 AI-powered lead generation and qualification system with predictive analytics and automated nurturing sequences.
               </CardDescription>
               <Button 
-                onClick={() => window.location.href = '/login'}
+                onClick={() => window.location.href = '/dion'}
                 className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white border-0"
               >
                 Generate Leads
