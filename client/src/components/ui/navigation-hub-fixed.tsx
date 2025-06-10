@@ -23,38 +23,45 @@ const navigationSections = [
     badge: 'LIVE'
   },
   {
-    id: 'browser',
-    label: 'Browser Auto',
-    icon: Globe,
-    path: '/nexus-observer',
-    badge: 'ACTIVE'
-  },
-  {
-    id: 'api',
-    label: 'API Tests',
-    icon: Terminal,
-    path: '/api-testing',
-    badge: null
-  },
-  {
-    id: 'logs',
-    label: 'Runtime Logs',
+    id: 'analytics',
+    label: 'Analytics',
     icon: Activity,
-    path: '/system-logs',
-    badge: null
+    path: '/analytics',
+    badge: 'NEW'
   },
   {
-    id: 'recovery',
-    label: 'Agent Recovery',
+    id: 'automation',
+    label: 'Automation',
     icon: RefreshCw,
-    path: '/nexus-total-recall',
+    path: '/automation',
     badge: null
   },
   {
-    id: 'config',
+    id: 'intelligence',
+    label: 'Intelligence',
+    icon: Terminal,
+    path: '/intelligence',
+    badge: 'AI'
+  },
+  {
+    id: 'network',
+    label: 'Network',
+    icon: Globe,
+    path: '/network',
+    badge: null
+  },
+  {
+    id: 'monitoring',
+    label: 'Monitoring',
+    icon: Monitor,
+    path: '/monitoring',
+    badge: null
+  },
+  {
+    id: 'settings',
     label: 'Settings',
     icon: Settings,
-    path: '/nexus-config',
+    path: '/settings',
     badge: null
   }
 ];
@@ -67,6 +74,10 @@ export function NavigationHub() {
     return location === path || location.startsWith(path);
   };
 
+  const handleNavigation = (path: string) => {
+    window.location.href = path;
+  };
+
   return (
     <div className={`fixed top-0 left-0 h-full bg-black/95 backdrop-blur-sm border-r border-green-500/20 z-50 transition-all duration-300 ${
       isExpanded ? 'w-64' : 'w-16'
@@ -75,9 +86,9 @@ export function NavigationHub() {
       <div className="p-4 border-b border-green-500/20">
         <div className="flex items-center justify-between">
           {isExpanded && (
-            <div className="flex items-center space-x-2">
-              <Monitor className="w-5 h-5 text-green-400" />
-              <span className="text-green-400 font-mono text-sm font-bold">NEXUS HUB</span>
+            <div>
+              <h1 className="text-green-300 font-bold text-lg font-mono">QNIS/PTNI</h1>
+              <p className="text-green-400/70 text-xs font-mono">Intelligence Platform</p>
             </div>
           )}
           <Button
@@ -92,7 +103,7 @@ export function NavigationHub() {
       </div>
 
       {/* Navigation Sections */}
-      <div className="p-2 space-y-1">
+      <div className="p-4 space-y-2">
         {navigationSections.map((section) => {
           const Icon = section.icon;
           const isActive = isActiveSection(section.path);
@@ -100,7 +111,7 @@ export function NavigationHub() {
           return (
             <button
               key={section.id}
-              onClick={() => window.location.href = section.path}
+              onClick={() => handleNavigation(section.path)}
               className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
                 isActive 
                   ? 'bg-green-500/20 text-green-300 border border-green-500/30' 
@@ -138,16 +149,16 @@ export function NavigationHub() {
           <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3">
             <div className="text-green-400 font-mono text-xs space-y-1">
               <div className="flex justify-between">
-                <span>Automation:</span>
-                <span className="text-green-300">100%</span>
+                <span>System Health:</span>
+                <span className="text-green-300">98.7%</span>
               </div>
               <div className="flex justify-between">
-                <span>Watson Sync:</span>
-                <span className="text-green-300">ACTIVE</span>
+                <span>Active Modules:</span>
+                <span className="text-green-300">18/18</span>
               </div>
               <div className="flex justify-between">
-                <span>Observer:</span>
-                <span className="text-green-300">MONITORING</span>
+                <span>Network:</span>
+                <span className="text-green-300">ONLINE</span>
               </div>
             </div>
           </div>
