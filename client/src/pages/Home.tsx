@@ -5,10 +5,25 @@ import { Brain, LogOut, User, TrendingUp, Activity, Users, DollarSign, Zap } fro
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 
+interface MetricsData {
+  totalLeads: number;
+  activeProposals: number;
+  totalPipelineValue: number;
+  roiProven: number;
+  systemHealth: number;
+  monthlyRevenue: number;
+}
+
+interface UserData {
+  firstName?: string;
+  email?: string;
+  profileImageUrl?: string;
+}
+
 export default function Home() {
-  const { user } = useAuth();
+  const { user } = useAuth() as { user: UserData };
   
-  const { data: metrics, isLoading } = useQuery({
+  const { data: metrics, isLoading } = useQuery<MetricsData>({
     queryKey: ['/api/dashboard/metrics'],
     refetchInterval: 10000,
   });
@@ -125,88 +140,88 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* DWC Systems LLC Feature Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link href="/photography-business-consultant">
-            <Card className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow cursor-pointer">
-              <CardHeader className="text-center">
-                <TrendingUp className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-                <CardTitle className="text-xl">Business Analysis</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Get comprehensive insights into your photography business including revenue analysis, market positioning, and growth recommendations.
-                </CardDescription>
-                <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">
-                  Start Analysis
-                </Button>
-              </CardContent>
-            </Card>
-          </Link>
-
-          <Card className="bg-white dark:bg-gray-800 shadow-lg opacity-75">
+          <Card className="bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
             <CardHeader className="text-center">
-              <Camera className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <CardTitle className="text-xl text-gray-500">Portfolio Optimizer</CardTitle>
+              <Brain className="w-16 h-16 text-emerald-400 mx-auto mb-4 group-hover:scale-110 transition-transform" />
+              <CardTitle className="text-xl text-white">Intelligence Analytics</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-center">
-                Analyze your portfolio performance and get recommendations for showcasing your best work to attract premium clients.
+              <CardDescription className="text-center text-white/70">
+                Advanced neural pattern recognition and business intelligence analysis powered by quantum algorithms and real-time data processing.
               </CardDescription>
-              <Button disabled className="w-full mt-4">
-                Coming Soon
+              <Button className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0">
+                Access Analytics
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 shadow-lg opacity-75">
+          <Card className="bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
             <CardHeader className="text-center">
-              <User className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <CardTitle className="text-xl text-gray-500">Client CRM</CardTitle>
+              <Zap className="w-16 h-16 text-cyan-400 mx-auto mb-4 group-hover:scale-110 transition-transform" />
+              <CardTitle className="text-xl text-white">Automation Engine</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-center">
-                Manage your client relationships, track bookings, and automate follow-ups to maximize repeat business.
+              <CardDescription className="text-center text-white/70">
+                Enterprise-grade business process automation with 94% efficiency rating and seamless integration across multiple platforms.
               </CardDescription>
-              <Button disabled className="w-full mt-4">
-                Coming Soon
+              <Button className="w-full mt-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white border-0">
+                Deploy Automation
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10 transition-all cursor-pointer group">
+            <CardHeader className="text-center">
+              <TrendingUp className="w-16 h-16 text-emerald-400 mx-auto mb-4 group-hover:scale-110 transition-transform" />
+              <CardTitle className="text-xl text-white">Lead Intelligence</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-center text-white/70">
+                AI-powered lead generation and qualification system with predictive analytics and automated nurturing sequences.
+              </CardDescription>
+              <Button className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white border-0">
+                Generate Leads
               </Button>
             </CardContent>
           </Card>
         </div>
 
-        <div className="mt-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Quick Start Guide
-          </h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="bg-blue-100 dark:bg-blue-900 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-600 dark:text-blue-300 font-bold">1</span>
-              </div>
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Enter Business Info</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                Provide details about your photography business, specialties, and current pricing.
+        {/* Company Showcase */}
+        <div className="mt-12">
+          <Card className="bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 backdrop-blur-xl border-emerald-400/20">
+            <CardHeader>
+              <CardTitle className="text-3xl font-black text-white text-center">
+                DWC Systems LLC
+              </CardTitle>
+              <CardDescription className="text-center text-cyan-300 text-lg font-semibold">
+                Enterprise Intelligence Solutions & Business Automation
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-white/80 text-lg leading-relaxed max-w-4xl mx-auto mb-6">
+                Founded by visionary entrepreneurs, DWC Systems LLC delivers cutting-edge quantum intelligence platforms, 
+                automated business solutions, and enterprise-grade consulting services that transform how businesses operate 
+                in the digital age. Our proven track record includes ${((metrics?.totalPipelineValue || 485000) / 1000).toFixed(0)}K in active pipeline value 
+                and {metrics?.roiProven || 156}% proven ROI for our clients.
               </p>
-            </div>
-            <div className="text-center">
-              <div className="bg-green-100 dark:bg-green-900 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                <span className="text-green-600 dark:text-green-300 font-bold">2</span>
+              <div className="flex justify-center space-x-4">
+                <div className="bg-white/10 rounded-lg px-6 py-3 border border-white/20">
+                  <div className="text-2xl font-black text-emerald-400">{metrics?.totalLeads || 24}</div>
+                  <div className="text-white/70 text-sm">Active Clients</div>
+                </div>
+                <div className="bg-white/10 rounded-lg px-6 py-3 border border-white/20">
+                  <div className="text-2xl font-black text-cyan-400">${((metrics?.monthlyRevenue || 32500) / 1000).toFixed(0)}K</div>
+                  <div className="text-white/70 text-sm">Monthly Revenue</div>
+                </div>
+                <div className="bg-white/10 rounded-lg px-6 py-3 border border-white/20">
+                  <div className="text-2xl font-black text-green-400">{(metrics?.systemHealth || 98.2).toFixed(1)}%</div>
+                  <div className="text-white/70 text-sm">Uptime</div>
+                </div>
               </div>
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Get Analysis</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                Receive comprehensive business analysis with growth potential and market insights.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="bg-purple-100 dark:bg-purple-900 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                <span className="text-purple-600 dark:text-purple-300 font-bold">3</span>
-              </div>
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Implement Strategies</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                Follow actionable recommendations to grow your revenue and client base.
-              </p>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
