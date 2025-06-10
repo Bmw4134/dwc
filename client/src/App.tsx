@@ -2,6 +2,7 @@ import { Switch, Route } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import Home from "@/pages/Home";
+import AdminDashboard from "@/pages/AdminDashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
