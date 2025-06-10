@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Building2, DollarSign, FileText, CheckCircle2, Clock, ArrowRight } from 'lucide-react';
+import { apiRequest } from '@/lib/queryClient';
 
 interface FormationData {
   entityName: string;
@@ -81,21 +82,54 @@ export default function LLCFormationPage() {
       description: "Filing DWC Systems LLC with Texas Secretary of State",
     });
 
-    // Simulate filing process
-    setTimeout(() => {
-      setFormationStatus('approved');
+    try {
+      const response = await apiRequest('POST', '/api/llc/formation', formationData);
+      const result = await response.json();
+      
+      setTimeout(() => {
+        setFormationStatus('approved');
+        toast({
+          title: "LLC Formation Complete",
+          description: `DWC Systems LLC filed successfully - ${result.data.filingNumber}`,
+        });
+      }, 3000);
+    } catch (error) {
+      setFormationStatus('draft');
       toast({
-        title: "LLC Formation Complete",
-        description: "DWC Systems LLC is now a registered entity in Texas",
+        title: "Formation Error",
+        description: "Please verify all required information is complete",
+        variant: "destructive"
       });
-    }, 3000);
+    }
   };
 
-  const handleFundingApplication = (fundingType: string) => {
+  const handleFundingApplication = async (fundingType: string) => {
     toast({
       title: "Funding Application Started",
       description: `Initiating ${fundingType} application process`,
     });
+
+    try {
+      const response = await apiRequest('POST', '/api/funding/apply', {
+        fundingType,
+        amount: fundingType === 'SBA Loan' ? '150000' : 
+               fundingType === 'Revenue-Based Financing' ? '500000' :
+               fundingType === 'Equipment Financing' ? '100000' : '2000000',
+        businessData: formationData
+      });
+      const result = await response.json();
+
+      toast({
+        title: "Application Submitted",
+        description: `${fundingType} application ${result.data.id} under review`,
+      });
+    } catch (error) {
+      toast({
+        title: "Application Error",
+        description: "Please complete LLC formation first",
+        variant: "destructive"
+      });
+    }
   };
 
   return (

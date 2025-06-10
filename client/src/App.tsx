@@ -247,12 +247,7 @@ function Router() {
       <Route path="/projects" component={TrelloCanvas} />
       <Route path="/pricing" component={SubscriptionPlans} />
       <Route path="/dashboard" component={LandingPage} />
-      <Route path="/llc-formation">
-        <LLCFormationPage />
-      </Route>
-      <Route path="/llc-success">
-        <LLCSuccessPage />
-      </Route>
+      <Route path="/llc-formation" component={LLCFormationPage} />
       <Route>
         <div style={{
           minHeight: '100vh',

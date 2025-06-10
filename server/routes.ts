@@ -469,7 +469,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         managementStructure: formationData.managementStructure || 'Member-managed'
       };
 
-      log(`LLC Formation filed: ${filingData.entityName} - ${filingData.filingNumber}`);
+      console.log(`LLC Formation filed: ${filingData.entityName} - ${filingData.filingNumber}`);
 
       res.json({
         success: true,
@@ -508,7 +508,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ]
       };
 
-      log(`Funding application submitted: ${fundingType} for $${amount}`);
+      console.log(`Funding application submitted: ${fundingType} for $${amount}`);
 
       res.json({
         success: true,
