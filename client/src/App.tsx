@@ -46,13 +46,26 @@ function LandingPage() {
     sessionStorage.clear();
   }, []);
 
-  // Handle loading state for iframe compatibility
+  // Handle loading state with quantum animations
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading DWC Systems Platform...</p>
+          <div className="quantum-loader mx-auto mb-6"></div>
+          <div className="space-y-3">
+            <div className="quantum-skeleton h-4 w-48 mx-auto rounded"></div>
+            <div className="quantum-skeleton h-3 w-32 mx-auto rounded"></div>
+          </div>
+          <p className="text-emerald-300 mt-6 font-semibold animate-quantum-pulse">
+            Initializing QNIS/PTNI Intelligence Platform...
+          </p>
+          {/* Quantum loading particles */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-quantum-float"></div>
+            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-cyan-400 rounded-full animate-data-flow"></div>
+            <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-purple-400 rounded-full animate-quantum-float" style={{animationDelay: '2s'}}></div>
+            <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-blue-400 rounded-full animate-data-flow" style={{animationDelay: '1s'}}></div>
+          </div>
         </div>
       </div>
     );
@@ -71,13 +84,15 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-white font-['Inter',system-ui,sans-serif] relative overflow-hidden">
-      {/* Animated background particles */}
+      {/* Quantum animated background particles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -inset-10 opacity-30">
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full animate-ping"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"></div>
-          <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-cyan-400 rounded-full animate-ping"></div>
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400 rounded-full animate-quantum-float"></div>
+          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full animate-data-flow"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-purple-400 rounded-full animate-quantum-float" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-cyan-400 rounded-full animate-data-flow" style={{animationDelay: '0.8s'}}></div>
+          <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-indigo-400 rounded-full animate-quantum-float" style={{animationDelay: '3s'}}></div>
+          <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-emerald-300 rounded-full animate-data-flow" style={{animationDelay: '2.2s'}}></div>
         </div>
       </div>
 
@@ -85,30 +100,30 @@ function LandingPage() {
       <header className="relative bg-white/10 backdrop-blur-xl border-b border-white/20 px-6 py-6 shadow-2xl">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-6">
-            <div className="relative">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-xl flex items-center justify-center shadow-2xl">
+            <div className="relative animate-stagger-1">
+              <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-xl flex items-center justify-center shadow-2xl quantum-card hover-glow">
                 <span className="text-white font-black text-2xl">DWC</span>
               </div>
-              <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center animate-quantum-pulse">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
               </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-black text-white bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+            <div className="animate-stagger-2">
+              <h1 className="text-3xl font-black text-white bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent animate-quantum-shimmer">
                 DWC Systems LLC
               </h1>
-              <p className="text-lg text-emerald-300 font-bold tracking-wide">
+              <p className="text-lg text-emerald-300 font-bold tracking-wide hover-glow">
                 QNIS/PTNI Intelligence Platform • $2.66M Pipeline Active
               </p>
             </div>
           </div>
-          <nav className="flex items-center space-x-8">
-            <a href="/dashboard" className="text-white/90 hover:text-emerald-400 font-bold text-lg transition-all duration-300 hover:scale-105">Intelligence Hub</a>
-            <a href="/qnis-core" className="text-white/90 hover:text-cyan-400 font-bold text-lg transition-all duration-300 hover:scale-105">QNIS Core</a>
-            <a href="/historical" className="text-white/90 hover:text-purple-400 font-bold text-lg transition-all duration-300 hover:scale-105">Neural Analytics</a>
-            <a href="/projects" className="text-white/90 hover:text-blue-400 font-bold text-lg transition-all duration-300 hover:scale-105">Enterprise</a>
-            <a href="/llc-formation" className="text-white/90 hover:text-yellow-400 font-bold text-lg transition-all duration-300 hover:scale-105">Formation</a>
-            <button className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-black text-lg hover:from-emerald-400 hover:to-cyan-400 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/50 hover:scale-105 border border-white/20">
+          <nav className="flex items-center space-x-8 animate-stagger-3">
+            <a href="/dashboard" className="text-white/90 hover:text-emerald-400 font-bold text-lg transition-all duration-300 hover:scale-105 hover-lift hover-glow">Intelligence Hub</a>
+            <a href="/qnis-core" className="text-white/90 hover:text-cyan-400 font-bold text-lg transition-all duration-300 hover:scale-105 hover-lift hover-glow">QNIS Core</a>
+            <a href="/historical" className="text-white/90 hover:text-purple-400 font-bold text-lg transition-all duration-300 hover:scale-105 hover-lift hover-glow">Neural Analytics</a>
+            <a href="/projects" className="text-white/90 hover:text-blue-400 font-bold text-lg transition-all duration-300 hover:scale-105 hover-lift hover-glow">Enterprise</a>
+            <a href="/llc-formation" className="text-white/90 hover:text-yellow-400 font-bold text-lg transition-all duration-300 hover:scale-105 hover-lift hover-glow">Formation</a>
+            <button className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-black text-lg hover:from-emerald-400 hover:to-cyan-400 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/50 quantum-button animate-quantum-pulse">
               Executive Access
             </button>
           </nav>
@@ -161,27 +176,27 @@ function LandingPage() {
               Live Intelligence Metrics
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-              <div className="text-center group">
-                <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 backdrop-blur-sm border border-emerald-400/30 rounded-2xl p-8 mb-4 group-hover:from-emerald-400/30 group-hover:to-emerald-500/30 transition-all duration-300">
-                  <div className="text-6xl font-black text-emerald-400 mb-4">
+              <div className="text-center group animate-stagger-1">
+                <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 backdrop-blur-sm border border-emerald-400/30 rounded-2xl p-8 mb-4 quantum-card hover-glow transition-all duration-300">
+                  <div className="text-6xl font-black text-emerald-400 mb-4 animate-quantum-pulse">
                     ${metrics?.totalPipelineValue ? (metrics.totalPipelineValue / 1000000).toFixed(2) : '2.66'}M
                   </div>
                   <div className="text-emerald-300 font-bold text-lg uppercase tracking-wide">Active Pipeline</div>
-                  <div className="text-emerald-200 text-sm mt-2">Fort Worth Quantum Hub</div>
+                  <div className="text-emerald-200 text-sm mt-2 animate-quantum-shimmer">Fort Worth Quantum Hub</div>
                 </div>
               </div>
-              <div className="text-center group">
-                <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 rounded-2xl p-8 mb-4 group-hover:from-cyan-400/30 group-hover:to-cyan-500/30 transition-all duration-300">
-                  <div className="text-6xl font-black text-cyan-400 mb-4">
+              <div className="text-center group animate-stagger-2">
+                <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 rounded-2xl p-8 mb-4 quantum-card hover-glow transition-all duration-300">
+                  <div className="text-6xl font-black text-cyan-400 mb-4 animate-quantum-pulse" style={{animationDelay: '0.5s'}}>
                     {metrics?.totalLeads || 3}
                   </div>
                   <div className="text-cyan-300 font-bold text-lg uppercase tracking-wide">Neural Targets</div>
-                  <div className="text-cyan-200 text-sm mt-2">Active Intelligence</div>
+                  <div className="text-cyan-200 text-sm mt-2 animate-quantum-shimmer">Active Intelligence</div>
                 </div>
               </div>
-              <div className="text-center group">
-                <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm border border-purple-400/30 rounded-2xl p-8 mb-4 group-hover:from-purple-400/30 group-hover:to-purple-500/30 transition-all duration-300">
-                  <div className="text-6xl font-black text-purple-400 mb-4">
+              <div className="text-center group animate-stagger-3">
+                <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm border border-purple-400/30 rounded-2xl p-8 mb-4 quantum-card hover-glow transition-all duration-300">
+                  <div className="text-6xl font-black text-purple-400 mb-4 animate-quantum-pulse" style={{animationDelay: '1s'}}>
                     {metrics?.roiProven || 277}%
                   </div>
                   <div className="text-purple-300 font-bold text-lg uppercase tracking-wide">Quantum ROI</div>
