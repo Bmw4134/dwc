@@ -143,12 +143,7 @@ const EMERGENCY_HTML = `
 </html>
 `;
 
-// Priority route: catch all requests and serve the platform
-app.get('*', (req, res) => {
-  res.setHeader('Content-Type', 'text/html');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.send(EMERGENCY_HTML);
-});
+// Remove the catch-all route that blocks the React app
 
 // Allow iframe embedding for Replit preview
 app.use((req, res, next) => {
