@@ -25,51 +25,25 @@ interface DashboardMetrics {
 }
 
 function LandingPage() {
-  const [loadingPhase, setLoadingPhase] = useState(0);
-  const [showQuantumLoader, setShowQuantumLoader] = useState(true);
-
   const { data: metrics, isLoading, error } = useQuery<DashboardMetrics>({
     queryKey: ['/api/dashboard/metrics'],
-    refetchInterval: 5000,
+    refetchInterval: 10000,
     retry: 3,
     retryDelay: 1000,
   });
 
-  useEffect(() => {
-    const phases = [
-      { message: "Initializing Quantum Intelligence...", duration: 1000 },
-      { message: "Synchronizing Neural Networks...", duration: 1200 },
-      { message: "Activating QNIS/PTNI Systems...", duration: 800 },
-      { message: "Loading Enterprise Dashboard...", duration: 600 }
-    ];
-
-    let currentPhase = 0;
-    const progressInterval = setInterval(() => {
-      if (currentPhase < phases.length) {
-        setLoadingPhase((currentPhase + 1) * 25);
-        currentPhase++;
-      } else {
-        clearInterval(progressInterval);
-        setTimeout(() => setShowQuantumLoader(false), 500);
-      }
-    }, phases[Math.min(currentPhase, phases.length - 1)]?.duration || 1000);
-
-    return () => clearInterval(progressInterval);
-  }, []);
-
-  // Show quantum loading screen during initial load
-  if (showQuantumLoader || isLoading) {
+  // Show loading state only for initial data fetch
+  if (isLoading && !metrics) {
     return (
-      <QuantumLoadingScreen 
-        isLoading={true} 
-        progress={loadingPhase} 
-        message={
-          loadingPhase <= 25 ? "Initializing Quantum Intelligence..." :
-          loadingPhase <= 50 ? "Synchronizing Neural Networks..." :
-          loadingPhase <= 75 ? "Activating QNIS/PTNI Systems..." :
-          "Loading Enterprise Dashboard..."
-        }
-      />
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg mx-auto mb-6">
+            <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">DWC Systems LLC</h2>
+          <p className="text-emerald-400">Loading Intelligence Platform...</p>
+        </div>
+      </div>
     );
   }
 
