@@ -5,6 +5,8 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TrelloCanvas } from "./components/TrelloCanvas";
 import { SubscriptionPlans } from "./components/SubscriptionPlans";
+import { QuantumDataFlow } from "./components/QuantumDataFlow";
+import { QuantumMetrics } from "./components/QuantumMetrics";
 import LLCFormationPage from "./pages/LLCFormationPage";
 import QNISPTNICore from "./pages/QNISPTNICore";
 import HistoricalIntelligence from "./pages/HistoricalIntelligence";
@@ -151,16 +153,16 @@ function LandingPage() {
               <span className="text-cyan-400 font-black text-2xl"> 98%+</span> precision rates and proven 
               <span className="text-purple-400 font-black text-2xl">277% ROI</span> for Fortune 500 enterprises.
             </p>
-            <div className="flex justify-center space-x-8">
+            <div className="flex justify-center space-x-8 animate-stagger-4">
               <a 
                 href="/dashboard" 
-                className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-12 py-6 rounded-2xl font-black hover:from-emerald-400 hover:to-cyan-400 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/50 text-xl border border-white/20 hover:scale-105 transform"
+                className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white px-12 py-6 rounded-2xl font-black hover:from-emerald-400 hover:to-cyan-400 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/50 text-xl border border-white/20 quantum-button animate-holographic"
               >
                 Launch Intelligence Hub
               </a>
               <a 
                 href="/qnis-core" 
-                className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-12 py-6 rounded-2xl font-black hover:from-purple-400 hover:to-indigo-400 transition-all duration-300 shadow-2xl hover:shadow-purple-500/50 text-xl border border-white/20 hover:scale-105 transform"
+                className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-12 py-6 rounded-2xl font-black hover:from-purple-400 hover:to-indigo-400 transition-all duration-300 shadow-2xl hover:shadow-purple-500/50 text-xl border border-white/20 quantum-button"
               >
                 Access QNIS Core
               </a>
@@ -171,37 +173,17 @@ function LandingPage() {
         {/* Premium Performance Metrics */}
         <div className="relative bg-gradient-to-br from-black/40 to-slate-900/40 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-16 mb-20">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-purple-500/10 rounded-3xl"></div>
+          <QuantumDataFlow />
           <div className="relative z-10">
             <h3 className="text-5xl font-black text-white mb-12 text-center bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
               Live Intelligence Metrics
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-              <div className="text-center group animate-stagger-1">
-                <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 backdrop-blur-sm border border-emerald-400/30 rounded-2xl p-8 mb-4 quantum-card hover-glow transition-all duration-300">
-                  <div className="text-6xl font-black text-emerald-400 mb-4 animate-quantum-pulse">
-                    ${metrics?.totalPipelineValue ? (metrics.totalPipelineValue / 1000000).toFixed(2) : '2.66'}M
-                  </div>
-                  <div className="text-emerald-300 font-bold text-lg uppercase tracking-wide">Active Pipeline</div>
-                  <div className="text-emerald-200 text-sm mt-2 animate-quantum-shimmer">Fort Worth Quantum Hub</div>
-                </div>
-              </div>
-              <div className="text-center group animate-stagger-2">
-                <div className="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 rounded-2xl p-8 mb-4 quantum-card hover-glow transition-all duration-300">
-                  <div className="text-6xl font-black text-cyan-400 mb-4 animate-quantum-pulse" style={{animationDelay: '0.5s'}}>
-                    {metrics?.totalLeads || 3}
-                  </div>
-                  <div className="text-cyan-300 font-bold text-lg uppercase tracking-wide">Neural Targets</div>
-                  <div className="text-cyan-200 text-sm mt-2 animate-quantum-shimmer">Active Intelligence</div>
-                </div>
-              </div>
-              <div className="text-center group animate-stagger-3">
-                <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-sm border border-purple-400/30 rounded-2xl p-8 mb-4 quantum-card hover-glow transition-all duration-300">
-                  <div className="text-6xl font-black text-purple-400 mb-4 animate-quantum-pulse" style={{animationDelay: '1s'}}>
-                    {metrics?.roiProven || 277}%
-                  </div>
-                  <div className="text-purple-300 font-bold text-lg uppercase tracking-wide">Quantum ROI</div>
-                  <div className="text-purple-200 text-sm mt-2">Validated Excellence</div>
-                </div>
+            <QuantumMetrics
+              totalLeads={metrics?.totalLeads || 3}
+              systemHealth={metrics?.systemHealth || 98.5}
+              roiProven={metrics?.roiProven || 277}
+              automationLinkage={metrics?.automationLinkage || 100}
+            />
               </div>
               <div className="text-center group">
                 <div className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-400/30 rounded-2xl p-8 mb-4 group-hover:from-yellow-400/30 group-hover:to-orange-400/30 transition-all duration-300">
