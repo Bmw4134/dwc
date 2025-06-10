@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TrelloCanvas } from "./components/TrelloCanvas";
 import { SubscriptionPlans } from "./components/SubscriptionPlans";
 import LLCFormationPage from "./pages/LLCFormationPage";
+import QNISPTNICore from "./pages/QNISPTNICore";
+import HistoricalIntelligence from "./pages/HistoricalIntelligence";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -71,13 +73,15 @@ function LandingPage() {
               <p className="text-sm text-slate-600 font-medium">Advanced Intelligence & Automation Platform</p>
             </div>
           </div>
-          <nav className="flex items-center space-x-8">
+          <nav className="flex items-center space-x-6">
             <a href="/dashboard" className="text-slate-700 hover:text-slate-900 font-semibold">Platform</a>
+            <a href="/qnis-core" className="text-slate-700 hover:text-slate-900 font-semibold">QNIS/PTNI Core</a>
+            <a href="/historical" className="text-slate-700 hover:text-slate-900 font-semibold">Historical Intelligence</a>
             <a href="/projects" className="text-slate-700 hover:text-slate-900 font-semibold">Enterprise Solutions</a>
             <a href="/llc-formation" className="text-slate-700 hover:text-slate-900 font-semibold">LLC Formation</a>
-            <a href="/pricing" className="text-slate-700 hover:text-slate-900 font-semibold">Investment Opportunities</a>
-            <button className="bg-slate-800 text-white px-8 py-3 rounded-sm font-semibold hover:bg-slate-700 transition-colors shadow-sm">
-              Request Executive Demo
+            <a href="/pricing" className="text-slate-700 hover:text-slate-900 font-semibold">Investment</a>
+            <button className="bg-slate-800 text-white px-6 py-3 rounded-sm font-semibold hover:bg-slate-700 transition-colors shadow-sm">
+              Executive Demo
             </button>
           </nav>
         </div>
@@ -247,6 +251,7 @@ function Router() {
       <Route path="/projects" component={TrelloCanvas} />
       <Route path="/pricing" component={SubscriptionPlans} />
       <Route path="/dashboard" component={LandingPage} />
+      <Route path="/qnis-core" component={QNISPTNICore} />
       <Route path="/llc-formation" component={LLCFormationPage} />
       <Route>
         <div style={{
