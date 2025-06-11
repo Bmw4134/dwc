@@ -63,7 +63,7 @@ app.get('/api/leads/generate', async (req, res) => {
   try {
     const { AdvancedLeadGenerationEngine } = await import('./lead-generation-engine.js');
     const engine = new AdvancedLeadGenerationEngine();
-    const leads = await engine.generateTargetedLeads();
+    const leads = await engine.generateTargetedLeads('Dallas, TX', 5);
     res.json({ success: true, leads, count: leads.length });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
