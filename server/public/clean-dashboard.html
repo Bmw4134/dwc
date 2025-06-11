@@ -246,6 +246,21 @@
             margin-top: 5px;
         }
         
+        .ai-status-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .ai-indicator {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 0.9em;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+        
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -301,6 +316,12 @@
                 <div class="metric-card">
                     <div class="metric-value" id="conversionRate">-</div>
                     <div class="metric-label">Conversion Rate</div>
+                </div>
+                <div class="metric-card ai-status-card">
+                    <div class="metric-value">
+                        <span class="ai-indicator">🤖 AI ACTIVE</span>
+                    </div>
+                    <div class="metric-label">OpenAI Intelligence</div>
                 </div>
             </div>
 

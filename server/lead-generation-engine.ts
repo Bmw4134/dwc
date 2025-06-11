@@ -38,7 +38,7 @@ interface LeadOpportunity {
 }
 
 export class AdvancedLeadGenerationEngine {
-  private perplexityApiKey: string;
+  private openaiApiKey: string = '';
   private targetRadius: number = 50; // miles
   private industries: string[] = [
     'Photography Services',
@@ -60,10 +60,17 @@ export class AdvancedLeadGenerationEngine {
   ];
 
   constructor() {
-    this.perplexityApiKey = process.env.PERPLEXITY_API_KEY || '';
-    if (!this.perplexityApiKey) {
-      console.warn('Perplexity API key not found - using location-only generation');
+    this.openaiApiKey = process.env.OPENAI_API_KEY || '';
+    if (!this.openaiApiKey) {
+      console.warn('OpenAI API key not found - using basic generation');
     }
+  }
+
+  // Main method for generating targeted leads
+  async generateTargetedLeads(location: string, count: number = 10): Promise<LeadOpportunity[]> {
+    const centerLat = 32.7767; // Dallas center
+    const centerLng = -96.7970;
+    return this.generateLocationBasedLeads(centerLat, centerLng, count);
   }
 
   // Generate leads based on geographic location
