@@ -243,6 +243,14 @@ app.get('/modules', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'modules.html'));
 });
 
+// Career Bootstrap page
+app.get('/career', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'nexus-career-bootstrap.html'));
+});
+
+// Initialize Career Bootstrap routes
+nexusCareerBootstrap.setupRoutes(app);
+
 // Catch all
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));

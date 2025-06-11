@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS Career Bootstrap | DWC Systems LLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .quantum-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            animation: pulse-glow 2s infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
+        }
+        
+        .career-card {
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .career-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .skill-progress {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            height: 8px;
+            border-radius: 4px;
+        }
+        
+        .opportunity-match {
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+        }
+        
+        .high-match { border-left: 4px solid #10b981; }
+        .medium-match { border-left: 4px solid #f59e0b; }
+        .low-match { border-left: 4px solid #ef4444; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="text-2xl font-bold text-blue-600">
+                        <i class="fas fa-atom mr-2"></i>NEXUS
+                    </div>
+                    <div class="text-sm text-gray-500">Career Bootstrap v1.0</div>
+                </div>
+                <nav class="flex space-x-6">
+                    <a href="/dashboard" class="text-gray-600 hover:text-blue-600 font-medium">Dashboard</a>
+                    <a href="/modules" class="text-gray-600 hover:text-blue-600 font-medium">Modules</a>
+                    <a href="/nexus" class="text-gray-600 hover:text-blue-600 font-medium">NEXUS</a>
+                    <a href="/settings" class="text-gray-600 hover:text-blue-600 font-medium">Settings</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                NEXUS Career Bootstrap System
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                AI-powered career acceleration platform designed to transform your professional trajectory through data-driven insights, skill optimization, and opportunity matching.
+            </p>
+        </div>
+
+        <!-- Profile Creation Form -->
+        <div id="profile-section" class="mb-12">
+            <div class="bg-white rounded-lg shadow-lg p-8 quantum-glow">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                    <i class="fas fa-user-circle mr-2 text-blue-600"></i>Create Your Career Profile
+                </h2>
+                <form id="career-profile-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input type="text" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Enter your full name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                        <select id="industry" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                            <option value="Technology">Technology</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Consulting">Consulting</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Target Income</label>
+                        <input type="number" id="targetIncome" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="75000" min="30000" max="500000">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Years of Experience</label>
+                        <input type="number" id="experience" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="3" min="0" max="30">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Desired Role</label>
+                        <input type="text" id="desiredRole" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Business Development Manager">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <input type="text" id="location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Dallas, TX">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Current Skills (comma-separated)</label>
+                        <textarea id="currentSkills" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Sales, CRM, Lead Generation, Project Management"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition duration-200 font-semibold">
+                            <i class="fas fa-rocket mr-2"></i>Generate Career Bootstrap Plan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-section" class="hidden">
+            <!-- Career Overview -->
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                    <i class="fas fa-chart-line mr-2 text-green-600"></i>Career Overview
+                </h2>
+                <div id="career-overview" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+            </div>
+
+            <!-- Top Opportunities -->
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                    <i class="fas fa-bullseye mr-2 text-purple-600"></i>Top Career Opportunities
+                </h2>
+                <div id="opportunities-list" class="space-y-4">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+            </div>
+
+            <!-- Skill Development Plan -->
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                    <i class="fas fa-graduation-cap mr-2 text-indigo-600"></i>Skill Development Plan
+                </h2>
+                <div id="skills-development" class="space-y-6">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+            </div>
+
+            <!-- Automation Strategy -->
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                    <i class="fas fa-cogs mr-2 text-orange-600"></i>Automation Strategy
+                </h2>
+                <div id="automation-strategy" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+            </div>
+
+            <!-- Income Projection -->
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">
+                    <i class="fas fa-dollar-sign mr-2 text-green-600"></i>Income Projection
+                </h2>
+                <div id="income-projection" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-300">© 2025 DWC Systems LLC. NEXUS Career Bootstrap System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form submission handler
+        document.getElementById('career-profile-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                industry: document.getElementById('industry').value,
+                targetIncome: parseInt(document.getElementById('targetIncome').value) || 75000,
+                experience: parseInt(document.getElementById('experience').value) || 2,
+                desiredRole: document.getElementById('desiredRole').value,
+                location: document.getElementById('location').value,
+                currentSkills: document.getElementById('currentSkills').value.split(',').map(s => s.trim())
+            };
+
+            try {
+                // Create profile
+                const profileResponse = await fetch('/api/career/create-profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const profileResult = await profileResponse.json();
+                
+                if (profileResult.success) {
+                    // Generate bootstrap plan
+                    const bootstrapResponse = await fetch(`/api/career/bootstrap/${profileResult.profile.id}`);
+                    const bootstrapResult = await bootstrapResponse.json();
+                    
+                    if (bootstrapResult.success) {
+                        displayResults(bootstrapResult.bootstrap);
+                    }
+                }
+            } catch (error) {
+                console.error('Error generating career plan:', error);
+                alert('Error generating career plan. Please try again.');
+            }
+        });
+
+        function displayResults(bootstrap) {
+            document.getElementById('results-section').classList.remove('hidden');
+            document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+
+            // Career Overview
+            const overview = document.getElementById('career-overview');
+            overview.innerHTML = `
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600">${bootstrap.profile.careerStage.toUpperCase()}</div>
+                    <div class="text-sm text-gray-600">Career Stage</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600">${bootstrap.profile.automationReadiness}%</div>
+                    <div class="text-sm text-gray-600">Automation Ready</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600">${bootstrap.opportunities.length}</div>
+                    <div class="text-sm text-gray-600">Opportunities</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-orange-600">${bootstrap.skillGaps.length}</div>
+                    <div class="text-sm text-gray-600">Skills to Develop</div>
+                </div>
+            `;
+
+            // Opportunities
+            const opportunitiesList = document.getElementById('opportunities-list');
+            opportunitiesList.innerHTML = bootstrap.opportunities.slice(0, 5).map(opp => {
+                const matchClass = opp.matchScore >= 90 ? 'high-match' : opp.matchScore >= 80 ? 'medium-match' : 'low-match';
+                const salaryRange = `$${opp.salaryRange.min.toLocaleString()} - $${opp.salaryRange.max.toLocaleString()}`;
+                
+                return `
+                    <div class="opportunity-match p-6 rounded-lg ${matchClass}">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">${opp.title}</h3>
+                                <p class="text-gray-600">${opp.company} • ${opp.location}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold text-green-600">${opp.matchScore}%</div>
+                                <div class="text-sm text-gray-500">Match</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-3">${opp.description}</p>
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-600">
+                                <i class="fas fa-dollar-sign mr-1"></i>${salaryRange}
+                            </div>
+                            <div class="flex space-x-2">
+                                ${opp.remoteOption ? '<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">Remote</span>' : ''}
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">${opp.industry}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Skills Development
+            const skillsDevelopment = document.getElementById('skills-development');
+            skillsDevelopment.innerHTML = bootstrap.skillGaps.slice(0, 3).map(skill => {
+                const priorityColors = {
+                    critical: 'red',
+                    high: 'orange',
+                    medium: 'yellow',
+                    low: 'gray'
+                };
+                const color = priorityColors[skill.priority];
+                
+                return `
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">${skill.skill}</h3>
+                            <span class="bg-${color}-100 text-${color}-800 px-3 py-1 rounded-full text-sm font-medium">${skill.priority.toUpperCase()}</span>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>Current Level: ${skill.currentLevel}/10</span>
+                                <span>Target Level: ${skill.targetLevel}/10</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="skill-progress rounded-full h-2" style="width: ${(skill.targetLevel/10)*100}%"></div>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p><i class="fas fa-clock mr-1"></i>Estimated time: ${skill.estimatedTimeToAcquire} months</p>
+                            <p class="mt-2"><strong>Recommended courses:</strong> ${skill.resources.courses.slice(0, 2).join(', ')}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Automation Strategy
+            const automationStrategy = document.getElementById('automation-strategy');
+            automationStrategy.innerHTML = `
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recommended Tools</h3>
+                    <div class="space-y-2">
+                        ${bootstrap.automationStrategy.tools.map(tool => `
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span class="text-gray-700">${tool}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Process Automation</h3>
+                    <div class="space-y-2">
+                        ${bootstrap.automationStrategy.processes.slice(0, 4).map(process => `
+                            <div class="flex items-center">
+                                <i class="fas fa-cog text-blue-500 mr-2"></i>
+                                <span class="text-gray-700">${process}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="mt-4 p-4 bg-green-50 rounded-lg">
+                        <p class="text-sm text-green-800">
+                            <i class="fas fa-chart-line mr-1"></i>
+                            Expected ROI: ${bootstrap.automationStrategy.expectedROI}% in ${bootstrap.automationStrategy.timelineMonths} months
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            // Income Projection
+            const incomeProjection = document.getElementById('income-projection');
+            incomeProjection.innerHTML = `
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-gray-600">$${bootstrap.incomeProjection.current.toLocaleString()}</div>
+                    <div class="text-sm text-gray-500">Current</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-blue-600">$${bootstrap.incomeProjection.sixMonths.toLocaleString()}</div>
+                    <div class="text-sm text-gray-500">6 Months</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-green-600">$${bootstrap.incomeProjection.oneYear.toLocaleString()}</div>
+                    <div class="text-sm text-gray-500">1 Year</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-purple-600">$${bootstrap.incomeProjection.threeYears.toLocaleString()}</div>
+                    <div class="text-sm text-gray-500">3 Years</div>
+                </div>
+            `;
+        }
+
+        // Load sample opportunities on page load
+        async function loadSampleData() {
+            try {
+                const response = await fetch('/api/career/opportunities/Technology');
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('Sample opportunities loaded:', result.opportunities.length);
+                }
+            } catch (error) {
+                console.error('Error loading sample data:', error);
+            }
+        }
+
+        // Initialize page
+        loadSampleData();
+    </script>
+</body>
+</html>
