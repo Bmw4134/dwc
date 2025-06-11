@@ -2,6 +2,9 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { nexusCareerBootstrap } from './nexus-career-bootstrap.js';
+import { llcFormationEngine } from './llc-formation-engine.js';
+import { locCreditEngine } from './loc-credit-engine.js';
+import { nexusQuantumDeepDive } from './nexus-quantum-deep-dive.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -169,7 +172,11 @@ app.get('/api/modules/registry', (req, res) => {
     { id: 'browser-automation', name: 'Universal Browser Automation', status: 'active', description: 'Intelligent browser task automation' },
     { id: 'email-intelligence', name: 'Intelligent Email Agent', status: 'active', description: 'AI-powered email automation' },
     { id: 'market-data', name: 'Real-time Market Data Service', status: 'active', description: 'Live financial market intelligence' },
-    { id: 'quantum-override', name: 'Watson Quantum Override', status: 'standby', description: 'Advanced system override capabilities' }
+    { id: 'quantum-override', name: 'Watson Quantum Override', status: 'standby', description: 'Advanced system override capabilities' },
+    { id: 'career-bootstrap', name: 'NEXUS Career Bootstrap', status: 'active', description: 'AI-powered career acceleration and opportunity matching' },
+    { id: 'llc-formation', name: 'LLC Formation Engine', status: 'active', description: 'Automated business entity formation and compliance' },
+    { id: 'loc-credit', name: 'Letter of Credit Engine', status: 'active', description: 'Trade finance and credit facilitation system' },
+    { id: 'quantum-deep-dive', name: 'Quantum Deep Dive Analysis', status: 'active', description: 'Advanced quantum computing analytics and optimization' }
   ];
   
   res.json({ success: true, modules, totalCount: modules.length });
@@ -248,8 +255,11 @@ app.get('/career', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'nexus-career-bootstrap.html'));
 });
 
-// Initialize Career Bootstrap routes
+// Initialize all module routes
 nexusCareerBootstrap.setupRoutes(app);
+llcFormationEngine.setupRoutes(app);
+locCreditEngine.setupRoutes(app);
+nexusQuantumDeepDive.setupRoutes(app);
 
 // Catch all
 app.get('*', (req, res) => {
