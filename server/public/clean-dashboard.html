@@ -129,9 +129,22 @@
             margin: 15px 0;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         .error-expandable:hover {
             background: rgba(255, 68, 68, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 68, 68, 0.2);
+        }
+        .error-expandable::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(45deg, #ff4444, #ff6666);
         }
         .error-header {
             display: flex;
@@ -192,6 +205,45 @@
         }
         .retry-btn:hover {
             background: #00cc6a;
+        }
+        .copy-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .copy-btn:hover {
+            background: #4f46e5;
+        }
+        .severity-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 10px;
+        }
+        .severity-critical {
+            background: #dc2626;
+            color: white;
+        }
+        .severity-warning {
+            background: #f59e0b;
+            color: white;
+        }
+        .severity-info {
+            background: #3b82f6;
+            color: white;
+        }
+        .error-timestamp {
+            font-size: 11px;
+            color: #888;
+            margin-top: 5px;
         }
         
         @media (max-width: 768px) {
@@ -341,23 +393,30 @@
             return true;
         }
 
-        // Error handling with expandable context
-        function createExpandableError(title, message, context, suggestions) {
+        // Enhanced error handling with expandable context
+        function createExpandableError(title, message, context, suggestions, severity = 'warning') {
             const errorId = 'error-' + Date.now();
             const errorContainer = document.getElementById('errorContainer');
+            const timestamp = new Date().toLocaleString();
             
             const errorElement = document.createElement('div');
             errorElement.className = 'error-expandable';
             errorElement.innerHTML = `
                 <div class="error-header" onclick="toggleErrorDetails('${errorId}')">
-                    <div class="error-title">${title}</div>
+                    <div class="error-title">
+                        ${title}
+                        <span class="severity-badge severity-${severity}">${severity}</span>
+                    </div>
                     <div class="error-toggle" id="${errorId}-toggle">▼</div>
                 </div>
+                <div class="error-timestamp">Occurred at: ${timestamp}</div>
                 <div class="error-details" id="${errorId}-details">
                     <p><strong>Error:</strong> ${message}</p>
                     <div class="error-context">
-                        <strong>Technical Details:</strong><br>
-                        ${context}
+                        <strong>Technical Details:</strong>
+                        <button class="copy-btn" onclick="copyErrorDetails('${errorId}')">Copy Details</button>
+                        <br>
+                        <span id="${errorId}-context">${context}</span>
                     </div>
                     ${suggestions.map(suggestion => `
                         <div class="error-suggestion">
@@ -365,14 +424,62 @@
                             <p>${suggestion.description}</p>
                         </div>
                     `).join('')}
-                    <button class="retry-btn" onclick="retryOperation('${errorId}')">
-                        Retry Operation
-                    </button>
+                    <div style="margin-top: 15px;">
+                        <button class="retry-btn" onclick="retryOperation('${errorId}')">
+                            Retry Operation
+                        </button>
+                        <button class="copy-btn" onclick="copyFullError('${errorId}', '${title}', '${message}', '${context.replace(/'/g, "\\'")}')">
+                            Copy Full Report
+                        </button>
+                    </div>
                 </div>
             `;
             
             errorContainer.appendChild(errorElement);
             return errorId;
+        }
+
+        function copyErrorDetails(errorId) {
+            const contextElement = document.getElementById(errorId + '-context');
+            navigator.clipboard.writeText(contextElement.textContent).then(() => {
+                showCopyFeedback('Technical details copied to clipboard');
+            });
+        }
+
+        function copyFullError(errorId, title, message, context) {
+            const fullReport = `ERROR REPORT
+Title: ${title}
+Message: ${message}
+Timestamp: ${new Date().toISOString()}
+Technical Details:
+${context}
+
+Generated by DWC Systems Platform`;
+            
+            navigator.clipboard.writeText(fullReport).then(() => {
+                showCopyFeedback('Full error report copied to clipboard');
+            });
+        }
+
+        function showCopyFeedback(message) {
+            const feedback = document.createElement('div');
+            feedback.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #00ff88;
+                color: #000;
+                padding: 10px 15px;
+                border-radius: 5px;
+                z-index: 1000;
+                font-weight: 600;
+            `;
+            feedback.textContent = message;
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                document.body.removeChild(feedback);
+            }, 2000);
         }
 
         function toggleErrorDetails(errorId) {
@@ -476,6 +583,7 @@
                     const errorContextMap = {
                         network: {
                             title: 'Network Communication Failed',
+                            severity: 'critical',
                             context: `Error Type: ${errorType}\nHTTP Status: ${response.status}\nEndpoint: /api/test/error/${errorType}\nTimestamp: ${new Date().toISOString()}\nUser Agent: ${navigator.userAgent}\nConnection: ${navigator.connection ? navigator.connection.effectiveType : 'Unknown'}`,
                             suggestions: [
                                 { title: 'Check Network Stability', description: 'Verify your internet connection is stable and has sufficient bandwidth.' },
@@ -485,6 +593,7 @@
                         },
                         auth: {
                             title: 'Authentication Session Expired',
+                            severity: 'warning',
                             context: `Error Type: ${errorType}\nHTTP Status: ${response.status}\nCurrent User: ${JSON.parse(localStorage.getItem('user') || '{}').username}\nToken Age: ${Date.now() - parseInt(localStorage.getItem('authToken')?.split('-')[1] || '0')}ms\nTimestamp: ${new Date().toISOString()}`,
                             suggestions: [
                                 { title: 'Re-authenticate', description: 'Your session has expired. Please log out and log back in to continue.' },
@@ -494,6 +603,7 @@
                         },
                         validation: {
                             title: 'Data Validation Error',
+                            severity: 'info',
                             context: `Error Type: ${errorType}\nHTTP Status: ${response.status}\nRequest Method: GET\nValidation Failed: Input parameters\nTimestamp: ${new Date().toISOString()}\nBrowser: ${navigator.userAgent}`,
                             suggestions: [
                                 { title: 'Check Input Format', description: 'Ensure all required fields are provided in the correct format.' },
@@ -503,6 +613,7 @@
                         },
                         server: {
                             title: 'Server Service Unavailable',
+                            severity: 'critical',
                             context: `Error Type: ${errorType}\nHTTP Status: ${response.status}\nService: Database Connection\nAttempt Time: ${new Date().toISOString()}\nServer Uptime: ${performance.now()}ms\nMemory Usage: ${navigator.deviceMemory ? navigator.deviceMemory + 'GB' : 'Unknown'}`,
                             suggestions: [
                                 { title: 'Service Recovery', description: 'The server is attempting to restore database connectivity automatically.' },
@@ -517,7 +628,8 @@
                         errorInfo.title,
                         data.message || 'An error occurred during the operation',
                         errorInfo.context,
-                        errorInfo.suggestions
+                        errorInfo.suggestions,
+                        errorInfo.severity
                     );
                 }
             } catch (err) {
