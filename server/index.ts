@@ -58,6 +58,122 @@ app.get('/api/system/status', (req, res) => {
   });
 });
 
+// Lead Generation Engine
+app.get('/api/leads/generate', async (req, res) => {
+  try {
+    const { AdvancedLeadGenerationEngine } = await import('./lead-generation-engine.js');
+    const engine = new AdvancedLeadGenerationEngine();
+    const leads = await engine.generateTargetedLeads();
+    res.json({ success: true, leads, count: leads.length });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Business Intelligence Analytics
+app.get('/api/analytics/business-intelligence', async (req, res) => {
+  try {
+    const { BMIAnalyticsEngine } = await import('./bmi-analytics-engine.js');
+    const engine = new BMIAnalyticsEngine();
+    const analytics = await engine.generateComprehensiveAnalytics();
+    res.json({ success: true, data: analytics });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Trading Engine Status
+app.get('/api/trading/status', async (req, res) => {
+  try {
+    const { ConsolidatedTradingEngine } = await import('./consolidated-trading-engine.js');
+    const engine = new ConsolidatedTradingEngine();
+    const status = await engine.getSystemStatus();
+    res.json({ success: true, status });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// AI Intelligence Engine
+app.get('/api/ai/intelligence-status', async (req, res) => {
+  try {
+    const { NexusIntelligenceEngine } = await import('./nexus-intelligence-engine.js');
+    const engine = new NexusIntelligenceEngine();
+    const status = await engine.getIntelligenceStatus();
+    res.json({ success: true, status });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Automation Hub Control
+app.get('/api/automation/status', async (req, res) => {
+  try {
+    const { DashboardAutomationEngine } = await import('./dashboard-automation-engine.js');
+    const engine = new DashboardAutomationEngine();
+    const status = await engine.getAutomationStatus();
+    res.json({ success: true, status });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Financial Analytics
+app.get('/api/financial/analysis', async (req, res) => {
+  try {
+    const { FinancialTranscendenceEngine } = await import('./financial-transcendence-engine.js');
+    const engine = new FinancialTranscendenceEngine();
+    const analysis = await engine.generateFinancialAnalysis();
+    res.json({ success: true, data: analysis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Security Center Status
+app.get('/api/security/status', async (req, res) => {
+  try {
+    const { QQPlatformRiskManager } = await import('./qq-platform-risk-manager.js');
+    const manager = new QQPlatformRiskManager();
+    const status = await manager.getSecurityStatus();
+    res.json({ success: true, status });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Deployment Hub Status
+app.get('/api/deployment/status', async (req, res) => {
+  try {
+    const { AutonomousDeploymentSystem } = await import('./autonomous-deployment-system.js');
+    const system = new AutonomousDeploymentSystem();
+    const status = await system.getDeploymentStatus();
+    res.json({ success: true, status });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Module Registry - List all available modules
+app.get('/api/modules/registry', (req, res) => {
+  const modules = [
+    { id: 'lead-generation', name: 'Advanced Lead Generation', status: 'active', description: 'AI-powered location-based lead discovery' },
+    { id: 'business-intelligence', name: 'Business Intelligence Analytics', status: 'active', description: 'Comprehensive market and competitor analysis' },
+    { id: 'trading-engine', name: 'Consolidated Trading Engine', status: 'standby', description: 'Multi-platform automated trading system' },
+    { id: 'ai-intelligence', name: 'NEXUS AI Intelligence', status: 'active', description: 'Advanced AI decision-making system' },
+    { id: 'automation-hub', name: 'Automation Control Hub', status: 'active', description: 'Central automation management system' },
+    { id: 'financial-analytics', name: 'Financial Transcendence Engine', status: 'active', description: 'Advanced financial modeling and analysis' },
+    { id: 'security-center', name: 'Platform Risk Manager', status: 'active', description: 'Comprehensive security monitoring' },
+    { id: 'deployment-hub', name: 'Autonomous Deployment System', status: 'active', description: 'Automated deployment and scaling' },
+    { id: 'browser-automation', name: 'Universal Browser Automation', status: 'active', description: 'Intelligent browser task automation' },
+    { id: 'email-intelligence', name: 'Intelligent Email Agent', status: 'active', description: 'AI-powered email automation' },
+    { id: 'market-data', name: 'Real-time Market Data Service', status: 'active', description: 'Live financial market intelligence' },
+    { id: 'quantum-override', name: 'Watson Quantum Override', status: 'standby', description: 'Advanced system override capabilities' }
+  ];
+  
+  res.json({ success: true, modules, totalCount: modules.length });
+});
+
 // Error testing endpoint for demonstrating error context expansion
 app.get('/api/test/error/:type', (req, res) => {
   const errorType = req.params.type;
@@ -119,6 +235,11 @@ app.get('/nexus', (req, res) => {
 // Settings page
 app.get('/settings', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'settings.html'));
+});
+
+// Modules registry page
+app.get('/modules', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'modules.html'));
 });
 
 // Catch all
