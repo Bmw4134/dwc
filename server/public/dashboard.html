@@ -315,27 +315,31 @@
     </div>
 
     <script>
-        // Check authentication
-        const token = localStorage.getItem('authToken');
-        let user = {};
-        
-        try {
-            user = JSON.parse(localStorage.getItem('user') || '{}');
-        } catch (e) {
-            console.error('Error parsing user data:', e);
-            localStorage.removeItem('user');
-            localStorage.removeItem('authToken');
-            window.location.href = '/';
-            return;
-        }
-        
-        if (!token || !user.username) {
-            window.location.href = '/';
-            return;
-        }
+        // Initialize dashboard
+        function initializeDashboard() {
+            // Check authentication
+            const token = localStorage.getItem('authToken');
+            let user = {};
+            
+            try {
+                user = JSON.parse(localStorage.getItem('user') || '{}');
+            } catch (e) {
+                console.error('Error parsing user data:', e);
+                localStorage.removeItem('user');
+                localStorage.removeItem('authToken');
+                window.location.href = '/';
+                return false;
+            }
+            
+            if (!token || !user.username) {
+                window.location.href = '/';
+                return false;
+            }
 
-        // Display user info
-        document.getElementById('userRole').textContent = `${user.role || 'User'} - ${user.username}`;
+            // Display user info
+            document.getElementById('userRole').textContent = `${user.role || 'User'} - ${user.username}`;
+            return true;
+        }
 
         // Error handling with expandable context
         function createExpandableError(title, message, context, suggestions) {
@@ -536,11 +540,12 @@
             window.location.href = '/';
         }
 
-        // Load dashboard on page load
-        loadDashboard();
-        
-        // Auto-refresh every 30 seconds
-        setInterval(loadDashboard, 30000);
+        // Initialize and load dashboard
+        if (initializeDashboard()) {
+            loadDashboard();
+            // Auto-refresh every 30 seconds
+            setInterval(loadDashboard, 30000);
+        }
     </script>
 </body>
 </html>
