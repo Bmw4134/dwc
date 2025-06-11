@@ -111,6 +111,16 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'clean-dashboard.html'));
 });
 
+// NEXUS Control Center
+app.get('/nexus', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'nexus-control.html'));
+});
+
+// Settings page
+app.get('/settings', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'settings.html'));
+});
+
 // Catch all
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));

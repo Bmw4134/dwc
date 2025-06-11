@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS Control Center - DWC Systems LLC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .nexus-header {
+            background: linear-gradient(90deg, #00ff88 0%, #00d4ff 100%);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nexus-logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .nexus-status {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ff00;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 20px;
+            padding: 20px;
+            height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .main-console {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metrics-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            margin: 8px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.2), rgba(0, 212, 255, 0.2));
+            border-color: #00ff88;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            background: #00ff88;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .console-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .console-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .console-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chart-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #00ff88;
+            margin-bottom: 15px;
+        }
+
+        .chart-canvas {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 136, 0.1) 0%, 
+                rgba(0, 212, 255, 0.1) 50%, 
+                rgba(138, 43, 226, 0.1) 100%);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .data-stream {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 10px,
+                rgba(0, 255, 136, 0.1) 10px,
+                rgba(0, 255, 136, 0.1) 11px
+            );
+            animation: dataFlow 3s linear infinite;
+        }
+
+        @keyframes dataFlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .metric-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            border-color: #00ff88;
+            transform: scale(1.02);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .metric-change {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .metric-change.positive {
+            color: #00ff88;
+        }
+
+        .metric-change.negative {
+            color: #ff4444;
+        }
+
+        .terminal-window {
+            background: #000;
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            color: #00ff88;
+        }
+
+        .terminal-prompt {
+            color: #00d4ff;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .control-button {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        .control-button:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .control-button.active {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            animation: progressPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes progressPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 1200px) {
+            .control-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            
+            .sidebar {
+                order: 3;
+            }
+            
+            .metrics-panel {
+                order: 2;
+            }
+        }
+
+        .quantum-indicator {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            border: 3px solid #00ff88;
+            border-radius: 50%;
+            background: rgba(0, 255, 136, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #00ff88;
+            animation: quantumSpin 4s linear infinite;
+            z-index: 999;
+        }
+
+        @keyframes quantumSpin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="nexus-header">
+        <div class="nexus-logo">NEXUS Control Center</div>
+        <div class="nexus-status">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>OPERATIONAL</span>
+            </div>
+            <div class="status-indicator">
+                <span id="system-time">00:00:00</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-grid">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="nav-item active" onclick="switchModule('dashboard')">
+                <div class="nav-icon">📊</div>
+                <span>System Dashboard</span>
+            </div>
+            <div class="nav-item" onclick="switchModule('analytics')">
+                <div class="nav-icon">📈</div>
+                <span>Analytics Engine</span>
+            </div>
+            <div class="nav-item" onclick="switchModule('automation')">
+                <div class="nav-icon">🤖</div>
+                <span>Automation Hub</span>
+            </div>
+            <div class="nav-item" onclick="switchModule('trading')">
+                <div class="nav-icon">💰</div>
+                <span>Trading Terminal</span>
+            </div>
+            <div class="nav-item" onclick="switchModule('intelligence')">
+                <div class="nav-icon">🧠</div>
+                <span>AI Intelligence</span>
+            </div>
+            <div class="nav-item" onclick="switchModule('security')">
+                <div class="nav-icon">🔒</div>
+                <span>Security Center</span>
+            </div>
+            <div class="nav-item" onclick="switchModule('deployment')">
+                <div class="nav-icon">🚀</div>
+                <span>Deployment Hub</span>
+            </div>
+            <div class="nav-item" onclick="switchModule('monitoring')">
+                <div class="nav-icon">👁️</div>
+                <span>Live Monitoring</span>
+            </div>
+        </div>
+
+        <!-- Main Console Area -->
+        <div class="main-console">
+            <div class="console-header">
+                <div class="console-title" id="module-title">System Dashboard</div>
+                <div class="console-actions">
+                    <button class="action-btn" onclick="exportData()">Export</button>
+                    <button class="action-btn" onclick="refreshData()">Refresh</button>
+                    <button class="action-btn" onclick="openSettings()">Settings</button>
+                </div>
+            </div>
+
+            <div class="console-content" id="console-content">
+                <!-- Dashboard Module Content -->
+                <div id="dashboard-module">
+                    <div class="chart-container">
+                        <div class="chart-title">Real-Time Performance Metrics</div>
+                        <div class="chart-canvas">
+                            <div class="data-stream"></div>
+                            <canvas id="performance-chart" width="100%" height="250"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <div class="chart-title">Network Activity & System Load</div>
+                        <div class="chart-canvas">
+                            <canvas id="network-chart" width="100%" height="250"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="control-panel">
+                        <div class="control-button active" onclick="toggleSystem('core')">
+                            <div>CORE SYSTEM</div>
+                            <div style="font-size: 12px; margin-top: 5px;">ACTIVE</div>
+                        </div>
+                        <div class="control-button" onclick="toggleSystem('ai')">
+                            <div>AI ENGINE</div>
+                            <div style="font-size: 12px; margin-top: 5px;">STANDBY</div>
+                        </div>
+                        <div class="control-button" onclick="toggleSystem('trading')">
+                            <div>TRADING BOT</div>
+                            <div style="font-size: 12px; margin-top: 5px;">OFFLINE</div>
+                        </div>
+                        <div class="control-button active" onclick="toggleSystem('monitoring')">
+                            <div>MONITORING</div>
+                            <div style="font-size: 12px; margin-top: 5px;">ACTIVE</div>
+                        </div>
+                    </div>
+
+                    <div class="terminal-window" id="system-terminal">
+                        <div class="terminal-line"><span class="terminal-prompt">NEXUS></span> System initialization complete</div>
+                        <div class="terminal-line"><span class="terminal-prompt">NEXUS></span> All modules loaded successfully</div>
+                        <div class="terminal-line"><span class="terminal-prompt">NEXUS></span> Monitoring 24 active leads</div>
+                        <div class="terminal-line"><span class="terminal-prompt">NEXUS></span> Pipeline value: $485,000</div>
+                        <div class="terminal-line"><span class="terminal-prompt">NEXUS></span> System health: 98.5%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Panel -->
+        <div class="metrics-panel">
+            <div class="metric-card">
+                <div class="metric-label">System Health</div>
+                <div class="metric-value">98.5%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 98.5%"></div>
+                </div>
+                <div class="metric-change positive">+2.1% from last hour</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Active Leads</div>
+                <div class="metric-value">24</div>
+                <div class="metric-change positive">+3 new today</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Pipeline Value</div>
+                <div class="metric-value">$485K</div>
+                <div class="metric-change positive">+$45K this week</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Conversion Rate</div>
+                <div class="metric-value">32.4%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 32.4%"></div>
+                </div>
+                <div class="metric-change positive">+5.2% improvement</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Server Uptime</div>
+                <div class="metric-value" id="uptime-display">0d 0h 0m</div>
+                <div class="metric-change positive">100% availability</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">AI Processing</div>
+                <div class="metric-value">47 ops/sec</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+                <div class="metric-change positive">Optimal performance</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Memory Usage</div>
+                <div class="metric-value">64%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 64%"></div>
+                </div>
+                <div class="metric-change">Within normal range</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">Network Traffic</div>
+                <div class="metric-value">1.2 GB/hr</div>
+                <div class="metric-change positive">+15% increase</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quantum-indicator">
+        <div>QQ</div>
+    </div>
+
+    <script>
+        // Real-time clock
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            document.getElementById('system-time').textContent = timeString;
+        }
+
+        // Update uptime display
+        let startTime = Date.now();
+        function updateUptime() {
+            const uptime = Date.now() - startTime;
+            const seconds = Math.floor(uptime / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            
+            const uptimeString = `${days}d ${hours % 24}h ${minutes % 60}m`;
+            document.getElementById('uptime-display').textContent = uptimeString;
+        }
+
+        // Module switching
+        function switchModule(moduleName) {
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+            
+            // Update module title
+            const titles = {
+                dashboard: 'System Dashboard',
+                analytics: 'Analytics Engine',
+                automation: 'Automation Hub',
+                trading: 'Trading Terminal',
+                intelligence: 'AI Intelligence',
+                security: 'Security Center',
+                deployment: 'Deployment Hub',
+                monitoring: 'Live Monitoring'
+            };
+            
+            document.getElementById('module-title').textContent = titles[moduleName];
+            
+            // Add terminal message
+            addTerminalLine(`Module switched to: ${titles[moduleName]}`);
+        }
+
+        // System control functions
+        function toggleSystem(systemName) {
+            const button = event.target.closest('.control-button');
+            button.classList.toggle('active');
+            
+            const isActive = button.classList.contains('active');
+            const status = isActive ? 'ACTIVE' : 'STANDBY';
+            button.querySelector('div:last-child').textContent = status;
+            
+            addTerminalLine(`${systemName.toUpperCase()} system ${isActive ? 'activated' : 'deactivated'}`);
+        }
+
+        // Terminal functions
+        function addTerminalLine(message) {
+            const terminal = document.getElementById('system-terminal');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = `<span class="terminal-prompt">NEXUS></span> ${message}`;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Action functions
+        function exportData() {
+            addTerminalLine('Exporting system data...');
+            setTimeout(() => addTerminalLine('Data export completed successfully'), 1000);
+        }
+
+        function refreshData() {
+            addTerminalLine('Refreshing all data streams...');
+            setTimeout(() => addTerminalLine('Data refresh completed'), 800);
+        }
+
+        function openSettings() {
+            window.open('/settings', '_blank');
+        }
+
+        // Initialize charts (simplified representation)
+        function initializeCharts() {
+            const charts = ['performance-chart', 'network-chart'];
+            charts.forEach(chartId => {
+                const canvas = document.getElementById(chartId);
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = 'rgba(0, 255, 136, 0.1)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Draw some sample data lines
+                    ctx.strokeStyle = '#00ff88';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    for (let i = 0; i < canvas.width; i += 10) {
+                        const y = Math.sin(i / 20) * 50 + canvas.height / 2;
+                        if (i === 0) ctx.moveTo(i, y);
+                        else ctx.lineTo(i, y);
+                    }
+                    ctx.stroke();
+                }
+            });
+        }
+
+        // Auto-update functions
+        function autoUpdateMetrics() {
+            // Simulate real-time metric updates
+            const metrics = document.querySelectorAll('.metric-value');
+            metrics.forEach(metric => {
+                if (metric.textContent.includes('%')) {
+                    const current = parseFloat(metric.textContent);
+                    const variation = (Math.random() - 0.5) * 2;
+                    const newValue = Math.max(0, Math.min(100, current + variation));
+                    metric.textContent = newValue.toFixed(1) + '%';
+                }
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            updateUptime();
+            initializeCharts();
+            
+            // Set up intervals
+            setInterval(updateTime, 1000);
+            setInterval(updateUptime, 1000);
+            setInterval(autoUpdateMetrics, 5000);
+            
+            // Add welcome message
+            setTimeout(() => {
+                addTerminalLine('NEXUS Control Center fully operational');
+                addTerminalLine('All systems ready for command');
+            }, 1000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey) {
+                switch(e.key) {
+                    case '1': switchModule('dashboard'); e.preventDefault(); break;
+                    case '2': switchModule('analytics'); e.preventDefault(); break;
+                    case '3': switchModule('automation'); e.preventDefault(); break;
+                    case '4': switchModule('trading'); e.preventDefault(); break;
+                    case '5': switchModule('intelligence'); e.preventDefault(); break;
+                    case 'r': refreshData(); e.preventDefault(); break;
+                    case 'e': exportData(); e.preventDefault(); break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
