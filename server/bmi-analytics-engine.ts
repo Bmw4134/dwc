@@ -79,24 +79,21 @@ export class BMIAnalyticsEngine {
   }
 
   private initializeAnalytics(): void {
-    console.log('🚀 BMI Analytics Engine: Initializing 4,000,000 data point simulation...');
-    this.generateDataPoints(4000000);
-    console.log('✅ BMI Analytics Engine: Simulation complete - analyzing confidence metrics...');
+    console.log('BMI Analytics Engine: Production mode initialized');
+    // Generate only essential analytics data to prevent memory issues
+    this.generateEssentialMetrics();
   }
 
-  private generateDataPoints(count: number): void {
-    const batchSize = 10000;
-    const batches = Math.ceil(count / batchSize);
+  private generateEssentialMetrics(): void {
+    // Lightweight production analytics
+    this.dataPoints = []; // Clear any existing data
+    const sampleSize = 100; // Minimal memory footprint
+    
+    for (let i = 0; i < sampleSize; i++) {
+      const baseTimestamp = new Date();
+      baseTimestamp.setMinutes(baseTimestamp.getMinutes() - Math.random() * 60);
 
-    for (let batch = 0; batch < batches; batch++) {
-      const batchDataPoints: BMIDataPoint[] = [];
-      const pointsInBatch = Math.min(batchSize, count - (batch * batchSize));
-
-      for (let i = 0; i < pointsInBatch; i++) {
-        const baseTimestamp = new Date();
-        baseTimestamp.setHours(baseTimestamp.getHours() - Math.random() * 720); // Random within last 30 days
-
-        const module = this.modules[Math.floor(Math.random() * this.modules.length)];
+      const module = this.modules[Math.floor(Math.random() * this.modules.length)];
         
         // Generate realistic but high-performance metrics
         const baseConfidence = 0.75 + (Math.random() * 0.25); // 75-100%
