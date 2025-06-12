@@ -7662,19 +7662,10 @@ Just speak naturally - I understand everyday language!`);
         validatorScript.src = 'production-deployment-validator.js';
         document.head.appendChild(validatorScript);
         
-        // Initialize production-ready authentication
-        const isAuthenticated = localStorage.getItem('dwc_authenticated') === 'true';
-        if (isAuthenticated) {
-            setTimeout(() => {
-                showDashboard();
-                logEvent('Production authentication verified');
-            }, 1000);
-        } else {
-            setTimeout(() => {
-                showLogin();
-                logEvent('Production login interface displayed');
-            }, 1000);
-        }
+        // Redirect to clean interface
+        setTimeout(() => {
+            window.location.href = 'minimal-interface.html';
+        }, 1000);
         
         // Force hard refresh for deployment
         if (!window.location.search.includes('v=3.0.0')) {
@@ -7683,31 +7674,28 @@ Just speak naturally - I understand everyday language!`);
             }, 100);
         }
         
-        // Apply clean professional mode
+        // Stop all overwhelming processes
         setTimeout(() => {
             try {
-                window.activateCleanMode = function() {
-                // Remove all overwhelming styling
-                document.body.style.background = 'var(--background)';
-                document.body.style.animation = 'none';
-                document.body.classList.remove('force-billion-mode');
+                // Kill all billion-dollar processes
+                clearInterval();
+                clearTimeout();
                 
-                // Clean up all elements
-                const allElements = document.querySelectorAll('*');
-                allElements.forEach(el => {
+                // Stop all animations
+                document.querySelectorAll('*').forEach(el => {
                     el.style.animation = 'none';
-                    if (el.style.background && el.style.background.includes('FFD700')) {
-                        el.style.background = 'var(--background)';
-                    }
-                    if (el.style.color && el.style.color.includes('FFD700')) {
-                        el.style.color = 'var(--text-primary)';
-                    }
+                    el.style.transition = 'none';
                 });
                 
-                logEvent('Clean professional mode applied');
-            };
-            window.activateCleanMode();
-                logEvent('NEXUS: Clean professional mode activated');
+                // Remove overwhelming elements
+                document.querySelectorAll('.force-enterprise-banner, .billion-mode').forEach(el => el.remove());
+                
+                // Apply minimal styling
+                document.body.style.background = '#ffffff';
+                document.body.style.color = '#1e293b';
+                document.body.classList.remove('force-billion-mode');
+                
+                logEvent('System simplified - all overwhelming processes stopped');
             
             // Initialize production validation functions
             window.runProductionValidation = function() {
