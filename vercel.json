@@ -4,6 +4,10 @@
     {
       "src": "server/index.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "dist/public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -12,23 +16,16 @@
       "dest": "/server/index.ts"
     },
     {
-      "src": "/",
-      "dest": "/client/simple-index.html"
-    },
-    {
-      "src": "/login",
-      "dest": "/client/login.html"
-    },
-    {
-      "src": "/dashboard",
-      "dest": "/server/public/clean-dashboard.html"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/client/simple-index.html"
+      "dest": "/dist/public/$1"
     }
   ],
   "env": {
     "NODE_ENV": "production"
+  },
+  "functions": {
+    "server/index.ts": {
+      "maxDuration": 30
+    }
   }
 }
