@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWC Systems LLC - QNIS/PTNI Intelligence Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1f2937 0%, #1e3a8a 50%, #1f2937 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        /* Landing Page Styles */
+        .landing-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+        }
+        .pulse-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            animation: pulse 4s ease-in-out infinite;
+        }
+        .landing-content {
+            text-align: center;
+            max-width: 1200px;
+            position: relative;
+            z-index: 10;
+        }
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 96px;
+            height: 96px;
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            border-radius: 50%;
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+        .subtitle {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 2rem;
+        }
+        .description {
+            font-size: 1.25rem;
+            color: #d1d5db;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            color: white;
+            font-weight: 600;
+            padding: 1rem 3rem;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.25);
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #059669, #2563eb);
+        }
+        
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .login-card {
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(12px);
+            padding: 2rem;
+            border-radius: 24px;
+            border: 1px solid rgba(75, 85, 99, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #d1d5db;
+            margin-bottom: 0.5rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid #4b5563;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        .form-input:focus {
+            border-color: #10b981;
+        }
+        .error-msg {
+            background: rgba(153, 27, 27, 0.2);
+            border: 1px solid #ef4444;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            color: #fca5a5;
+            font-size: 0.875rem;
+            display: none;
+        }
+        
+        /* Dashboard Styles */
+        .dashboard-container {
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(31, 41, 55, 0.5);
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .metric-card {
+            background: rgba(31, 41, 55, 0.5);
+            padding: 1.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(75, 85, 99, 1);
+        }
+        .modules-section {
+            background: rgba(31, 41, 55, 0.5);
+            padding: 1.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(75, 85, 99, 1);
+        }
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .module-item {
+            padding: 1rem;
+            background: rgba(55, 65, 81, 0.5);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-active {
+            color: #10b981;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.1; }
+        }
+        
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; }
+            .subtitle { font-size: 1.75rem; }
+            .description { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing" class="page active">
+        <div class="landing-container">
+            <div class="pulse-bg"></div>
+            <div class="landing-content">
+                <div class="logo">
+                    <svg style="width: 48px; height: 48px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h1 class="title">Welcome to</h1>
+                <h2 class="subtitle">DWC Systems Intelligence Platform</h2>
+                <p class="description">
+                    Advanced AI-powered enterprise platform featuring quantum-enhanced lead mapping, 
+                    intelligent automation modules, and comprehensive business intelligence.
+                </p>
+                <button class="btn-primary" onclick="showLogin()">Login to Platform</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="page">
+        <div class="login-container">
+            <div class="login-card">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: linear-gradient(45deg, #10b981, #3b82f6); border-radius: 50%; margin-bottom: 1rem;">
+                        <svg style="width: 32px; height: 32px; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">DWC Systems</h1>
+                    <p style="color: #9ca3af;">QNIS/PTNI Intelligence Platform</p>
+                </div>
+                
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" id="username" class="form-input" placeholder="Enter username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter password" required>
+                    </div>
+                    <div id="errorMsg" class="error-msg"></div>
+                    <button type="submit" id="submitBtn" class="btn-primary" style="width: 100%; border-radius: 0.5rem; padding: 0.75rem;">
+                        Access Platform
+                    </button>
+                </form>
+                
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #374151; text-align: center;">
+                    <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">Need help? Contact admin</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.75rem; color: #6b7280;">
+                        <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite;"></span>
+                        <span>System Online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard" class="page">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div style="font-size: 1.5rem; font-weight: bold;">DWC Systems LLC - QNIS/PTNI Platform</div>
+                <button onclick="logout()" style="background: linear-gradient(45deg, #ef4444, #dc2626); color: white; padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer;">
+                    Logout
+                </button>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">Total Leads</div>
+                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">24</div>
+                    <div style="font-size: 0.875rem; color: #10b981;">+12% this month</div>
+                </div>
+                <div class="metric-card">
+                    <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">Pipeline Value</div>
+                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">$485K</div>
+                    <div style="font-size: 0.875rem; color: #10b981;">+36.8% growth</div>
+                </div>
+                <div class="metric-card">
+                    <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">System Health</div>
+                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">98.5%</div>
+                    <div style="font-size: 0.875rem; color: #10b981;">Optimal performance</div>
+                </div>
+                <div class="metric-card">
+                    <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">QNIS Score</div>
+                    <div style="font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem;">94.7%</div>
+                    <div style="font-size: 0.875rem; color: #10b981;">Quantum enhanced</div>
+                </div>
+            </div>
+            
+            <div class="modules-section">
+                <div style="font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem;">Active Automation Modules (14)</div>
+                <div class="modules-grid">
+                    <div class="module-item">
+                        <span>NEXUS Career Bootstrap</span>
+                        <span class="status-active">Active</span>
+                    </div>
+                    <div class="module-item">
+                        <span>LLC Formation Engine</span>
+                        <span class="status-active">Active</span>
+                    </div>
+                    <div class="module-item">
+                        <span>LOC Credit Engine</span>
+                        <span class="status-active">Active</span>
+                    </div>
+                    <div class="module-item">
+                        <span>Quantum Deep Dive</span>
+                        <span class="status-active">Active</span>
+                    </div>
+                    <div class="module-item">
+                        <span>Lead Generation Engine</span>
+                        <span class="status-active">Active</span>
+                    </div>
+                    <div class="module-item">
+                        <span>Trading Intelligence</span>
+                        <span class="status-active">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                // Update URL without causing reload
+                history.pushState(null, '', pageId === 'landing' ? '/' : '/' + pageId);
+            }
+        }
+
+        function showLogin() {
+            showPage('login');
+        }
+
+        function showDashboard() {
+            showPage('dashboard');
+        }
+
+        function showLanding() {
+            showPage('landing');
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Authenticating...';
+            errorMsg.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    localStorage.setItem('isAuthenticated', 'true');
+                    localStorage.setItem('username', username);
+                    showDashboard();
+                } else {
+                    throw new Error('Authentication failed. Please check your credentials.');
+                }
+            } catch (error) {
+                errorMsg.textContent = error.message;
+                errorMsg.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Access Platform';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('username');
+            showLanding();
+        }
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function() {
+            const path = window.location.pathname;
+            if (path === '/login') {
+                showPage('login');
+            } else if (path === '/dashboard') {
+                showPage('dashboard');
+            } else {
+                showPage('landing');
+            }
+        });
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            const path = window.location.pathname;
+            if (path === '/login') {
+                showPage('login');
+            } else if (path === '/dashboard') {
+                // Check if authenticated
+                if (localStorage.getItem('isAuthenticated')) {
+                    showPage('dashboard');
+                } else {
+                    showPage('landing');
+                }
+            } else {
+                showPage('landing');
+            }
+        });
+    </script>
+</body>
+</html>
