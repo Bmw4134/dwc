@@ -107,6 +107,478 @@
         100% { transform: rotate(360deg); }
       }
     </style>
-    <script type="module" src="/src/main.tsx"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.8.1/dist/umd/react-router-dom.development.js"></script>
+    <script>
+      const { useState, useEffect, createElement } = React;
+      const { createRoot } = ReactDOM;
+      const { BrowserRouter: Router, Routes, Route, Navigate } = ReactRouterDOM;
+      
+      // Landing Component
+      const Landing = () => {
+        const [pulse, setPulse] = React.useState(false);
+        
+        React.useEffect(() => {
+          const interval = setInterval(() => {
+            setPulse(prev => !prev);
+          }, 2000);
+          return () => clearInterval(interval);
+        }, []);
+
+        const handleLogin = () => {
+          window.location.href = '/login';
+        };
+
+        return React.createElement('div', {
+          className: 'min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 relative overflow-hidden',
+          style: {
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #1f2937 0%, #1e3a8a 50%, #1f2937 100%)',
+            position: 'relative',
+            overflow: 'hidden'
+          }
+        },
+          React.createElement('div', {
+            style: {
+              position: 'absolute',
+              inset: '0'
+            }
+          },
+            React.createElement('div', {
+              style: {
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '384px',
+                height: '384px',
+                background: 'rgba(59, 130, 246, 0.1)',
+                borderRadius: '50%',
+                transition: 'all 2s',
+                scale: pulse ? '1.5' : '1',
+                opacity: pulse ? '0.3' : '0.2'
+              }
+            })
+          ),
+          React.createElement('div', {
+            style: {
+              position: 'relative',
+              zIndex: '10',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: '100vh',
+              padding: '16px'
+            }
+          },
+            React.createElement('div', {
+              style: {
+                textAlign: 'center',
+                maxWidth: '1024px',
+                margin: '0 auto'
+              }
+            },
+              React.createElement('div', {
+                style: { marginBottom: '48px' }
+              },
+                React.createElement('div', {
+                  style: {
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '96px',
+                    height: '96px',
+                    background: 'linear-gradient(45deg, #10b981, #3b82f6)',
+                    borderRadius: '50%',
+                    marginBottom: '24px',
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                  }
+                },
+                  React.createElement('svg', {
+                    style: { width: '48px', height: '48px', color: 'white' },
+                    fill: 'none',
+                    stroke: 'currentColor',
+                    viewBox: '0 0 24 24'
+                  },
+                    React.createElement('path', {
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                      strokeWidth: 2,
+                      d: 'M13 10V3L4 14h7v7l9-11h-7z'
+                    })
+                  )
+                ),
+                React.createElement('h1', {
+                  style: {
+                    fontSize: '96px',
+                    fontWeight: 'bold',
+                    color: 'white',
+                    marginBottom: '16px',
+                    letterSpacing: '-0.025em'
+                  }
+                }, 'Welcome to'),
+                React.createElement('h2', {
+                  style: {
+                    fontSize: '64px',
+                    fontWeight: 'bold',
+                    background: 'linear-gradient(45deg, #10b981, #3b82f6)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    color: 'transparent',
+                    marginBottom: '24px'
+                  }
+                }, 'DWC Systems Intelligence Platform'),
+                React.createElement('p', {
+                  style: {
+                    fontSize: '20px',
+                    color: '#d1d5db',
+                    maxWidth: '512px',
+                    margin: '0 auto',
+                    lineHeight: '1.625'
+                  }
+                }, 'Advanced AI-powered enterprise platform featuring quantum-enhanced lead mapping, intelligent automation modules, and comprehensive business intelligence.')
+              ),
+              React.createElement('div', {
+                style: { marginBottom: '48px' }
+              },
+                React.createElement('button', {
+                  onClick: handleLogin,
+                  style: {
+                    background: 'linear-gradient(45deg, #10b981, #3b82f6)',
+                    color: 'white',
+                    fontWeight: '600',
+                    padding: '16px 48px',
+                    borderRadius: '9999px',
+                    fontSize: '18px',
+                    transition: 'all 0.3s',
+                    transform: 'scale(1)',
+                    boxShadow: '0 25px 50px -12px rgba(16, 185, 129, 0.25)',
+                    border: 'none',
+                    cursor: 'pointer'
+                  },
+                  onMouseOver: (e) => {
+                    e.target.style.transform = 'scale(1.05)';
+                    e.target.style.background = 'linear-gradient(45deg, #059669, #2563eb)';
+                  },
+                  onMouseOut: (e) => {
+                    e.target.style.transform = 'scale(1)';
+                    e.target.style.background = 'linear-gradient(45deg, #10b981, #3b82f6)';
+                  }
+                }, 'Login to Platform')
+              )
+            )
+          )
+        );
+      };
+
+      // Login Component
+      const Login = () => {
+        const [credentials, setCredentials] = React.useState({ username: '', password: '' });
+        const [isLoading, setIsLoading] = React.useState(false);
+        const [error, setError] = React.useState('');
+
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+          setIsLoading(true);
+          setError('');
+
+          try {
+            const response = await fetch('/api/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(credentials)
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+              localStorage.setItem('isAuthenticated', 'true');
+              localStorage.setItem('username', credentials.username);
+              window.location.href = '/dashboard';
+            } else {
+              setError('Authentication failed. Please check your credentials.');
+            }
+          } catch (err) {
+            setError('Connection error. Please try again.');
+          }
+          
+          setIsLoading(false);
+        };
+
+        return React.createElement('div', {
+          style: {
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #1f2937 0%, #1e3a8a 50%, #1f2937 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px'
+          }
+        },
+          React.createElement('div', {
+            style: {
+              maxWidth: '448px',
+              width: '100%',
+              space: '32px'
+            }
+          },
+            React.createElement('div', {
+              style: {
+                background: 'rgba(31, 41, 55, 0.5)',
+                backdropFilter: 'blur(12px)',
+                padding: '32px',
+                borderRadius: '24px',
+                border: '1px solid rgba(75, 85, 99, 1)',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+              }
+            },
+              React.createElement('div', {
+                style: { textAlign: 'center', marginBottom: '32px' }
+              },
+                React.createElement('div', {
+                  style: {
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '64px',
+                    height: '64px',
+                    background: 'linear-gradient(45deg, #10b981, #3b82f6)',
+                    borderRadius: '50%',
+                    marginBottom: '16px'
+                  }
+                },
+                  React.createElement('svg', {
+                    style: { width: '32px', height: '32px', color: 'white' },
+                    fill: 'none',
+                    stroke: 'currentColor',
+                    viewBox: '0 0 24 24'
+                  },
+                    React.createElement('path', {
+                      strokeLinecap: 'round',
+                      strokeLinejoin: 'round',
+                      strokeWidth: 2,
+                      d: 'M13 10V3L4 14h7v7l9-11h-7z'
+                    })
+                  )
+                ),
+                React.createElement('h1', {
+                  style: {
+                    fontSize: '48px',
+                    fontWeight: 'bold',
+                    color: 'white',
+                    marginBottom: '8px'
+                  }
+                }, 'DWC Systems'),
+                React.createElement('p', {
+                  style: {
+                    color: '#9ca3af'
+                  }
+                }, 'QNIS/PTNI Intelligence Platform')
+              ),
+              React.createElement('form', {
+                onSubmit: handleSubmit,
+                style: { marginBottom: '24px' }
+              },
+                React.createElement('div', {
+                  style: { marginBottom: '24px' }
+                },
+                  React.createElement('label', {
+                    style: {
+                      display: 'block',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#d1d5db',
+                      marginBottom: '8px'
+                    }
+                  }, 'Username'),
+                  React.createElement('input', {
+                    type: 'text',
+                    value: credentials.username,
+                    onChange: (e) => setCredentials({...credentials, username: e.target.value}),
+                    style: {
+                      width: '100%',
+                      padding: '12px 16px',
+                      background: 'rgba(55, 65, 81, 0.5)',
+                      border: '1px solid #4b5563',
+                      borderRadius: '8px',
+                      color: 'white',
+                      fontSize: '16px'
+                    },
+                    placeholder: 'Enter username',
+                    required: true
+                  })
+                ),
+                React.createElement('div', {
+                  style: { marginBottom: '24px' }
+                },
+                  React.createElement('label', {
+                    style: {
+                      display: 'block',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#d1d5db',
+                      marginBottom: '8px'
+                    }
+                  }, 'Password'),
+                  React.createElement('input', {
+                    type: 'password',
+                    value: credentials.password,
+                    onChange: (e) => setCredentials({...credentials, password: e.target.value}),
+                    style: {
+                      width: '100%',
+                      padding: '12px 16px',
+                      background: 'rgba(55, 65, 81, 0.5)',
+                      border: '1px solid #4b5563',
+                      borderRadius: '8px',
+                      color: 'white',
+                      fontSize: '16px'
+                    },
+                    placeholder: 'Enter password',
+                    required: true
+                  })
+                ),
+                error && React.createElement('div', {
+                  style: {
+                    background: 'rgba(153, 27, 27, 0.2)',
+                    border: '1px solid #ef4444',
+                    borderRadius: '8px',
+                    padding: '12px',
+                    marginBottom: '24px'
+                  }
+                },
+                  React.createElement('p', {
+                    style: {
+                      color: '#fca5a5',
+                      fontSize: '14px'
+                    }
+                  }, error)
+                ),
+                React.createElement('button', {
+                  type: 'submit',
+                  disabled: isLoading,
+                  style: {
+                    width: '100%',
+                    background: 'linear-gradient(45deg, #10b981, #3b82f6)',
+                    color: 'white',
+                    fontWeight: '600',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    transition: 'all 0.2s',
+                    transform: 'scale(1)',
+                    opacity: isLoading ? '0.5' : '1',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    border: 'none',
+                    fontSize: '16px'
+                  }
+                }, isLoading ? 'Authenticating...' : 'Access Platform')
+              ),
+              React.createElement('div', {
+                style: {
+                  marginTop: '32px',
+                  paddingTop: '24px',
+                  borderTop: '1px solid #374151'
+                }
+              },
+                React.createElement('div', {
+                  style: { textAlign: 'center' }
+                },
+                  React.createElement('p', {
+                    style: {
+                      color: '#9ca3af',
+                      fontSize: '14px',
+                      marginBottom: '8px'
+                    }
+                  }, 'Need help? Contact admin'),
+                  React.createElement('div', {
+                    style: {
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      fontSize: '12px',
+                      color: '#6b7280'
+                    }
+                  },
+                    React.createElement('span', {
+                      style: {
+                        width: '8px',
+                        height: '8px',
+                        background: '#10b981',
+                        borderRadius: '50%',
+                        animation: 'pulse 2s infinite'
+                      }
+                    }),
+                    React.createElement('span', {}, 'System Online')
+                  )
+                )
+              )
+            )
+          )
+        );
+      };
+
+      // Dashboard Component (placeholder)
+      const Dashboard = () => {
+        React.useEffect(() => {
+          window.location.href = '/dashboard';
+        }, []);
+        
+        return React.createElement('div', {
+          style: {
+            minHeight: '100vh',
+            background: '#1f2937',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }
+        },
+          React.createElement('div', {
+            style: { color: 'white', textAlign: 'center' }
+          },
+            React.createElement('h1', {}, 'Redirecting to Dashboard...'),
+            React.createElement('div', {
+              style: {
+                width: '40px',
+                height: '40px',
+                border: '3px solid #10b981',
+                borderTop: '3px solid transparent',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+                margin: '20px auto'
+              }
+            })
+          )
+        );
+      };
+
+      // Main App Component
+      const App = () => {
+        return React.createElement(Router, {},
+          React.createElement('div', { className: 'App' },
+            React.createElement(Routes, {},
+              React.createElement(Route, { path: '/', element: React.createElement(Landing) }),
+              React.createElement(Route, { path: '/login', element: React.createElement(Login) }),
+              React.createElement(Route, { path: '/dashboard', element: React.createElement(Dashboard) }),
+              React.createElement(Route, { path: '*', element: React.createElement(Navigate, { to: '/', replace: true }) })
+            )
+          )
+        );
+      };
+
+      // Render the app
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(App));
+    </script>
+    <style>
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </body>
 </html>
