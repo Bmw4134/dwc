@@ -7646,13 +7646,32 @@ Just speak naturally - I understand everyday language!`);
         // Force title change
         document.title = "DWC Systems NEXUS - BILLION DOLLAR ENTERPRISE PLATFORM";
         
-        // Immediate authentication and platform access
-        localStorage.setItem('dwc_authenticated', 'true');
-        localStorage.setItem('dwc_username', 'admin');
-        setTimeout(() => {
-            showDashboard();
-            logEvent('Platform access restored - authentication bypassed for UI testing');
-        }, 1000);
+        // Load self-healing and simulation systems
+        const healingScript = document.createElement('script');
+        healingScript.src = 'self-healing-system.js';
+        document.head.appendChild(healingScript);
+        
+        const simulationScript = document.createElement('script');
+        simulationScript.src = 'comprehensive-user-simulation.js';
+        document.head.appendChild(simulationScript);
+        
+        const validatorScript = document.createElement('script');
+        validatorScript.src = 'production-deployment-validator.js';
+        document.head.appendChild(validatorScript);
+        
+        // Initialize production-ready authentication
+        const isAuthenticated = localStorage.getItem('dwc_authenticated') === 'true';
+        if (isAuthenticated) {
+            setTimeout(() => {
+                showDashboard();
+                logEvent('Production authentication verified');
+            }, 1000);
+        } else {
+            setTimeout(() => {
+                showLogin();
+                logEvent('Production login interface displayed');
+            }, 1000);
+        }
         
         // Force hard refresh for deployment
         if (!window.location.search.includes('v=3.0.0')) {
@@ -7666,6 +7685,41 @@ Just speak naturally - I understand everyday language!`);
             try {
                 window.activateBillionDollarMode();
                 logEvent('NEXUS: IMMEDIATE billion-dollar mode activation');
+            
+            // Initialize production validation functions
+            window.runProductionValidation = function() {
+                logEvent('Starting production validation via voice command');
+                if (window.ProductionDeploymentValidator) {
+                    const validator = new window.ProductionDeploymentValidator();
+                    validator.runFullValidation().then(report => {
+                        logEvent(`Production validation completed - Score: ${report.overallScore}%`);
+                        if (window.speechSynthesis) {
+                            const utterance = new SpeechSynthesisUtterance(
+                                `Production validation complete. Overall score: ${report.overallScore} percent. ${report.productionReady ? 'System ready for deployment' : 'System needs optimization'}`
+                            );
+                            window.speechSynthesis.speak(utterance);
+                        }
+                    });
+                } else {
+                    logEvent('Production validator not loaded yet');
+                }
+            };
+
+            window.showHealingReport = function() {
+                logEvent('Displaying healing report via voice command');
+                if (window.nexusSelfHealer) {
+                    const report = window.nexusSelfHealer.generateHealingReport();
+                    logEvent(`System health: ${report.systemHealth}% - ${report.totalHealingActions} healing actions performed`);
+                    if (window.speechSynthesis) {
+                        const utterance = new SpeechSynthesisUtterance(
+                            `System health is ${report.systemHealth} percent. ${report.totalHealingActions} healing actions have been performed.`
+                        );
+                        window.speechSynthesis.speak(utterance);
+                    }
+                } else {
+                    logEvent('Self-healing system not loaded yet');
+                }
+            };
             } catch(e) {
                 logEvent('Error activating billion dollar mode: ' + e.message);
             }
