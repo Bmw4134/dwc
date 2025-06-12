@@ -4921,8 +4921,8 @@
                 
             }, 1500);
             
-            // PRODUCTION MODE: Cache clearing disabled for stability
-            // clearDeploymentCache(); // Disabled to prevent deployment loops
+            // Force cache busting and service worker cleanup
+            clearDeploymentCache();
             
             // Initialize voice command panel
             initVoiceCommands();
