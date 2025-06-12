@@ -10,7 +10,19 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../dist/public')));
+
+// Serve static files with proper MIME types
+app.use(express.static(path.join(__dirname, '../'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.set('Content-Type', 'application/javascript');
+    } else if (path.endsWith('.css')) {
+      res.set('Content-Type', 'text/css');
+    } else if (path.endsWith('.html')) {
+      res.set('Content-Type', 'text/html');
+    }
+  }
+}));
 
 // API endpoints
 app.get('/api/health', (req, res) => {
@@ -61,9 +73,18 @@ app.get('/api/modules/:moduleId', (req, res) => {
     }
 });
 
-// Serve the main application
+// Serve the main application only for non-API routes and non-static files
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+    // Don't serve index.html for API routes or file extensions
+    if (req.path.startsWith('/api/') || 
+        req.path.includes('.js') || 
+        req.path.includes('.css') || 
+        req.path.includes('.png') || 
+        req.path.includes('.jpg') || 
+        req.path.includes('.ico')) {
+        return res.status(404).send('Not found');
+    }
+    res.sendFile(path.join(__dirname, '../index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
