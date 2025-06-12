@@ -5690,12 +5690,12 @@ Just speak naturally - I understand everyday language!`);
         }
         
         function enableContinuousDeviceDetection() {
-            // Advanced device detection
-            setInterval(() => {
-                if (window.responsiveEngine) {
-                    const oldClass = window.responsiveEngine.deviceMetrics.deviceClass;
-                    window.responsiveEngine.updateDeviceMetrics();
-                    const newClass = window.responsiveEngine.deviceMetrics.deviceClass;
+            // PRODUCTION MODE: Continuous detection disabled for stability
+            // setInterval(() => {
+            //     if (window.responsiveEngine) {
+            //         const oldClass = window.responsiveEngine.deviceMetrics.deviceClass;
+            //         window.responsiveEngine.updateDeviceMetrics();
+            //         const newClass = window.responsiveEngine.deviceMetrics.deviceClass;
                     
                     if (oldClass !== newClass) {
                         logEvent(`Device class changed: ${oldClass} → ${newClass}`);
