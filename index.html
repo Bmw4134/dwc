@@ -7226,7 +7226,7 @@ Just speak naturally - I understand everyday language!`);
             };
             
             // Billion Dollar Dashboard Mode
-            function activateBillionDollarMode() {
+            window.activateBillionDollarMode = function() {
                 logEvent('NEXUS: Activating billion-dollar enterprise mode...');
                 
                 // Transform UI to enterprise premium theme
@@ -7234,6 +7234,7 @@ Just speak naturally - I understand everyday language!`);
                 
                 // Inject premium enterprise styles
                 const premiumStyles = document.createElement('style');
+                premiumStyles.id = 'billion-dollar-styles';
                 premiumStyles.innerHTML = `
                     .billion-dollar-mode {
                         background: linear-gradient(135deg, 
@@ -7251,34 +7252,65 @@ Just speak naturally - I understand everyday language!`);
                         100% { filter: brightness(1.05) saturate(1.1); }
                     }
                     
-                    .billion-dollar-mode .dashboard-container {
-                        border: 2px solid var(--primary-gold);
-                        box-shadow: var(--shadow-premium);
-                        backdrop-filter: blur(30px);
+                    .billion-dollar-mode .dashboard-container,
+                    .billion-dollar-mode .container,
+                    .billion-dollar-mode .login-container {
+                        border: 2px solid var(--primary-gold) !important;
+                        box-shadow: var(--shadow-premium) !important;
+                        backdrop-filter: blur(30px) !important;
+                        background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)) !important;
                     }
                     
-                    .billion-dollar-mode .module-card {
-                        border: 1px solid rgba(255, 215, 0, 0.4);
-                        background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 215, 0, 0.08));
-                        box-shadow: var(--shadow-deep);
+                    .billion-dollar-mode .module-card,
+                    .billion-dollar-mode .pricing-card,
+                    .billion-dollar-mode .card {
+                        border: 1px solid rgba(255, 215, 0, 0.4) !important;
+                        background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 215, 0, 0.08)) !important;
+                        box-shadow: var(--shadow-deep) !important;
                     }
                     
-                    .billion-dollar-mode .module-card:hover {
-                        transform: translateY(-6px) scale(1.03);
-                        border-color: var(--primary-gold);
-                        box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
+                    .billion-dollar-mode .module-card:hover,
+                    .billion-dollar-mode .pricing-card:hover,
+                    .billion-dollar-mode .card:hover {
+                        transform: translateY(-6px) scale(1.03) !important;
+                        border-color: var(--primary-gold) !important;
+                        box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3) !important;
+                    }
+                    
+                    .billion-dollar-mode h1,
+                    .billion-dollar-mode h2,
+                    .billion-dollar-mode h3 {
+                        text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3) !important;
+                        color: var(--primary-gold) !important;
+                    }
+                    
+                    .billion-dollar-mode .hero-title {
+                        background: linear-gradient(135deg, var(--primary-gold), var(--primary-platinum)) !important;
+                        -webkit-background-clip: text !important;
+                        -webkit-text-fill-color: transparent !important;
+                        background-clip: text !important;
                     }
                 `;
                 document.head.appendChild(premiumStyles);
                 
-                // Update metrics to billion-dollar scale
-                updateEnterpriseMetrics();
+                // Add enterprise banner
+                const banner = document.createElement('div');
+                banner.id = 'enterprise-banner';
+                banner.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, var(--primary-gold), var(--accent-cyan)); color: var(--primary-deep); text-align: center; padding: 8px; font-weight: bold; z-index: 10000; box-shadow: var(--shadow-deep);">
+                        🏆 BILLION DOLLAR ENTERPRISE MODE ACTIVATED - Fortune 500 Dashboard
+                    </div>
+                `;
+                document.body.appendChild(banner);
+                
+                // Update page title
+                document.title = "DWC Systems NEXUS - BILLION DOLLAR ENTERPRISE PLATFORM";
                 
                 logEvent('NEXUS: Billion-dollar enterprise mode activated');
             }
             
             // Global Analytics Display
-            function displayGlobalAnalytics() {
+            window.displayGlobalAnalytics = function() {
                 const analyticsPanel = document.createElement('div');
                 analyticsPanel.className = 'global-analytics-panel';
                 analyticsPanel.innerHTML = `
@@ -7349,7 +7381,7 @@ Just speak naturally - I understand everyday language!`);
             }
             
             // Quantum Intelligence Activation
-            function activateQuantumIntelligence() {
+            window.activateQuantumIntelligence = function() {
                 logEvent('NEXUS: Activating quantum intelligence protocols...');
                 
                 // Simulate quantum processing
@@ -7470,27 +7502,33 @@ Just speak naturally - I understand everyday language!`);
 
         // Auto-activate billion dollar mode for demonstration
         setTimeout(() => {
-            if (typeof activateBillionDollarMode === 'function') {
-                activateBillionDollarMode();
+            try {
+                window.activateBillionDollarMode();
                 logEvent('NEXUS: Auto-activating billion-dollar demonstration mode');
+            } catch(e) {
+                logEvent('Error activating billion dollar mode: ' + e.message);
             }
-        }, 3000);
+        }, 2000);
 
         // Auto-show global analytics for proof
         setTimeout(() => {
-            if (typeof displayGlobalAnalytics === 'function') {
-                displayGlobalAnalytics();
+            try {
+                window.displayGlobalAnalytics();
                 logEvent('NEXUS: Auto-displaying global analytics for demonstration');
+            } catch(e) {
+                logEvent('Error displaying analytics: ' + e.message);
             }
-        }, 5000);
+        }, 4000);
 
         // Auto-activate quantum intelligence
         setTimeout(() => {
-            if (typeof activateQuantumIntelligence === 'function') {
-                activateQuantumIntelligence();
+            try {
+                window.activateQuantumIntelligence();
                 logEvent('NEXUS: Auto-activating quantum intelligence for demonstration');
+            } catch(e) {
+                logEvent('Error activating quantum intelligence: ' + e.message);
             }
-        }, 7000);
+        }, 6000);
     </script>
 </body>
 </html>
