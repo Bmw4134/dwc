@@ -63,7 +63,7 @@
     "Real-time data updates every 30 seconds",
     "Keyboard shortcut integration (Ctrl+Q/R/O)"
   ],
-  "last_updated": "2025-06-12T13:40:02.000Z",
+  "last_updated": "2025-06-12T14:01:39.902Z",
   "enhanced_leads": [
     {
       "leadId": "lead_1749735601997_brqm5q95d",
@@ -71,6 +71,13 @@
       "qnisScore": 94,
       "status": "🧠 Enhanced",
       "enhancedAt": "2025-06-12T13:40:02.000Z"
+    },
+    {
+      "leadId": "lead_1749736899900_9qrrva0wh",
+      "company": "Test Corp",
+      "qnisScore": 83,
+      "status": "🧠 Enhanced",
+      "enhancedAt": "2025-06-12T14:01:39.902Z"
     }
   ]
 }

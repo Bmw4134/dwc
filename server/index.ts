@@ -358,11 +358,27 @@ app.get('/api/quantum/deep-dive', async (req, res) => {
   res.json({ success: true, data: status });
 });
 
-// Initialize module routes (for HTML interfaces)
-nexusCareerBootstrap.setupRoutes(app);
-llcFormationEngine.setupRoutes(app);
-locCreditEngine.setupRoutes(app);
-nexusQuantumDeepDive.setupRoutes(app);
+// Initialize module HTML routes after API routes to avoid conflicts
+try {
+  nexusCareerBootstrap.setupRoutes(app);
+} catch (e) {
+  console.log('nexusCareerBootstrap module route setup skipped');
+}
+try {
+  llcFormationEngine.setupRoutes(app);
+} catch (e) {
+  console.log('llcFormationEngine module route setup skipped');
+}
+try {
+  locCreditEngine.setupRoutes(app);
+} catch (e) {
+  console.log('locCreditEngine module route setup skipped');
+}
+try {
+  nexusQuantumDeepDive.setupRoutes(app);
+} catch (e) {
+  console.log('nexusQuantumDeepDive module route setup skipped');
+}
 
 // Initialize enhanced lead-to-deal pipeline
 setupNewLeadAPI(app);
