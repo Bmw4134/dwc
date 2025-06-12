@@ -262,6 +262,9 @@ llcFormationEngine.setupRoutes(app);
 locCreditEngine.setupRoutes(app);
 nexusQuantumDeepDive.setupRoutes(app);
 
+// Initialize enhanced lead-to-deal pipeline
+setupNewLeadAPI(app);
+
 // Catch all
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));

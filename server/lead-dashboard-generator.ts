@@ -81,7 +81,7 @@ export class LeadDashboardGenerator {
     const highNeedIndustries = ['technology', 'finance', 'healthcare', 'manufacturing'];
     if (highNeedIndustries.includes(leadData.industry.toLowerCase())) need += 25;
     
-    const companySizeScores = {
+    const companySizeScores: { [key: string]: number } = {
       'startup': 60,
       'small': 70,
       'medium': 85,
@@ -92,7 +92,7 @@ export class LeadDashboardGenerator {
 
     // Interest Score (0-100) - based on interaction level and source
     let interest = 30;
-    const interestLevelScores = {
+    const interestLevelScores: { [key: string]: number } = {
       'low': 30,
       'medium': 60,
       'high': 85,
@@ -107,7 +107,7 @@ export class LeadDashboardGenerator {
 
     // Scale Score (0-100) - potential deal size based on company profile
     let scale = 40;
-    const companySizeScale = {
+    const companySizeScale: { [key: string]: number } = {
       'startup': 40,
       'small': 55,
       'medium': 70,
@@ -231,23 +231,9 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
     }
   };
 
-  const getQNISColor = (score) => {
-    if (score >= 80) return 'text-green-400';
-    if (score >= 60) return 'text-yellow-400';
-    return 'text-red-400';
-  };
-
-  const getQNISBadge = (score) => {
-    if (score >= 90) return 'bg-green-500/20 text-green-400 border-green-500/30';
-    if (score >= 80) return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-    if (score >= 60) return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-    return 'bg-red-500/20 text-red-400 border-red-500/30';
-  };
-
   return (
     <div className="min-h-screen bg-gray-900 p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
@@ -257,7 +243,7 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
               <p className="text-gray-400">{leadData.company} • {leadData.industry}</p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className={\`px-3 py-1 rounded-full border \${getQNISBadge(qnisMetrics.overall)}\`}>
+              <div className="px-3 py-1 rounded-full border bg-blue-500/20 text-blue-400 border-blue-500/30">
                 QNIS: {qnisMetrics.overall}
               </div>
               {isHot && (
@@ -269,12 +255,11 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
           </div>
         </div>
 
-        {/* QNIS Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Quality</h3>
-              <span className={\`text-2xl font-bold \${getQNISColor(qnisMetrics.quality)}\`}>
+              <span className="text-2xl font-bold text-green-400">
                 {qnisMetrics.quality}
               </span>
             </div>
@@ -289,7 +274,7 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Need</h3>
-              <span className={\`text-2xl font-bold \${getQNISColor(qnisMetrics.need)}\`}>
+              <span className="text-2xl font-bold text-purple-400">
                 {qnisMetrics.need}
               </span>
             </div>
@@ -304,7 +289,7 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Interest</h3>
-              <span className={\`text-2xl font-bold \${getQNISColor(qnisMetrics.interest)}\`}>
+              <span className="text-2xl font-bold text-yellow-400">
                 {qnisMetrics.interest}
               </span>
             </div>
@@ -319,7 +304,7 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Scale</h3>
-              <span className={\`text-2xl font-bold \${getQNISColor(qnisMetrics.scale)}\`}>
+              <span className="text-2xl font-bold text-cyan-400">
                 {qnisMetrics.scale}
               </span>
             </div>
@@ -332,28 +317,6 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
           </div>
         </div>
 
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-            <h3 className="text-lg font-semibold text-white mb-4">Lead Velocity</h3>
-            <div className="flex items-center">
-              <span className="text-3xl font-bold text-blue-400">{leadVelocity}</span>
-              <span className="text-gray-400 ml-2">interactions/week</span>
-            </div>
-          </div>
-
-          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-            <h3 className="text-lg font-semibold text-white mb-4">Last Interaction</h3>
-            <p className="text-xl text-gray-300">${lastInteraction}</p>
-          </div>
-
-          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-            <h3 className="text-lg font-semibold text-white mb-4">Source</h3>
-            <p className="text-xl text-gray-300 capitalize">{leadData.source.replace('_', ' ')}</p>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <button
             onClick={handleMarkAsHot}
@@ -369,7 +332,7 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
           <button
             onClick={handleAutoFollowUp}
             disabled={followUpScheduled}
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
           >
             {followUpScheduled ? '✓ Follow-Up Scheduled' : '📧 Auto Follow-Up'}
           </button>
@@ -377,13 +340,12 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
           <button
             onClick={handleConvertToDeal}
             disabled={leadStatus === 'converted'}
-            className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
           >
             {leadStatus === 'converted' ? '✓ Converted to Deal' : '💰 Convert to Deal'}
           </button>
         </div>
 
-        {/* Lead Details */}
         <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
           <h3 className="text-xl font-bold text-white mb-6">Lead Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -409,7 +371,7 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
       </div>
     </div>
   );
-}`};
+}`;
   }
 
   private async logDashboardCreation(leadData: LeadData, dashboardPath: string): Promise<void> {
@@ -425,7 +387,7 @@ export default function Lead${leadData.slug.charAt(0).toUpperCase() + leadData.s
 
     // Log to lead_log.json
     const leadLogPath = path.join(this.configsDir, 'lead_log.json');
-    let leadLog = { leads: [] };
+    let leadLog = { leads: [] as any[] };
     
     if (fs.existsSync(leadLogPath)) {
       const existingLog = fs.readFileSync(leadLogPath, 'utf8');
