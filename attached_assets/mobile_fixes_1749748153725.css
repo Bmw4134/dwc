@@ -1,0 +1,47 @@
+
+/* Mobile Optimization Patch for NEXUS Dashboards */
+
+@media (max-width: 768px) {
+  body {
+    font-size: calc(1rem + 0.25vw);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .dashboard-container {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .card, .panel, .module-box {
+    width: 100% !important;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+  }
+
+  button, .btn {
+    min-height: 44px;
+    font-size: 1rem;
+    width: 100%;
+    padding: 0.75rem;
+  }
+
+  img, iframe, canvas, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .responsive-flex {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  .no-overflow {
+    overflow-x: hidden;
+  }
+}
