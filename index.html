@@ -7467,6 +7467,30 @@ Just speak naturally - I understand everyday language!`);
         } else {
             initializeBillionDollarEnhancements();
         }
+
+        // Auto-activate billion dollar mode for demonstration
+        setTimeout(() => {
+            if (typeof activateBillionDollarMode === 'function') {
+                activateBillionDollarMode();
+                logEvent('NEXUS: Auto-activating billion-dollar demonstration mode');
+            }
+        }, 3000);
+
+        // Auto-show global analytics for proof
+        setTimeout(() => {
+            if (typeof displayGlobalAnalytics === 'function') {
+                displayGlobalAnalytics();
+                logEvent('NEXUS: Auto-displaying global analytics for demonstration');
+            }
+        }, 5000);
+
+        // Auto-activate quantum intelligence
+        setTimeout(() => {
+            if (typeof activateQuantumIntelligence === 'function') {
+                activateQuantumIntelligence();
+                logEvent('NEXUS: Auto-activating quantum intelligence for demonstration');
+            }
+        }, 7000);
     </script>
 </body>
 </html>
