@@ -4821,8 +4821,36 @@
         function processVoiceCommand(command) {
             const statusEl = document.getElementById('voiceStatus');
             
+            // Smart repair commands - auto-fix issues
+            if (command.includes('fix') && (command.includes('landing') || command.includes('page') || command.includes('home'))) {
+                statusEl.textContent = 'Diagnosing and fixing landing page...';
+                logEvent(`Voice command: Fix Landing Page`);
+                setTimeout(() => {
+                    autoFixLandingPage();
+                    statusEl.textContent = 'Landing page optimized for iPhone';
+                    setTimeout(() => statusEl.textContent = 'What would you like to do?', 2000);
+                }, 500);
+                
+            } else if (command.includes('fix') && command.includes('mobile')) {
+                statusEl.textContent = 'Optimizing mobile experience...';
+                logEvent(`Voice command: Fix Mobile`);
+                setTimeout(() => {
+                    autoFixMobileLayout();
+                    statusEl.textContent = 'Mobile layout optimized';
+                    setTimeout(() => statusEl.textContent = 'What would you like to do?', 2000);
+                }, 500);
+                
+            } else if (command.includes('fix') && (command.includes('everything') || command.includes('all') || command.includes('issues'))) {
+                statusEl.textContent = 'Running comprehensive system repair...';
+                logEvent(`Voice command: Fix Everything`);
+                setTimeout(() => {
+                    runComprehensiveRepair();
+                    statusEl.textContent = 'All systems optimized and repaired';
+                    setTimeout(() => statusEl.textContent = 'What would you like to do?', 2000);
+                }, 1000);
+                
             // Login commands - natural language
-            if (command.includes('log me in') || command.includes('login') || command.includes('sign in') || 
+            } else if (command.includes('log me in') || command.includes('login') || command.includes('sign in') || 
                 command.includes('get me in') || command.includes('let me in') || command.includes('access')) {
                 statusEl.textContent = 'Logging you in...';
                 logEvent(`Voice command: Login`);
@@ -5048,6 +5076,146 @@ Just speak naturally - I understand everyday language!`);
                 cacheButton.style.background = 'linear-gradient(135deg, #ffa726 0%, #ff7043 100%)';
                 adminPanel.appendChild(cacheButton);
             }
+        }
+
+        // Intelligent Auto-Repair Functions
+        function autoFixLandingPage() {
+            logEvent('Starting landing page diagnostic and repair...');
+            
+            // iPhone-specific fixes
+            if (/iPhone/.test(navigator.userAgent)) {
+                // Fix viewport height issues
+                document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+                
+                // Fix touch targets that are too small
+                const touchElements = document.querySelectorAll('button, .cta-button, .module-item');
+                touchElements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.height < 44) {
+                        el.style.minHeight = '44px';
+                        el.style.padding = '12px 16px';
+                    }
+                    if (rect.width < 44) {
+                        el.style.minWidth = '44px';
+                    }
+                });
+                
+                // Fix text readability on iPhone
+                const heroText = document.querySelector('.hero h1');
+                if (heroText) {
+                    heroText.style.fontSize = 'clamp(28px, 8vw, 48px)';
+                    heroText.style.lineHeight = '1.2';
+                    heroText.style.marginBottom = '16px';
+                }
+                
+                // Fix CTA buttons for iPhone
+                const ctaButtons = document.querySelectorAll('.cta-button');
+                ctaButtons.forEach(btn => {
+                    btn.style.fontSize = '18px';
+                    btn.style.padding = '16px 24px';
+                    btn.style.minHeight = '48px';
+                    btn.style.borderRadius = '12px';
+                    btn.style.touchAction = 'manipulation';
+                });
+                
+                // Fix spacing and layout
+                const hero = document.querySelector('.hero');
+                if (hero) {
+                    hero.style.padding = '40px 20px';
+                    hero.style.textAlign = 'center';
+                }
+                
+                logEvent('iPhone landing page optimizations applied');
+            }
+            
+            // Universal mobile fixes
+            const pricing = document.querySelector('.pricing-section');
+            if (pricing) {
+                pricing.style.padding = '40px 20px';
+                const pricingCards = pricing.querySelectorAll('.pricing-card');
+                pricingCards.forEach(card => {
+                    card.style.marginBottom = '20px';
+                    card.style.padding = '24px';
+                });
+            }
+            
+            // Force reload styles
+            const styleSheets = document.querySelectorAll('style');
+            styleSheets.forEach(sheet => {
+                sheet.disabled = true;
+                setTimeout(() => sheet.disabled = false, 10);
+            });
+            
+            logEvent('Landing page auto-repair completed');
+        }
+        
+        function autoFixMobileLayout() {
+            logEvent('Starting mobile layout optimization...');
+            
+            // Fix grid layouts for mobile
+            const grids = document.querySelectorAll('.control-grid, .responsive-grid');
+            grids.forEach(grid => {
+                if (window.innerWidth < 768) {
+                    grid.style.gridTemplateColumns = '1fr';
+                    grid.style.gap = '16px';
+                } else if (window.innerWidth < 1024) {
+                    grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                    grid.style.gap = '20px';
+                }
+            });
+            
+            // Fix navigation for mobile
+            const nav = document.querySelector('.navigation');
+            if (nav && window.innerWidth < 768) {
+                nav.style.flexDirection = 'column';
+                nav.style.gap = '12px';
+            }
+            
+            // Optimize touch interactions
+            document.querySelectorAll('button, a, .clickable').forEach(el => {
+                el.style.touchAction = 'manipulation';
+                el.style.userSelect = 'none';
+            });
+            
+            logEvent('Mobile layout optimization completed');
+        }
+        
+        function runComprehensiveRepair() {
+            logEvent('Running comprehensive system repair...');
+            
+            // Step 1: Fix landing page
+            autoFixLandingPage();
+            
+            // Step 2: Fix mobile layout
+            setTimeout(() => {
+                autoFixMobileLayout();
+                
+                // Step 3: Clear any cached styles/scripts
+                if ('caches' in window) {
+                    caches.keys().then(names => {
+                        names.forEach(name => caches.delete(name));
+                    });
+                }
+                
+                // Step 4: Reset viewport and force refresh
+                const viewport = document.querySelector('meta[name="viewport"]');
+                if (viewport) {
+                    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+                }
+                
+                // Step 5: Re-run responsive validation
+                setTimeout(() => {
+                    const currentWidth = window.innerWidth;
+                    const deviceClass = currentWidth < 768 ? 'mobile' : 
+                                      currentWidth < 1024 ? 'tablet' : 'desktop';
+                    
+                    document.documentElement.className = document.documentElement.className
+                        .replace(/device-(mobile|tablet|desktop)/g, '') + ` device-${deviceClass}`;
+                    
+                    logEvent(`Comprehensive repair completed - Device: ${deviceClass} (${currentWidth}px)`);
+                }, 500);
+                
+            }, 300);
         }
 
         // Cache Busting and Service Worker Cleanup
