@@ -24,15 +24,41 @@ const users: Record<string, { password: string; role: string }> = {
   dion: { password: 'nexus2025', role: 'Director' }
 };
 
-// Core dashboard data
-const dashboardData = {
-  totalLeads: 24,
-  activeProposals: 7,
-  pipelineValue: 485000,
-  conversionRate: 32.4,
-  systemHealth: 98.5,
-  activeModules: 12
-};
+// Function to get dynamic module count
+function getActiveModuleCount() {
+  const modules = [
+    { id: 'lead-generation', name: 'Advanced Lead Generation', status: 'active' },
+    { id: 'business-intelligence', name: 'Business Intelligence Analytics', status: 'active' },
+    { id: 'trading-engine', name: 'Consolidated Trading Engine', status: 'standby' },
+    { id: 'ai-intelligence', name: 'NEXUS AI Intelligence', status: 'active' },
+    { id: 'automation-hub', name: 'Automation Control Hub', status: 'active' },
+    { id: 'financial-analytics', name: 'Financial Transcendence Engine', status: 'active' },
+    { id: 'security-center', name: 'Platform Risk Manager', status: 'active' },
+    { id: 'deployment-hub', name: 'Autonomous Deployment System', status: 'active' },
+    { id: 'browser-automation', name: 'Universal Browser Automation', status: 'active' },
+    { id: 'email-intelligence', name: 'Intelligent Email Agent', status: 'active' },
+    { id: 'market-data', name: 'Real-time Market Data Service', status: 'active' },
+    { id: 'quantum-override', name: 'Watson Quantum Override', status: 'standby' },
+    { id: 'career-bootstrap', name: 'NEXUS Career Bootstrap', status: 'active' },
+    { id: 'llc-formation', name: 'LLC Formation Engine', status: 'active' },
+    { id: 'loc-credit', name: 'Letter of Credit Engine', status: 'active' },
+    { id: 'quantum-deep-dive', name: 'Quantum Deep Dive Analysis', status: 'active' }
+  ];
+  
+  return modules.filter(module => module.status === 'active').length;
+}
+
+// Core dashboard data with dynamic module count
+function getDashboardData() {
+  return {
+    totalLeads: 24,
+    activeProposals: 7,
+    pipelineValue: 485000,
+    conversionRate: 32.4,
+    systemHealth: 98.5,
+    activeModules: getActiveModuleCount()
+  };
+}
 
 // Simple authentication endpoint
 app.post('/api/auth/login', (req, res) => {
@@ -51,7 +77,7 @@ app.post('/api/auth/login', (req, res) => {
 
 // Dashboard metrics
 app.get('/api/dashboard/metrics', (req, res) => {
-  res.json(dashboardData);
+  res.json(getDashboardData());
 });
 
 // System status
