@@ -21,9 +21,7 @@ const initializeApp = () => {
 
   // Mount React app
   createRoot(rootElement).render(
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <SimpleApp />
   );
   
   console.log("DWC Systems LLC app mounted successfully");
