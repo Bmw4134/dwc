@@ -8,6 +8,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-touch-fullscreen" content="yes">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="deployment-version" content="2.1.0">
+    <meta name="build-timestamp" content="1749750035649">
     <title>DWC Systems LLC - QNIS/PTNI Intelligence Platform</title>
     <style>
         * {
@@ -4630,6 +4635,9 @@
                 
             }, 1500);
             
+            // Force cache busting and service worker cleanup
+            clearDeploymentCache();
+            
             // Initialize voice command panel
             initVoiceCommands();
             
@@ -5018,6 +5026,52 @@ Just speak naturally - I understand everyday language!`);
                 cacheButton.style.background = 'linear-gradient(135deg, #ffa726 0%, #ff7043 100%)';
                 adminPanel.appendChild(cacheButton);
             }
+        }
+
+        // Cache Busting and Service Worker Cleanup
+        function clearDeploymentCache() {
+            const version = Date.now();
+            
+            // Unregister all service workers
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    registrations.forEach(registration => {
+                        registration.unregister();
+                        logEvent(`Service worker unregistered: ${registration.scope}`);
+                    });
+                });
+            }
+            
+            // Clear all caches
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => {
+                        caches.delete(name);
+                        logEvent(`Cache cleared: ${name}`);
+                    });
+                });
+            }
+            
+            // Clear localStorage deployment markers
+            Object.keys(localStorage).forEach(key => {
+                if (key.includes('deploy') || key.includes('cache') || key.includes('version')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            
+            // Set new deployment marker
+            localStorage.setItem('deployment_version', '2.1.0');
+            localStorage.setItem('deployment_timestamp', version.toString());
+            
+            logEvent(`Deployment cache cleared - Version 2.1.0 (${version})`);
+            
+            // Force reload if we detect stale deployment
+            const lastVersion = localStorage.getItem('last_deployment_check');
+            if (lastVersion && (version - parseInt(lastVersion)) > 300000) { // 5 minutes
+                logEvent('Stale deployment detected - forcing reload');
+                setTimeout(() => window.location.reload(true), 1000);
+            }
+            localStorage.setItem('last_deployment_check', version.toString());
         }
 
         // Initialize recovery controls when admin panel is opened
