@@ -4470,78 +4470,167 @@
             console.log('Pricing scroll-based reveal initialized');
         }
         
-        // Fullscreen functionality
-        let isFullscreen = false;
-        
+        // True Browser-Level Fullscreen API Implementation
         function toggleFullscreen() {
-            const btn = document.getElementById('fullscreenBtn');
+            const isCurrentlyFullscreen = isInFullscreen();
             
-            if (!isFullscreen) {
-                // Enter true fullscreen mode
-                enterFullscreen();
+            if (!isCurrentlyFullscreen) {
+                enterTrueFullscreen();
             } else {
-                // Exit fullscreen mode
-                exitFullscreen();
+                exitTrueFullscreen();
             }
         }
         
-        function enterFullscreen() {
+        function isInFullscreen() {
+            return !!(document.fullscreenElement || 
+                     document.webkitFullscreenElement || 
+                     document.mozFullScreenElement ||
+                     document.msFullscreenElement);
+        }
+        
+        function enterTrueFullscreen() {
             const element = document.documentElement;
             
-            // Request fullscreen using multiple methods
+            // Cross-browser fullscreen request with mobile support
             if (element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
+                element.requestFullscreen().then(() => {
+                    onFullscreenEnter();
+                }).catch(err => logEvent(`Fullscreen error: ${err.message}`));
             } else if (element.webkitRequestFullscreen) {
+                // Safari support including iOS
                 element.webkitRequestFullscreen();
+                onFullscreenEnter();
+            } else if (element.mozRequestFullScreen) {
+                // Firefox
+                element.mozRequestFullScreen();
+                onFullscreenEnter();
             } else if (element.msRequestFullscreen) {
+                // IE/Edge
                 element.msRequestFullscreen();
+                onFullscreenEnter();
+            } else {
+                logEvent('Fullscreen API not supported on this device');
+                // Fallback for unsupported browsers
+                simulateFullscreenMode();
+            }
+        }
+        
+        function exitTrueFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen().then(() => {
+                    onFullscreenExit();
+                }).catch(err => logEvent(`Exit fullscreen error: ${err.message}`));
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+                onFullscreenExit();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+                onFullscreenExit();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+                onFullscreenExit();
+            }
+        }
+        
+        function onFullscreenEnter() {
+            const btn = document.getElementById('fullscreenBtn');
+            if (btn) btn.textContent = '🪟 Exit Fullscreen';
+            
+            document.body.classList.add('fullscreen-mode');
+            
+            // Apply fullscreen-specific styles
+            if (!document.getElementById('fullscreenStyles')) {
+                const style = document.createElement('style');
+                style.id = 'fullscreenStyles';
+                style.textContent = `
+                    .fullscreen-mode {
+                        background: #000 !important;
+                    }
+                    
+                    .fullscreen-mode .main-content {
+                        padding: 0 !important;
+                        margin: 0 !important;
+                        width: 100vw !important;
+                        height: 100vh !important;
+                    }
+                    
+                    .fullscreen-mode .control-panel {
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        z-index: 1000;
+                        background: rgba(0, 0, 0, 0.8);
+                        border-radius: 10px;
+                        padding: 10px;
+                    }
+                    
+                    .fullscreen-mode .dashboard-grid {
+                        height: calc(100vh - 40px) !important;
+                        overflow-y: auto;
+                    }
+                `;
+                document.head.appendChild(style);
             }
             
-            // Apply fullscreen styles
-            document.body.classList.add('fullscreen-mode');
-            document.getElementById('fullscreenBtn').textContent = '🪟 Exit Fullscreen';
-            isFullscreen = true;
-            
-            trackDWCSession('fullscreen_mode_enabled', { method: 'native_api', mode: 'standalone_dashboard' });
+            trackDWCSession('fullscreen_mode_enabled', { method: 'native_browser_api', timestamp: Date.now() });
             logEvent('True fullscreen mode activated - Native browser API');
         }
         
-        function exitFullscreen() {
-            // Exit fullscreen using multiple methods
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
+        function onFullscreenExit() {
+            const btn = document.getElementById('fullscreenBtn');
+            if (btn) btn.textContent = '📱 Fullscreen Mode';
             
-            // Remove fullscreen styles
             document.body.classList.remove('fullscreen-mode');
-            document.getElementById('fullscreenBtn').textContent = '📱 Fullscreen Mode';
-            isFullscreen = false;
             
-            trackDWCSession('fullscreen_mode_disabled', { method: 'native_api', mode: 'embedded_view' });
+            trackDWCSession('fullscreen_mode_disabled', { method: 'native_browser_api', timestamp: Date.now() });
             logEvent('True fullscreen mode deactivated - Returning to embedded view');
         }
         
-        // Listen for fullscreen change events
-        function handleFullscreenChange() {
-            const isCurrentlyFullscreen = !!(document.fullscreenElement || 
-                                           document.mozFullScreenElement || 
-                                           document.webkitFullscreenElement || 
-                                           document.msFullscreenElement);
+        function simulateFullscreenMode() {
+            // Fallback for browsers without fullscreen API
+            const isSimulated = document.body.classList.contains('simulated-fullscreen');
             
-            if (!isCurrentlyFullscreen && isFullscreen) {
-                // User exited fullscreen via ESC key
-                document.body.classList.remove('fullscreen-mode');
-                document.getElementById('fullscreenBtn').textContent = '📱 Fullscreen Mode';
-                isFullscreen = false;
-                logEvent('Fullscreen exited via ESC key');
+            if (!isSimulated) {
+                document.body.classList.add('simulated-fullscreen');
+                const btn = document.getElementById('fullscreenBtn');
+                if (btn) btn.textContent = '🪟 Exit Fullscreen';
+                
+                if (!document.getElementById('simulatedFullscreenStyles')) {
+                    const style = document.createElement('style');
+                    style.id = 'simulatedFullscreenStyles';
+                    style.textContent = `
+                        .simulated-fullscreen {
+                            position: fixed !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                            width: 100vw !important;
+                            height: 100vh !important;
+                            z-index: 9999 !important;
+                            background: #000 !important;
+                            overflow: auto !important;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+                
+                logEvent('Simulated fullscreen mode activated - API fallback');
+            } else {
+                document.body.classList.remove('simulated-fullscreen');
+                const btn = document.getElementById('fullscreenBtn');
+                if (btn) btn.textContent = '📱 Fullscreen Mode';
+                logEvent('Simulated fullscreen mode deactivated');
+            }
+        }
+        
+        // Enhanced fullscreen change event listener
+        function handleFullscreenChange() {
+            const isCurrentlyFullscreen = isInFullscreen();
+            const btn = document.getElementById('fullscreenBtn');
+            
+            if (!isCurrentlyFullscreen && document.body.classList.contains('fullscreen-mode')) {
+                // User exited fullscreen via ESC key or browser controls
+                onFullscreenExit();
+                logEvent('Fullscreen exited via browser controls or ESC key');
             }
         }
         
@@ -6013,6 +6102,29 @@ Just speak naturally - I understand everyday language!`);
                 
                 // Enhance the existing function
                 window.processVoiceCommand = function(command) {
+                    // Check for logout commands
+                    if (command.includes('logout') || command.includes('log out') || 
+                        command.includes('sign out') || command.includes('exit') ||
+                        (command.includes('secure') && command.includes('logout'))) {
+                        
+                        if (isUserLoggedIn()) {
+                            const statusEl = document.getElementById('voiceStatus');
+                            if (statusEl) {
+                                statusEl.textContent = 'Initiating secure logout...';
+                            }
+                            logEvent('Voice-triggered secure logout initiated');
+                            secureLogout();
+                        } else {
+                            const statusEl = document.getElementById('voiceStatus');
+                            if (statusEl) {
+                                statusEl.textContent = 'You are not currently logged in';
+                                setTimeout(() => statusEl.textContent = 'What would you like to do?', 2000);
+                            }
+                            logEvent('Logout command ignored - user not authenticated');
+                        }
+                        return;
+                    }
+                    
                     // Check for mobile layout diagnostics commands
                     if ((command.includes('check') || command.includes('test')) && 
                         (command.includes('mobile') || command.includes('layout') || command.includes('responsive'))) {
@@ -6034,7 +6146,7 @@ Just speak naturally - I understand everyday language!`);
                     window.originalProcessVoiceCommand(command);
                 };
                 
-                logEvent('Voice commands enhanced with responsive diagnostics');
+                logEvent('Voice commands enhanced with responsive diagnostics and secure logout');
             }
         }
 
@@ -6126,6 +6238,357 @@ Just speak naturally - I understand everyday language!`);
                 } catch (e) {
                     logEvent('Failed to parse stored layout diagnostics');
                 }
+            }
+        }
+
+        // Secure Logout Implementation - Complete Dashboard Access Revocation
+        function secureLogout() {
+            // Prevent duplicate logout attempts
+            if (window.isLoggingOut) return;
+            window.isLoggingOut = true;
+            
+            logEvent('Secure logout initiated - clearing all authentication data');
+            
+            // Create visual feedback for logout process
+            showLogoutProgress();
+            
+            // Clear all authentication data
+            clearAllAuthenticationData();
+            
+            // Disable all interactive elements
+            disableAllDashboardInteractions();
+            
+            // Fade out dashboard components
+            fadeOutDashboardComponents();
+            
+            // Clear voice command listeners
+            disableVoiceCommands();
+            
+            // Log audit trail
+            logLogoutAudit();
+            
+            // Final redirect after cleanup
+            setTimeout(() => {
+                redirectToLogin();
+            }, 1500);
+        }
+        
+        function showLogoutProgress() {
+            const progressOverlay = document.createElement('div');
+            progressOverlay.id = 'logoutProgress';
+            progressOverlay.innerHTML = `
+                <div class="logout-overlay">
+                    <div class="logout-content">
+                        <div class="logout-spinner"></div>
+                        <h3>Securing Session...</h3>
+                        <p>Clearing authentication data and revoking access</p>
+                        <div class="logout-steps">
+                            <span class="step active" id="step1">🔐 Clearing credentials</span>
+                            <span class="step" id="step2">🚫 Disabling dashboard</span>
+                            <span class="step" id="step3">🔊 Stopping voice commands</span>
+                            <span class="step" id="step4">🏠 Returning to login</span>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .logout-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100vw;
+                        height: 100vh;
+                        background: rgba(0, 0, 0, 0.95);
+                        z-index: 9999;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        backdrop-filter: blur(10px);
+                    }
+                    
+                    .logout-content {
+                        background: rgba(20, 20, 20, 0.9);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        border-radius: 16px;
+                        padding: 40px;
+                        text-align: center;
+                        max-width: 400px;
+                        width: 90%;
+                    }
+                    
+                    .logout-spinner {
+                        width: 40px;
+                        height: 40px;
+                        border: 3px solid rgba(255, 255, 255, 0.1);
+                        border-top: 3px solid #ef4444;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                        margin: 0 auto 20px;
+                    }
+                    
+                    .logout-content h3 {
+                        color: #ef4444;
+                        margin-bottom: 10px;
+                        font-size: 1.5rem;
+                    }
+                    
+                    .logout-content p {
+                        color: #d1d5db;
+                        margin-bottom: 30px;
+                    }
+                    
+                    .logout-steps {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                        text-align: left;
+                    }
+                    
+                    .step {
+                        color: #6b7280;
+                        font-size: 0.9rem;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .step.active {
+                        color: #ef4444;
+                        font-weight: 600;
+                    }
+                    
+                    .step.completed {
+                        color: #10b981;
+                    }
+                    
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+            document.body.appendChild(progressOverlay);
+            
+            // Animate through steps
+            setTimeout(() => completeStep('step1', 'step2'), 300);
+            setTimeout(() => completeStep('step2', 'step3'), 600);
+            setTimeout(() => completeStep('step3', 'step4'), 900);
+            setTimeout(() => completeStep('step4', null), 1200);
+        }
+        
+        function completeStep(currentStep, nextStep) {
+            const current = document.getElementById(currentStep);
+            const next = nextStep ? document.getElementById(nextStep) : null;
+            
+            if (current) {
+                current.classList.remove('active');
+                current.classList.add('completed');
+            }
+            
+            if (next) {
+                next.classList.add('active');
+            }
+        }
+        
+        function clearAllAuthenticationData() {
+            // Clear all storage mechanisms
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Clear specific auth keys
+            const authKeys = [
+                'nexus_auth_token',
+                'nexus_session_id', 
+                'dwc_user_context',
+                'admin_session',
+                'user_credentials',
+                'auth_timestamp',
+                'login_state',
+                'session_data',
+                'fingerprint_data',
+                'nexus_auth_retry'
+            ];
+            
+            authKeys.forEach(key => {
+                localStorage.removeItem(key);
+                sessionStorage.removeItem(key);
+            });
+            
+            // Clear cookies
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            
+            // Reset global auth variables
+            window.isAuthenticated = false;
+            window.currentUser = null;
+            window.sessionActive = false;
+            
+            logEvent('All authentication data cleared - session terminated');
+        }
+        
+        function disableAllDashboardInteractions() {
+            // Disable all buttons and interactive elements
+            const interactiveElements = document.querySelectorAll(
+                'button, .module-item, .control-btn, .business-action-btn, input, select, textarea, [onclick]'
+            );
+            
+            interactiveElements.forEach(element => {
+                element.disabled = true;
+                element.style.pointerEvents = 'none';
+                element.style.opacity = '0.3';
+                element.style.cursor = 'not-allowed';
+            });
+            
+            // Disable keyboard listeners
+            document.removeEventListener('keydown', handleKeyboardNavigation);
+            window.removeEventListener('keydown', handleKeyboardShortcuts);
+            
+            logEvent('All dashboard interactions disabled');
+        }
+        
+        function fadeOutDashboardComponents() {
+            const dashboardElements = document.querySelectorAll(
+                '#dashboard-wrapper, .dashboard-panel, .master-content, .control-grid, .business-dashboard, .quantum-map-container'
+            );
+            
+            dashboardElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.style.transition = 'all 0.5s ease';
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(20px)';
+                    element.style.filter = 'blur(5px)';
+                }, index * 100);
+            });
+            
+            // Hide main dashboard after fade
+            setTimeout(() => {
+                dashboardElements.forEach(element => {
+                    element.style.display = 'none';
+                });
+            }, 800);
+            
+            logEvent('Dashboard components faded out');
+        }
+        
+        function disableVoiceCommands() {
+            // Stop speech recognition
+            if (window.recognition) {
+                try {
+                    window.recognition.stop();
+                    window.recognition.abort();
+                } catch (e) {
+                    logEvent('Voice recognition already stopped');
+                }
+            }
+            
+            // Clear voice command handlers
+            window.processVoiceCommand = null;
+            window.voiceCommandsEnabled = false;
+            
+            // Update voice status
+            const voiceStatus = document.getElementById('voiceStatus');
+            if (voiceStatus) {
+                voiceStatus.textContent = 'Voice commands disabled - Please log in';
+                voiceStatus.style.color = '#ef4444';
+            }
+            
+            logEvent('Voice commands disabled and cleared');
+        }
+        
+        function logLogoutAudit() {
+            const auditData = {
+                timestamp: new Date().toISOString(),
+                sessionId: dwcSessionData?.startTime || 'unknown',
+                userAgent: navigator.userAgent,
+                method: 'secure_logout',
+                dataCleared: ['localStorage', 'sessionStorage', 'cookies', 'globals'],
+                componentsDisabled: ['dashboard', 'voice', 'interactions'],
+                ipAddress: 'logged_via_client',
+                status: 'completed'
+            };
+            
+            // Store audit in sessionStorage for review
+            try {
+                sessionStorage.setItem('logout_audit', JSON.stringify(auditData));
+            } catch (e) {
+                logEvent('Audit logging failed - storage cleared');
+            }
+            
+            logEvent(`Logout audit completed - ${auditData.timestamp}`);
+            
+            // Optional voice confirmation
+            if (window.speechSynthesis && !window.speechSynthesis.speaking) {
+                try {
+                    const utterance = new SpeechSynthesisUtterance('You have been securely logged out');
+                    utterance.rate = 0.8;
+                    utterance.pitch = 0.9;
+                    window.speechSynthesis.speak(utterance);
+                } catch (e) {
+                    logEvent('Voice confirmation unavailable');
+                }
+            }
+        }
+        
+        function redirectToLogin() {
+            // Clear any remaining visual elements
+            const progressOverlay = document.getElementById('logoutProgress');
+            if (progressOverlay) {
+                progressOverlay.remove();
+            }
+            
+            // Reset logout flag
+            window.isLoggingOut = false;
+            
+            // Show login form or redirect
+            const loginForm = document.getElementById('loginForm');
+            const dashboard = document.getElementById('dashboardContainer');
+            
+            if (loginForm && dashboard) {
+                loginForm.style.display = 'block';
+                dashboard.style.display = 'none';
+                
+                // Reset login form
+                const usernameField = document.getElementById('username');
+                const passwordField = document.getElementById('password');
+                if (usernameField) usernameField.value = '';
+                if (passwordField) passwordField.value = '';
+                
+                logEvent('Redirected to login form - authentication required');
+            } else {
+                // Force page reload as fallback
+                window.location.href = '/';
+            }
+            
+            // Final security check - ensure no cached components remain
+            setTimeout(() => {
+                preventCachedAccess();
+            }, 100);
+        }
+        
+        function preventCachedAccess() {
+            // Double-check that no dashboard elements are visible
+            const restrictedElements = document.querySelectorAll(
+                '.dashboard-panel, .master-content, .business-dashboard'
+            );
+            
+            restrictedElements.forEach(element => {
+                element.style.display = 'none';
+                element.style.visibility = 'hidden';
+            });
+            
+            // Disable any remaining event listeners
+            document.querySelectorAll('[onclick]').forEach(element => {
+                element.removeAttribute('onclick');
+            });
+            
+            logEvent('Post-logout security sweep completed');
+        }
+        
+        // Enhanced logout button handler
+        function logout() {
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to log out? All unsaved work will be lost.')) {
+                secureLogout();
+            } else {
+                logEvent('Logout cancelled by user');
             }
         }
 
