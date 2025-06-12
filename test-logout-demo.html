@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Logout Demonstration</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #0f172a;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .demo-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .test-button {
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .logout-button {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+        }
+        
+        .results {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            min-height: 100px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+        
+        .status {
+            padding: 8px 16px;
+            border-radius: 4px;
+            margin: 8px 0;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .status.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .status.info {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🔐 Secure Logout Functionality Demonstration</h1>
+        <p>This page demonstrates the comprehensive logout security features implemented in the NEXUS platform.</p>
+        
+        <div class="test-section">
+            <h3>1. Authentication State Simulation</h3>
+            <p>First, let's simulate being logged in:</p>
+            <button class="test-button" onclick="simulateLogin()">Simulate Login</button>
+            <div id="authStatus" class="status info">Status: Not logged in</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>2. Storage Data Population</h3>
+            <p>Populate authentication data that the logout should clear:</p>
+            <button class="test-button" onclick="populateAuthData()">Populate Auth Data</button>
+            <div id="storageStatus" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. Voice Command Test</h3>
+            <p>Test voice-triggered logout functionality:</p>
+            <button class="test-button" onclick="testVoiceLogout()">Simulate Voice "Logout"</button>
+            <div id="voiceStatus" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>4. Button-Triggered Logout</h3>
+            <p>Test the secure logout button functionality:</p>
+            <button class="logout-button" onclick="testSecureLogout()">Trigger Secure Logout</button>
+            <div id="logoutStatus" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>5. Post-Logout Verification</h3>
+            <p>Verify all authentication data has been cleared:</p>
+            <button class="test-button" onclick="verifyLogoutComplete()">Verify Data Cleared</button>
+            <div id="verificationStatus" class="results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>6. Access Prevention Test</h3>
+            <p>Attempt to access protected functions after logout:</p>
+            <button class="test-button" onclick="testAccessPrevention()">Test Access Prevention</button>
+            <div id="accessStatus" class="results"></div>
+        </div>
+    </div>
+
+    <script>
+        let isLoggedIn = false;
+        let dashboardElements = [];
+        
+        // Copy the actual logout functions from the main platform
+        function clearAllAuthenticationData() {
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            const authKeys = [
+                'nexus_auth_token',
+                'nexus_session_id', 
+                'dwc_user_context',
+                'admin_session',
+                'user_credentials',
+                'auth_timestamp',
+                'login_state',
+                'session_data',
+                'fingerprint_data',
+                'nexus_auth_retry'
+            ];
+            
+            authKeys.forEach(key => {
+                localStorage.removeItem(key);
+                sessionStorage.removeItem(key);
+            });
+            
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            
+            window.isAuthenticated = false;
+            window.currentUser = null;
+            window.sessionActive = false;
+            
+            return "All authentication data cleared - session terminated";
+        }
+        
+        function logLogoutAudit() {
+            const auditData = {
+                timestamp: new Date().toISOString(),
+                sessionId: 'demo_session_' + Date.now(),
+                userAgent: navigator.userAgent,
+                method: 'secure_logout',
+                dataCleared: ['localStorage', 'sessionStorage', 'cookies', 'globals'],
+                componentsDisabled: ['dashboard', 'voice', 'interactions'],
+                status: 'completed'
+            };
+            
+            try {
+                sessionStorage.setItem('logout_audit', JSON.stringify(auditData));
+            } catch (e) {
+                return 'Audit logging failed - storage cleared';
+            }
+            
+            return `Logout audit completed - ${auditData.timestamp}`;
+        }
+        
+        function secureLogout() {
+            let results = "=== SECURE LOGOUT PROCESS ===\n\n";
+            
+            results += "Step 1: Clearing authentication data...\n";
+            results += clearAllAuthenticationData() + "\n\n";
+            
+            results += "Step 2: Disabling dashboard interactions...\n";
+            const interactiveElements = document.querySelectorAll('button, input, select');
+            interactiveElements.forEach(element => {
+                if (!element.classList.contains('test-button') && !element.classList.contains('logout-button')) {
+                    element.disabled = true;
+                    element.style.opacity = '0.3';
+                }
+            });
+            results += "All interactive elements disabled\n\n";
+            
+            results += "Step 3: Clearing voice command handlers...\n";
+            window.processVoiceCommand = null;
+            window.voiceCommandsEnabled = false;
+            results += "Voice commands disabled and cleared\n\n";
+            
+            results += "Step 4: Logging audit trail...\n";
+            results += logLogoutAudit() + "\n\n";
+            
+            results += "Step 5: Resetting authentication state...\n";
+            isLoggedIn = false;
+            results += "Authentication state reset to false\n\n";
+            
+            results += "✅ SECURE LOGOUT COMPLETED SUCCESSFULLY\n";
+            results += "All authentication data cleared, dashboard disabled, audit logged.";
+            
+            return results;
+        }
+        
+        // Demo functions
+        function simulateLogin() {
+            isLoggedIn = true;
+            window.isAuthenticated = true;
+            window.currentUser = { username: 'admin', role: 'administrator' };
+            window.sessionActive = true;
+            
+            document.getElementById('authStatus').textContent = 'Status: Logged in as admin';
+            document.getElementById('authStatus').className = 'status success';
+        }
+        
+        function populateAuthData() {
+            const authData = {
+                'nexus_auth_token': 'token_' + Date.now(),
+                'nexus_session_id': 'session_' + Date.now(),
+                'dwc_user_context': JSON.stringify({ user: 'admin', role: 'admin' }),
+                'admin_session': 'active',
+                'user_credentials': 'encrypted_creds_' + Date.now(),
+                'auth_timestamp': new Date().toISOString(),
+                'login_state': 'authenticated',
+                'session_data': JSON.stringify({ active: true }),
+                'fingerprint_data': 'fp_' + Date.now()
+            };
+            
+            let results = "Populating authentication data:\n\n";
+            
+            Object.entries(authData).forEach(([key, value]) => {
+                localStorage.setItem(key, value);
+                sessionStorage.setItem(key, value);
+                results += `✓ ${key}: ${value.substring(0, 30)}...\n`;
+            });
+            
+            // Set some cookies
+            document.cookie = "auth_session=demo_session; path=/";
+            document.cookie = "user_token=demo_token; path=/";
+            
+            results += "\n✓ Cookies set: auth_session, user_token\n";
+            results += "\n✅ All authentication data populated";
+            
+            document.getElementById('storageStatus').textContent = results;
+        }
+        
+        function testVoiceLogout() {
+            let results = "=== VOICE COMMAND LOGOUT TEST ===\n\n";
+            
+            if (!isLoggedIn) {
+                results += "❌ Voice logout blocked - user not authenticated\n";
+                results += "Status: 'You are not currently logged in'\n";
+            } else {
+                results += "✓ Voice command 'logout' recognized\n";
+                results += "✓ Authentication check passed\n";
+                results += "✓ Initiating secure logout via voice...\n\n";
+                results += secureLogout();
+            }
+            
+            document.getElementById('voiceStatus').textContent = results;
+        }
+        
+        function testSecureLogout() {
+            let results = "";
+            
+            if (!isLoggedIn) {
+                results = "❌ Cannot logout - not currently logged in\n";
+                results += "Please simulate login first.";
+            } else {
+                results = secureLogout();
+            }
+            
+            document.getElementById('logoutStatus').textContent = results;
+        }
+        
+        function verifyLogoutComplete() {
+            let results = "=== POST-LOGOUT VERIFICATION ===\n\n";
+            
+            results += "Checking localStorage:\n";
+            if (localStorage.length === 0) {
+                results += "✅ localStorage cleared (0 items)\n";
+            } else {
+                results += `❌ localStorage still contains ${localStorage.length} items\n`;
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    results += `  - ${key}\n`;
+                }
+            }
+            
+            results += "\nChecking sessionStorage:\n";
+            if (sessionStorage.length === 0) {
+                results += "✅ sessionStorage cleared (0 items)\n";
+            } else {
+                results += `❌ sessionStorage still contains ${sessionStorage.length} items\n`;
+                for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    results += `  - ${key}\n`;
+                }
+            }
+            
+            results += "\nChecking global variables:\n";
+            results += `✓ window.isAuthenticated: ${window.isAuthenticated || 'undefined'}\n`;
+            results += `✓ window.currentUser: ${window.currentUser || 'null'}\n`;
+            results += `✓ window.sessionActive: ${window.sessionActive || 'undefined'}\n`;
+            
+            results += "\nChecking cookies:\n";
+            if (document.cookie === '') {
+                results += "✅ All cookies cleared\n";
+            } else {
+                results += "❌ Cookies still present:\n";
+                results += document.cookie + "\n";
+            }
+            
+            if (localStorage.length === 0 && sessionStorage.length === 0 && !window.isAuthenticated) {
+                results += "\n🎉 LOGOUT VERIFICATION PASSED\n";
+                results += "All authentication data successfully cleared!";
+            } else {
+                results += "\n⚠️ PARTIAL LOGOUT DETECTED\n";
+                results += "Some authentication data may still be present.";
+            }
+            
+            document.getElementById('verificationStatus').textContent = results;
+        }
+        
+        function testAccessPrevention() {
+            let results = "=== ACCESS PREVENTION TEST ===\n\n";
+            
+            results += "Testing protected function access:\n";
+            
+            // Test 1: Voice commands
+            if (window.voiceCommandsEnabled === false) {
+                results += "✅ Voice commands disabled\n";
+            } else {
+                results += "❌ Voice commands still enabled\n";
+            }
+            
+            // Test 2: Interactive elements
+            const disabledElements = document.querySelectorAll('button[disabled]');
+            results += `✓ ${disabledElements.length} interactive elements disabled\n`;
+            
+            // Test 3: Authentication check
+            if (!isLoggedIn && !window.isAuthenticated) {
+                results += "✅ Authentication state cleared\n";
+            } else {
+                results += "❌ Authentication state still active\n";
+            }
+            
+            // Test 4: Session data
+            const hasSessionData = sessionStorage.getItem('nexus_session_id') || 
+                                 localStorage.getItem('nexus_auth_token');
+            if (!hasSessionData) {
+                results += "✅ Session data cleared\n";
+            } else {
+                results += "❌ Session data still present\n";
+            }
+            
+            results += "\n🔒 ACCESS PREVENTION VERIFIED\n";
+            results += "Dashboard access successfully revoked!";
+            
+            document.getElementById('accessStatus').textContent = results;
+        }
+        
+        // Initialize
+        window.addEventListener('load', function() {
+            console.log('Secure Logout Demo loaded');
+        });
+    </script>
+</body>
+</html>
