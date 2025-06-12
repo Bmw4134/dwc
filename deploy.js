@@ -304,7 +304,10 @@ async function deployToVercel() {
 
   const deploymentData = {
     name: 'dwc-systems-platform',
-    files: files,
+    files: Object.keys(files).map(filename => ({
+      file: filename,
+      data: files[filename].file
+    })),
     projectSettings: {
       framework: null,
       devCommand: null,
