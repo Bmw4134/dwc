@@ -6596,51 +6596,245 @@ Just speak naturally - I understand everyday language!`);
         function autoFixLandingPage() {
             logEvent('Starting landing page diagnostic and repair...');
             
+            // Apply comprehensive mobile optimizations
+            applyMobileLandingPageFixes();
+            
             // iPhone-specific fixes
             if (/iPhone/.test(navigator.userAgent)) {
-                // Fix viewport height issues
-                document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-                
-                // Fix touch targets that are too small
-                const touchElements = document.querySelectorAll('button, .cta-button, .module-item');
-                touchElements.forEach(el => {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.height < 44) {
-                        el.style.minHeight = '44px';
-                        el.style.padding = '12px 16px';
-                    }
-                    if (rect.width < 44) {
-                        el.style.minWidth = '44px';
-                    }
-                });
-                
-                // Fix text readability on iPhone
-                const heroText = document.querySelector('.hero h1');
-                if (heroText) {
-                    heroText.style.fontSize = 'clamp(28px, 8vw, 48px)';
-                    heroText.style.lineHeight = '1.2';
-                    heroText.style.marginBottom = '16px';
-                }
-                
-                // Fix CTA buttons for iPhone
-                const ctaButtons = document.querySelectorAll('.cta-button');
-                ctaButtons.forEach(btn => {
-                    btn.style.fontSize = '18px';
-                    btn.style.padding = '16px 24px';
-                    btn.style.minHeight = '48px';
-                    btn.style.borderRadius = '12px';
-                    btn.style.touchAction = 'manipulation';
-                });
-                
-                // Fix spacing and layout
-                const hero = document.querySelector('.hero');
-                if (hero) {
-                    hero.style.padding = '40px 20px';
-                    hero.style.textAlign = 'center';
-                }
-                
+                applyiPhoneSpecificFixes();
                 logEvent('iPhone landing page optimizations applied');
             }
+        }
+        
+        function applyMobileLandingPageFixes() {
+            // Inject comprehensive mobile CSS improvements
+            if (!document.getElementById('mobileLandingPageFixes')) {
+                const mobileStyles = document.createElement('style');
+                mobileStyles.id = 'mobileLandingPageFixes';
+                mobileStyles.textContent = `
+                    /* Mobile Landing Page Enhancements */
+                    @media (max-width: 768px) {
+                        .hero {
+                            padding: 32px 16px !important;
+                            text-align: center !important;
+                            min-height: auto !important;
+                        }
+                        
+                        .hero h1 {
+                            font-size: clamp(24px, 7vw, 36px) !important;
+                            line-height: 1.2 !important;
+                            margin-bottom: 16px !important;
+                            word-wrap: break-word !important;
+                        }
+                        
+                        .hero p {
+                            font-size: clamp(16px, 4vw, 18px) !important;
+                            line-height: 1.4 !important;
+                            margin-bottom: 24px !important;
+                        }
+                        
+                        .cta-buttons {
+                            display: flex !important;
+                            flex-direction: column !important;
+                            gap: 12px !important;
+                            align-items: center !important;
+                        }
+                        
+                        .cta-button {
+                            width: 100% !important;
+                            max-width: 280px !important;
+                            min-height: 48px !important;
+                            padding: 16px 24px !important;
+                            font-size: 16px !important;
+                            font-weight: 600 !important;
+                            border-radius: 12px !important;
+                            touch-action: manipulation !important;
+                            user-select: none !important;
+                        }
+                        
+                        .pricing-section {
+                            padding: 40px 16px !important;
+                        }
+                        
+                        .pricing-grid {
+                            display: flex !important;
+                            flex-direction: column !important;
+                            gap: 20px !important;
+                        }
+                        
+                        .pricing-card {
+                            width: 100% !important;
+                            max-width: none !important;
+                            margin: 0 !important;
+                            padding: 24px !important;
+                            border-radius: 16px !important;
+                        }
+                        
+                        .pricing-card h3 {
+                            font-size: 24px !important;
+                            margin-bottom: 8px !important;
+                        }
+                        
+                        .pricing-card .price {
+                            font-size: 32px !important;
+                            margin-bottom: 16px !important;
+                        }
+                        
+                        .pricing-card button {
+                            width: 100% !important;
+                            min-height: 48px !important;
+                            font-size: 16px !important;
+                            padding: 16px !important;
+                            border-radius: 12px !important;
+                        }
+                        
+                        /* Navigation improvements */
+                        .sticky-cta {
+                            padding: 12px 16px !important;
+                            bottom: 0 !important;
+                            left: 0 !important;
+                            right: 0 !important;
+                            background: rgba(0, 0, 0, 0.95) !important;
+                            backdrop-filter: blur(20px) !important;
+                        }
+                        
+                        .sticky-cta button {
+                            width: 100% !important;
+                            min-height: 48px !important;
+                            font-size: 16px !important;
+                            border-radius: 12px !important;
+                        }
+                        
+                        /* Improved spacing and layout */
+                        .container {
+                            padding: 0 16px !important;
+                            max-width: 100% !important;
+                        }
+                        
+                        .section {
+                            padding: 32px 16px !important;
+                        }
+                        
+                        /* Better touch targets for all interactive elements */
+                        button, .button, .btn, [role="button"] {
+                            min-height: 44px !important;
+                            min-width: 44px !important;
+                            padding: 12px 16px !important;
+                            touch-action: manipulation !important;
+                        }
+                        
+                        /* Improved text readability */
+                        h1, h2, h3, h4, h5, h6 {
+                            line-height: 1.2 !important;
+                            word-wrap: break-word !important;
+                        }
+                        
+                        p, span, div {
+                            line-height: 1.4 !important;
+                            word-wrap: break-word !important;
+                        }
+                        
+                        /* Fix viewport issues */
+                        html, body {
+                            overflow-x: hidden !important;
+                            width: 100% !important;
+                        }
+                        
+                        * {
+                            box-sizing: border-box !important;
+                        }
+                    }
+                `;
+                document.head.appendChild(mobileStyles);
+            }
+            
+            // Apply dynamic fixes to existing elements
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                heroSection.style.padding = '32px 16px';
+                heroSection.style.textAlign = 'center';
+            }
+            
+            // Fix all touch targets
+            const touchElements = document.querySelectorAll('button, .cta-button, .btn, [role="button"]');
+            touchElements.forEach(el => {
+                el.style.minHeight = '48px';
+                el.style.minWidth = '48px';
+                el.style.touchAction = 'manipulation';
+                el.style.userSelect = 'none';
+            });
+            
+            // Fix text sizing
+            const headings = document.querySelectorAll('h1, h2, h3');
+            headings.forEach(heading => {
+                const currentSize = parseInt(window.getComputedStyle(heading).fontSize);
+                if (window.innerWidth < 768) {
+                    heading.style.fontSize = `clamp(${Math.max(18, currentSize * 0.8)}px, 6vw, ${currentSize}px)`;
+                    heading.style.lineHeight = '1.2';
+                }
+            });
+            
+            logEvent('Comprehensive mobile landing page fixes applied');
+        }
+        
+        function applyiPhoneSpecificFixes() {
+            // Fix viewport height issues on iPhone
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+            
+            // iPhone Safari specific fixes
+            if (/iPhone.*Safari/.test(navigator.userAgent)) {
+                const viewportMeta = document.querySelector('meta[name="viewport"]');
+                if (viewportMeta) {
+                    viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+                }
+                
+                // Fix 100vh issues on iPhone
+                document.body.style.minHeight = 'calc(var(--vh, 1vh) * 100)';
+            }
+            
+            // Enhanced touch target optimization for iPhone
+            const iPhoneTouchElements = document.querySelectorAll('button, .cta-button, .module-item, a');
+            iPhoneTouchElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.height < 44) {
+                    el.style.minHeight = '44px';
+                    el.style.padding = '12px 16px';
+                }
+                if (rect.width < 44) {
+                    el.style.minWidth = '44px';
+                }
+                
+                // Prevent zoom on double tap
+                el.style.touchAction = 'manipulation';
+            });
+            
+            // Fix text readability on iPhone
+            const heroText = document.querySelector('.hero h1');
+            if (heroText) {
+                heroText.style.fontSize = 'clamp(28px, 8vw, 48px)';
+                heroText.style.lineHeight = '1.2';
+                heroText.style.marginBottom = '16px';
+                heroText.style.textSizeAdjust = '100%';
+            }
+            
+            // Fix CTA buttons for iPhone
+            const ctaButtons = document.querySelectorAll('.cta-button');
+            ctaButtons.forEach(btn => {
+                btn.style.fontSize = '18px';
+                btn.style.padding = '16px 24px';
+                btn.style.minHeight = '48px';
+                btn.style.borderRadius = '12px';
+                btn.style.touchAction = 'manipulation';
+                btn.style.webkitTapHighlightColor = 'transparent';
+            });
+            
+            // Fix spacing and layout for iPhone
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.padding = '40px 20px';
+                hero.style.textAlign = 'center';
+            }
+        }
             
             // Universal mobile fixes
             const pricing = document.querySelector('.pricing-section');
