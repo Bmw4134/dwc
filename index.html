@@ -7610,10 +7610,31 @@ Just speak naturally - I understand everyday language!`);
                 background: var(--accent) !important;
                 color: white !important;
                 border: none !important;
+                border-radius: 6px !important;
+                padding: 12px 24px !important;
+                font-weight: 500 !important;
             }
             
             .btn:hover, button:hover {
                 background: var(--accent-light) !important;
+            }
+            
+            /* Remove all golden/yellow styling completely */
+            * {
+                background-image: none !important;
+                animation: none !important;
+            }
+            
+            .hero-title {
+                background: none !important;
+                -webkit-background-clip: unset !important;
+                -webkit-text-fill-color: unset !important;
+                background-clip: unset !important;
+                color: var(--text-primary) !important;
+            }
+            
+            .metric-value, .qpi-score {
+                color: var(--accent) !important;
             }
         `;
         document.head.appendChild(cleanStyle);
@@ -7662,11 +7683,31 @@ Just speak naturally - I understand everyday language!`);
             }, 100);
         }
         
-        // IMMEDIATE billion dollar mode activation
+        // Apply clean professional mode
         setTimeout(() => {
             try {
-                window.activateBillionDollarMode();
-                logEvent('NEXUS: IMMEDIATE billion-dollar mode activation');
+                window.activateCleanMode = function() {
+                // Remove all overwhelming styling
+                document.body.style.background = 'var(--background)';
+                document.body.style.animation = 'none';
+                document.body.classList.remove('force-billion-mode');
+                
+                // Clean up all elements
+                const allElements = document.querySelectorAll('*');
+                allElements.forEach(el => {
+                    el.style.animation = 'none';
+                    if (el.style.background && el.style.background.includes('FFD700')) {
+                        el.style.background = 'var(--background)';
+                    }
+                    if (el.style.color && el.style.color.includes('FFD700')) {
+                        el.style.color = 'var(--text-primary)';
+                    }
+                });
+                
+                logEvent('Clean professional mode applied');
+            };
+            window.activateCleanMode();
+                logEvent('NEXUS: Clean professional mode activated');
             
             // Initialize production validation functions
             window.runProductionValidation = function() {
