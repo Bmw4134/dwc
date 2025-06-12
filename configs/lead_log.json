@@ -71,15 +71,28 @@
       },
       "source": "consultation_request",
       "status": "hot"
+    },
+    {
+      "leadId": "lead_1749735601997_brqm5q95d",
+      "slug": "techinnovate-solutions-sarah.chen-601998",
+      "dashboardUrl": "/dashboards/techinnovate-solutions-sarah.chen-601998",
+      "qnisScore": 94,
+      "leadVelocity": 1209600000,
+      "createdAt": "2025-06-12T13:40:01.999Z",
+      "filePath": "/home/runner/workspace/dashboards/techinnovate-solutions-sarah.chen-601998.jsx"
     }
   ],
   "summary": {
     "totalLeads": 3,
-    "averageQnisScore": 84.0,
+    "averageQnisScore": 84,
     "averageLeadVelocity": 3.33,
     "hotLeads": 1,
     "conversionRate": 33.3,
-    "topSources": ["demo_request", "consultation_request", "contact_form"],
+    "topSources": [
+      "demo_request",
+      "consultation_request",
+      "contact_form"
+    ],
     "lastUpdated": "2025-06-11T14:48:20.789Z"
   },
   "dashboard_generation_stats": {
