@@ -4789,6 +4789,12 @@
             
             // Create accessibility mode panel
             createAccessibilityMode();
+            
+            // Initialize adaptive mobile responsiveness
+            initAdaptiveResponsiveness();
+            
+            // Create device preview toggle button
+            createDevicePreviewToggle();
         }
 
         function toggleVoiceListening(forceState = null) {
@@ -5081,6 +5087,637 @@ Just speak naturally - I understand everyday language!`);
                 cacheButton.onclick = clearAppCache;
                 cacheButton.style.background = 'linear-gradient(135deg, #ffa726 0%, #ff7043 100%)';
                 adminPanel.appendChild(cacheButton);
+            }
+        }
+
+        // Adaptive Mobile Responsiveness with Real-Time Device Preview
+        function initAdaptiveResponsiveness() {
+            createDevicePreviewPanel();
+            initRealTimeResponsiveEngine();
+            setupAdaptiveBreakpoints();
+            enableContinuousDeviceDetection();
+            logEvent('Adaptive mobile responsiveness system initialized');
+        }
+        
+        function createDevicePreviewPanel() {
+            const previewPanel = document.createElement('div');
+            previewPanel.id = 'devicePreviewPanel';
+            previewPanel.innerHTML = `
+                <div class="device-preview-panel">
+                    <div class="preview-header">
+                        <span>📱 Device Preview</span>
+                        <button onclick="toggleDevicePreview()" class="close-btn">×</button>
+                    </div>
+                    <div class="device-controls">
+                        <button onclick="setDeviceView('mobile')" class="device-btn" data-device="mobile">📱 Mobile</button>
+                        <button onclick="setDeviceView('tablet')" class="device-btn" data-device="tablet">📋 Tablet</button>
+                        <button onclick="setDeviceView('desktop')" class="device-btn" data-device="desktop">🖥️ Desktop</button>
+                        <button onclick="setDeviceView('auto')" class="device-btn active" data-device="auto">🔄 Auto</button>
+                    </div>
+                    <div class="current-device-info" id="currentDeviceInfo">
+                        <div class="device-stats">
+                            <span id="deviceDimensions">Loading...</span>
+                            <span id="deviceClass">Auto-detecting...</span>
+                        </div>
+                    </div>
+                    <div class="responsive-preview" id="responsivePreview">
+                        <div class="preview-frames">
+                            <div class="frame mobile-frame" id="mobileFrame">Mobile View</div>
+                            <div class="frame tablet-frame" id="tabletFrame">Tablet View</div>
+                            <div class="frame desktop-frame" id="desktopFrame">Desktop View</div>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .device-preview-panel {
+                        position: fixed;
+                        top: 20px;
+                        left: 20px;
+                        width: 320px;
+                        background: rgba(0, 0, 0, 0.95);
+                        border-radius: 15px;
+                        padding: 20px;
+                        z-index: 1001;
+                        color: white;
+                        backdrop-filter: blur(10px);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        display: none;
+                    }
+                    
+                    .preview-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 15px;
+                        font-weight: bold;
+                    }
+                    
+                    .close-btn {
+                        background: none;
+                        border: none;
+                        color: white;
+                        font-size: 20px;
+                        cursor: pointer;
+                        opacity: 0.7;
+                    }
+                    
+                    .device-controls {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 8px;
+                        margin-bottom: 15px;
+                    }
+                    
+                    .device-btn {
+                        padding: 8px 12px;
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        background: rgba(255, 255, 255, 0.1);
+                        color: white;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-size: 12px;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .device-btn:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                    }
+                    
+                    .device-btn.active {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        border-color: #667eea;
+                    }
+                    
+                    .current-device-info {
+                        background: rgba(255, 255, 255, 0.05);
+                        padding: 10px;
+                        border-radius: 8px;
+                        margin-bottom: 15px;
+                    }
+                    
+                    .device-stats {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px;
+                        font-size: 12px;
+                    }
+                    
+                    .preview-frames {
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        gap: 8px;
+                    }
+                    
+                    .frame {
+                        height: 60px;
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        border-radius: 6px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 11px;
+                        opacity: 0.6;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .frame.active {
+                        opacity: 1;
+                        border-color: #667eea;
+                        background: rgba(102, 126, 234, 0.1);
+                    }
+                    
+                    @media (max-width: 768px) {
+                        .device-preview-panel {
+                            top: 10px;
+                            left: 10px;
+                            width: calc(100vw - 40px);
+                            max-width: 300px;
+                        }
+                    }
+                </style>
+            `;
+            document.body.appendChild(previewPanel);
+        }
+        
+        function initRealTimeResponsiveEngine() {
+            // Real-time responsive monitoring
+            const responsiveEngine = {
+                currentBreakpoint: null,
+                deviceMetrics: {},
+                
+                updateDeviceMetrics() {
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    const devicePixelRatio = window.devicePixelRatio || 1;
+                    const orientation = width > height ? 'landscape' : 'portrait';
+                    
+                    this.deviceMetrics = {
+                        width,
+                        height,
+                        devicePixelRatio,
+                        orientation,
+                        breakpoint: this.getBreakpoint(width),
+                        touchDevice: 'ontouchstart' in window,
+                        deviceClass: this.getDeviceClass(width)
+                    };
+                    
+                    this.updateUI();
+                    this.applyAdaptiveStyles();
+                },
+                
+                getBreakpoint(width) {
+                    if (width < 480) return 'xs';
+                    if (width < 768) return 'sm';
+                    if (width < 1024) return 'md';
+                    if (width < 1440) return 'lg';
+                    return 'xl';
+                },
+                
+                getDeviceClass(width) {
+                    if (width < 768) return 'mobile';
+                    if (width < 1024) return 'tablet';
+                    return 'desktop';
+                },
+                
+                updateUI() {
+                    const dimensionsEl = document.getElementById('deviceDimensions');
+                    const classEl = document.getElementById('deviceClass');
+                    
+                    if (dimensionsEl) {
+                        dimensionsEl.textContent = `${this.deviceMetrics.width}×${this.deviceMetrics.height} (${this.deviceMetrics.orientation})`;
+                    }
+                    
+                    if (classEl) {
+                        classEl.textContent = `${this.deviceMetrics.deviceClass} • ${this.deviceMetrics.breakpoint} • ${this.deviceMetrics.devicePixelRatio}x`;
+                    }
+                    
+                    // Update active frame
+                    document.querySelectorAll('.frame').forEach(frame => frame.classList.remove('active'));
+                    const activeFrame = document.querySelector(`.${this.deviceMetrics.deviceClass}-frame`);
+                    if (activeFrame) activeFrame.classList.add('active');
+                },
+                
+                applyAdaptiveStyles() {
+                    const { deviceClass, width, touchDevice } = this.deviceMetrics;
+                    
+                    // Apply device-specific optimizations
+                    if (deviceClass === 'mobile') {
+                        this.optimizeForMobile();
+                    } else if (deviceClass === 'tablet') {
+                        this.optimizeForTablet();
+                    } else {
+                        this.optimizeForDesktop();
+                    }
+                    
+                    // Update CSS custom properties
+                    document.documentElement.style.setProperty('--device-width', `${width}px`);
+                    document.documentElement.style.setProperty('--device-class', deviceClass);
+                    document.documentElement.style.setProperty('--touch-device', touchDevice ? '1' : '0');
+                },
+                
+                optimizeForMobile() {
+                    // Dynamic mobile optimizations
+                    const grids = document.querySelectorAll('.control-grid, .responsive-grid');
+                    grids.forEach(grid => {
+                        grid.style.gridTemplateColumns = '1fr';
+                        grid.style.gap = '12px';
+                    });
+                    
+                    // Optimize touch targets
+                    const buttons = document.querySelectorAll('button');
+                    buttons.forEach(btn => {
+                        if (btn.getBoundingClientRect().height < 44) {
+                            btn.style.minHeight = '44px';
+                            btn.style.padding = '12px 16px';
+                        }
+                    });
+                },
+                
+                optimizeForTablet() {
+                    const grids = document.querySelectorAll('.control-grid, .responsive-grid');
+                    grids.forEach(grid => {
+                        grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                        grid.style.gap = '16px';
+                    });
+                },
+                
+                optimizeForDesktop() {
+                    const grids = document.querySelectorAll('.control-grid, .responsive-grid');
+                    grids.forEach(grid => {
+                        grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                        grid.style.gap = '20px';
+                    });
+                }
+            };
+            
+            // Initialize and set up continuous monitoring
+            responsiveEngine.updateDeviceMetrics();
+            
+            // Monitor resize events
+            window.addEventListener('resize', () => {
+                responsiveEngine.updateDeviceMetrics();
+                logEvent(`Adaptive resize: ${responsiveEngine.deviceMetrics.deviceClass} (${responsiveEngine.deviceMetrics.width}px)`);
+            });
+            
+            // Monitor orientation changes
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => {
+                    responsiveEngine.updateDeviceMetrics();
+                    logEvent(`Orientation changed: ${responsiveEngine.deviceMetrics.orientation}`);
+                }, 100);
+            });
+            
+            window.responsiveEngine = responsiveEngine;
+        }
+        
+        function setupAdaptiveBreakpoints() {
+            // Define adaptive CSS custom properties
+            const style = document.createElement('style');
+            style.textContent = `
+                :root {
+                    --adaptive-padding: clamp(16px, 4vw, 40px);
+                    --adaptive-text-size: clamp(14px, 3vw, 18px);
+                    --adaptive-button-size: clamp(44px, 8vw, 56px);
+                    --adaptive-grid-columns: 1;
+                }
+                
+                @media (min-width: 768px) {
+                    :root {
+                        --adaptive-grid-columns: 2;
+                    }
+                }
+                
+                @media (min-width: 1024px) {
+                    :root {
+                        --adaptive-grid-columns: 3;
+                    }
+                }
+                
+                .adaptive-grid {
+                    display: grid;
+                    grid-template-columns: repeat(var(--adaptive-grid-columns), 1fr);
+                    gap: var(--adaptive-padding);
+                    padding: var(--adaptive-padding);
+                }
+                
+                .adaptive-text {
+                    font-size: var(--adaptive-text-size);
+                }
+                
+                .adaptive-button {
+                    min-height: var(--adaptive-button-size);
+                    padding: calc(var(--adaptive-padding) / 2);
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        function enableContinuousDeviceDetection() {
+            // Advanced device detection
+            setInterval(() => {
+                if (window.responsiveEngine) {
+                    const oldClass = window.responsiveEngine.deviceMetrics.deviceClass;
+                    window.responsiveEngine.updateDeviceMetrics();
+                    const newClass = window.responsiveEngine.deviceMetrics.deviceClass;
+                    
+                    if (oldClass !== newClass) {
+                        logEvent(`Device class changed: ${oldClass} → ${newClass}`);
+                        // Trigger adaptive optimizations
+                        window.responsiveEngine.applyAdaptiveStyles();
+                    }
+                }
+            }, 1000);
+        }
+        
+        function toggleDevicePreview() {
+            const panel = document.getElementById('devicePreviewPanel');
+            if (panel) {
+                const isVisible = panel.querySelector('.device-preview-panel').style.display !== 'none';
+                panel.querySelector('.device-preview-panel').style.display = isVisible ? 'none' : 'block';
+                logEvent(`Device preview ${isVisible ? 'hidden' : 'shown'}`);
+            }
+        }
+        
+        function setDeviceView(deviceType) {
+            // Update active button
+            document.querySelectorAll('.device-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-device="${deviceType}"]`).classList.add('active');
+            
+            if (deviceType === 'auto') {
+                // Return to natural responsive behavior
+                document.documentElement.style.removeProperty('width');
+                document.documentElement.style.removeProperty('max-width');
+                logEvent('Device view set to auto-adaptive');
+            } else {
+                // Simulate device dimensions
+                const dimensions = {
+                    mobile: { width: '375px', maxWidth: '480px' },
+                    tablet: { width: '768px', maxWidth: '1024px' },
+                    desktop: { width: '1200px', maxWidth: 'none' }
+                };
+                
+                const { width, maxWidth } = dimensions[deviceType];
+                document.documentElement.style.width = width;
+                document.documentElement.style.maxWidth = maxWidth;
+                
+                logEvent(`Device view simulated: ${deviceType} (${width})`);
+            }
+            
+            // Trigger responsive update
+            if (window.responsiveEngine) {
+                setTimeout(() => window.responsiveEngine.updateDeviceMetrics(), 100);
+            }
+        }
+        
+        function createAccessibilityMode() {
+            const accessibilityPanel = document.createElement('div');
+            accessibilityPanel.id = 'accessibilityPanel';
+            accessibilityPanel.innerHTML = `
+                <div class="accessibility-mode">
+                    <button onclick="toggleAccessibilityMode()" class="accessibility-toggle" title="Accessibility Options">
+                        ♿
+                    </button>
+                    <div class="accessibility-panel" style="display: none;">
+                        <div class="accessibility-header">
+                            <span>♿ Accessibility</span>
+                            <button onclick="toggleAccessibilityMode()" class="close-btn">×</button>
+                        </div>
+                        <div class="accessibility-controls">
+                            <button onclick="toggleHighContrast()" class="accessibility-btn" id="contrastBtn">
+                                🌗 High Contrast
+                            </button>
+                            <button onclick="toggleLargeText()" class="accessibility-btn" id="textSizeBtn">
+                                🔤 Large Text
+                            </button>
+                            <button onclick="toggleMotionReduction()" class="accessibility-btn" id="motionBtn">
+                                🔄 Reduce Motion
+                            </button>
+                            <button onclick="toggleKeyboardNav()" class="accessibility-btn" id="keyboardBtn">
+                                ⌨️ Keyboard Nav
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .accessibility-mode {
+                        position: fixed;
+                        top: 20px;
+                        right: 80px;
+                        z-index: 1000;
+                    }
+                    
+                    .accessibility-toggle {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        border: none;
+                        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+                        color: white;
+                        font-size: 20px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        min-height: 44px;
+                        min-width: 44px;
+                    }
+                    
+                    .accessibility-panel {
+                        position: absolute;
+                        top: 60px;
+                        right: 0;
+                        width: 250px;
+                        background: rgba(0, 0, 0, 0.95);
+                        border-radius: 15px;
+                        padding: 20px;
+                        backdrop-filter: blur(10px);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+                    
+                    .accessibility-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 15px;
+                        color: white;
+                        font-weight: bold;
+                    }
+                    
+                    .accessibility-controls {
+                        display: grid;
+                        gap: 10px;
+                    }
+                    
+                    .accessibility-btn {
+                        padding: 12px;
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        background: rgba(255, 255, 255, 0.1);
+                        color: white;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        text-align: left;
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .accessibility-btn:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                    }
+                    
+                    .accessibility-btn.active {
+                        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+                        border-color: #2ecc71;
+                    }
+                </style>
+            `;
+            document.body.appendChild(accessibilityPanel);
+        }
+        
+        function toggleAccessibilityMode() {
+            const panel = document.querySelector('.accessibility-panel');
+            if (panel) {
+                const isVisible = panel.style.display !== 'none';
+                panel.style.display = isVisible ? 'none' : 'block';
+                logEvent(`Accessibility panel ${isVisible ? 'hidden' : 'shown'}`);
+            }
+        }
+        
+        function toggleHighContrast() {
+            const btn = document.getElementById('contrastBtn');
+            const isActive = btn.classList.toggle('active');
+            
+            if (isActive) {
+                document.documentElement.classList.add('high-contrast');
+                addHighContrastStyles();
+                logEvent('High contrast mode enabled');
+            } else {
+                document.documentElement.classList.remove('high-contrast');
+                removeHighContrastStyles();
+                logEvent('High contrast mode disabled');
+            }
+        }
+        
+        function toggleLargeText() {
+            const btn = document.getElementById('textSizeBtn');
+            const isActive = btn.classList.toggle('active');
+            
+            if (isActive) {
+                document.documentElement.style.fontSize = '120%';
+                logEvent('Large text mode enabled');
+            } else {
+                document.documentElement.style.fontSize = '';
+                logEvent('Large text mode disabled');
+            }
+        }
+        
+        function toggleMotionReduction() {
+            const btn = document.getElementById('motionBtn');
+            const isActive = btn.classList.toggle('active');
+            
+            if (isActive) {
+                addMotionReductionStyles();
+                logEvent('Motion reduction enabled');
+            } else {
+                removeMotionReductionStyles();
+                logEvent('Motion reduction disabled');
+            }
+        }
+        
+        function toggleKeyboardNav() {
+            const btn = document.getElementById('keyboardBtn');
+            const isActive = btn.classList.toggle('active');
+            
+            if (isActive) {
+                enableKeyboardNavigation();
+                logEvent('Enhanced keyboard navigation enabled');
+            } else {
+                disableKeyboardNavigation();
+                logEvent('Enhanced keyboard navigation disabled');
+            }
+        }
+        
+        function addHighContrastStyles() {
+            const style = document.createElement('style');
+            style.id = 'high-contrast-styles';
+            style.textContent = `
+                .high-contrast {
+                    filter: contrast(150%) brightness(120%);
+                }
+                .high-contrast * {
+                    background-color: #000 !important;
+                    color: #fff !important;
+                    border-color: #fff !important;
+                }
+                .high-contrast button {
+                    background-color: #333 !important;
+                    border: 2px solid #fff !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        function removeHighContrastStyles() {
+            const style = document.getElementById('high-contrast-styles');
+            if (style) style.remove();
+        }
+        
+        function addMotionReductionStyles() {
+            const style = document.createElement('style');
+            style.id = 'motion-reduction-styles';
+            style.textContent = `
+                * {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                    transform: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        function removeMotionReductionStyles() {
+            const style = document.getElementById('motion-reduction-styles');
+            if (style) style.remove();
+        }
+        
+        function enableKeyboardNavigation() {
+            // Add visible focus indicators
+            const style = document.createElement('style');
+            style.id = 'keyboard-nav-styles';
+            style.textContent = `
+                *:focus {
+                    outline: 3px solid #4CAF50 !important;
+                    outline-offset: 2px !important;
+                }
+                button:focus {
+                    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5) !important;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Add keyboard event listeners
+            document.addEventListener('keydown', handleKeyboardNavigation);
+        }
+        
+        function disableKeyboardNavigation() {
+            const style = document.getElementById('keyboard-nav-styles');
+            if (style) style.remove();
+            document.removeEventListener('keydown', handleKeyboardNavigation);
+        }
+        
+        function handleKeyboardNavigation(e) {
+            // Tab navigation enhancement
+            if (e.key === 'Tab') {
+                const focusableElements = document.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                // Add visual indicators for tab navigation
+                focusableElements.forEach(el => {
+                    el.addEventListener('focus', () => {
+                        el.style.transform = 'scale(1.05)';
+                    });
+                    el.addEventListener('blur', () => {
+                        el.style.transform = '';
+                    });
+                });
             }
         }
 
