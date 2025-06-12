@@ -12,23 +12,24 @@ export default function Login() {
     setIsLoading(true);
     setError('');
 
-    // Authentication logic for demo
-    const validCredentials = [
-      { username: 'watson', password: 'dwc2025' },
-      { username: 'admin', password: 'qnis2025' },
-      { username: 'dion', password: 'nexus2025' }
-    ];
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials)
+      });
 
-    const isValid = validCredentials.some(
-      cred => cred.username === credentials.username && cred.password === credentials.password
-    );
+      const data = await response.json();
 
-    if (isValid) {
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('username', credentials.username);
-      navigate('/dashboard');
-    } else {
-      setError('Authentication failed. Please check your credentials.');
+      if (response.ok && data.success) {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('username', credentials.username);
+        navigate('/dashboard');
+      } else {
+        setError('Authentication failed. Please check your credentials.');
+      }
+    } catch (err) {
+      setError('Connection error. Please try again.');
     }
     
     setIsLoading(false);
