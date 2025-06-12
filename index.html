@@ -6599,6 +6599,9 @@ Just speak naturally - I understand everyday language!`);
             // Apply comprehensive mobile optimizations
             applyMobileLandingPageFixes();
             
+            // Apply universal mobile fixes
+            applyUniversalMobileFixes();
+            
             // iPhone-specific fixes
             if (/iPhone/.test(navigator.userAgent)) {
                 applyiPhoneSpecificFixes();
@@ -6737,11 +6740,24 @@ Just speak naturally - I understand everyday language!`);
                         /* Fix viewport issues */
                         html, body {
                             overflow-x: hidden !important;
+                            overflow-y: auto !important;
                             width: 100% !important;
+                            touch-action: pan-y pinch-zoom !important;
+                            -webkit-overflow-scrolling: touch !important;
                         }
                         
                         * {
                             box-sizing: border-box !important;
+                        }
+                        
+                        /* Ensure all elements allow scrolling */
+                        .hero, .pricing-section, .container, .section {
+                            touch-action: pan-y pinch-zoom !important;
+                        }
+                        
+                        /* Remove any blocking overlays */
+                        .fixed, .absolute {
+                            pointer-events: auto !important;
                         }
                     }
                 `;
@@ -6775,6 +6791,40 @@ Just speak naturally - I understand everyday language!`);
             });
             
             logEvent('Comprehensive mobile landing page fixes applied');
+            
+            // Immediately restore touch responsiveness
+            restoreMobileTouchResponsiveness();
+        }
+        
+        function restoreMobileTouchResponsiveness() {
+            // Critical fix for mobile scrolling and touch
+            document.body.style.touchAction = 'pan-y pinch-zoom';
+            document.documentElement.style.touchAction = 'pan-y pinch-zoom';
+            document.body.style.overflowY = 'auto';
+            document.documentElement.style.overflowY = 'auto';
+            
+            // Enable smooth scrolling on iOS
+            if (/iPhone|iPad/.test(navigator.userAgent)) {
+                document.body.style.webkitOverflowScrolling = 'touch';
+                document.documentElement.style.webkitOverflowScrolling = 'touch';
+            }
+            
+            // Remove any event prevention that might block scrolling
+            const preventingElements = document.querySelectorAll('[style*="pointer-events: none"]');
+            preventingElements.forEach(el => {
+                if (!el.disabled) {
+                    el.style.pointerEvents = 'auto';
+                }
+            });
+            
+            // Ensure main content areas are scrollable
+            const scrollableAreas = document.querySelectorAll('.hero, .pricing-section, .main-content, body');
+            scrollableAreas.forEach(area => {
+                area.style.touchAction = 'pan-y pinch-zoom';
+                area.style.overflowY = 'auto';
+            });
+            
+            logEvent('Mobile touch responsiveness restored');
         }
         
         function applyiPhoneSpecificFixes() {
@@ -6835,7 +6885,8 @@ Just speak naturally - I understand everyday language!`);
                 hero.style.textAlign = 'center';
             }
         }
-            
+        
+        function applyUniversalMobileFixes() {
             // Universal mobile fixes
             const pricing = document.querySelector('.pricing-section');
             if (pricing) {
@@ -6846,6 +6897,14 @@ Just speak naturally - I understand everyday language!`);
                     card.style.padding = '24px';
                 });
             }
+            
+            // Ensure scrolling and touch work properly
+            document.body.style.touchAction = 'pan-y pinch-zoom';
+            document.documentElement.style.touchAction = 'pan-y pinch-zoom';
+            
+            // Remove any overflow hidden that might block scrolling
+            document.body.style.overflowY = 'auto';
+            document.documentElement.style.overflowY = 'auto';
             
             // Force reload styles
             const styleSheets = document.querySelectorAll('style');
