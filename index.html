@@ -79,21 +79,23 @@
             --safe-area-inset-left: env(safe-area-inset-left, 0px);
             --safe-area-inset-right: env(safe-area-inset-right, 0px);
             
-            /* Modern Professional Color Palette */
-            --primary-blue: #2563eb;
-            --primary-indigo: #4f46e5;
-            --primary-slate: #334155;
-            --primary-dark: #0f172a;
-            --accent-blue: #3b82f6;
-            --accent-emerald: #059669;
-            --accent-violet: #7c3aed;
-            --warning-amber: #d97706;
-            --danger-red: #dc2626;
-            --success-green: #16a34a;
-            --neutral-light: #f8fafc;
-            --neutral-medium: #64748b;
-            --text-primary: #1e293b;
+            /* Clean Professional Color Palette */
+            --primary: #1e293b;
+            --primary-light: #334155;
+            --secondary: #64748b;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --background: #ffffff;
+            --background-secondary: #f8fafc;
+            --background-tertiary: #e2e8f0;
+            --text-primary: #0f172a;
             --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
             
             /* Premium Typography Scale */
             --text-xs: clamp(0.75rem, 1vw, 0.875rem);
@@ -131,17 +133,11 @@
 
         html, body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, 
-                var(--primary-dark) 0%, 
-                var(--primary-slate) 25%, 
-                var(--primary-blue) 50%, 
-                var(--primary-indigo) 75%, 
-                var(--accent-violet) 100%);
-            background-attachment: fixed;
+            background: var(--background);
             height: 100vh;
             height: calc(var(--vh, 1vh) * 100);
             width: 100vw;
-            color: var(--neutral-light);
+            color: var(--text-primary);
             overflow: hidden;
             position: fixed;
             top: var(--safe-area-inset-top);
@@ -7574,77 +7570,63 @@ Just speak naturally - I understand everyday language!`);
         const currentUrl = window.location.href;
         const cacheBuster = '?v=3.0.0&t=' + Date.now();
         
-        // Add cache-busting stylesheet
-        const forceStyle = document.createElement('style');
-        forceStyle.innerHTML = `
-            @keyframes premiumGlow {
-                0% { filter: brightness(1) saturate(1); }
-                100% { filter: brightness(1.05) saturate(1.1); }
-            }
-            
-            body.force-billion-mode {
-                background: linear-gradient(135deg, #1f2937 0%, #1e3a8a 20%, #1e40af 40%, #FFD700 60%, #E5E4E2 80%, #FFD700 100%) !important;
-                animation: premiumGlow 3s ease-in-out infinite alternate !important;
-            }
-            
-            .force-enterprise-banner {
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                background: linear-gradient(90deg, #FFD700, #00D9FF) !important;
-                color: #1f2937 !important;
-                text-align: center !important;
-                padding: 12px !important;
-                font-weight: bold !important;
-                z-index: 20000 !important;
-                box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25) !important;
-                font-size: 16px !important;
-                letter-spacing: 1px !important;
+        // Apply clean professional styling
+        const cleanStyle = document.createElement('style');
+        cleanStyle.innerHTML = `
+            body {
+                background: var(--background) !important;
+                color: var(--text-primary) !important;
             }
             
             .dashboard-container,
             .container,
             .login-container {
-                border: 2px solid #FFD700 !important;
-                background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)) !important;
-                box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25) !important;
-                backdrop-filter: blur(30px) !important;
-                margin-top: 60px !important;
+                border: 1px solid var(--border) !important;
+                background: var(--background) !important;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+                backdrop-filter: none !important;
+                margin-top: 20px !important;
             }
             
             .pricing-card,
             .module-card,
             .card {
-                border: 1px solid rgba(255, 215, 0, 0.4) !important;
-                background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 215, 0, 0.08)) !important;
+                border: 1px solid var(--border) !important;
+                background: var(--background) !important;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
             }
             
             h1, h2, h3 {
-                color: #FFD700 !important;
-                text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3) !important;
+                color: var(--text-primary) !important;
+                text-shadow: none !important;
             }
             
-            .hero-title {
-                background: linear-gradient(135deg, #FFD700, #E5E4E2) !important;
-                -webkit-background-clip: text !important;
-                -webkit-text-fill-color: transparent !important;
-                background-clip: text !important;
+            .hero {
+                background: linear-gradient(135deg, var(--background-secondary) 0%, var(--background) 100%) !important;
+                color: var(--text-primary) !important;
+            }
+            
+            .btn, button {
+                background: var(--accent) !important;
+                color: white !important;
+                border: none !important;
+            }
+            
+            .btn:hover, button:hover {
+                background: var(--accent-light) !important;
             }
         `;
-        document.head.appendChild(forceStyle);
+        document.head.appendChild(cleanStyle);
         
-        // Force immediate transformation
-        document.body.classList.add('force-billion-mode');
+        // Apply clean professional styling
+        document.body.classList.remove('force-billion-mode');
         
-        // Add enterprise banner
-        const banner = document.createElement('div');
-        banner.className = 'force-enterprise-banner';
-        banner.innerHTML = '🏆 BILLION DOLLAR ENTERPRISE MODE ACTIVATED - Fortune 500 Dashboard';
-        document.body.appendChild(banner);
+        // Remove any existing banners
+        const existingBanners = document.querySelectorAll('.force-enterprise-banner');
+        existingBanners.forEach(banner => banner.remove());
         
-        // Force title change
-        document.title = "DWC Systems NEXUS - BILLION DOLLAR ENTERPRISE PLATFORM";
+        // Set professional title
+        document.title = "DWC Systems NEXUS - Intelligence Platform";
         
         // Load self-healing and simulation systems
         const healingScript = document.createElement('script');
