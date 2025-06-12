@@ -1,0 +1,93 @@
+{
+  "leads": [
+    {
+      "leadId": "lead_1749650300123_abc123xyz",
+      "slug": "quantum-analytics-llc-john-doe-650300",
+      "dashboardUrl": "/dashboards/quantum-analytics-llc-john-doe-650300",
+      "qnisScore": 87,
+      "leadVelocity": 3.2,
+      "createdAt": "2025-06-11T14:45:00.123Z",
+      "filePath": "dashboards/quantum-analytics-llc-john-doe-650300.jsx",
+      "company": "Quantum Analytics LLC",
+      "contactInfo": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@quantumanalytics.com",
+        "phone": "+1-555-0123"
+      },
+      "metrics": {
+        "quality": 92,
+        "need": 85,
+        "interest": 88,
+        "scale": 83
+      },
+      "source": "demo_request",
+      "status": "active"
+    },
+    {
+      "leadId": "lead_1749650400456_def456uvw",
+      "slug": "innovative-solutions-llc-jane-smith-650400",
+      "dashboardUrl": "/dashboards/innovative-solutions-llc-jane-smith-650400",
+      "qnisScore": 74,
+      "leadVelocity": 2.1,
+      "createdAt": "2025-06-11T14:46:40.456Z",
+      "filePath": "dashboards/innovative-solutions-llc-jane-smith-650400.jsx",
+      "company": "Innovative Solutions LLC",
+      "contactInfo": {
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "email": "jane.smith@innovativesolutions.com",
+        "phone": "+1-555-0456"
+      },
+      "metrics": {
+        "quality": 78,
+        "need": 72,
+        "interest": 75,
+        "scale": 71
+      },
+      "source": "contact_form",
+      "status": "active"
+    },
+    {
+      "leadId": "lead_1749650500789_ghi789rst",
+      "slug": "tech-startup-inc-mike-johnson-650500",
+      "dashboardUrl": "/dashboards/tech-startup-inc-mike-johnson-650500",
+      "qnisScore": 91,
+      "leadVelocity": 4.7,
+      "createdAt": "2025-06-11T14:48:20.789Z",
+      "filePath": "dashboards/tech-startup-inc-mike-johnson-650500.jsx",
+      "company": "Tech Startup Inc",
+      "contactInfo": {
+        "firstName": "Mike",
+        "lastName": "Johnson",
+        "email": "mike.johnson@techstartup.com",
+        "phone": "+1-555-0789"
+      },
+      "metrics": {
+        "quality": 94,
+        "need": 89,
+        "interest": 93,
+        "scale": 88
+      },
+      "source": "consultation_request",
+      "status": "hot"
+    }
+  ],
+  "summary": {
+    "totalLeads": 3,
+    "averageQnisScore": 84.0,
+    "averageLeadVelocity": 3.33,
+    "hotLeads": 1,
+    "conversionRate": 33.3,
+    "topSources": ["demo_request", "consultation_request", "contact_form"],
+    "lastUpdated": "2025-06-11T14:48:20.789Z"
+  },
+  "dashboard_generation_stats": {
+    "totalGenerated": 3,
+    "successRate": 100,
+    "averageGenerationTime": 2.3,
+    "vercelCompatible": true,
+    "themingApplied": true,
+    "lastGeneration": "2025-06-11T14:48:20.789Z"
+  }
+}

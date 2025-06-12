@@ -1,0 +1,148 @@
+{
+  "workflows": {
+    "lead-qualification": {
+      "name": "Enhanced Lead Qualification Pipeline",
+      "description": "Auto-generates intelligent dashboards for each lead with QNIS scoring",
+      "steps": [
+        {
+          "action": "validate_contact_info",
+          "timeout": 5000,
+          "description": "Validate and normalize lead contact information"
+        },
+        {
+          "action": "calculate_qnis_score",
+          "timeout": 8000,
+          "description": "Calculate QNIS (Quality, Need, Interest, Scale) scoring"
+        },
+        {
+          "action": "analyze_lead_velocity", 
+          "timeout": 6000,
+          "description": "Analyze interaction patterns and engagement velocity"
+        },
+        {
+          "action": "generate_lead_dashboard",
+          "timeout": 15000,
+          "description": "Auto-generate personalized dashboard with metrics and actions"
+        },
+        {
+          "action": "assign_sales_rep",
+          "timeout": 3000,
+          "description": "Assign optimal sales representative based on lead profile"
+        },
+        {
+          "action": "trigger_follow_up_sequence",
+          "timeout": 2000,
+          "description": "Initialize automated follow-up campaign"
+        }
+      ],
+      "triggers": ["new_lead_captured", "contact_form_submitted", "demo_requested"],
+      "conditions": {
+        "min_qnis_score": 60,
+        "required_fields": ["email", "company", "interest_level"]
+      },
+      "outputs": [
+        "dashboard_url",
+        "qnis_score", 
+        "lead_velocity",
+        "assigned_rep",
+        "follow_up_schedule"
+      ],
+      "priority": "high",
+      "timeout": 45000,
+      "retryCount": 2
+    },
+    "dashboard-enhancement": {
+      "name": "Lead Dashboard Enhancement",
+      "description": "Continuously updates lead dashboards with new interactions and metrics",
+      "steps": [
+        {
+          "action": "fetch_lead_interactions",
+          "timeout": 5000,
+          "description": "Retrieve latest lead interactions and touchpoints"
+        },
+        {
+          "action": "recalculate_metrics",
+          "timeout": 8000,
+          "description": "Update QNIS score and velocity based on new data"
+        },
+        {
+          "action": "update_dashboard_content",
+          "timeout": 10000,
+          "description": "Refresh dashboard with updated metrics and recommendations"
+        },
+        {
+          "action": "trigger_alerts",
+          "timeout": 3000,
+          "description": "Send notifications for significant score changes"
+        }
+      ],
+      "triggers": ["lead_interaction", "email_opened", "demo_scheduled"],
+      "priority": "medium",
+      "timeout": 30000,
+      "retryCount": 1
+    },
+    "deal-conversion": {
+      "name": "Lead to Deal Conversion Pipeline",
+      "description": "Automated deal creation and opportunity management",
+      "steps": [
+        {
+          "action": "validate_conversion_criteria",
+          "timeout": 5000,
+          "description": "Verify lead meets conversion requirements"
+        },
+        {
+          "action": "create_opportunity_record",
+          "timeout": 8000,
+          "description": "Generate CRM opportunity with projected value"
+        },
+        {
+          "action": "assign_deal_team",
+          "timeout": 4000,
+          "description": "Assign account executive and support team"
+        },
+        {
+          "action": "generate_proposal_framework",
+          "timeout": 12000,
+          "description": "Create initial proposal structure and pricing"
+        },
+        {
+          "action": "schedule_discovery_call",
+          "timeout": 6000,
+          "description": "Automatically schedule discovery and needs assessment"
+        }
+      ],
+      "triggers": ["convert_to_deal_clicked", "high_qnis_threshold", "demo_completed"],
+      "conditions": {
+        "min_qnis_score": 80,
+        "engagement_level": "high",
+        "budget_qualified": true
+      },
+      "priority": "critical",
+      "timeout": 40000,
+      "retryCount": 3
+    }
+  },
+  "global_settings": {
+    "default_timeout": 30000,
+    "max_concurrent_workflows": 50,
+    "retry_delay": 2000,
+    "logging_level": "info",
+    "dashboard_theme": "kaizen-dark",
+    "auto_cleanup_days": 30
+  },
+  "integrations": {
+    "vercel": {
+      "auto_deploy": true,
+      "build_command": "npm run build",
+      "output_directory": "dist"
+    },
+    "crm": {
+      "sync_enabled": true,
+      "update_interval": 300
+    },
+    "analytics": {
+      "track_conversions": true,
+      "dashboard_views": true
+    }
+  }
+}

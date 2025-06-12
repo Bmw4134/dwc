@@ -5,6 +5,7 @@ import { nexusCareerBootstrap } from './nexus-career-bootstrap.js';
 import { llcFormationEngine } from './llc-formation-engine.js';
 import { locCreditEngine } from './loc-credit-engine.js';
 import { nexusQuantumDeepDive } from './nexus-quantum-deep-dive.js';
+import { setupNewLeadAPI } from './api/new-lead.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
