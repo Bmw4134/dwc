@@ -237,7 +237,7 @@ async function deployEnhancedPlatform() {
     path: '/v13/deployments',
     method: 'POST',
     headers: {
-      'Authorization': \`Bearer \${VERCEL_TOKEN}\`,
+      'Authorization': `Bearer ${VERCEL_TOKEN}`,
       'Content-Type': 'application/json',
       'Content-Length': Buffer.byteLength(postData)
     }
