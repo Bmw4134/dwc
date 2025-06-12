@@ -4786,6 +4786,9 @@
                 </style>
             `;
             document.body.appendChild(voicePanel);
+            
+            // Create accessibility mode panel
+            createAccessibilityMode();
         }
 
         function toggleVoiceListening(forceState = null) {
