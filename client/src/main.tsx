@@ -1,7 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { queryClient } from './lib/queryClient'
-import App from './App.tsx'
+import SimpleApp from './SimpleApp.jsx'
 import './index.css'
 
 // Force immediate DOM readiness for iframe
