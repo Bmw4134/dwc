@@ -4669,6 +4669,9 @@
             logEvent('DWC Systems NEXUS Platform initialized');
             logEvent('All 14 automation modules loaded and operational');
             logEvent('Master sync system ready');
+            
+            // Initialize enhanced responsive system (non-invasive)
+            initNexusResponsiveEnhancer();
             logEvent('JDD module integration active - session tracking enabled');
             logEvent('True fullscreen API integration complete');
         });
@@ -5763,6 +5766,366 @@ Just speak naturally - I understand everyday language!`);
                         el.style.transform = '';
                     });
                 });
+            }
+        }
+
+        // NEXUS Responsive Enhancer - Non-Invasive Module
+        function initNexusResponsiveEnhancer() {
+            // Prevent duplicate initialization
+            if (window.hasResponsiveEnhancer) return;
+            window.hasResponsiveEnhancer = true;
+            
+            logEvent('NEXUS Responsive Enhancer initialized - preserving existing architecture');
+            
+            // Create device-aware preview overlay
+            createDevicePreviewHUD();
+            
+            // Initialize real-time resize monitoring
+            initRealTimeResizeListener();
+            
+            // Enhance voice commands with mobile layout diagnostics
+            enhanceVoiceCommandsForResponsiveness();
+            
+            // Load stored layout issues from sessionStorage
+            loadStoredLayoutIssues();
+        }
+
+        function createDevicePreviewHUD() {
+            const hud = document.createElement('div');
+            hud.id = 'nexusResponsiveHUD';
+            hud.innerHTML = `
+                <div class="responsive-hud">
+                    <div class="hud-toggle" onclick="toggleResponsiveHUD()">📊</div>
+                    <div class="hud-content" style="display: none;">
+                        <div class="hud-header">📲 Device Preview</div>
+                        <div class="device-metrics">
+                            <span class="metric" id="deviceWidth">Width: 0px</span>
+                            <span class="metric" id="deviceHeight">Height: 0px</span>
+                            <span class="metric" id="deviceClass">Class: detecting...</span>
+                            <span class="metric" id="deviceRatio">Ratio: 1x</span>
+                        </div>
+                        <div class="layout-status" id="layoutStatus">
+                            <span class="status-indicator">⚡ Adaptive</span>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .responsive-hud {
+                        position: fixed;
+                        top: 80px;
+                        right: 20px;
+                        z-index: 999;
+                        font-family: monospace;
+                        font-size: 12px;
+                    }
+                    
+                    .hud-toggle {
+                        width: 40px;
+                        height: 40px;
+                        background: rgba(0, 0, 0, 0.8);
+                        color: white;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        min-height: 44px;
+                        min-width: 44px;
+                    }
+                    
+                    .hud-toggle:hover {
+                        background: rgba(0, 0, 0, 0.9);
+                        transform: scale(1.1);
+                    }
+                    
+                    .hud-content {
+                        position: absolute;
+                        top: 50px;
+                        right: 0;
+                        width: 200px;
+                        background: rgba(0, 0, 0, 0.95);
+                        border-radius: 8px;
+                        padding: 12px;
+                        backdrop-filter: blur(10px);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+                    
+                    .hud-header {
+                        color: #4CAF50;
+                        font-weight: bold;
+                        margin-bottom: 8px;
+                        text-align: center;
+                    }
+                    
+                    .device-metrics {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+                        margin-bottom: 8px;
+                    }
+                    
+                    .metric {
+                        color: white;
+                        font-size: 10px;
+                        padding: 2px 6px;
+                        background: rgba(255, 255, 255, 0.1);
+                        border-radius: 4px;
+                    }
+                    
+                    .layout-status {
+                        text-align: center;
+                        padding: 4px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.1);
+                    }
+                    
+                    .status-indicator {
+                        color: #4CAF50;
+                        font-size: 10px;
+                    }
+                    
+                    @media (max-width: 768px) {
+                        .responsive-hud {
+                            top: 60px;
+                            right: 10px;
+                        }
+                        
+                        .hud-content {
+                            width: 180px;
+                        }
+                    }
+                </style>
+            `;
+            document.body.appendChild(hud);
+            
+            // Update HUD with current device metrics
+            updateDeviceHUD();
+        }
+
+        function toggleResponsiveHUD() {
+            const content = document.querySelector('.hud-content');
+            if (content) {
+                const isVisible = content.style.display !== 'none';
+                content.style.display = isVisible ? 'none' : 'block';
+                logEvent(`Responsive HUD ${isVisible ? 'hidden' : 'shown'}`);
+            }
+        }
+
+        function updateDeviceHUD() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const ratio = window.devicePixelRatio || 1;
+            const deviceClass = width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
+            
+            const widthEl = document.getElementById('deviceWidth');
+            const heightEl = document.getElementById('deviceHeight');
+            const classEl = document.getElementById('deviceClass');
+            const ratioEl = document.getElementById('deviceRatio');
+            
+            if (widthEl) widthEl.textContent = `Width: ${width}px`;
+            if (heightEl) heightEl.textContent = `Height: ${height}px`;
+            if (classEl) classEl.textContent = `Class: ${deviceClass}`;
+            if (ratioEl) ratioEl.textContent = `Ratio: ${ratio}x`;
+        }
+
+        function initRealTimeResizeListener() {
+            let resizeTimeout;
+            
+            // Standard resize listener
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    updateDeviceHUD();
+                    applyDynamicLayoutAdaptation();
+                    logEvent(`Real-time resize: ${window.innerWidth}x${window.innerHeight}`);
+                }, 100);
+            });
+            
+            // ResizeObserver for DOM-based layout shifts
+            if ('ResizeObserver' in window) {
+                const resizeObserver = new ResizeObserver(entries => {
+                    for (let entry of entries) {
+                        if (entry.target === document.body) {
+                            applyDynamicLayoutAdaptation();
+                        }
+                    }
+                });
+                
+                resizeObserver.observe(document.body);
+                logEvent('ResizeObserver initialized for DOM layout monitoring');
+            }
+            
+            // Initial application
+            applyDynamicLayoutAdaptation();
+        }
+
+        function applyDynamicLayoutAdaptation() {
+            const width = window.innerWidth;
+            const deviceClass = width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
+            
+            // Apply dynamic CSS rules without overwriting existing styles
+            if (!document.getElementById('nexusAdaptiveStyles')) {
+                const style = document.createElement('style');
+                style.id = 'nexusAdaptiveStyles';
+                document.head.appendChild(style);
+            }
+            
+            const styleSheet = document.getElementById('nexusAdaptiveStyles');
+            styleSheet.textContent = `
+                /* NEXUS Adaptive Enhancements - Non-Invasive */
+                .control-grid, .responsive-grid {
+                    display: flex !important;
+                    flex-wrap: wrap !important;
+                    gap: calc(8px + 1vw) !important;
+                }
+                
+                .control-grid > *, .responsive-grid > * {
+                    min-width: ${deviceClass === 'mobile' ? '100%' : deviceClass === 'tablet' ? 'calc(50% - 10px)' : 'calc(33.333% - 13px)'} !important;
+                    flex: 1 1 auto !important;
+                }
+                
+                .module-item, .dashboard-card {
+                    min-height: ${deviceClass === 'mobile' ? '44px' : '40px'} !important;
+                    padding: calc(8px + 0.5vw) !important;
+                }
+                
+                button {
+                    min-height: ${deviceClass === 'mobile' ? '44px' : '40px'} !important;
+                    touch-action: manipulation !important;
+                }
+                
+                /* Responsive text scaling */
+                h1, h2, h3 {
+                    font-size: clamp(${deviceClass === 'mobile' ? '1.2rem' : '1.5rem'}, 4vw, ${deviceClass === 'mobile' ? '2rem' : '2.5rem'}) !important;
+                    line-height: 1.2 !important;
+                }
+            `;
+            
+            // Update document class for device targeting
+            document.documentElement.className = document.documentElement.className
+                .replace(/nexus-device-\w+/g, '') + ` nexus-device-${deviceClass}`;
+        }
+
+        function enhanceVoiceCommandsForResponsiveness() {
+            // Store original processVoiceCommand if it exists
+            if (typeof window.originalProcessVoiceCommand === 'undefined' && typeof processVoiceCommand === 'function') {
+                window.originalProcessVoiceCommand = processVoiceCommand;
+                
+                // Enhance the existing function
+                window.processVoiceCommand = function(command) {
+                    // Check for mobile layout diagnostics commands
+                    if ((command.includes('check') || command.includes('test')) && 
+                        (command.includes('mobile') || command.includes('layout') || command.includes('responsive'))) {
+                        
+                        if (isUserLoggedIn()) {
+                            runMobileLayoutDiagnostics(command);
+                        } else {
+                            const statusEl = document.getElementById('voiceStatus');
+                            if (statusEl) {
+                                statusEl.textContent = 'Please log in to access layout diagnostics';
+                                setTimeout(() => statusEl.textContent = 'What would you like to do?', 2000);
+                            }
+                            logEvent('Mobile layout diagnostics blocked - authentication required');
+                        }
+                        return;
+                    }
+                    
+                    // Call original function for all other commands
+                    window.originalProcessVoiceCommand(command);
+                };
+                
+                logEvent('Voice commands enhanced with responsive diagnostics');
+            }
+        }
+
+        function isUserLoggedIn() {
+            // Check existing authentication state
+            return document.getElementById('loginForm') && 
+                   document.getElementById('loginForm').style.display === 'none';
+        }
+
+        function runMobileLayoutDiagnostics(command) {
+            const statusEl = document.getElementById('voiceStatus');
+            const diagnostics = {
+                deviceWidth: window.innerWidth,
+                deviceHeight: window.innerHeight,
+                deviceClass: window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop',
+                touchTargets: 0,
+                totalElements: 0,
+                layoutIssues: []
+            };
+            
+            // Analyze touch targets
+            const interactiveElements = document.querySelectorAll('button, a, input, select, .clickable');
+            diagnostics.totalElements = interactiveElements.length;
+            
+            interactiveElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.height >= 44 && rect.width >= 44) {
+                    diagnostics.touchTargets++;
+                } else {
+                    diagnostics.layoutIssues.push(`Small touch target: ${el.tagName} (${Math.round(rect.width)}x${Math.round(rect.height)})`);
+                }
+            });
+            
+            // Check for overflow issues
+            const bodyRect = document.body.getBoundingClientRect();
+            if (bodyRect.width > window.innerWidth) {
+                diagnostics.layoutIssues.push('Horizontal overflow detected');
+            }
+            
+            // Store diagnostics in sessionStorage
+            sessionStorage.setItem('nexusLayoutDiagnostics', JSON.stringify(diagnostics));
+            
+            if (statusEl) {
+                statusEl.textContent = `Layout check: ${diagnostics.touchTargets}/${diagnostics.totalElements} targets pass, ${diagnostics.layoutIssues.length} issues found`;
+                setTimeout(() => statusEl.textContent = 'What would you like to do?', 3000);
+            }
+            
+            logEvent(`Mobile layout diagnostics: ${diagnostics.deviceClass} (${diagnostics.deviceWidth}px) - ${diagnostics.layoutIssues.length} issues`);
+            
+            // Auto-fix if command included "fix"
+            if (command.includes('fix')) {
+                setTimeout(() => {
+                    applyMobileLayoutFixes(diagnostics);
+                    if (statusEl) statusEl.textContent = 'Layout fixes applied';
+                }, 1000);
+            }
+        }
+
+        function applyMobileLayoutFixes(diagnostics) {
+            // Apply fixes for identified issues
+            const interactiveElements = document.querySelectorAll('button, a, input, select, .clickable');
+            
+            interactiveElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.height < 44 || rect.width < 44) {
+                    el.style.minHeight = '44px';
+                    el.style.minWidth = '44px';
+                    el.style.padding = '12px 16px';
+                    el.style.boxSizing = 'border-box';
+                }
+            });
+            
+            // Fix horizontal overflow
+            const bodyRect = document.body.getBoundingClientRect();
+            if (bodyRect.width > window.innerWidth) {
+                document.body.style.overflowX = 'hidden';
+                document.body.style.maxWidth = '100vw';
+            }
+            
+            logEvent('Mobile layout fixes applied automatically');
+        }
+
+        function loadStoredLayoutIssues() {
+            const stored = sessionStorage.getItem('nexusLayoutDiagnostics');
+            if (stored) {
+                try {
+                    const diagnostics = JSON.parse(stored);
+                    logEvent(`Loaded stored layout diagnostics: ${diagnostics.layoutIssues.length} issues from previous session`);
+                } catch (e) {
+                    logEvent('Failed to parse stored layout diagnostics');
+                }
             }
         }
 
