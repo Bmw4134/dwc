@@ -15,7 +15,7 @@ const PORT = 5000;
 
 // Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../client')));
 
 // Authentication credentials
 const users: Record<string, { password: string; role: string }> = {
@@ -247,39 +247,13 @@ app.get('/api/test/error/:type', (req, res) => {
   }
 });
 
-// Serve main page
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));
-});
-
-// Serve login page explicitly
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'clean-index.html'));
-});
-
-// Dashboard page
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'clean-dashboard.html'));
-});
-
-// NEXUS Control Center
-app.get('/nexus', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'nexus-control.html'));
-});
-
-// Settings page
-app.get('/settings', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'settings.html'));
-});
-
-// Modules registry page
-app.get('/modules', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'modules.html'));
-});
-
-// Career Bootstrap page
-app.get('/career', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'nexus-career-bootstrap.html'));
+// Serve React app for all routes
+app.get('*', (req, res) => {
+  // Skip API routes
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'API endpoint not found' });
+  }
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 // Core Automation Module API Endpoints - Override with JSON responses
