@@ -12,8 +12,30 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="deployment-version" content="2.1.0">
-    <meta name="build-timestamp" content="1749750035649">
+    <meta name="build-timestamp" content="1749750549196">
     <title>DWC Systems LLC - QNIS/PTNI Intelligence Platform</title>
+    
+    <!-- Service Worker Auto-Unregister Script -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister().then(function(boolean) {
+                        console.log('Service worker unregistered:', registration.scope);
+                    });
+                }
+            });
+        }
+        
+        // Force cache clear on load
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                for (let name of names) {
+                    caches.delete(name);
+                }
+            });
+        }
+    </script>
     <style>
         * {
             margin: 0;
