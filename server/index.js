@@ -84,7 +84,7 @@ app.get('*', (req, res) => {
         req.path.includes('.ico')) {
         return res.status(404).send('Not found');
     }
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {

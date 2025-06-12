@@ -7160,51 +7160,16 @@ Just speak naturally - I understand everyday language!`);
             }, 300);
         }
 
-        // Cache Busting and Service Worker Cleanup
+        // PRODUCTION MODE: Deployment cache management (stability enforced)
         function clearDeploymentCache() {
-            const version = Date.now();
+            // DISABLED FOR LLC PRODUCTION STABILITY
+            // This function was causing deployment loops and instability
+            logEvent('Production mode: Cache management disabled for stability');
             
-            // Unregister all service workers
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
-                    registrations.forEach(registration => {
-                        registration.unregister();
-                        logEvent(`Service worker unregistered: ${registration.scope}`);
-                    });
-                });
-            }
-            
-            // Clear all caches
-            if ('caches' in window) {
-                caches.keys().then(names => {
-                    names.forEach(name => {
-                        caches.delete(name);
-                        logEvent(`Cache cleared: ${name}`);
-                    });
-                });
-            }
-            
-            // Clear localStorage deployment markers
-            Object.keys(localStorage).forEach(key => {
-                if (key.includes('deploy') || key.includes('cache') || key.includes('version')) {
-                    localStorage.removeItem(key);
-                }
-            });
-            
-            // Set new deployment marker
-            localStorage.setItem('deployment_version', '3.0.0');
+            // Only set deployment markers without clearing
+            localStorage.setItem('deployment_version', '3.0.0-PRODUCTION');
             localStorage.setItem('sync_timestamp', '1749763800000');
-            localStorage.setItem('deployment_timestamp', version.toString());
-            
-            logEvent(`Deployment cache cleared - Version 2.1.0 (${version})`);
-            
-            // Force reload if we detect stale deployment
-            const lastVersion = localStorage.getItem('last_deployment_check');
-            if (lastVersion && (version - parseInt(lastVersion)) > 300000) { // 5 minutes
-                logEvent('Stale deployment detected - forcing reload');
-                setTimeout(() => window.location.reload(true), 1000);
-            }
-            localStorage.setItem('last_deployment_check', version.toString());
+            localStorage.setItem('llc_production_mode', 'true');
         }
 
         // Initialize recovery controls when admin panel is opened
