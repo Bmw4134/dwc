@@ -1,0 +1,72 @@
+{
+  "theme": {
+    "primary_color": "#00ff88",
+    "secondary_color": "#0066cc",
+    "accent_color": "#8b5cf6",
+    "background_gradient": "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)",
+    "card_background": "rgba(255, 255, 255, 0.05)",
+    "border_color": "rgba(255, 255, 255, 0.1)",
+    "text_primary": "#ffffff",
+    "text_secondary": "#cccccc",
+    "text_muted": "#888888"
+  },
+  "layout": {
+    "sidebar_width": "280px",
+    "header_height": "80px",
+    "content_padding": "24px",
+    "card_border_radius": "12px",
+    "button_border_radius": "8px"
+  },
+  "animations": {
+    "transition_duration": "200ms",
+    "hover_scale": "1.05",
+    "fade_in_duration": "300ms",
+    "slide_duration": "250ms"
+  },
+  "dashboard_components": {
+    "metrics_cards": {
+      "height": "120px",
+      "glow_effect": true,
+      "hover_animation": true,
+      "icon_size": "24px"
+    },
+    "module_grid": {
+      "columns": "3",
+      "gap": "20px",
+      "card_height": "180px"
+    },
+    "charts": {
+      "line_color": "#00ff88",
+      "area_gradient": "rgba(0, 255, 136, 0.1)",
+      "grid_color": "rgba(255, 255, 255, 0.1)"
+    }
+  },
+  "nexus_trader": {
+    "primary_accent": "#8b5cf6",
+    "success_color": "#10b981",
+    "warning_color": "#f59e0b",
+    "danger_color": "#ef4444",
+    "chart_colors": ["#8b5cf6", "#06b6d4", "#10b981", "#f59e0b", "#ef4444"],
+    "trading_panel_height": "400px"
+  },
+  "responsive": {
+    "mobile_breakpoint": "768px",
+    "tablet_breakpoint": "1024px",
+    "desktop_breakpoint": "1280px"
+  },
+  "effects": {
+    "glassmorphism": {
+      "backdrop_filter": "blur(10px)",
+      "border": "1px solid rgba(255, 255, 255, 0.1)",
+      "background": "rgba(255, 255, 255, 0.05)"
+    },
+    "neon_glow": {
+      "box_shadow": "0 0 20px rgba(0, 255, 136, 0.3)",
+      "text_shadow": "0 0 10px rgba(0, 255, 136, 0.5)"
+    },
+    "quantum_shimmer": {
+      "background": "linear-gradient(45deg, transparent 30%, rgba(139, 92, 246, 0.1) 50%, transparent 70%)",
+      "animation": "shimmer 2s infinite"
+    }
+  }
+}

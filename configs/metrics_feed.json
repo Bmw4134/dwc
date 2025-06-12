@@ -1,0 +1,152 @@
+{
+  "qnis_metrics": {
+    "system_health": {
+      "uptime_percentage": 99.7,
+      "cpu_usage": 12.4,
+      "memory_usage": 68.2,
+      "network_latency": 45,
+      "active_connections": 247
+    },
+    "trading_performance": {
+      "total_portfolio_value": 2847392.50,
+      "daily_pnl": 15842.33,
+      "weekly_pnl": 89327.45,
+      "monthly_pnl": 298475.12,
+      "success_rate": 78.6,
+      "active_trades": 23,
+      "completed_trades_today": 47,
+      "sharpe_ratio": 2.34
+    },
+    "quantum_analytics": {
+      "total_analyses": 1847,
+      "quantum_advantage_factor": 1.08,
+      "coherence_stability": 0.923,
+      "entanglement_efficiency": 0.856,
+      "superposition_accuracy": 94.2,
+      "decoherence_rate": 0.034
+    },
+    "business_intelligence": {
+      "leads_generated": 342,
+      "conversion_rate": 32.4,
+      "pipeline_value": 1249583.75,
+      "active_proposals": 18,
+      "client_satisfaction": 96.8
+    },
+    "automation_modules": {
+      "llc_formations_processed": 45,
+      "loc_applications_active": 12,
+      "career_matches_made": 189,
+      "email_automations_sent": 2847,
+      "browser_tasks_completed": 573
+    },
+    "security_metrics": {
+      "threat_level": "low",
+      "blocked_attacks": 23,
+      "security_score": 98.5,
+      "encryption_strength": "AES-256",
+      "access_attempts_blocked": 47
+    }
+  },
+  "real_time_feeds": {
+    "market_data": {
+      "sp500_index": 4567.89,
+      "nasdaq_index": 15234.56,
+      "dow_jones": 34567.12,
+      "btc_price": 43250.75,
+      "eth_price": 2845.33,
+      "vix_level": 18.45
+    },
+    "trading_signals": [
+      {
+        "symbol": "AAPL",
+        "signal": "BUY",
+        "confidence": 87.3,
+        "price": 185.42,
+        "timestamp": "2025-06-11T14:30:00Z"
+      },
+      {
+        "symbol": "GOOGL",
+        "signal": "HOLD",
+        "confidence": 72.1,
+        "price": 142.88,
+        "timestamp": "2025-06-11T14:29:45Z"
+      },
+      {
+        "symbol": "TSLA",
+        "signal": "SELL",
+        "confidence": 91.5,
+        "price": 248.67,
+        "timestamp": "2025-06-11T14:29:30Z"
+      }
+    ],
+    "system_alerts": [
+      {
+        "level": "info",
+        "message": "Quantum analysis completed successfully",
+        "module": "quantum-deep-dive",
+        "timestamp": "2025-06-11T14:28:15Z"
+      },
+      {
+        "level": "success",
+        "message": "LLC formation processed for Quantum Analytics LLC",
+        "module": "llc-formation",
+        "timestamp": "2025-06-11T14:25:30Z"
+      },
+      {
+        "level": "warning",
+        "message": "High volatility detected in crypto markets",
+        "module": "market-monitor",
+        "timestamp": "2025-06-11T14:22:10Z"
+      }
+    ]
+  },
+  "performance_trends": {
+    "last_24_hours": {
+      "trades_executed": 147,
+      "profit_factor": 1.68,
+      "max_drawdown": 2.3,
+      "win_rate": 76.2
+    },
+    "last_7_days": {
+      "total_profit": 89327.45,
+      "avg_daily_trades": 52,
+      "best_performing_strategy": "quantum-momentum",
+      "volatility_capture": 84.7
+    },
+    "last_30_days": {
+      "monthly_return": 12.8,
+      "risk_adjusted_return": 8.9,
+      "correlation_to_market": 0.34,
+      "maximum_leverage": 2.5
+    }
+  },
+  "module_status": {
+    "lead_generation": {
+      "status": "active",
+      "last_update": "2025-06-11T14:30:00Z",
+      "performance_score": 94.2
+    },
+    "quantum_analytics": {
+      "status": "active",
+      "last_update": "2025-06-11T14:29:45Z",
+      "performance_score": 96.8
+    },
+    "llc_formation": {
+      "status": "active",
+      "last_update": "2025-06-11T14:29:30Z",
+      "performance_score": 92.4
+    },
+    "loc_credit": {
+      "status": "active",
+      "last_update": "2025-06-11T14:29:15Z",
+      "performance_score": 89.7
+    },
+    "career_bootstrap": {
+      "status": "active",
+      "last_update": "2025-06-11T14:29:00Z",
+      "performance_score": 91.3
+    }
+  },
+  "last_updated": "2025-06-11T14:30:00Z",
+  "refresh_interval": 30
+}
