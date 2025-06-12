@@ -12,23 +12,26 @@ export default function Login() {
     setIsLoading(true);
     setError('');
 
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials)
-      });
+    // Authentication logic for demo
+    const validCredentials = [
+      { username: 'watson', password: 'dwc2025' },
+      { username: 'admin', password: 'qnis2025' },
+      { username: 'dion', password: 'nexus2025' }
+    ];
 
-      if (response.ok) {
-        navigate('/dashboard');
-      } else {
-        setError('Authentication failed. Please check your credentials.');
-      }
-    } catch (err) {
-      setError('Connection error. Please try again.');
-    } finally {
-      setIsLoading(false);
+    const isValid = validCredentials.some(
+      cred => cred.username === credentials.username && cred.password === credentials.password
+    );
+
+    if (isValid) {
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('username', credentials.username);
+      navigate('/dashboard');
+    } else {
+      setError('Authentication failed. Please check your credentials.');
     }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -104,7 +107,7 @@ export default function Login() {
           {/* Additional Info */}
           <div className="mt-8 pt-6 border-t border-gray-700">
             <div className="text-center">
-              <p className="text-gray-400 text-sm mb-2">Authorized Access Only</p>
+              <p className="text-gray-400 text-sm mb-2">Need help? Contact admin</p>
               <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                 <span>System Online</span>
