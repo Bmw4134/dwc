@@ -211,7 +211,7 @@ async function deployEnhancedPlatform() {
   
   // Add enhanced HTML file
   Object.keys(publicFiles).forEach(filename => {
-    files[\`public/\${filename}\`] = {
+    files['public/' + filename] = {
       file: Buffer.from(publicFiles[filename]).toString('base64')
     };
   });
@@ -256,8 +256,8 @@ async function deployEnhancedPlatform() {
           const response = JSON.parse(data);
           if (res.statusCode === 200 || res.statusCode === 201) {
             console.log('✅ Enhanced Platform Deployed Successfully!');
-            console.log(\`🌐 Production URL: https://\${response.url}\`);
-            console.log(\`📊 Features: 14 Active Modules, 91.2% QPI, Mobile Optimized\`);
+            console.log('🌐 Production URL: https://' + response.url);
+            console.log('📊 Features: 14 Active Modules, 91.2% QPI, Mobile Optimized');
             resolve(response);
           } else {
             console.error('❌ Deployment failed:', response);
