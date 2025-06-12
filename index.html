@@ -11,8 +11,10 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="deployment-version" content="2.1.0">
-    <meta name="build-timestamp" content="1749750689926"
+    <meta name="deployment-version" content="3.0.0">
+    <meta name="build-timestamp" content="1749763800000">
+    <meta name="cache-buster" content="billion-dollar-v3">
+    <meta name="force-refresh" content="true">
     <title>DWC Systems LLC - NEXUS Billion Dollar Enterprise Intelligence Platform</title>
     
     <!-- SEO Meta Tags for Enterprise Visibility -->
@@ -7126,8 +7128,8 @@ Just speak naturally - I understand everyday language!`);
             });
             
             // Set new deployment marker
-            localStorage.setItem('deployment_version', '2.1.0');
-            localStorage.setItem('sync_timestamp', '1749750689926');
+            localStorage.setItem('deployment_version', '3.0.0');
+            localStorage.setItem('sync_timestamp', '1749763800000');
             localStorage.setItem('deployment_timestamp', version.toString());
             
             logEvent(`Deployment cache cleared - Version 2.1.0 (${version})`);
@@ -7500,15 +7502,97 @@ Just speak naturally - I understand everyday language!`);
             initializeBillionDollarEnhancements();
         }
 
-        // Auto-activate billion dollar mode for demonstration
+        // FORCE DEPLOYMENT CACHE INVALIDATION
+        const currentUrl = window.location.href;
+        const cacheBuster = '?v=3.0.0&t=' + Date.now();
+        
+        // Add cache-busting stylesheet
+        const forceStyle = document.createElement('style');
+        forceStyle.innerHTML = `
+            @keyframes premiumGlow {
+                0% { filter: brightness(1) saturate(1); }
+                100% { filter: brightness(1.05) saturate(1.1); }
+            }
+            
+            body.force-billion-mode {
+                background: linear-gradient(135deg, #1f2937 0%, #1e3a8a 20%, #1e40af 40%, #FFD700 60%, #E5E4E2 80%, #FFD700 100%) !important;
+                animation: premiumGlow 3s ease-in-out infinite alternate !important;
+            }
+            
+            .force-enterprise-banner {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                background: linear-gradient(90deg, #FFD700, #00D9FF) !important;
+                color: #1f2937 !important;
+                text-align: center !important;
+                padding: 12px !important;
+                font-weight: bold !important;
+                z-index: 20000 !important;
+                box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25) !important;
+                font-size: 16px !important;
+                letter-spacing: 1px !important;
+            }
+            
+            .dashboard-container,
+            .container,
+            .login-container {
+                border: 2px solid #FFD700 !important;
+                background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)) !important;
+                box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25) !important;
+                backdrop-filter: blur(30px) !important;
+                margin-top: 60px !important;
+            }
+            
+            .pricing-card,
+            .module-card,
+            .card {
+                border: 1px solid rgba(255, 215, 0, 0.4) !important;
+                background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 215, 0, 0.08)) !important;
+            }
+            
+            h1, h2, h3 {
+                color: #FFD700 !important;
+                text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3) !important;
+            }
+            
+            .hero-title {
+                background: linear-gradient(135deg, #FFD700, #E5E4E2) !important;
+                -webkit-background-clip: text !important;
+                -webkit-text-fill-color: transparent !important;
+                background-clip: text !important;
+            }
+        `;
+        document.head.appendChild(forceStyle);
+        
+        // Force immediate transformation
+        document.body.classList.add('force-billion-mode');
+        
+        // Add enterprise banner
+        const banner = document.createElement('div');
+        banner.className = 'force-enterprise-banner';
+        banner.innerHTML = '🏆 BILLION DOLLAR ENTERPRISE MODE ACTIVATED - Fortune 500 Dashboard';
+        document.body.appendChild(banner);
+        
+        // Force title change
+        document.title = "DWC Systems NEXUS - BILLION DOLLAR ENTERPRISE PLATFORM";
+        
+        // Force hard refresh for deployment
+        if (!window.location.search.includes('v=3.0.0')) {
+            window.location.href = currentUrl + cacheBuster;
+            return;
+        }
+        
+        // IMMEDIATE billion dollar mode activation
         setTimeout(() => {
             try {
                 window.activateBillionDollarMode();
-                logEvent('NEXUS: Auto-activating billion-dollar demonstration mode');
+                logEvent('NEXUS: IMMEDIATE billion-dollar mode activation');
             } catch(e) {
                 logEvent('Error activating billion dollar mode: ' + e.message);
             }
-        }, 2000);
+        }, 100);
 
         // Auto-show global analytics for proof
         setTimeout(() => {
