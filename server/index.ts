@@ -247,13 +247,25 @@ app.get('/api/test/error/:type', (req, res) => {
   }
 });
 
-// Serve React app for all routes
+// Serve specific routes
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client', 'simple-index.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client', 'login.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'clean-dashboard.html'));
+});
+
+// Catch all for other routes
 app.get('*', (req, res) => {
-  // Skip API routes
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'API endpoint not found' });
   }
-  res.sendFile(path.join(__dirname, '../client', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client', 'simple-index.html'));
 });
 
 // Core Automation Module API Endpoints - Override with JSON responses

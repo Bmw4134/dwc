@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - DWC Systems LLC</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1f2937 0%, #1e3a8a 50%, #1f2937 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .login-container {
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(12px);
+            padding: 2rem;
+            border-radius: 24px;
+            border: 1px solid rgba(75, 85, 99, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 400px;
+        }
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+        }
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #9ca3af;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #d1d5db;
+            margin-bottom: 0.5rem;
+        }
+        .input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid #4b5563;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input:focus {
+            border-color: #10b981;
+        }
+        .input::placeholder {
+            color: #9ca3af;
+        }
+        .error {
+            background: rgba(153, 27, 27, 0.2);
+            border: 1px solid #ef4444;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            color: #fca5a5;
+            font-size: 0.875rem;
+            display: none;
+        }
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .submit-btn:hover {
+            transform: scale(1.02);
+            background: linear-gradient(45deg, #059669, #2563eb);
+        }
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #374151;
+            text-align: center;
+        }
+        .help-text {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <div class="logo">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <h1 class="title">DWC Systems</h1>
+            <p class="subtitle">QNIS/PTNI Intelligence Platform</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="label">Username</label>
+                <input type="text" class="input" id="username" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-group">
+                <label class="label">Password</label>
+                <input type="password" class="input" id="password" placeholder="Enter password" required>
+            </div>
+
+            <div class="error" id="errorMsg"></div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Access Platform
+            </button>
+        </form>
+
+        <div class="footer">
+            <p class="help-text">Need help? Contact admin</p>
+            <div class="status">
+                <span class="status-dot"></span>
+                <span>System Online</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Authenticating...';
+            errorMsg.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    localStorage.setItem('isAuthenticated', 'true');
+                    localStorage.setItem('username', username);
+                    window.location.href = '/dashboard';
+                } else {
+                    throw new Error('Authentication failed. Please check your credentials.');
+                }
+            } catch (error) {
+                errorMsg.textContent = error.message;
+                errorMsg.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Access Platform';
+            }
+        });
+    </script>
+</body>
+</html>
