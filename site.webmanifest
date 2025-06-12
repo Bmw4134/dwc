@@ -1,0 +1,26 @@
+{
+    "name": "DWC Systems NEXUS - Enterprise Intelligence Platform",
+    "short_name": "NEXUS Platform",
+    "description": "Advanced AI-powered enterprise intelligence with quantum lead mapping and real-time automation",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1f2937",
+    "theme_color": "#FFD700",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/apple-touch-icon.png", 
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ],
+    "categories": ["business", "productivity", "finance"],
+    "lang": "en-US",
+    "scope": "/",
+    "prefer_related_applications": false
+}
