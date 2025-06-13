@@ -281,6 +281,83 @@
             font-size: 0.875rem;
         }
 
+        /* QNIS Lead Mapping Styles */
+        .lead-mapping-interface {
+            margin-top: 20px;
+        }
+
+        .map-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .lead-counter {
+            color: var(--accent);
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .quantum-map-canvas {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(135deg, #001122 0%, #002244 100%);
+            border-radius: 15px;
+            border: 2px solid var(--accent);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .map-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent);
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        #lead-map {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .lead-stats-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .stat-item .stat-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .stat-item span:last-child {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
         .theme-toggle {
             background: none;
             border: none;
@@ -341,6 +418,10 @@
                     <span class="nav-icon">🧠</span>
                     <span>AI & Watson</span>
                 </div>
+                <div class="nav-item" onclick="showModule('qnis')">
+                    <span class="nav-icon">🗺️</span>
+                    <span>QNIS Lead Map</span>
+                </div>
                 <div class="nav-item" onclick="showModule('leads')">
                     <span class="nav-icon">🎯</span>
                     <span>Lead Generation</span>
@@ -377,6 +458,42 @@
         </nav>
 
         <main class="main-content">
+            <!-- QNIS Lead Mapping Module -->
+            <div id="qnis-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">QNIS Quantum Lead Mapping</h2>
+                    <p class="module-subtitle">Real-time lead generation with dynamic coordinate tracking</p>
+                </div>
+                
+                <div class="lead-mapping-interface">
+                    <div class="map-controls">
+                        <button id="refresh-map" class="action-btn">Refresh Map</button>
+                        <button id="clear-leads" class="action-btn secondary" onclick="clearLeadData()">Clear Leads</button>
+                        <span id="lead-counter" class="lead-counter">Leads: 0</span>
+                    </div>
+                    
+                    <div id="quantum-map-canvas" class="quantum-map-canvas">
+                        <div class="map-loading">Initializing Quantum Lead Map...</div>
+                        <canvas id="lead-map" width="800" height="400"></canvas>
+                    </div>
+                    
+                    <div class="lead-stats-panel">
+                        <div class="stat-item">
+                            <span class="stat-label">High Priority:</span>
+                            <span id="high-priority-count">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Avg QNIS Score:</span>
+                            <span id="avg-qnis-score">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Value:</span>
+                            <span id="total-lead-value">$0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Business Suite Module -->
             <div id="business-module" class="module-view active">
                 <div class="module-header">

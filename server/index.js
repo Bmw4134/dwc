@@ -75,24 +75,158 @@ app.use(express.static('.', {
   }
 }));
 
+// QNIS Lead Engine API endpoints
+app.get('/api/qnis/leads', (req, res) => {
+    res.json(qnisEngine.getActiveLeads());
+});
+
+app.get('/api/qnis/stats', (req, res) => {
+    res.json(qnisEngine.getLeadStats());
+});
+
+app.get('/api/qnis/leads/:city', (req, res) => {
+    const leads = qnisEngine.getLeadsByCity(req.params.city);
+    res.json(leads);
+});
+
+// Dashboard state management
+let dashboardState = {
+    modules: {
+        legal: { contracts: 0, pending: 0, expiring: 0 },
+        accounting: { balance: 0, revenue: 0, profit: 0 },
+        stats: { active_modules: 0, uptime: 0, ai_accuracy: 0 }
+    },
+    lastReset: null
+};
+
+// KaizenGPT Command Interface
+app.post('/api/kaizen/command', (req, res) => {
+    try {
+        const { command, params } = req.body;
+        const result = executeKaizenCommand(command, params);
+        
+        res.json({
+            success: true,
+            command: command,
+            result: result,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            error: error.message,
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Execute KaizenGPT commands
+function executeKaizenCommand(command, params = {}) {
+    console.log(`[KAIZEN] Executing command: ${command}`, params);
+    
+    switch (command) {
+        case 'reset_legal_module':
+            dashboardState.modules.legal = { contracts: 0, pending: 0, expiring: 0 };
+            return 'Legal module reset to zero state';
+            
+        case 'reset_accounting_module':
+            dashboardState.modules.accounting = { balance: 0, revenue: 0, profit: 0 };
+            return 'Accounting module reset to zero state';
+            
+        case 'reset_all_modules':
+            dashboardState.modules = {
+                legal: { contracts: 0, pending: 0, expiring: 0 },
+                accounting: { balance: 0, revenue: 0, profit: 0 },
+                stats: { active_modules: 0, uptime: 0, ai_accuracy: 0 }
+            };
+            dashboardState.lastReset = new Date().toISOString();
+            return 'All modules reset to clean slate';
+            
+        case 'generate_map':
+            const region = params.region || 'National';
+            const leads = qnisEngine.getActiveLeads();
+            return {
+                region: region,
+                coordinates: leads.map(l => l.coordinates),
+                total_leads: leads.length,
+                map_ready: true
+            };
+            
+        case 'get_dashboard_state':
+            return {
+                ...dashboardState,
+                qnis_stats: qnisEngine.getLeadStats()
+            };
+            
+        case 'activate_module':
+            const module = params.module;
+            if (module && dashboardState.modules[module]) {
+                return `Module ${module} activated`;
+            }
+            throw new Error(`Module ${module} not found`);
+            
+        default:
+            throw new Error(`Unknown command: ${command}`);
+    }
+}
+
+// Real-time dashboard data reset
+app.post('/api/dashboard/reset', (req, res) => {
+    const { module } = req.body;
+    
+    if (module === 'all') {
+        dashboardState.modules = {
+            legal: { contracts: 0, pending: 0, expiring: 0 },
+            accounting: { balance: 0, revenue: 0, profit: 0 },
+            stats: { active_modules: 0, uptime: 0, ai_accuracy: 0 }
+        };
+        dashboardState.lastReset = new Date().toISOString();
+    } else if (dashboardState.modules[module]) {
+        if (module === 'legal') {
+            dashboardState.modules.legal = { contracts: 0, pending: 0, expiring: 0 };
+        } else if (module === 'accounting') {
+            dashboardState.modules.accounting = { balance: 0, revenue: 0, profit: 0 };
+        }
+    }
+    
+    res.json({
+        success: true,
+        module: module,
+        state: dashboardState.modules[module] || dashboardState.modules,
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Get current dashboard state
+app.get('/api/dashboard/state', (req, res) => {
+    res.json({
+        ...dashboardState,
+        qnis_stats: qnisEngine.getLeadStats(),
+        timestamp: new Date().toISOString()
+    });
+});
+
 // API endpoints
 app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'healthy',
         platform: 'DWC Systems NEXUS',
         version: '1.0.0',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        qnis_leads: qnisEngine.getActiveLeads().length,
+        kaizen_commands_active: true
     });
 });
 
 app.get('/api/dashboard/metrics', (req, res) => {
+    const qnisStats = qnisEngine.getLeadStats();
     res.json({
-        totalLeads: 24,
-        pipelineValue: '$485K',
-        systemHealth: '98.5%',
-        qnisScore: '94.7%',
-        activeModules: 14,
-        averageQPI: '91.2%',
+        totalLeads: qnisStats.total_leads,
+        pipelineValue: `$${Math.floor(qnisStats.total_value / 1000)}K`,
+        systemHealth: '100%',
+        qnisScore: `${qnisStats.average_qnis}%`,
+        activeModules: dashboardState.modules.stats.active_modules,
+        averageQPI: `${qnisStats.average_qnis}%`,
         timestamp: new Date().toISOString()
     });
 });
