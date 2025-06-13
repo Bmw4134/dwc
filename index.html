@@ -5703,7 +5703,7 @@ Just speak naturally - I understand everyday language!`);
                         window.responsiveEngine.applyAdaptiveStyles();
                     }
                 }
-            }, 1000);
+            // }, 1000); // DISABLED: Continuous detection causing loops
         }
         
         function toggleDevicePreview() {
@@ -7160,16 +7160,10 @@ Just speak naturally - I understand everyday language!`);
             }, 300);
         }
 
-        // PRODUCTION MODE: Deployment cache management (stability enforced)
+        // PRODUCTION MODE: Cache clearing completely disabled
         function clearDeploymentCache() {
-            // DISABLED FOR LLC PRODUCTION STABILITY
-            // This function was causing deployment loops and instability
-            logEvent('Production mode: Cache management disabled for stability');
-            
-            // Only set deployment markers without clearing
-            localStorage.setItem('deployment_version', '3.0.0-PRODUCTION');
-            localStorage.setItem('sync_timestamp', '1749763800000');
-            localStorage.setItem('llc_production_mode', 'true');
+            // COMPLETELY DISABLED - NO CACHE OPERATIONS
+            return false;
         }
 
         // Initialize recovery controls when admin panel is opened
