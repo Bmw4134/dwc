@@ -20,6 +20,12 @@ app.use(express.static(process.cwd()));
 app.use('/public', express.static(path.join(process.cwd(), 'public')));
 app.use('/client', express.static(path.join(process.cwd(), 'client')));
 
+// UI/UX emergency fix script
+app.get('/ui-ux-emergency-fix.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.sendFile(path.join(process.cwd(), 'ui-ux-emergency-fix.js'));
+});
+
 // Initialize QNIS Lead Engine, API Key Vault, NLP Parser, and Autonomous Pipeline
 const qnisEngine = new QNISLeadEngine();
 const keyVault = new APIKeyVault();

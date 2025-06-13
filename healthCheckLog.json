@@ -7,59 +7,6 @@
           "moduleId": "legal-management",
           "severity": "HIGH",
           "status": "INCOMPLETE",
-          "description": "The Legal Management module currently supports document storage and basic template generation but lacks automated compliance checks and integration with external legal databases.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "tax-management",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
-          "description": "The Tax Management module provides basic tax calculation but lacks support for filing and multi-region tax compliance.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "qnis",
-          "severity": "HIGH",
-          "status": "BROKEN",
-          "description": "The QNIS module is currently non-functional due to integration issues with the quantum computing backend.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "watson-command",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
-          "description": "The Watson Command module supports basic voice commands but lacks advanced voice recognition and contextual understanding.",
-          "suggestedFix": "Rebuild module with core functionality"
-        }
-      ],
-      "moduleCount": 13
-    },
-    "behavior": {
-      "optimizations": [],
-      "interactionCount": 0
-    },
-    "performance": {
-      "issues": []
-    },
-    "timestamp": "2025-06-13T21:12:28.261Z",
-    "metrics": {
-      "fixesApplied": 273,
-      "modulesHealed": 273,
-      "errorsDetected": 0,
-      "performanceOptimizations": 0
-    }
-  },
-  {
-    "diagnosis": {
-      "issues": [
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "legal-management",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
           "description": "Legal document automation is partially implemented with basic templates available, but lacks integration with external legal databases and advanced document customization features.",
           "suggestedFix": "Rebuild module with core functionality"
         },
@@ -6767,6 +6714,66 @@
     "metrics": {
       "fixesApplied": 109,
       "modulesHealed": 109,
+      "errorsDetected": 0,
+      "performanceOptimizations": 0
+    }
+  },
+  {
+    "diagnosis": {
+      "issues": [
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "legal-management",
+          "severity": "HIGH",
+          "status": "INCOMPLETE",
+          "description": "The Legal Management module includes basic document automation but lacks integration with external legal databases and advanced contract lifecycle management features.",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "tax-management",
+          "severity": "HIGH",
+          "status": "INCOMPLETE",
+          "description": "The Tax Management module provides basic tax calculation but lacks automated filing and support for international tax regulations.",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "qnis",
+          "severity": "HIGH",
+          "status": "BROKEN",
+          "description": "The QNIS module is currently non-functional due to integration issues with the quantum computing backend.",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "watson-command",
+          "severity": "HIGH",
+          "status": "INCOMPLETE",
+          "description": "Watson Command module has basic voice command functionality but lacks advanced natural language processing and integration with all system modules.",
+          "suggestedFix": "Rebuild module with core functionality"
+        }
+      ],
+      "moduleCount": 13
+    },
+    "behavior": {
+      "optimizations": [],
+      "interactionCount": 0
+    },
+    "performance": {
+      "issues": [
+        {
+          "type": "MEMORY_HIGH",
+          "severity": "MEDIUM",
+          "description": "High memory usage detected",
+          "fix": "Implement memory optimization"
+        }
+      ]
+    },
+    "timestamp": "2025-06-13T22:08:47.594Z",
+    "metrics": {
+      "fixesApplied": 4,
+      "modulesHealed": 4,
       "errorsDetected": 0,
       "performanceOptimizations": 0
     }
