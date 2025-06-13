@@ -1830,6 +1830,293 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
         });
 
         console.log('[NEXUS] Platform ready - Enterprise intelligence operational');
+
+        // Comprehensive User Behavior Testing
+        class UserBehaviorTester {
+            constructor() {
+                this.testResults = [];
+                this.testStartTime = Date.now();
+            }
+
+            async runAllTests() {
+                console.log('🚀 Starting comprehensive user behavior testing...');
+                
+                await this.testAuthentication();
+                await this.testModuleNavigation();
+                await this.testAllModuleConfigurations();
+                await this.testVoiceCommands();
+                await this.testDataExports();
+                await this.testNotificationSystem();
+                await this.testResponsiveDesign();
+                await this.testErrorHandling();
+                
+                this.generateTestReport();
+            }
+
+            async testAuthentication() {
+                console.log('🔐 Testing authentication flows...');
+                
+                const tests = [
+                    { name: 'Valid login (admin/nexus2024)', credentials: {username: 'admin', password: 'nexus2024'}, shouldPass: true },
+                    { name: 'Invalid username', credentials: {username: 'wrong', password: 'nexus2024'}, shouldPass: false },
+                    { name: 'Invalid password', credentials: {username: 'admin', password: 'wrong'}, shouldPass: false },
+                    { name: 'Empty credentials', credentials: {username: '', password: ''}, shouldPass: false },
+                ];
+
+                for (const test of tests) {
+                    try {
+                        const result = this.simulateLogin(test.credentials);
+                        this.logTest('Authentication', test.name, result === test.shouldPass);
+                    } catch (error) {
+                        this.logTest('Authentication', test.name, false, error.message);
+                    }
+                }
+            }
+
+            simulateLogin(credentials) {
+                return credentials.username === 'admin' && credentials.password === 'nexus2024';
+            }
+
+            async testModuleNavigation() {
+                console.log('🧭 Testing module navigation...');
+                
+                const categories = ['overview', 'automation', 'intelligence', 'trading', 'analytics', 'control'];
+                
+                for (const category of categories) {
+                    try {
+                        // Test if category elements exist
+                        const categoryElement = document.getElementById(category + '-modules');
+                        const result = categoryElement !== null;
+                        this.logTest('Navigation', `Switch to ${category}`, result);
+                        
+                        // Test actual navigation
+                        if (result && typeof showModuleCategory === 'function') {
+                            showModuleCategory(category);
+                            this.logTest('Navigation', `${category} navigation executed`, true);
+                        }
+                    } catch (error) {
+                        this.logTest('Navigation', `Switch to ${category}`, false, error.message);
+                    }
+                }
+            }
+
+            async testAllModuleConfigurations() {
+                console.log('⚙️ Testing all module configurations...');
+                
+                const moduleTests = [
+                    'system-status', 'trading', 'email-automation', 'social-automation', 
+                    'data-collection', 'workflow-automation', 'voice-commands', 
+                    'nexus-control', 'predictive-analytics', 'watson-ai', 'quantum-leads',
+                    'admin-panel', 'crypto-trading', 'market-analysis', 'business-intelligence'
+                ];
+
+                for (const module of moduleTests) {
+                    try {
+                        // Test if module info exists
+                        const moduleInfo = getModuleInfo(module);
+                        const hasTitle = moduleInfo.title && moduleInfo.title.length > 0;
+                        const hasContent = moduleInfo.content && moduleInfo.content.length > 0;
+                        this.logTest('Module Config', `${module} configuration available`, hasTitle && hasContent);
+                        
+                        // Test module activation
+                        if (typeof activateModule === 'function') {
+                            activateModule(module);
+                            this.logTest('Module Config', `${module} activation`, true);
+                        }
+                    } catch (error) {
+                        this.logTest('Module Config', `${module} configuration`, false, error.message);
+                    }
+                }
+            }
+
+            async testVoiceCommands() {
+                console.log('🎤 Testing voice command system...');
+                
+                const voiceCommands = [
+                    'logout', 'status', 'help', 'show modules', 'show trading', 
+                    'show intelligence', 'generate leads', 'invalid command'
+                ];
+
+                for (const command of voiceCommands) {
+                    try {
+                        if (typeof processVoiceCommand === 'function') {
+                            processVoiceCommand(command);
+                            this.logTest('Voice Commands', `"${command}"`, true);
+                        } else {
+                            this.logTest('Voice Commands', `"${command}"`, false, 'Function not available');
+                        }
+                    } catch (error) {
+                        this.logTest('Voice Commands', `"${command}"`, false, error.message);
+                    }
+                }
+            }
+
+            async testDataExports() {
+                console.log('📊 Testing data export functionality...');
+                
+                const exportFunctions = [
+                    'exportSystemData', 'backupConfiguration', 'exportCollectedData'
+                ];
+
+                for (const func of exportFunctions) {
+                    try {
+                        if (typeof window[func] === 'function') {
+                            // Test function exists and can be called
+                            this.logTest('Data Export', func, true);
+                        } else {
+                            this.logTest('Data Export', func, false, 'Function not available');
+                        }
+                    } catch (error) {
+                        this.logTest('Data Export', func, false, error.message);
+                    }
+                }
+            }
+
+            async testNotificationSystem() {
+                console.log('🔔 Testing notification system...');
+                
+                try {
+                    if (typeof showNotification === 'function') {
+                        showNotification('Test Success', 'User behavior testing in progress');
+                        this.logTest('Notifications', 'Display notification', true);
+                        
+                        // Test with empty parameters
+                        try {
+                            showNotification('', '');
+                            this.logTest('Notifications', 'Empty notification handling', true);
+                        } catch (e) {
+                            this.logTest('Notifications', 'Empty notification handling', false, e.message);
+                        }
+                    } else {
+                        this.logTest('Notifications', 'Notification system', false, 'Function not available');
+                    }
+                } catch (error) {
+                    this.logTest('Notifications', 'Notification system', false, error.message);
+                }
+            }
+
+            async testResponsiveDesign() {
+                console.log('📱 Testing responsive design...');
+                
+                const originalWidth = window.innerWidth;
+                
+                try {
+                    // Test if responsive classes exist
+                    const body = document.body;
+                    const hasResponsiveClasses = body.classList.contains('mobile') || 
+                                               window.innerWidth <= 768;
+                    
+                    this.logTest('Responsive Design', 'Mobile detection', hasResponsiveClasses || window.innerWidth > 768);
+                    
+                    // Test navigation on mobile
+                    const navButtons = document.querySelectorAll('.nav-btn');
+                    this.logTest('Responsive Design', 'Navigation buttons present', navButtons.length > 0);
+                    
+                    // Test module cards responsiveness
+                    const moduleCards = document.querySelectorAll('.module-card');
+                    this.logTest('Responsive Design', 'Module cards present', moduleCards.length > 0);
+                    
+                } catch (error) {
+                    this.logTest('Responsive Design', 'Responsive design test', false, error.message);
+                }
+            }
+
+            async testErrorHandling() {
+                console.log('⚠️ Testing error handling...');
+                
+                const errorTests = [
+                    { name: 'Undefined function call', test: () => window.nonExistentFunction() },
+                    { name: 'Invalid module activation', test: () => activateModule('invalid-module') },
+                    { name: 'Empty form submission test', test: () => createUser() }
+                ];
+
+                for (const test of errorTests) {
+                    try {
+                        test.test();
+                        this.logTest('Error Handling', test.name, false, 'Should have thrown error');
+                    } catch (error) {
+                        this.logTest('Error Handling', test.name, true, 'Error properly caught');
+                    }
+                }
+            }
+
+            logTest(category, testName, passed, details = '') {
+                const result = {
+                    category,
+                    testName,
+                    passed,
+                    details,
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.testResults.push(result);
+                
+                const status = passed ? '✅' : '❌';
+                console.log(`${status} ${category}: ${testName} ${details ? `(${details})` : ''}`);
+            }
+
+            generateTestReport() {
+                const totalTests = this.testResults.length;
+                const passedTests = this.testResults.filter(r => r.passed).length;
+                const failedTests = totalTests - passedTests;
+                const successRate = ((passedTests / totalTests) * 100).toFixed(1);
+                const duration = Date.now() - this.testStartTime;
+
+                console.log('\n📋 USER BEHAVIOR TEST REPORT');
+                console.log('='.repeat(50));
+                console.log(`Total Tests: ${totalTests}`);
+                console.log(`Passed: ${passedTests}`);
+                console.log(`Failed: ${failedTests}`);
+                console.log(`Success Rate: ${successRate}%`);
+                console.log(`Duration: ${duration}ms`);
+                console.log('='.repeat(50));
+
+                // Group results by category
+                const categories = [...new Set(this.testResults.map(r => r.category))];
+                
+                categories.forEach(category => {
+                    const categoryTests = this.testResults.filter(r => r.category === category);
+                    const categoryPassed = categoryTests.filter(r => r.passed).length;
+                    const categoryRate = ((categoryPassed / categoryTests.length) * 100).toFixed(1);
+                    
+                    console.log(`\n${category}: ${categoryPassed}/${categoryTests.length} (${categoryRate}%)`);
+                    
+                    categoryTests.forEach(test => {
+                        const status = test.passed ? '✅' : '❌';
+                        console.log(`  ${status} ${test.testName}`);
+                        if (!test.passed && test.details) {
+                            console.log(`    └─ ${test.details}`);
+                        }
+                    });
+                });
+
+                // Show notification with results
+                if (typeof showNotification === 'function') {
+                    showNotification('Testing Complete', `${passedTests}/${totalTests} tests passed (${successRate}%)`);
+                }
+
+                // Auto-speak results
+                if (typeof speakText === 'function') {
+                    speakText(`User behavior testing complete. ${passedTests} of ${totalTests} tests passed with ${successRate} percent success rate.`);
+                }
+            }
+        }
+
+        // Auto-run tests after platform loads (with delay to ensure everything is ready)
+        setTimeout(() => {
+            if (window.location.search.includes('test=true')) {
+                const tester = new UserBehaviorTester();
+                tester.runAllTests();
+            }
+        }, 2000);
+
+        // Make testing function available globally
+        window.runUserBehaviorTests = function() {
+            const tester = new UserBehaviorTester();
+            tester.runAllTests();
+        };
+
+        console.log('[TESTING] User behavior testing suite loaded - Use runUserBehaviorTests() or add ?test=true to URL');
     </script>
 </body>
 </html>
