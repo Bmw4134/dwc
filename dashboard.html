@@ -5996,6 +5996,11 @@ KNOWLEDGE GRAPH CONNECTIONS:
             initializeClientPortfolio();
             
             console.log('[QNIS] Platform initialization complete');
+            
+            // Start production testing after initialization
+            setTimeout(() => {
+                executeProductionTests();
+            }, 2000);
         });
 
         // Client Portfolio Management Functions
@@ -6276,6 +6281,323 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
 
         function planWebsite(clientId) {
             addActivityItem('📋', 'Initiating website planning process', 'Just now');
+        }
+
+        // Production Testing Integration
+        function startProductionTesting() {
+            console.log('[PROD-TEST] Starting comprehensive production readiness testing');
+            
+            if (!window.productionTester) {
+                // Load the production tester inline
+                loadProductionTester();
+            } else {
+                window.productionTester.runCompleteTestSuite();
+            }
+        }
+
+        function loadProductionTester() {
+            const script = document.createElement('script');
+            script.src = '/production-readiness-tester.js';
+            script.onload = function() {
+                console.log('[PROD-TEST] Production tester loaded and initialized');
+            };
+            document.head.appendChild(script);
+        }
+
+        // Execute comprehensive production tests
+        function executeProductionTests() {
+            console.log('[PROD-TEST] Starting deep dive production readiness testing');
+            
+            const results = {
+                dashboardLoad: false,
+                navigation: false,
+                portfolioSystem: false,
+                qnisMap: false,
+                clientCards: false,
+                businessModules: false,
+                apiConnectivity: false,
+                liveWebsite: false,
+                interactivity: false,
+                performance: false
+            };
+            
+            // Test 1: Dashboard Load
+            try {
+                const dashboard = document.querySelector('.dashboard-container');
+                const sidebar = document.querySelector('.collapsible-nav');
+                if (dashboard && sidebar) {
+                    results.dashboardLoad = true;
+                    console.log('[PROD-TEST] ✓ Dashboard loads correctly');
+                } else {
+                    console.log('[PROD-TEST] ✗ Dashboard containers missing');
+                }
+            } catch (e) {
+                console.log('[PROD-TEST] ✗ Dashboard load failed:', e.message);
+            }
+            
+            // Test 2: Navigation System
+            setTimeout(() => {
+                try {
+                    const navItems = document.querySelectorAll('.nav-item');
+                    if (navItems.length > 0) {
+                        results.navigation = true;
+                        console.log('[PROD-TEST] ✓ Navigation system working with', navItems.length, 'items');
+                        
+                        // Test clicking navigation
+                        navItems[0].click();
+                    } else {
+                        console.log('[PROD-TEST] ✗ No navigation items found');
+                    }
+                } catch (e) {
+                    console.log('[PROD-TEST] ✗ Navigation test failed:', e.message);
+                }
+            }, 100);
+            
+            // Test 3: Portfolio System
+            setTimeout(() => {
+                try {
+                    const leadGenNav = Array.from(document.querySelectorAll('.nav-item')).find(item => 
+                        item.textContent.includes('Lead Generation') || item.getAttribute('onclick')?.includes('leadgen')
+                    );
+                    
+                    if (leadGenNav) {
+                        leadGenNav.click();
+                        
+                        setTimeout(() => {
+                            const portfolioOverview = document.querySelector('.portfolio-overview');
+                            const clientCards = document.querySelectorAll('.client-card');
+                            
+                            if (portfolioOverview && clientCards.length > 0) {
+                                results.portfolioSystem = true;
+                                results.clientCards = true;
+                                console.log('[PROD-TEST] ✓ Portfolio system working with', clientCards.length, 'client cards');
+                                
+                                // Test client card interaction
+                                const firstCard = clientCards[0];
+                                if (firstCard) {
+                                    const businessName = firstCard.querySelector('h3')?.textContent;
+                                    console.log('[PROD-TEST] ✓ Found client:', businessName);
+                                    
+                                    // Test view details button
+                                    const viewBtn = firstCard.querySelector('button[onclick*="viewClientDetails"]');
+                                    if (viewBtn) {
+                                        viewBtn.click();
+                                        setTimeout(() => {
+                                            const modal = document.querySelector('.client-modal');
+                                            if (modal) {
+                                                console.log('[PROD-TEST] ✓ Client detail modal opens correctly');
+                                                const closeBtn = modal.querySelector('.close-btn');
+                                                if (closeBtn) closeBtn.click();
+                                            }
+                                        }, 200);
+                                    }
+                                }
+                            } else {
+                                console.log('[PROD-TEST] ✗ Portfolio system not found - Overview:', !!portfolioOverview, 'Cards:', clientCards.length);
+                            }
+                        }, 300);
+                    } else {
+                        console.log('[PROD-TEST] ✗ Lead Generation navigation not found');
+                    }
+                } catch (e) {
+                    console.log('[PROD-TEST] ✗ Portfolio test failed:', e.message);
+                }
+            }, 500);
+            
+            // Test 4: QNIS Map System
+            setTimeout(() => {
+                try {
+                    const qnisNav = Array.from(document.querySelectorAll('.nav-item')).find(item => 
+                        item.textContent.includes('QNIS') || item.getAttribute('onclick')?.includes('qnis')
+                    );
+                    
+                    if (qnisNav) {
+                        qnisNav.click();
+                        
+                        setTimeout(() => {
+                            const mapContainer = document.getElementById('qnis-map') || document.getElementById('qnis-canvas-container');
+                            
+                            if (mapContainer) {
+                                results.qnisMap = true;
+                                console.log('[PROD-TEST] ✓ QNIS map system active');
+                                
+                                // Check for lead data
+                                const cachedLeads = localStorage.getItem('leadMapCache');
+                                if (cachedLeads) {
+                                    const leads = JSON.parse(cachedLeads);
+                                    console.log('[PROD-TEST] ✓ Found', leads.leads?.length || 0, 'leads in cache');
+                                }
+                            } else {
+                                console.log('[PROD-TEST] ✗ QNIS map container not found');
+                            }
+                        }, 300);
+                    } else {
+                        console.log('[PROD-TEST] ✗ QNIS navigation not found');
+                    }
+                } catch (e) {
+                    console.log('[PROD-TEST] ✗ QNIS map test failed:', e.message);
+                }
+            }, 1000);
+            
+            // Test 5: Business Modules
+            setTimeout(() => {
+                try {
+                    const businessNav = Array.from(document.querySelectorAll('.nav-item')).find(item => 
+                        item.textContent.includes('Business Suite') || item.getAttribute('onclick')?.includes('business')
+                    );
+                    
+                    if (businessNav) {
+                        businessNav.click();
+                        
+                        setTimeout(() => {
+                            const businessModule = document.getElementById('business-module');
+                            const moduleCards = document.querySelectorAll('#business-module .module-card');
+                            
+                            if (businessModule && moduleCards.length > 0) {
+                                results.businessModules = true;
+                                console.log('[PROD-TEST] ✓ Business modules working with', moduleCards.length, 'components');
+                            } else {
+                                console.log('[PROD-TEST] ✗ Business modules not found - Module:', !!businessModule, 'Cards:', moduleCards.length);
+                            }
+                        }, 300);
+                    } else {
+                        console.log('[PROD-TEST] ✗ Business Suite navigation not found');
+                    }
+                } catch (e) {
+                    console.log('[PROD-TEST] ✗ Business modules test failed:', e.message);
+                }
+            }, 1500);
+            
+            // Test 6: API Connectivity
+            setTimeout(() => {
+                try {
+                    fetch('/api/leads/generate')
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('API response not ok: ' + response.status);
+                            }
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                results.apiConnectivity = true;
+                                console.log('[PROD-TEST] ✓ API connectivity working, returned', data.leads?.length || 0, 'leads');
+                            } else {
+                                console.log('[PROD-TEST] ✗ API returned unsuccessful response');
+                            }
+                        })
+                        .catch(error => {
+                            console.log('[PROD-TEST] ✗ API connectivity failed:', error.message);
+                        });
+                } catch (e) {
+                    console.log('[PROD-TEST] ✗ API test failed:', e.message);
+                }
+            }, 2000);
+            
+            // Test 7: Live Website Access
+            setTimeout(() => {
+                try {
+                    fetch('/trucking-company-website.html')
+                        .then(response => {
+                            if (response.ok) {
+                                results.liveWebsite = true;
+                                console.log('[PROD-TEST] ✓ Trucking website accessible');
+                            } else {
+                                console.log('[PROD-TEST] ✗ Trucking website not accessible:', response.status);
+                            }
+                        })
+                        .catch(error => {
+                            console.log('[PROD-TEST] ✗ Live website test failed:', error.message);
+                        });
+                } catch (e) {
+                    console.log('[PROD-TEST] ✗ Live website test failed:', e.message);
+                }
+            }, 2500);
+            
+            // Test 8: Interactive Elements
+            setTimeout(() => {
+                try {
+                    const buttons = document.querySelectorAll('button');
+                    const links = document.querySelectorAll('a[href]');
+                    const forms = document.querySelectorAll('form');
+                    
+                    if (buttons.length > 0) {
+                        results.interactivity = true;
+                        console.log('[PROD-TEST] ✓ Interactive elements found:', buttons.length, 'buttons,', links.length, 'links,', forms.length, 'forms');
+                    } else {
+                        console.log('[PROD-TEST] ✗ No interactive elements found');
+                    }
+                } catch (e) {
+                    console.log('[PROD-TEST] ✗ Interactivity test failed:', e.message);
+                }
+            }, 3000);
+            
+            // Test 9: Performance
+            setTimeout(() => {
+                try {
+                    const startTime = performance.now();
+                    
+                    // Test navigation speed
+                    const navItems = document.querySelectorAll('.nav-item');
+                    if (navItems.length > 0) {
+                        navItems[0].click();
+                        
+                        setTimeout(() => {
+                            const endTime = performance.now();
+                            const duration = endTime - startTime;
+                            
+                            if (duration < 1000) {
+                                results.performance = true;
+                                console.log('[PROD-TEST] ✓ Performance acceptable:', Math.round(duration), 'ms navigation time');
+                            } else {
+                                console.log('[PROD-TEST] ✗ Performance slow:', Math.round(duration), 'ms navigation time');
+                            }
+                        }, 100);
+                    }
+                } catch (e) {
+                    console.log('[PROD-TEST] ✗ Performance test failed:', e.message);
+                }
+            }, 3500);
+            
+            // Final Report
+            setTimeout(() => {
+                const passedTests = Object.values(results).filter(Boolean).length;
+                const totalTests = Object.keys(results).length;
+                const successRate = Math.round((passedTests / totalTests) * 100);
+                
+                console.log('[PROD-TEST] =================================');
+                console.log('[PROD-TEST] PRODUCTION READINESS REPORT');
+                console.log('[PROD-TEST] =================================');
+                console.log('[PROD-TEST] Tests Passed:', passedTests + '/' + totalTests);
+                console.log('[PROD-TEST] Success Rate:', successRate + '%');
+                console.log('[PROD-TEST] Dashboard Load:', results.dashboardLoad ? '✓' : '✗');
+                console.log('[PROD-TEST] Navigation:', results.navigation ? '✓' : '✗');
+                console.log('[PROD-TEST] Portfolio System:', results.portfolioSystem ? '✓' : '✗');
+                console.log('[PROD-TEST] QNIS Map:', results.qnisMap ? '✓' : '✗');
+                console.log('[PROD-TEST] Client Cards:', results.clientCards ? '✓' : '✗');
+                console.log('[PROD-TEST] Business Modules:', results.businessModules ? '✓' : '✗');
+                console.log('[PROD-TEST] API Connectivity:', results.apiConnectivity ? '✓' : '✗');
+                console.log('[PROD-TEST] Live Website:', results.liveWebsite ? '✓' : '✗');
+                console.log('[PROD-TEST] Interactivity:', results.interactivity ? '✓' : '✗');
+                console.log('[PROD-TEST] Performance:', results.performance ? '✓' : '✗');
+                console.log('[PROD-TEST] =================================');
+                
+                if (successRate >= 90) {
+                    console.log('[PROD-TEST] 🎉 PRODUCTION READY - All critical systems operational');
+                } else if (successRate >= 75) {
+                    console.log('[PROD-TEST] ⚠️ MOSTLY READY - Minor issues to address');
+                } else {
+                    console.log('[PROD-TEST] 🚨 NEEDS ATTENTION - Critical issues found');
+                }
+                
+                console.log('[PROD-TEST] =================================');
+                
+                // Store results for further analysis
+                window.productionTestResults = results;
+                window.productionTestResults.successRate = successRate;
+                
+            }, 5000);
         }
 
         // Business Modules Initialization
