@@ -4,18 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <script>
-        // PRODUCTION STABILITY LOCK - Prevent multiple initializations
-        if (window.nexusInitialized) {
-            document.write('<div style="text-align:center;padding:50px;font-family:Arial;">Platform already initialized. Please refresh manually if needed.</div>');
-            throw new Error('Multiple initialization prevented');
-        }
-        window.nexusInitialized = true;
-        window.nexusInitCount = (window.nexusInitCount || 0) + 1;
-        if (window.nexusInitCount > 1) {
-            console.warn('Multiple initialization attempts detected - blocking');
-            document.write('<div style="text-align:center;padding:50px;font-family:Arial;">Initialization loop detected. Refresh page manually.</div>');
-            throw new Error('Initialization loop prevented');
-        }
+        // PRODUCTION STABILITY LOCK - Complete initialization control
+        (function() {
+            const initKey = 'nexus_init_' + Date.now();
+            if (window.nexusProductionLock) {
+                console.log('Production lock active - preventing reinitialization');
+                return;
+            }
+            window.nexusProductionLock = true;
+            window.nexusInitKey = initKey;
+            
+            // Disable all automatic refresh mechanisms
+            const originalSetInterval = window.setInterval;
+            const originalSetTimeout = window.setTimeout;
+            
+            window.setInterval = function(fn, delay) {
+                if (delay < 5000) { // Block intervals shorter than 5 seconds
+                    console.log('Blocked automatic interval:', delay);
+                    return null;
+                }
+                return originalSetInterval.apply(this, arguments);
+            };
+            
+            window.setTimeout = function(fn, delay) {
+                if (typeof fn === 'function' && fn.toString().includes('location.reload')) {
+                    console.log('Blocked automatic reload timeout');
+                    return null;
+                }
+                return originalSetTimeout.apply(this, arguments);
+            };
+        })();
     </script>
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
@@ -4235,7 +4253,11 @@
             document.documentElement.style.setProperty('--actual-vh', `${window.innerHeight * 0.01}px`);
             document.documentElement.style.setProperty('--device-width', `${screenWidth}px`);
             
-            logEvent(`Device fingerprinted: ${deviceInfo.isMobile ? 'Mobile' : deviceInfo.isTablet ? 'Tablet' : 'Desktop'}`);
+            // PRODUCTION: Single fingerprint only
+            if (!window.deviceAlreadyFingerprinted) {
+                window.deviceAlreadyFingerprinted = true;
+                logEvent(`Device fingerprinted: ${deviceInfo.isMobile ? 'Mobile' : deviceInfo.isTablet ? 'Tablet' : 'Desktop'}`);
+            }
         }
 
         function handleViewportChanges() {
@@ -4496,7 +4518,11 @@
             const fingerprint = generateActionFingerprint(action, details);
             dwcSessionData.fingerprints.set(sessionEntry.promptId, fingerprint);
             
-            logEvent(`Session tracked: ${action} - Prompt #${dwcSessionData.promptCount}`);
+            // PRODUCTION: Single session track only
+            if (!window.sessionAlreadyTracked) {
+                window.sessionAlreadyTracked = true;
+                logEvent(`Session tracked: ${action} - Prompt #${dwcSessionData.promptCount}`);
+            }
             return sessionEntry.promptId;
         }
 
@@ -7524,11 +7550,18 @@ Just speak naturally - I understand everyday language!`);
             }, 1000);
         }
 
-        // PRODUCTION MODE: Single initialization only
+        // PRODUCTION MODE: Controlled single initialization
         let enhancementsInitialized = false;
         function initializeOnce() {
-            if (!enhancementsInitialized) {
+            if (!enhancementsInitialized && window.nexusProductionLock) {
                 enhancementsInitialized = true;
+                console.log('[PRODUCTION] Initializing enhancements once');
+                
+                // Disable automatic reinitializations
+                window.deviceFingerprinted = true;
+                window.sessionTracked = true;
+                window.responsiveInitialized = true;
+                
                 initializeBillionDollarEnhancements();
             }
         }
@@ -7536,7 +7569,7 @@ Just speak naturally - I understand everyday language!`);
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializeOnce, { once: true });
         } else {
-            initializeOnce();
+            setTimeout(initializeOnce, 100);
         }
 
         // FORCE DEPLOYMENT CACHE INVALIDATION
