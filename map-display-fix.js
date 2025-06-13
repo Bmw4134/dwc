@@ -99,13 +99,39 @@ class MapDisplayFix {
             const response = await fetch('/api/qnis/leads');
             if (response.ok) {
                 this.leadData = await response.json();
+                console.log('[MAP-FIX] Loaded', this.leadData.length, 'authentic leads from server');
             } else {
                 throw new Error('API not available');
             }
         } catch (error) {
-            console.log('[MAP-FIX] Using sample data');
-            this.leadData = this.generateSampleData();
+            console.log('[MAP-FIX] Server API unavailable');
+            this.leadData = [];
         }
+
+        // Set up real-time updates every 15 seconds to match server generation
+        this.setupRealTimeUpdates();
+    }
+
+    setupRealTimeUpdates() {
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/qnis/leads');
+                if (response.ok) {
+                    const newData = await response.json();
+                    if (newData.length !== this.leadData.length) {
+                        this.leadData = newData;
+                        if (this.isLeafletMap && this.map) {
+                            this.updateLeafletMarkers();
+                        } else {
+                            this.renderWorkingMap();
+                        }
+                        console.log('[MAP-FIX] Live update:', this.leadData.length, 'leads');
+                    }
+                }
+            } catch (error) {
+                // Continue with existing data
+            }
+        }, 15000);
     }
 
     generateSampleData() {
