@@ -3020,14 +3020,185 @@
             <!-- Lead Generation Module -->
             <div id="leadgen-module" class="module-view">
                 <div class="module-header">
-                    <h2 class="module-title">🎯 Lead Generation</h2>
-                    <p class="module-subtitle">Automated lead discovery and qualification system</p>
+                    <h2 class="module-title">🎯 Client Portfolio & Lead Management</h2>
+                    <p class="module-subtitle">Consolidated platform for hosting and developing client websites</p>
+                </div>
+                
+                <div class="portfolio-overview">
+                    <div class="portfolio-stats">
+                        <div class="stat-card">
+                            <span class="stat-value">6</span>
+                            <span class="stat-label">Total Clients</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value">$2.9M</span>
+                            <span class="stat-label">Portfolio Value</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value">1</span>
+                            <span class="stat-label">Live Websites</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value">3</span>
+                            <span class="stat-label">In Development</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="client-portfolio-grid">
+                    <div class="client-card priority-high" data-status="negotiation">
+                        <div class="client-header">
+                            <h3>Game X Change</h3>
+                            <span class="client-status negotiation">Negotiation</span>
+                        </div>
+                        <div class="client-info">
+                            <p><strong>Industry:</strong> Gaming Retail</p>
+                            <p><strong>Value:</strong> $2,500,000</p>
+                            <p><strong>Website Status:</strong> 🚧 In Development</p>
+                            <p><strong>Contact:</strong> corporate@gamexchange.com</p>
+                        </div>
+                        <div class="service-tags">
+                            <span class="service-tag">Pokemon Card Evaluation</span>
+                            <span class="service-tag">Multi-location Retail</span>
+                            <span class="service-tag">Inventory Management</span>
+                        </div>
+                        <div class="client-actions">
+                            <button onclick="viewClientDetails('game-x-change')" class="btn-small">View Details</button>
+                            <button onclick="developWebsite('game-x-change')" class="btn-small primary">Develop Website</button>
+                        </div>
+                        <div class="client-notes">Multi-location retail chain expansion, Pokemon card automation opportunity</div>
+                    </div>
+
+                    <div class="client-card priority-medium" data-status="qualified">
+                        <div class="client-header">
+                            <h3>Blissful Memories</h3>
+                            <span class="client-status qualified">Qualified</span>
+                        </div>
+                        <div class="client-info">
+                            <p><strong>Industry:</strong> Photography Services</p>
+                            <p><strong>Value:</strong> $75,000</p>
+                            <p><strong>Website Status:</strong> 📋 Planning</p>
+                            <p><strong>Contact:</strong> info@blissfulmemories.com</p>
+                        </div>
+                        <div class="service-tags">
+                            <span class="service-tag">Photography Portfolio</span>
+                            <span class="service-tag">Online Booking</span>
+                            <span class="service-tag">Client Gallery</span>
+                        </div>
+                        <div class="client-actions">
+                            <button onclick="viewClientDetails('blissful-memories')" class="btn-small">View Details</button>
+                            <button onclick="developWebsite('blissful-memories')" class="btn-small">Plan Website</button>
+                        </div>
+                        <div class="client-notes">Wedding and portrait photography studio, needs modern online presence</div>
+                    </div>
+
+                    <div class="client-card priority-high" data-status="active">
+                        <div class="client-header">
+                            <h3>Premier Logistics Solutions</h3>
+                            <span class="client-status active">Active</span>
+                        </div>
+                        <div class="client-info">
+                            <p><strong>Industry:</strong> Transportation</p>
+                            <p><strong>Value:</strong> $125,000</p>
+                            <p><strong>Website Status:</strong> 🌐 Live</p>
+                            <p><strong>DOT Number:</strong> #1949781</p>
+                        </div>
+                        <div class="service-tags">
+                            <span class="service-tag">Pro Bono Website</span>
+                            <span class="service-tag">Lead Generation</span>
+                            <span class="service-tag">Quote Calculator</span>
+                        </div>
+                        <div class="client-actions">
+                            <button onclick="viewClientDetails('premier-logistics')" class="btn-small">View Pipeline</button>
+                            <button onclick="window.open('/trucking-company-website.html', '_blank')" class="btn-small primary">View Live Site</button>
+                        </div>
+                        <div class="client-notes">Pro bono trucking company with integrated lead pipeline and quote system</div>
+                    </div>
+
+                    <div class="client-card priority-medium" data-status="qualified">
+                        <div class="client-header">
+                            <h3>Ragle Inc</h3>
+                            <span class="client-status qualified">Qualified</span>
+                        </div>
+                        <div class="client-info">
+                            <p><strong>Industry:</strong> Corporate Services</p>
+                            <p><strong>Value:</strong> $25,000</p>
+                            <p><strong>Website Status:</strong> 🔍 Assessment</p>
+                            <p><strong>Contact:</strong> contact@ragleinc.com</p>
+                        </div>
+                        <div class="service-tags">
+                            <span class="service-tag">Corporate Automation</span>
+                            <span class="service-tag">Process Optimization</span>
+                        </div>
+                        <div class="client-actions">
+                            <button onclick="viewClientDetails('ragle-inc')" class="btn-small">View Details</button>
+                            <button onclick="assessWebsiteNeeds('ragle-inc')" class="btn-small">Start Assessment</button>
+                        </div>
+                        <div class="client-notes">Corporate services automation opportunity, strong digital presence</div>
+                    </div>
+
+                    <div class="client-card priority-high" data-status="prospect">
+                        <div class="client-header">
+                            <h3>Dallas Tech Solutions</h3>
+                            <span class="client-status prospect">Prospect</span>
+                        </div>
+                        <div class="client-info">
+                            <p><strong>Industry:</strong> Technology Services</p>
+                            <p><strong>Value:</strong> $75,000</p>
+                            <p><strong>Website Status:</strong> 📋 Planning</p>
+                            <p><strong>Contact:</strong> info@dallastech.com</p>
+                        </div>
+                        <div class="service-tags">
+                            <span class="service-tag">Tech Consulting Site</span>
+                            <span class="service-tag">Service Portfolio</span>
+                        </div>
+                        <div class="client-actions">
+                            <button onclick="viewClientDetails('dallas-tech')" class="btn-small">View Details</button>
+                            <button onclick="planWebsite('dallas-tech')" class="btn-small">Plan Website</button>
+                        </div>
+                        <div class="client-notes">Dallas-based technology services company with high conversion potential</div>
+                    </div>
+
+                    <div class="client-card priority-high" data-status="prospect">
+                        <div class="client-header">
+                            <h3>Richardson Healthcare</h3>
+                            <span class="client-status prospect">Prospect</span>
+                        </div>
+                        <div class="client-info">
+                            <p><strong>Industry:</strong> Healthcare Practices</p>
+                            <p><strong>Value:</strong> $95,000</p>
+                            <p><strong>Website Status:</strong> 📋 Planning</p>
+                            <p><strong>Contact:</strong> admin@richardsonhealth.com</p>
+                        </div>
+                        <div class="service-tags">
+                            <span class="service-tag">Healthcare Website</span>
+                            <span class="service-tag">Patient Portal</span>
+                            <span class="service-tag">HIPAA Compliance</span>
+                        </div>
+                        <div class="client-actions">
+                            <button onclick="viewClientDetails('richardson-healthcare')" class="btn-small">View Details</button>
+                            <button onclick="planWebsite('richardson-healthcare')" class="btn-small">Plan Website</button>
+                        </div>
+                        <div class="client-notes">Healthcare practice with HIPAA compliance requirements</div>
+                    </div>
+                </div>
+
+                <div class="portfolio-actions">
+                    <button class="action-btn primary" onclick="addNewClient()">
+                        <i class="fas fa-plus"></i> Add New Client
+                    </button>
+                    <button class="action-btn" onclick="generatePortfolioReport()">
+                        <i class="fas fa-chart-bar"></i> Portfolio Report
+                    </button>
+                    <button class="action-btn" onclick="manageHosting()">
+                        <i class="fas fa-server"></i> Hosting Dashboard
+                    </button>
                 </div>
                 
                 <div class="leadgen-interface">
                     <div class="generation-controls">
                         <div class="target-settings">
-                            <h3>Target Configuration</h3>
+                            <h3>Lead Generation Configuration</h3>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="target-industry">Industry Focus</label>
@@ -5822,9 +5993,290 @@ KNOWLEDGE GRAPH CONNECTIONS:
             initializeWorkflows();
             initializeAnalytics();
             initializeLeadGeneration();
+            initializeClientPortfolio();
             
             console.log('[QNIS] Platform initialization complete');
         });
+
+        // Client Portfolio Management Functions
+        function initializeClientPortfolio() {
+            console.log('[PORTFOLIO] Initializing client portfolio management system');
+            
+            // Portfolio stats animation
+            animatePortfolioStats();
+            
+            // Initialize client card interactions
+            initializeClientCards();
+            
+            console.log('[PORTFOLIO] Portfolio system ready with 6 clients');
+        }
+
+        function animatePortfolioStats() {
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                const value = stat.textContent;
+                stat.textContent = '0';
+                
+                setTimeout(() => {
+                    stat.textContent = value;
+                    stat.style.animation = 'countUp 1s ease-out';
+                }, 500);
+            });
+        }
+
+        function initializeClientCards() {
+            document.querySelectorAll('.client-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('button')) {
+                        this.classList.toggle('expanded');
+                    }
+                });
+            });
+        }
+
+        function viewClientDetails(clientId) {
+            const clientData = {
+                'game-x-change': {
+                    name: 'Game X Change',
+                    industry: 'Gaming Retail',
+                    value: '$2,500,000',
+                    status: 'negotiation',
+                    services: ['Pokemon Card Evaluation System', 'Multi-location Retail Automation', 'Inventory Management'],
+                    contact: 'corporate@gamexchange.com',
+                    notes: 'Multi-location retail chain expansion with Pokemon card automation opportunity'
+                },
+                'blissful-memories': {
+                    name: 'Blissful Memories',
+                    industry: 'Photography Services',
+                    value: '$75,000',
+                    status: 'qualified',
+                    services: ['Photography Portfolio Website', 'Online Booking System', 'Client Gallery Management'],
+                    contact: 'info@blissfulmemories.com',
+                    notes: 'Wedding and portrait photography studio needing modern online presence'
+                },
+                'premier-logistics': {
+                    name: 'Premier Logistics Solutions',
+                    industry: 'Transportation',
+                    value: '$125,000',
+                    status: 'active',
+                    services: ['Pro Bono Website Development', 'Lead Generation System', 'Quote Calculator'],
+                    contact: 'dispatch@premierlogistics.com',
+                    notes: 'DOT #1949781 - Pro bono trucking company with integrated lead pipeline'
+                }
+            };
+
+            const client = clientData[clientId];
+            if (client) {
+                showClientModal(client);
+            }
+        }
+
+        function showClientModal(client) {
+            const modal = document.createElement('div');
+            modal.className = 'client-modal';
+            modal.innerHTML = `
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>${client.name}</h3>
+                        <button onclick="closeModal()" class="close-btn">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="client-detail-grid">
+                            <div class="detail-section">
+                                <h4>Project Overview</h4>
+                                <p><strong>Industry:</strong> ${client.industry}</p>
+                                <p><strong>Project Value:</strong> ${client.value}</p>
+                                <p><strong>Status:</strong> ${client.status}</p>
+                                <p><strong>Contact:</strong> ${client.contact}</p>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Services</h4>
+                                <ul>
+                                    ${client.services.map(service => `<li>${service}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="detail-section">
+                                <h4>Notes</h4>
+                                <p>${client.notes}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button onclick="contactClient('${client.name}')" class="action-btn primary">Contact Client</button>
+                        <button onclick="scheduleFollowUp('${client.name}')" class="action-btn">Schedule Follow-up</button>
+                        <button onclick="closeModal()" class="action-btn secondary">Close</button>
+                    </div>
+                </div>
+            `;
+
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.7); z-index: 10000; display: flex;
+                align-items: center; justify-content: center; padding: 2rem;
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        function developWebsite(clientId) {
+            const developmentPlans = {
+                'game-x-change': 'Initiating Game X Change website development with Pokemon card evaluation system and multi-location inventory management.',
+                'blissful-memories': 'Starting Blissful Memories photography website with portfolio gallery and booking system.',
+                'premier-logistics': 'Premier Logistics website is already live and operational.',
+                'dallas-tech': 'Planning Dallas Tech Solutions website with technology consulting portfolio.',
+                'richardson-healthcare': 'Designing Richardson Healthcare website with patient portal and HIPAA compliance.'
+            };
+
+            const plan = developmentPlans[clientId];
+            if (plan) {
+                addActivityItem('🚧', plan, 'Just now');
+                console.log(`[PORTFOLIO] ${plan}`);
+            }
+        }
+
+        function addNewClient() {
+            showNewClientForm();
+        }
+
+        function showNewClientForm() {
+            const modal = document.createElement('div');
+            modal.className = 'client-modal';
+            modal.innerHTML = `
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add New Client</h3>
+                        <button onclick="closeModal()" class="close-btn">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="new-client-form">
+                            <div class="form-group">
+                                <label>Business Name</label>
+                                <input type="text" id="client-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Industry</label>
+                                <select id="client-industry" required>
+                                    <option value="">Select Industry</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Retail">Retail</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Photography">Photography</option>
+                                    <option value="Transportation">Transportation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Estimated Value</label>
+                                <input type="number" id="client-value" placeholder="50000">
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Email</label>
+                                <input type="email" id="client-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Services Needed</label>
+                                <textarea id="client-services" rows="3" placeholder="Website development, lead generation, etc."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-actions">
+                        <button onclick="saveNewClient()" class="action-btn primary">Add Client</button>
+                        <button onclick="closeModal()" class="action-btn secondary">Cancel</button>
+                    </div>
+                </div>
+            `;
+
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.7); z-index: 10000; display: flex;
+                align-items: center; justify-content: center; padding: 2rem;
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        function saveNewClient() {
+            const name = document.getElementById('client-name').value;
+            const industry = document.getElementById('client-industry').value;
+            const value = document.getElementById('client-value').value;
+            const email = document.getElementById('client-email').value;
+            const services = document.getElementById('client-services').value;
+
+            if (name && industry && email) {
+                addActivityItem('✅', `New client "${name}" added to portfolio ($${parseInt(value).toLocaleString()})`, 'Just now');
+                closeModal();
+                console.log(`[PORTFOLIO] New client added: ${name} - ${industry}`);
+            } else {
+                alert('Please fill in all required fields');
+            }
+        }
+
+        function generatePortfolioReport() {
+            const report = {
+                totalClients: 6,
+                portfolioValue: 2900000,
+                activeProjects: 1,
+                liveWebsites: 1,
+                topOpportunity: 'Game X Change ($2.5M)',
+                nextPriority: 'Richardson Healthcare ($95K)',
+                industryBreakdown: {
+                    'Gaming Retail': 1,
+                    'Photography Services': 1,
+                    'Transportation': 1,
+                    'Corporate Services': 1,
+                    'Technology Services': 1,
+                    'Healthcare': 1
+                }
+            };
+
+            console.log('[PORTFOLIO] Portfolio Report Generated:', report);
+            
+            addActivityItem('📊', `Portfolio report generated: ${report.totalClients} clients, $${(report.portfolioValue/1000000).toFixed(1)}M total value`, 'Just now');
+            
+            alert(`Portfolio Report:
+            
+Total Clients: ${report.totalClients}
+Portfolio Value: $${(report.portfolioValue/1000000).toFixed(1)}M
+Active Projects: ${report.activeProjects}
+Live Websites: ${report.liveWebsites}
+
+Top Opportunity: ${report.topOpportunity}
+Next Priority: ${report.nextPriority}
+
+Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corporate Services`);
+        }
+
+        function manageHosting() {
+            addActivityItem('🖥️', 'Opening hosting management dashboard', 'Just now');
+            console.log('[PORTFOLIO] Hosting management initiated');
+        }
+
+        function contactClient(clientName) {
+            addActivityItem('📞', `Initiating contact with ${clientName}`, 'Just now');
+            closeModal();
+        }
+
+        function scheduleFollowUp(clientName) {
+            addActivityItem('📅', `Follow-up scheduled with ${clientName}`, 'Just now');
+            closeModal();
+        }
+
+        function closeModal() {
+            const modal = document.querySelector('.client-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function assessWebsiteNeeds(clientId) {
+            addActivityItem('🔍', 'Starting website needs assessment', 'Just now');
+        }
+
+        function planWebsite(clientId) {
+            addActivityItem('📋', 'Initiating website planning process', 'Just now');
+        }
 
         // Business Modules Initialization
         function initializeBusinessModules() {
