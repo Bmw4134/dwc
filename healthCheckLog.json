@@ -7,59 +7,6 @@
           "moduleId": "legal-management",
           "severity": "HIGH",
           "status": "INCOMPLETE",
-          "description": "The legal-management module currently lacks integration with external legal databases and has limited automation capabilities for document generation.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "tax-management",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
-          "description": "The tax-management module is missing support for international tax regulations and lacks automated filing capabilities.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "qnis",
-          "severity": "HIGH",
-          "status": "BROKEN",
-          "description": "The QNIS module is currently non-functional due to errors in quantum lead mapping algorithms.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "automation",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
-          "description": "The automation module lacks advanced workflow customization and integration with external APIs.",
-          "suggestedFix": "Rebuild module with core functionality"
-        }
-      ],
-      "moduleCount": 13
-    },
-    "behavior": {
-      "optimizations": [],
-      "interactionCount": 0
-    },
-    "performance": {
-      "issues": []
-    },
-    "timestamp": "2025-06-13T20:24:48.037Z",
-    "metrics": {
-      "fixesApplied": 17,
-      "modulesHealed": 17,
-      "errorsDetected": 0,
-      "performanceOptimizations": 0
-    }
-  },
-  {
-    "diagnosis": {
-      "issues": [
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "legal-management",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
           "description": "The Legal Management module currently lacks integration with external legal databases and automated document generation features.",
           "suggestedFix": "Rebuild module with core functionality"
         },
@@ -6729,6 +6676,66 @@
     "metrics": {
       "fixesApplied": 17,
       "modulesHealed": 17,
+      "errorsDetected": 0,
+      "performanceOptimizations": 0
+    }
+  },
+  {
+    "diagnosis": {
+      "issues": [
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "legal-management",
+          "severity": "HIGH",
+          "status": "INCOMPLETE",
+          "description": "The legal-management module offers basic legal document automation but lacks integration with external legal databases and e-signature capabilities.",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "tax-management",
+          "severity": "HIGH",
+          "status": "INCOMPLETE",
+          "description": "The tax-management module supports basic tax calculations but lacks automated filing and support for recent tax law changes.",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "qnis",
+          "severity": "HIGH",
+          "status": "BROKEN",
+          "description": "The QNIS module is intended for quantum lead mapping and intelligence but is currently non-functional due to API integration issues.",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "watson-command",
+          "severity": "HIGH",
+          "status": "INCOMPLETE",
+          "description": "The Watson Command module provides basic voice and command interface capabilities but lacks support for multi-language commands and context-aware interactions.",
+          "suggestedFix": "Rebuild module with core functionality"
+        }
+      ],
+      "moduleCount": 13
+    },
+    "behavior": {
+      "optimizations": [],
+      "interactionCount": 0
+    },
+    "performance": {
+      "issues": [
+        {
+          "type": "MEMORY_HIGH",
+          "severity": "MEDIUM",
+          "description": "High memory usage detected",
+          "fix": "Implement memory optimization"
+        }
+      ]
+    },
+    "timestamp": "2025-06-13T21:17:51.287Z",
+    "metrics": {
+      "fixesApplied": 4,
+      "modulesHealed": 4,
       "errorsDetected": 0,
       "performanceOptimizations": 0
     }

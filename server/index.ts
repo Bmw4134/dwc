@@ -12,7 +12,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 // Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../dist/public')));
+// Static files disabled for landing page fix - serving content via routes instead
 
 // Authentication endpoint
 app.post('/api/auth/login', (req, res) => {
@@ -590,20 +590,102 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// Landing page route (public access) - NEXUS DIAGNOSTIC REPAIR
+// Landing page route (public access) - NEXUS EMERGENCY OVERRIDE
 app.get('/', (req, res) => {
   const sessionId = req.headers['x-session-id'] || req.cookies?.session_id;
   const authToken = req.headers['authorization'] || req.cookies?.auth_token;
   
-  // Force verified landing page for all unauthenticated users
+  // EMERGENCY PROTOCOL: Force landing page content directly
   if (!sessionId && !authToken) {
-    console.log(`[NEXUS-REPAIR] Serving verified landing page for unauthenticated user: ${Date.now()}`);
-    try {
-      return res.sendFile(path.resolve(process.cwd(), 'landing-verified.html'));
-    } catch (error) {
-      console.log(`[NEXUS-REPAIR] Landing page fallback active`);
-      return res.redirect('/landing');
-    }
+    console.log(`[NEXUS-EMERGENCY] Force-serving landing page content: ${Date.now()}`);
+    
+    const landingPageContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWC Systems - Advanced Enterprise Intelligence Platform</title>
+    <meta name="description" content="Transform your business with our sophisticated geospatial lead tracking system. AI-driven insights, real-time mapping, and intelligent automation in one powerful platform.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-bold text-gray-900">DWC Systems</div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#features" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                        <a href="#pricing" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
+                        <a href="#about" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <button onclick="handleLogin()" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="gradient-bg py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl font-bold text-white mb-6">Advanced Enterprise Intelligence Platform</h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">Transform your business with our sophisticated geospatial lead tracking system. AI-driven insights, real-time mapping, and intelligent automation in one powerful platform.</p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="handleGetStarted()" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">Start Free Trial</button>
+                <button onclick="showDemo()" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">Watch Demo</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Powerful Features</h2>
+                <p class="text-xl text-gray-600">Everything you need to dominate your market</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">🗺️</div>
+                    <h3 class="text-xl font-semibold mb-3">Real-Time Lead Mapping</h3>
+                    <p class="text-gray-600">Advanced geospatial intelligence tracks 50+ authentic leads across 10 major cities with real-time updates.</p>
+                </div>
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-semibold mb-3">AI-Powered Analytics</h3>
+                    <p class="text-gray-600">Quantum intelligence scoring (QNIS) with predictive lead analysis and automated prioritization.</p>
+                </div>
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl font-semibold mb-3">Automated Workflows</h3>
+                    <p class="text-gray-600">Self-healing automation modules with 14 core business intelligence components.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 DWC Systems LLC. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function handleLogin() { window.location.href = '/api/login'; }
+        function handleGetStarted() { window.location.href = '/api/login'; }
+        function showDemo() { alert('Demo will be available soon! Click "Start Free Trial" to access the platform.'); }
+        console.log('[LANDING] DWC Systems landing page loaded successfully');
+    </script>
+</body>
+</html>`;
+    
+    res.setHeader('Content-Type', 'text/html');
+    return res.send(landingPageContent);
   }
   
   console.log(`[NEXUS-REPAIR] Authenticated user accessing dashboard`);
