@@ -1,13 +1,10 @@
 {
   "version": 2,
+  "name": "dwc-systems-nexus",
   "builds": [
     {
       "src": "server/index.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -17,19 +14,15 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/public/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/public/index.html"
+      "dest": "/server/index.js"
     }
   ],
+  "env": {
+    "NODE_ENV": "production"
+  },
   "functions": {
     "server/index.js": {
       "maxDuration": 30
     }
-  },
-  "env": {
-    "NODE_ENV": "production"
   }
 }
