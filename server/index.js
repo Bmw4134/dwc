@@ -27,30 +27,23 @@ app.get('/health', (req, res) => {
 // Middleware
 app.use(express.json());
 
-// Serve static files with production-optimized caching
-app.use(express.static(path.join(__dirname, 'public'), {
+// Serve static assets from root public directory for deployment compatibility
+app.use(express.static(path.join(process.cwd(), 'public'), {
   setHeaders: (res, filePath) => {
     if (isProduction) {
-      // Production: Cache static assets for 1 hour, HTML for 5 minutes
       if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.ico')) {
         res.set('Cache-Control', 'public, max-age=3600');
-      } else if (filePath.endsWith('.html')) {
-        res.set('Cache-Control', 'public, max-age=300');
       }
     } else {
-      // Development: No caching
       res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.set('Pragma', 'no-cache');
       res.set('Expires', '0');
     }
     
-    // Set correct content types
     if (filePath.endsWith('.js')) {
       res.set('Content-Type', 'application/javascript');
     } else if (filePath.endsWith('.css')) {
       res.set('Content-Type', 'text/css');
-    } else if (filePath.endsWith('.html')) {
-      res.set('Content-Type', 'text/html');
     }
   }
 }));
@@ -187,15 +180,15 @@ app.get('*', (req, res) => {
     res.set('X-XSS-Protection', '1; mode=block');
     console.log(`[DEPLOYMENT] Serving cache-busted content: ${timestamp}`);
     
-    // Serve the NEXUS platform with cache busting
-    const indexPath = path.join(__dirname, 'public', 'index.html');
+    // Serve from root level for deployment compatibility
+    const indexPath = path.join(process.cwd(), 'index.html');
     
     // Force browser to bypass all caches
     res.set('X-Timestamp', Date.now().toString());
     res.set('X-Force-Refresh', 'true');
     res.set('X-Content-Hash', Date.now().toString(36));
     
-    console.log(`[DEPLOYMENT] Serving fresh content from: ${indexPath}`);
+    console.log(`[DEPLOYMENT] Serving from root: ${indexPath}`);
     res.sendFile(indexPath);
 });
 
