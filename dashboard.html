@@ -6668,7 +6668,7 @@ KNOWLEDGE GRAPH CONNECTIONS:
             console.log('[QNIS] STAGE 5: Node rendering - Processing', heatNodes.length, 'city clusters');
             
             mapContainer.innerHTML = `
-                <div style="width: 100%; height: 500px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+                <div class="qnis-heat-map" style="width: 100%; height: 500px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
                      border: 2px solid #10b981; border-radius: 15px; position: relative; overflow: hidden; display: flex;">
                     
                     <div style="flex: 1; padding: 20px; position: relative;">
@@ -6676,7 +6676,7 @@ KNOWLEDGE GRAPH CONNECTIONS:
                             🗺️ QNIS Geographic Intelligence Map
                         </div>
                         <div style="color: #64748b; font-size: 12px; margin-bottom: 20px;">
-                            Recovery Mode Active | ${leads.length} Live Leads Tracked
+                            Recovery Mode Active | ${repairedLeads.length} Live Leads Tracked
                         </div>
                         
                         <!-- Visual Heat Map -->
