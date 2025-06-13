@@ -4008,6 +4008,96 @@
             showModule(moduleId);
         }
 
+        // Sidebar collapse functionality
+        let sidebarCollapsed = false;
+        
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const collapseIcon = document.querySelector('.collapse-icon');
+            
+            if (!sidebar || !mainContent) {
+                console.log('[SIDEBAR] Elements not found');
+                return;
+            }
+            
+            sidebarCollapsed = !sidebarCollapsed;
+            console.log('[SIDEBAR] Toggling to:', sidebarCollapsed ? 'collapsed' : 'expanded');
+            
+            if (sidebarCollapsed) {
+                sidebar.style.width = '60px';
+                sidebar.style.overflow = 'hidden';
+                mainContent.style.marginLeft = '80px';
+                if (collapseIcon) collapseIcon.textContent = '⟩';
+                
+                // Hide text in sidebar items
+                const sidebarItems = sidebar.querySelectorAll('.sidebar-item span:not(.collapse-icon)');
+                sidebarItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+                
+                const sectionTitles = sidebar.querySelectorAll('.sidebar-section h3');
+                sectionTitles.forEach(title => {
+                    title.style.display = 'none';
+                });
+            } else {
+                sidebar.style.width = '260px';
+                sidebar.style.overflow = 'visible';
+                mainContent.style.marginLeft = '280px';
+                if (collapseIcon) collapseIcon.textContent = '⟨';
+                
+                // Show text in sidebar items
+                const sidebarItems = sidebar.querySelectorAll('.sidebar-item span:not(.collapse-icon)');
+                sidebarItems.forEach(item => {
+                    item.style.display = 'inline';
+                });
+                
+                const sectionTitles = sidebar.querySelectorAll('.sidebar-section h3');
+                sectionTitles.forEach(title => {
+                    title.style.display = 'block';
+                });
+            }
+        }
+
+        // Sidebar search functionality
+        function handleSidebarSearch(event) {
+            const query = event.target.value;
+            showSearchResults(query);
+        }
+
+        function showSearchResults(query) {
+            const modules = [
+                'business-suite', 'legal-management', 'accounting', 'tax-management',
+                'ai-watson', 'qnis', 'lead-generation', 'analytics', 'automation',
+                'watson-command', 'nexus-oversight', 'trading-bot', 'admin-control'
+            ];
+
+            if (!query) {
+                // Reset all items to visible
+                const sidebarItems = document.querySelectorAll('.sidebar-item');
+                sidebarItems.forEach(item => {
+                    item.style.display = 'flex';
+                    item.style.background = '';
+                });
+                return;
+            }
+
+            const filteredModules = modules.filter(module => 
+                module.toLowerCase().includes(query.toLowerCase())
+            );
+
+            // Highlight matching modules
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                const moduleId = item.getAttribute('onclick')?.match(/switchModule\('([^']+)'\)/)?.[1];
+                if (moduleId) {
+                    const isMatch = filteredModules.includes(moduleId);
+                    item.style.background = isMatch && query.length > 0 ? 'rgba(255, 170, 0, 0.15)' : '';
+                    item.style.display = isMatch || query.length === 0 ? 'flex' : 'none';
+                }
+            });
+        }
+
         function toggleTheme() {
             const body = document.body;
             const themeBtn = document.querySelector('.theme-toggle');
