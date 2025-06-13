@@ -1446,26 +1446,59 @@
     </div>
 
     <div class="dashboard-layout">
-        <nav class="sidebar">
-            <div class="nav-section">
-                <div class="nav-title">Business Operations</div>
-                <div class="nav-item active" onclick="showModule('business')">
-                    <span class="nav-icon">💼</span>
-                    <span>Business Suite</span>
+        <nav class="sidebar enhanced-sidebar">
+            <!-- Enhanced Sidebar Header with Search -->
+            <div class="sidebar-header">
+                <div class="brand-section">
+                    <div class="logo-container">
+                        <span class="logo-text">DWC NEXUS</span>
+                    </div>
+                    <button class="collapse-btn" onclick="toggleSidebar()" title="Toggle Sidebar">
+                        <span class="collapse-icon">⟨</span>
+                    </button>
                 </div>
-                <div class="nav-item" onclick="showModule('legal')">
-                    <span class="nav-icon">⚖️</span>
-                    <span>Legal Management</span>
-                </div>
-                <div class="nav-item" onclick="showModule('accounting')">
-                    <span class="nav-icon">📊</span>
-                    <span>Accounting</span>
-                </div>
-                <div class="nav-item" onclick="showModule('tax')">
-                    <span class="nav-icon">🧾</span>
-                    <span>Tax Management</span>
+                
+                <div class="search-section">
+                    <div class="search-container">
+                        <input type="text" 
+                               class="search-input" 
+                               id="sidebar-search"
+                               placeholder="Search modules & features..."
+                               onkeyup="handleSidebarSearch(event)"
+                               onfocus="showSearchResults()">
+                        <button class="search-btn" onclick="performAISearch()" title="AI Search">
+                            <span class="search-icon">🔍</span>
+                        </button>
+                    </div>
+                    <div class="search-results" id="search-results" style="display: none;"></div>
                 </div>
             </div>
+
+            <!-- Enhanced Sidebar Content -->
+            <div class="sidebar-content">
+                <div class="nav-section">
+                    <div class="nav-title">Business Operations</div>
+                    <div class="nav-item active" onclick="showModule('business')" data-module="business">
+                        <span class="nav-icon">💼</span>
+                        <span>Business Suite</span>
+                        <div class="module-status"></div>
+                    </div>
+                    <div class="nav-item" onclick="showModule('legal')" data-module="legal">
+                        <span class="nav-icon">⚖️</span>
+                        <span>Legal Management</span>
+                        <div class="module-status"></div>
+                    </div>
+                    <div class="nav-item" onclick="showModule('accounting')" data-module="accounting">
+                        <span class="nav-icon">📊</span>
+                        <span>Accounting</span>
+                        <div class="module-status"></div>
+                    </div>
+                    <div class="nav-item" onclick="showModule('tax')" data-module="tax">
+                        <span class="nav-icon">🧾</span>
+                        <span>Tax Management</span>
+                        <div class="module-status"></div>
+                    </div>
+                </div>
 
             <!-- Intelligence & Analytics Section -->
             <div class="nav-section collapsible">
