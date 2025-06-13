@@ -114,7 +114,34 @@
         }
 
         .nav-section {
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-section.collapsible {
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .nav-section-header:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .nav-section-header:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: -2px;
         }
 
         .nav-title {
@@ -123,6 +150,33 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            margin: 0;
+        }
+
+        .section-toggle {
+            color: var(--accent);
+            font-size: 12px;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+
+        .section-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .nav-section-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 16px 12px 16px;
+        }
+
+        .nav-section-content.collapsed {
+            max-height: 0;
+            padding: 0 16px;
+        }
+
+        .nav-section:not(.collapsible) .nav-title {
             margin-bottom: 1rem;
         }
 
@@ -944,72 +998,95 @@
                 </div>
             </div>
 
-            <div class="nav-section">
-                <div class="nav-title">Intelligence & Analytics</div>
-                <div class="nav-item" onclick="showModule('ai')">
-                    <span class="nav-icon">🧠</span>
-                    <span>AI & Watson</span>
+            <!-- Intelligence & Analytics Section -->
+            <div class="nav-section collapsible">
+                <div class="nav-section-header" onclick="toggleSection('intelligence')" tabindex="0" role="button" aria-expanded="true">
+                    <div class="nav-title">Intelligence & Analytics</div>
+                    <div class="section-toggle" id="intelligence-toggle">▼</div>
                 </div>
-                <div class="nav-item" onclick="showModule('qnis')">
-                    <span class="nav-icon">🗺️</span>
-                    <span>QNIS Lead Map</span>
-                </div>
-                <div class="nav-item" onclick="showModule('leads')">
-                    <span class="nav-icon">🎯</span>
-                    <span>Lead Generation</span>
-                </div>
-                <div class="nav-item" onclick="showModule('analytics')">
-                    <span class="nav-icon">📈</span>
-                    <span>Analytics</span>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-title">Automation</div>
-                <div class="nav-item" onclick="showModule('workflow')">
-                    <span class="nav-icon">⚙️</span>
-                    <span>Workflows</span>
-                </div>
-                <div class="nav-item" onclick="showModule('voice')">
-                    <span class="nav-icon">🎤</span>
-                    <span>Voice Commands</span>
-                </div>
-                <div class="nav-item" onclick="showModule('trading')">
-                    <span class="nav-icon">💹</span>
-                    <span>Trading Bot</span>
+                <div class="nav-section-content" id="intelligence-content">
+                    <div class="nav-item" onclick="showModule('ai')">
+                        <span class="nav-icon">🧠</span>
+                        <span>AI & Watson</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('qnis')">
+                        <span class="nav-icon">🗺️</span>
+                        <span>QNIS Lead Map</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('leads')">
+                        <span class="nav-icon">🎯</span>
+                        <span>Lead Generation</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('analytics')">
+                        <span class="nav-icon">📈</span>
+                        <span>Analytics</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="nav-section">
-                <div class="nav-title">System</div>
-                <div class="nav-item" onclick="showModule('admin')">
-                    <span class="nav-icon">🛠️</span>
-                    <span>Administration</span>
+            <!-- Automation Section -->
+            <div class="nav-section collapsible">
+                <div class="nav-section-header" onclick="toggleSection('automation')" tabindex="0" role="button" aria-expanded="true">
+                    <div class="nav-title">Automation</div>
+                    <div class="section-toggle" id="automation-toggle">▼</div>
                 </div>
-                <div class="nav-item" onclick="showModule('apikeys')">
-                    <span class="nav-icon">🔐</span>
-                    <span>API Key Control</span>
+                <div class="nav-section-content" id="automation-content">
+                    <div class="nav-item" onclick="showModule('workflow')">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Workflows</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('voice')">
+                        <span class="nav-icon">🎤</span>
+                        <span>Voice Commands</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('trading')">
+                        <span class="nav-icon">💹</span>
+                        <span>Trading Bot</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Administration Section -->
+            <div class="nav-section collapsible">
+                <div class="nav-section-header" onclick="toggleSection('system')" tabindex="0" role="button" aria-expanded="true">
+                    <div class="nav-title">System</div>
+                    <div class="section-toggle" id="system-toggle">▼</div>
+                </div>
+                <div class="nav-section-content" id="system-content">
+                    <div class="nav-item" onclick="showModule('admin')">
+                        <span class="nav-icon">🛠️</span>
+                        <span>Administration</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('apikeys')">
+                        <span class="nav-icon">🔐</span>
+                        <span>API Key Control</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Business Operations Section -->
-            <div class="nav-section">
-                <div class="nav-title">Business Ops</div>
-                <div class="nav-item" onclick="showModule('investor')">
-                    <span class="nav-icon">📊</span>
-                    <span>Investor Deck</span>
+            <div class="nav-section collapsible">
+                <div class="nav-section-header" onclick="toggleSection('business')" tabindex="0" role="button" aria-expanded="true">
+                    <div class="nav-title">Business Ops</div>
+                    <div class="section-toggle" id="business-toggle">▼</div>
                 </div>
-                <div class="nav-item" onclick="showModule('pricing')">
-                    <span class="nav-icon">💳</span>
-                    <span>Pricing Plans</span>
-                </div>
-                <div class="nav-item" onclick="showModule('contact')">
-                    <span class="nav-icon">✉️</span>
-                    <span>Request for Info</span>
-                </div>
-                <div class="nav-item" onclick="showModule('cta')">
-                    <span class="nav-icon">🚀</span>
-                    <span>Call to Action</span>
+                <div class="nav-section-content" id="business-content">
+                    <div class="nav-item" onclick="showModule('investor')">
+                        <span class="nav-icon">📊</span>
+                        <span>Investor Deck</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('pricing')">
+                        <span class="nav-icon">💳</span>
+                        <span>Pricing Plans</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('contact')">
+                        <span class="nav-icon">✉️</span>
+                        <span>Request for Info</span>
+                    </div>
+                    <div class="nav-item" onclick="showModule('cta')">
+                        <span class="nav-icon">🚀</span>
+                        <span>Call to Action</span>
+                    </div>
                 </div>
             </div>
 
@@ -2613,7 +2690,378 @@
                 </div>
             </div>
 
-            <!-- Add other modules here following the same pattern -->
+            <!-- Trading Bot Module -->
+            <div id="tradingbot-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">🤖 Trading Bot</h2>
+                    <p class="module-subtitle">Coinbase-integrated automated trading with live portfolio management</p>
+                </div>
+                
+                <div class="trading-interface">
+                    <div class="trading-status-bar">
+                        <div class="status-item">
+                            <span class="status-label">Coinbase Status:</span>
+                            <span id="coinbase-status" class="status-indicator checking">Connecting...</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Mode:</span>
+                            <span id="trading-mode" class="status-value">Testnet</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Balance:</span>
+                            <span id="portfolio-balance" class="status-value">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="trading-controls">
+                        <div class="portfolio-section">
+                            <h3>Portfolio Overview</h3>
+                            <div id="portfolio-grid" class="portfolio-grid">
+                                <div class="portfolio-card">
+                                    <div class="asset-name">BTC</div>
+                                    <div class="asset-amount">0.00000000</div>
+                                    <div class="asset-value">$0.00</div>
+                                </div>
+                                <div class="portfolio-card">
+                                    <div class="asset-name">ETH</div>
+                                    <div class="asset-amount">0.00000000</div>
+                                    <div class="asset-value">$0.00</div>
+                                </div>
+                                <div class="portfolio-card">
+                                    <div class="asset-name">USD</div>
+                                    <div class="asset-amount">0.00</div>
+                                    <div class="asset-value">$0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="trading-form">
+                            <h3>Trade Execution</h3>
+                            <div class="trade-inputs">
+                                <div class="form-group">
+                                    <label for="trade-pair">Trading Pair</label>
+                                    <select id="trade-pair" class="form-select">
+                                        <option value="BTC-USD">BTC/USD</option>
+                                        <option value="ETH-USD">ETH/USD</option>
+                                        <option value="ADA-USD">ADA/USD</option>
+                                        <option value="SOL-USD">SOL/USD</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="trade-type">Order Type</label>
+                                        <select id="trade-type" class="form-select">
+                                            <option value="market">Market Order</option>
+                                            <option value="limit">Limit Order</option>
+                                            <option value="stop">Stop Loss</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="trade-side">Side</label>
+                                        <select id="trade-side" class="form-select">
+                                            <option value="buy">Buy</option>
+                                            <option value="sell">Sell</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="trade-amount">Amount</label>
+                                        <input type="number" id="trade-amount" class="form-input" placeholder="0.001" step="0.00000001">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="trade-price">Price (Limit Orders)</label>
+                                        <input type="number" id="trade-price" class="form-input" placeholder="Current Market">
+                                    </div>
+                                </div>
+                                
+                                <div class="trade-actions">
+                                    <button id="execute-trade" class="action-btn primary">Execute Trade</button>
+                                    <button id="simulate-trade" class="action-btn secondary">Simulate</button>
+                                    <button id="refresh-portfolio" class="action-btn secondary">Refresh Portfolio</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="trade-history">
+                        <h3>Recent Trades</h3>
+                        <div id="trade-log" class="trade-log">
+                            <div class="trade-entry">
+                                <span class="trade-time">Ready for trading</span>
+                                <span class="trade-details">Configure Coinbase API keys to enable live trading</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lead Generation Module -->
+            <div id="leadgen-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">🎯 Lead Generation</h2>
+                    <p class="module-subtitle">Automated lead discovery and qualification system</p>
+                </div>
+                
+                <div class="leadgen-interface">
+                    <div class="generation-controls">
+                        <div class="target-settings">
+                            <h3>Target Configuration</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="target-industry">Industry Focus</label>
+                                    <select id="target-industry" class="form-select">
+                                        <option value="saas">SaaS & Technology</option>
+                                        <option value="healthcare">Healthcare</option>
+                                        <option value="finance">Financial Services</option>
+                                        <option value="ecommerce">E-commerce</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="consulting">Professional Services</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="company-size">Company Size</label>
+                                    <select id="company-size" class="form-select">
+                                        <option value="startup">Startup (1-10)</option>
+                                        <option value="small">Small (11-50)</option>
+                                        <option value="medium">Medium (51-200)</option>
+                                        <option value="large">Large (201-1000)</option>
+                                        <option value="enterprise">Enterprise (1000+)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="geographic-focus">Geographic Focus</label>
+                                <input type="text" id="geographic-focus" class="form-input" placeholder="North America, Europe, etc.">
+                            </div>
+                            
+                            <div class="generation-options">
+                                <label class="option-toggle">
+                                    <input type="checkbox" id="auto-qualification" checked>
+                                    <span>Auto-qualify with QNIS scoring</span>
+                                </label>
+                                <label class="option-toggle">
+                                    <input type="checkbox" id="social-enrichment">
+                                    <span>Social media enrichment</span>
+                                </label>
+                                <label class="option-toggle">
+                                    <input type="checkbox" id="contact-discovery">
+                                    <span>Contact discovery</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="generation-actions">
+                            <button id="start-generation" class="action-btn primary">Start Lead Generation</button>
+                            <button id="stop-generation" class="action-btn secondary">Stop</button>
+                            <button id="export-leads" class="action-btn secondary">Export Leads</button>
+                        </div>
+                    </div>
+                    
+                    <div class="generation-results">
+                        <div class="results-stats">
+                            <div class="stat-card">
+                                <div class="stat-value" id="leads-generated">0</div>
+                                <div class="stat-label">Leads Generated</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="qualified-leads">0</div>
+                                <div class="stat-label">Qualified (QNIS 70+)</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="avg-qnis-score">0</div>
+                                <div class="stat-label">Avg QNIS Score</div>
+                            </div>
+                        </div>
+                        
+                        <div class="leads-table">
+                            <h4>Generated Leads</h4>
+                            <div id="leads-list" class="leads-list">
+                                <div class="lead-item header">
+                                    <span>Company</span>
+                                    <span>Industry</span>
+                                    <span>Size</span>
+                                    <span>QNIS Score</span>
+                                    <span>Actions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Module -->
+            <div id="analytics-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">📊 Analytics Dashboard</h2>
+                    <p class="module-subtitle">Comprehensive business intelligence and performance analytics</p>
+                </div>
+                
+                <div class="analytics-interface">
+                    <div class="analytics-nav">
+                        <button class="analytics-tab active" data-tab="overview">Overview</button>
+                        <button class="analytics-tab" data-tab="leads">Lead Analytics</button>
+                        <button class="analytics-tab" data-tab="conversion">Conversion Funnel</button>
+                        <button class="analytics-tab" data-tab="revenue">Revenue Analytics</button>
+                        <button class="analytics-tab" data-tab="performance">Performance</button>
+                    </div>
+                    
+                    <div class="analytics-content">
+                        <div id="overview-analytics" class="analytics-panel active">
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <h4>Total Leads</h4>
+                                    <div class="metric-value" id="total-leads-metric">0</div>
+                                    <div class="metric-change positive">+15% this month</div>
+                                </div>
+                                <div class="metric-card">
+                                    <h4>Conversion Rate</h4>
+                                    <div class="metric-value" id="conversion-rate-metric">0%</div>
+                                    <div class="metric-change positive">+8% vs last month</div>
+                                </div>
+                                <div class="metric-card">
+                                    <h4>Pipeline Value</h4>
+                                    <div class="metric-value" id="pipeline-value-metric">$0</div>
+                                    <div class="metric-change positive">+32% growth</div>
+                                </div>
+                                <div class="metric-card">
+                                    <h4>AI Operations</h4>
+                                    <div class="metric-value" id="ai-ops-metric">0</div>
+                                    <div class="metric-change positive">+24% efficiency</div>
+                                </div>
+                            </div>
+                            
+                            <div class="charts-section">
+                                <div class="chart-container">
+                                    <h4>Lead Generation Trend</h4>
+                                    <div id="lead-trend-chart" class="chart-placeholder">
+                                        Real-time lead generation data will appear here
+                                    </div>
+                                </div>
+                                <div class="chart-container">
+                                    <h4>Geographic Distribution</h4>
+                                    <div id="geo-chart" class="chart-placeholder">
+                                        Geographic analysis based on current lead data
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="leads-analytics" class="analytics-panel">
+                            <div class="lead-metrics">
+                                <h4>Lead Quality Analysis</h4>
+                                <div class="quality-breakdown">
+                                    <div class="quality-item">
+                                        <span class="quality-label">High Quality (QNIS 80+)</span>
+                                        <span class="quality-bar"><div style="width: 35%"></div></span>
+                                        <span class="quality-value">35%</span>
+                                    </div>
+                                    <div class="quality-item">
+                                        <span class="quality-label">Medium Quality (QNIS 60-79)</span>
+                                        <span class="quality-bar"><div style="width: 45%"></div></span>
+                                        <span class="quality-value">45%</span>
+                                    </div>
+                                    <div class="quality-item">
+                                        <span class="quality-label">Low Quality (QNIS <60)</span>
+                                        <span class="quality-bar"><div style="width: 20%"></div></span>
+                                        <span class="quality-value">20%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workflows Module -->
+            <div id="workflows-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">⚙️ Automated Workflows</h2>
+                    <p class="module-subtitle">Intelligent automation and workflow orchestration</p>
+                </div>
+                
+                <div class="workflows-interface">
+                    <div class="workflow-library">
+                        <div class="workflow-templates">
+                            <h3>Workflow Templates</h3>
+                            <div class="template-grid">
+                                <div class="template-card active" data-workflow="lead-nurture">
+                                    <div class="template-icon">🎯</div>
+                                    <h4>Lead Nurture Sequence</h4>
+                                    <p>Automated follow-up for new leads</p>
+                                    <div class="template-status">Active</div>
+                                </div>
+                                <div class="template-card" data-workflow="ai-qualification">
+                                    <div class="template-icon">🧠</div>
+                                    <h4>AI Lead Qualification</h4>
+                                    <p>Intelligent QNIS scoring pipeline</p>
+                                    <div class="template-status">Available</div>
+                                </div>
+                                <div class="template-card" data-workflow="email-campaigns">
+                                    <div class="template-icon">📧</div>
+                                    <h4>Email Campaigns</h4>
+                                    <p>Automated email marketing flows</p>
+                                    <div class="template-status">Available</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="workflow-builder">
+                            <h3>Workflow Builder</h3>
+                            <div class="builder-canvas">
+                                <div class="workflow-step start">
+                                    <div class="step-icon">▶️</div>
+                                    <div class="step-label">Start Trigger</div>
+                                </div>
+                                <div class="workflow-connector">→</div>
+                                <div class="workflow-step action">
+                                    <div class="step-icon">🎯</div>
+                                    <div class="step-label">Lead Capture</div>
+                                </div>
+                                <div class="workflow-connector">→</div>
+                                <div class="workflow-step condition">
+                                    <div class="step-icon">🔀</div>
+                                    <div class="step-label">QNIS Score Check</div>
+                                </div>
+                                <div class="workflow-connector">→</div>
+                                <div class="workflow-step end">
+                                    <div class="step-icon">✅</div>
+                                    <div class="step-label">Follow-up Action</div>
+                                </div>
+                            </div>
+                            
+                            <div class="workflow-controls">
+                                <button id="save-workflow" class="action-btn primary">Save Workflow</button>
+                                <button id="test-workflow" class="action-btn secondary">Test Run</button>
+                                <button id="activate-workflow" class="action-btn secondary">Activate</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="workflow-execution">
+                        <h3>Active Workflows</h3>
+                        <div id="active-workflows" class="workflow-list">
+                            <div class="workflow-item">
+                                <div class="workflow-info">
+                                    <h4>Lead Nurture Sequence</h4>
+                                    <p>Processing leads through automated sequence</p>
+                                </div>
+                                <div class="workflow-stats">
+                                    <span class="stat" id="active-workflow-count">0 Active</span>
+                                    <span class="stat" id="completed-workflow-count">0 Completed Today</span>
+                                </div>
+                                <div class="workflow-actions">
+                                    <button class="action-btn small">Pause</button>
+                                    <button class="action-btn small">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
         </main>
     </div>
@@ -5839,9 +6287,47 @@ KNOWLEDGE GRAPH CONNECTIONS:
             document.getElementById('completed-workflow-count').textContent = `${completedCount} Completed Today`;
         }
 
-        // Fix QNIS initialization
+        // Fix QNIS initialization - define the function properly
         function initializeQNIS() {
-            initializeQNISMap();
+            if (typeof initializeQNISMap === 'function') {
+                initializeQNISMap();
+            } else {
+                // Initialize QNIS directly if function not found
+                setupQNISMap();
+            }
+        }
+
+        function setupQNISMap() {
+            // Direct QNIS initialization
+            qnisMap = {
+                map: null,
+                userLocation: null,
+                leads: [],
+                leadMarkers: [],
+                userMarker: null,
+                isInitialized: false,
+                mapLayers: {}
+            };
+
+            // Initialize map
+            const mapContainer = document.getElementById('qnis-map');
+            if (mapContainer && typeof L !== 'undefined') {
+                qnisMap.map = L.map('qnis-map').setView([39.8283, -98.5795], 4);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(qnisMap.map);
+
+                qnisMap.isInitialized = true;
+                
+                // Get user location
+                getUserLocation();
+                
+                // Start lead tracking
+                startLeadTracking();
+                
+                console.log('[QNIS] Geographic intelligence map initialized');
+            }
         }
 
         // Force DOM verification and rebinding for all modules
