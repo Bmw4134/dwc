@@ -1227,8 +1227,11 @@
             if (selectedCategory) {
                 selectedCategory.style.display = 'grid';
                 console.log('[MODULES] Displayed:', category, 'modules');
+                console.log('[MODULES] Element found:', selectedCategory);
+                console.log('[MODULES] Children count:', selectedCategory.children.length);
             } else {
                 console.error('[MODULES] Category not found:', category + '-modules');
+                console.log('[MODULES] Available categories:', Array.from(document.querySelectorAll('.module-category')).map(el => el.id));
             }
             
             // Update navigation buttons
