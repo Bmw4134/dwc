@@ -174,22 +174,18 @@ app.get('*', (req, res) => {
         return res.status(404).json({ error: 'Not found' });
     }
     
-    // Production-optimized headers
-    if (isProduction) {
-        res.set('Cache-Control', 'public, max-age=300');
-        res.set('X-Content-Type-Options', 'nosniff');
-        res.set('X-Frame-Options', 'DENY');
-        res.set('X-XSS-Protection', '1; mode=block');
-    } else {
-        const timestamp = Date.now();
-        res.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
-        res.set('Pragma', 'no-cache');
-        res.set('Expires', '0');
-        res.set('X-Cache-Bust', timestamp.toString());
-        res.set('X-Fresh-Content', 'true');
-        res.set('X-Production-Ready', 'deployment-cleared');
-        console.log(`[PRODUCTION] Serving fresh content: ${timestamp}`);
-    }
+    // Force no-cache for both development and production to prevent deployment issues
+    const timestamp = Date.now();
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.set('X-Cache-Bust', timestamp.toString());
+    res.set('X-Fresh-Content', 'true');
+    res.set('X-Production-Ready', 'deployment-fixed');
+    res.set('X-Content-Type-Options', 'nosniff');
+    res.set('X-Frame-Options', 'DENY');
+    res.set('X-XSS-Protection', '1; mode=block');
+    console.log(`[DEPLOYMENT] Serving cache-busted content: ${timestamp}`);
     
     // Serve the NEXUS platform with forced refresh
     const indexPath = path.join(__dirname, 'public', 'index.html');
