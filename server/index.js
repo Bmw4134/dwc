@@ -112,8 +112,8 @@ app.get('/legacy', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'index.html'));
 });
 
-// Serve static assets from root directory for modular architecture
-app.use(express.static('.', {
+// Static file serving disabled to prevent conflicts with dynamic routing
+// app.use(express.static('.', {
   setHeaders: (res, filePath) => {
     if (isProduction) {
       if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.ico')) {
