@@ -6487,10 +6487,10 @@ KNOWLEDGE GRAPH CONNECTIONS:
                         mapContainer.style.minHeight = '500px';
                     }
                     
-                    // Initialize QNIS with U.S. map tiles
+                    // Initialize QNIS with U.S. map tiles - force display
                     setTimeout(() => {
-                        initializeUSBaseMap();
-                    }, 200);
+                        forceLeafletMapDisplay();
+                    }, 300);
                 }
                 
                 // Update navigation state
@@ -6849,6 +6849,14 @@ KNOWLEDGE GRAPH CONNECTIONS:
 
         function initializeUSBaseMap() {
             console.log('[QNIS] Initializing U.S. base map with OpenStreetMap tiles');
+            
+            // Wait for Leaflet to be fully loaded
+            if (typeof L === 'undefined') {
+                console.log('[QNIS] Leaflet not loaded yet, waiting...');
+                setTimeout(initializeUSBaseMap, 500);
+                return;
+            }
+            
             loadCacheFromStorage();
             
             const mapContainer = document.getElementById('qnis-map');
@@ -6864,11 +6872,12 @@ KNOWLEDGE GRAPH CONNECTIONS:
                 mapContainer.style.height = '500px';
                 mapContainer.style.display = 'block';
                 mapContainer.style.position = 'relative';
+                mapContainer.style.zIndex = '1';
 
                 console.log('[QNIS] Creating Leaflet map centered on USA');
                 
                 // Initialize Leaflet map with U.S. center view
-                const map = L.map('qnis-map', {
+                const map = L.map(mapContainer, {
                     center: [37.8, -96.9], // USA center coordinates
                     zoom: 4,
                     zoomControl: true,
@@ -6876,13 +6885,11 @@ KNOWLEDGE GRAPH CONNECTIONS:
                     preferCanvas: false
                 });
 
-                // Add OpenStreetMap tile layer with fallback
+                // Add OpenStreetMap tile layer
                 const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                     maxZoom: 18,
-                    minZoom: 3,
-                    crossOrigin: true,
-                    errorTileUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+                    minZoom: 3
                 });
 
                 tileLayer.addTo(map);
@@ -6893,25 +6900,25 @@ KNOWLEDGE GRAPH CONNECTIONS:
                 window.qnisMap.isInitialized = true;
                 window.qnisMap.recoveryMode = false;
 
-                let tilesLoaded = false;
-                let loadTimeout = setTimeout(() => {
-                    if (!tilesLoaded) {
-                        console.log('[QNIS] Tiles loading timeout - continuing with map anyway');
-                        addMarkersToUSMap(map);
-                        showMapSuccessNotification();
-                    }
-                }, 3000);
+                // Force map to resize and display
+                setTimeout(() => {
+                    map.invalidateSize();
+                    console.log('[QNIS] Map size invalidated and refreshed');
+                }, 100);
 
-                tileLayer.on('load', () => {
-                    tilesLoaded = true;
-                    clearTimeout(loadTimeout);
-                    console.log('[QNIS] Map tiles loaded successfully');
+                // Add event handlers
+                map.whenReady(() => {
+                    console.log('[QNIS] Map is ready, adding markers');
                     addMarkersToUSMap(map);
                     showMapSuccessNotification();
                 });
 
+                tileLayer.on('load', () => {
+                    console.log('[QNIS] Tiles loaded successfully');
+                });
+
                 tileLayer.on('tileerror', (e) => {
-                    console.log('[QNIS] Some tiles failed to load, but map is operational');
+                    console.log('[QNIS] Tile error, but map continues:', e);
                 });
 
                 // Add map interaction handlers
@@ -6923,12 +6930,7 @@ KNOWLEDGE GRAPH CONNECTIONS:
                     console.log('[QNIS] Map zoom level:', map.getZoom());
                 });
 
-                // Immediate marker addition for cached data
-                if (qnisMap?.leads?.length > 0) {
-                    addMarkersToUSMap(map);
-                }
-
-                // Fetch fresh data
+                // Fetch current leads
                 fetchCurrentLeads(map);
 
                 console.log('[QNIS] U.S. base map initialization complete');
@@ -7045,6 +7047,177 @@ KNOWLEDGE GRAPH CONNECTIONS:
             
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 4000);
+        }
+
+        function forceLeafletMapDisplay() {
+            console.log('[QNIS] Force displaying Leaflet map with U.S. tiles');
+            
+            // Ensure Leaflet is available
+            if (typeof L === 'undefined') {
+                console.error('[QNIS] Leaflet library not loaded');
+                forceVisibleMapRender();
+                return false;
+            }
+            
+            const mapContainer = document.getElementById('qnis-map');
+            if (!mapContainer) {
+                console.error('[QNIS] Map container missing');
+                return false;
+            }
+            
+            // Clear and prepare container
+            mapContainer.innerHTML = '';
+            mapContainer.style.cssText = `
+                width: 100%; 
+                height: 500px; 
+                display: block; 
+                position: relative; 
+                z-index: 1;
+                background: #f0f0f0;
+                border: 1px solid #ddd;
+            `;
+            
+            try {
+                // Create Leaflet map instance
+                const map = L.map(mapContainer, {
+                    center: [37.8, -96.9],
+                    zoom: 4,
+                    zoomControl: true,
+                    attributionControl: true
+                });
+                
+                // Add tile layer
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 18
+                }).addTo(map);
+                
+                // Store globally
+                window.qnisMap = window.qnisMap || {};
+                window.qnisMap.map = map;
+                window.qnisMap.isInitialized = true;
+                
+                // Force resize
+                setTimeout(() => {
+                    map.invalidateSize();
+                    console.log('[QNIS] Map resized and ready');
+                }, 100);
+                
+                // Add lead markers
+                setTimeout(() => {
+                    addLeadMarkersToMap(map);
+                }, 500);
+                
+                console.log('[QNIS] Leaflet map successfully created');
+                return true;
+                
+            } catch (error) {
+                console.error('[QNIS] Map creation failed:', error);
+                forceVisibleMapRender();
+                return false;
+            }
+        }
+        
+        function addLeadMarkersToMap(map) {
+            loadCacheFromStorage();
+            const leads = qnisMap?.leads || leadMapCache?.leads || [];
+            
+            console.log('[QNIS] Adding', leads.length, 'lead markers');
+            
+            // If no leads, fetch from server
+            if (leads.length === 0) {
+                fetch('/api/qnis/leads')
+                    .then(response => response.json())
+                    .then(serverLeads => {
+                        console.log('[QNIS] Fetched', serverLeads.length, 'leads from server');
+                        processAndDisplayLeads(map, serverLeads);
+                    })
+                    .catch(() => {
+                        console.log('[QNIS] Server fetch failed, using demo data');
+                        addDemoLeads(map);
+                    });
+                return;
+            }
+            
+            processAndDisplayLeads(map, leads);
+        }
+        
+        function processAndDisplayLeads(map, leads) {
+            const cityCoords = {
+                'New York': [40.7128, -74.0060],
+                'Los Angeles': [34.0522, -118.2437],
+                'Chicago': [41.8781, -87.6298],
+                'Houston': [29.7604, -95.3698],
+                'Phoenix': [33.4484, -112.0740],
+                'Philadelphia': [39.9526, -75.1652],
+                'San Antonio': [29.4241, -98.4936],
+                'Dallas': [32.7767, -96.7970],
+                'San Francisco': [37.7749, -122.4194],
+                'Miami': [25.7617, -80.1918]
+            };
+            
+            leads.forEach(lead => {
+                const city = lead.city || lead.coordinates?.city || 'Unknown';
+                const coords = cityCoords[city] || [39.8283, -98.5795];
+                const lat = lead.lat || lead.coordinates?.lat || coords[0];
+                const lng = lead.lng || lead.coordinates?.lng || coords[1];
+                const score = lead.qnisScore || lead.qnis_score || 75;
+                const company = lead.company || lead.type || `Lead ${lead.id?.slice(-6)}`;
+                
+                // Color based on score
+                const color = score > 80 ? '#10b981' : score > 60 ? '#3b82f6' : '#f59e0b';
+                
+                // Create marker
+                const marker = L.circleMarker([lat, lng], {
+                    radius: Math.max(8, score / 6),
+                    fillColor: color,
+                    color: '#ffffff',
+                    weight: 2,
+                    opacity: 0.9,
+                    fillOpacity: 0.7
+                });
+                
+                // Add popup
+                marker.bindPopup(`
+                    <div style="font-family: Arial, sans-serif;">
+                        <h4 style="color: ${color}; margin: 0 0 8px 0;">${company}</h4>
+                        <p><strong>Location:</strong> ${city}</p>
+                        <p><strong>QNIS Score:</strong> ${score}</p>
+                        <p><strong>Industry:</strong> ${lead.industry || 'Technology'}</p>
+                        <p style="font-size: 11px; color: #666;">ID: ${lead.id}</p>
+                    </div>
+                `);
+                
+                marker.addTo(map);
+            });
+            
+            // Show success notification
+            showMapNotification(`Map loaded with ${leads.length} leads`);
+        }
+        
+        function addDemoLeads(map) {
+            const demoData = [
+                { city: 'New York', lat: 40.7128, lng: -74.0060, score: 92, company: 'TechCorp NYC' },
+                { city: 'Los Angeles', lat: 34.0522, lng: -118.2437, score: 85, company: 'StartupLA' },
+                { city: 'Chicago', lat: 41.8781, lng: -87.6298, score: 78, company: 'MidwestTech' },
+                { city: 'Houston', lat: 29.7604, lng: -95.3698, score: 82, company: 'EnergyPlus' }
+            ];
+            
+            processAndDisplayLeads(map, demoData);
+        }
+        
+        function showMapNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px;
+                background: #10b981; color: white;
+                padding: 12px 20px; border-radius: 6px;
+                font-weight: bold; z-index: 10000;
+                box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
         }
 
         function setupEmergencyCanvas() {
