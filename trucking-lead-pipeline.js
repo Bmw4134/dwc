@@ -117,7 +117,16 @@ class TruckingLeadPipeline {
         // Add to lead generation module or create new section
         const leadGenModule = document.getElementById('lead-gen-module');
         if (leadGenModule) {
-            leadGenModule.appendChild(pipelineModule);
+            const moduleContent = leadGenModule.querySelector('.module-content');
+            if (moduleContent) {
+                moduleContent.innerHTML = '';
+                moduleContent.appendChild(pipelineModule);
+            } else {
+                leadGenModule.appendChild(pipelineModule);
+            }
+        } else {
+            // Create dedicated trucking module if lead-gen doesn't exist
+            this.createTruckingModule();
         }
 
         this.addPipelineStyles();

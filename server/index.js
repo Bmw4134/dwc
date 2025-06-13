@@ -68,6 +68,13 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'landing.html'));
 });
 
+// Pro bono trucking company website
+app.get('/trucking-company-website.html', (req, res) => {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    console.log('[TRUCKING] Serving Premier Logistics Solutions website');
+    res.sendFile(path.join(process.cwd(), 'trucking-company-website.html'));
+});
+
 // Dashboard interface
 app.get('/dashboard', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
