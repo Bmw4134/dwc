@@ -537,12 +537,109 @@ app.get('/api/ui/responsiveness', (req, res) => {
   });
 });
 
+// Session store for authenticated users
+const activeSessions = new Set();
+
+// Authentication check middleware for dashboard access
+function requireAuth(req, res, next) {
+  const sessionId = req.headers['x-session-id'] || req.cookies?.session_id;
+  const authToken = req.headers['authorization'] || req.cookies?.auth_token;
+  
+  // Check if user has valid session
+  if (!sessionId && !authToken) {
+    console.log(`[ROUTING] Unauthenticated access to ${req.path} - serving landing page`);
+    return res.sendFile(path.join(process.cwd(), 'landing.html'));
+  }
+  
+  // Verify session exists in our store
+  if (sessionId && !activeSessions.has(sessionId)) {
+    console.log(`[ROUTING] Invalid session ${sessionId} - serving landing page`);
+    return res.sendFile(path.join(__dirname, '../landing.html'));
+  }
+  
+  next();
+}
+
+// Landing page route (public access)
+app.get('/', (req, res) => {
+  const sessionId = req.headers['x-session-id'] || req.cookies?.session_id;
+  const authToken = req.headers['authorization'] || req.cookies?.auth_token;
+  
+  if (!sessionId && !authToken) {
+    console.log(`[ROUTING] Serving landing page for unauthenticated user: ${Date.now()}`);
+    return res.sendFile(path.join(__dirname, '../landing.html'));
+  }
+  
+  console.log(`[ROUTING] Authenticated user accessing dashboard`);
+  res.sendFile(path.join(__dirname, '../dashboard.html'));
+});
+
+// Login endpoint to create authenticated session
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  
+  // Simple authentication check (in production, use proper password hashing)
+  if (username && password) {
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    activeSessions.add(sessionId);
+    
+    console.log(`[AUTH] Creating session ${sessionId} for user: ${username}`);
+    
+    res.cookie('session_id', sessionId, {
+      httpOnly: true,
+      secure: false, // Set to true in production with HTTPS
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    });
+    
+    res.json({
+      success: true,
+      sessionId: sessionId,
+      redirectTo: '/dashboard'
+    });
+  } else {
+    res.status(401).json({
+      success: false,
+      message: 'Invalid credentials'
+    });
+  }
+});
+
+// Logout endpoint to destroy session
+app.post('/api/logout', (req, res) => {
+  const sessionId = req.headers['x-session-id'] || req.cookies?.session_id;
+  
+  if (sessionId) {
+    activeSessions.delete(sessionId);
+    console.log(`[AUTH] Session ${sessionId} destroyed`);
+  }
+  
+  res.clearCookie('session_id');
+  res.json({
+    success: true,
+    redirectTo: '/'
+  });
+});
+
+// Dashboard route (requires authentication)
+app.get('/dashboard', requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, '../dashboard.html'));
+});
+
 // Serve the main application
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'API endpoint not found' });
   }
-  res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+  
+  // For deployment, always serve landing page first
+  const sessionId = req.headers['x-session-id'] || req.cookies?.session_id;
+  const authToken = req.headers['authorization'] || req.cookies?.auth_token;
+  
+  if (!sessionId && !authToken) {
+    return res.sendFile(path.join(__dirname, '../landing.html'));
+  }
+  
+  res.sendFile(path.join(__dirname, '../dashboard.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
