@@ -1172,6 +1172,128 @@
                 <div class="log-entry" style="padding: 2px 0; color: var(--text-secondary);">[12:34:58] Watson AI systems online</div>
                 <div class="log-entry" style="padding: 2px 0; color: var(--text-secondary);">[12:34:59] All 47 modules operational</div>
             </div>
+
+            <div id="business-modules" class="dashboard-grid module-category" style="display: none;">
+                <div class="module-card clickable" onclick="activateModule('legal-suite')">
+                    <div class="module-title">Legal Management Suite</div>
+                    <div class="module-status">Active</div>
+                    <div class="module-description">Contract management, compliance tracking, and legal document automation for LLC operations.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Generate Contract</button>
+                        <button class="action-btn secondary">Compliance Dashboard</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('accounting-suite')">
+                    <div class="module-title">Accounting Management</div>
+                    <div class="module-status">Processing</div>
+                    <div class="module-description">Full double-entry bookkeeping, financial statements, and automated accounting workflows.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Journal Entries</button>
+                        <button class="action-btn secondary">Financial Reports</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('tax-suite')">
+                    <div class="module-title">Tax Management Suite</div>
+                    <div class="module-status">Current</div>
+                    <div class="module-description">Tax preparation, quarterly filings, deduction tracking, and compliance automation.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">File Returns</button>
+                        <button class="action-btn secondary">Deduction Tracker</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('payroll-suite')">
+                    <div class="module-title">Payroll Management</div>
+                    <div class="module-status">Active</div>
+                    <div class="module-description">Employee payroll processing, tax withholdings, and benefits administration.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Process Payroll</button>
+                        <button class="action-btn secondary">Tax Forms</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('invoice-suite')">
+                    <div class="module-title">Invoice & Billing</div>
+                    <div class="module-status">Running</div>
+                    <div class="module-description">Automated invoicing, payment tracking, and accounts receivable management.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Create Invoice</button>
+                        <button class="action-btn secondary">Payment Status</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('expense-suite')">
+                    <div class="module-title">Expense Management</div>
+                    <div class="module-status">Tracking</div>
+                    <div class="module-description">Expense tracking, receipt management, and reimbursement automation.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Log Expense</button>
+                        <button class="action-btn secondary">Receipt Scan</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('compliance-suite')">
+                    <div class="module-title">Regulatory Compliance</div>
+                    <div class="module-status">Monitoring</div>
+                    <div class="module-description">Business license tracking, regulatory filings, and compliance deadline management.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">File Reports</button>
+                        <button class="action-btn secondary">License Status</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('insurance-suite')">
+                    <div class="module-title">Insurance Management</div>
+                    <div class="module-status">Protected</div>
+                    <div class="module-description">Business insurance tracking, claims management, and coverage optimization.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">File Claim</button>
+                        <button class="action-btn secondary">Coverage Review</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('banking-suite')">
+                    <div class="module-title">Banking Integration</div>
+                    <div class="module-status">Connected</div>
+                    <div class="module-description">Bank account integration, transaction categorization, and cash flow management.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Sync Accounts</button>
+                        <button class="action-btn secondary">Cash Flow</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('audit-suite')">
+                    <div class="module-title">Audit Management</div>
+                    <div class="module-status">Ready</div>
+                    <div class="module-description">Audit trail maintenance, document preparation, and compliance verification.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Audit Trail</button>
+                        <button class="action-btn secondary">Document Prep</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('budget-suite')">
+                    <div class="module-title">Budget Planning</div>
+                    <div class="module-status">Planning</div>
+                    <div class="module-description">Budget creation, variance analysis, and financial forecasting for business planning.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Create Budget</button>
+                        <button class="action-btn secondary">Forecast</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('contracts-suite')">
+                    <div class="module-title">Contract Lifecycle</div>
+                    <div class="module-status">Managing</div>
+                    <div class="module-description">Contract creation, negotiation tracking, and renewal management system.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">New Contract</button>
+                        <button class="action-btn secondary">Renewals</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="container" id="dashboard" style="margin-left: 250px; margin-right: 300px; padding: 0 20px;">
@@ -1242,6 +1364,11 @@
                         <span class="nav-icon">🎛️</span>
                         <span class="nav-text">Control</span>
                         <span class="nav-count">8</span>
+                    </button>
+                    <button class="nav-btn" onclick="showModuleCategory('business', event)">
+                        <span class="nav-icon">💼</span>
+                        <span class="nav-text">Business</span>
+                        <span class="nav-count">12</span>
                     </button>
                 </div>
                 <div class="nav-filters">
@@ -2271,6 +2398,112 @@
                             <div>• Decision optimization</div>
                         </div>
                         <button class="action-btn" onclick="queryWatsonAI()">Query AI</button>
+                    `
+                },
+                'legal-suite': {
+                    title: 'Legal Management Suite',
+                    content: `
+                        <h3>Contract Management Dashboard</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Active Contracts:</strong> 47 agreements</div>
+                            <div><strong>Pending Review:</strong> 8 contracts</div>
+                            <div><strong>Expiring Soon:</strong> 3 within 30 days</div>
+                            <div><strong>Compliance Status:</strong> 97.8% compliant</div>
+                        </div>
+                        <h3>Generate Legal Document</h3>
+                        <div style="margin: 16px 0;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Non-Disclosure Agreement</option>
+                                <option>Service Agreement</option>
+                                <option>Employment Contract</option>
+                                <option>Operating Agreement</option>
+                                <option>Partnership Agreement</option>
+                            </select>
+                            <input type="text" placeholder="Client/Party name" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <input type="text" placeholder="Contract value" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <input type="date" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <button class="action-btn" onclick="generateContract()">Generate Contract</button>
+                            <button class="action-btn secondary" onclick="viewComplianceDashboard()">Compliance Dashboard</button>
+                        </div>
+                    `
+                },
+                'accounting-suite': {
+                    title: 'Accounting Management System',
+                    content: `
+                        <h3>Financial Summary</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Cash Balance:</strong> $247,650</div>
+                            <div><strong>Monthly Revenue:</strong> $89,450</div>
+                            <div><strong>Monthly Expenses:</strong> $52,780</div>
+                            <div><strong>Net Profit Margin:</strong> 41.0%</div>
+                        </div>
+                        <h3>Journal Entry</h3>
+                        <div style="margin: 16px 0;">
+                            <input type="date" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <input type="text" placeholder="Description" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Cash</option>
+                                <option>Accounts Receivable</option>
+                                <option>Revenue</option>
+                                <option>Operating Expenses</option>
+                                <option>Accounts Payable</option>
+                            </select>
+                            <input type="number" placeholder="Debit Amount" style="margin: 4px 0; padding: 8px; width: 48%; margin-right: 4%;">
+                            <input type="number" placeholder="Credit Amount" style="margin: 4px 0; padding: 8px; width: 48%;">
+                            <button class="action-btn" onclick="postJournalEntry()">Post Entry</button>
+                            <button class="action-btn secondary" onclick="generateFinancialReport()">Financial Reports</button>
+                        </div>
+                    `
+                },
+                'tax-suite': {
+                    title: 'Tax Management Suite',
+                    content: `
+                        <h3>Tax Dashboard</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Q4 2024 Estimated:</strong> $18,450</div>
+                            <div><strong>YTD Tax Paid:</strong> $72,300</div>
+                            <div><strong>Next Filing Due:</strong> January 15, 2025</div>
+                            <div><strong>Deductions Tracked:</strong> $34,780</div>
+                        </div>
+                        <h3>Tax Operations</h3>
+                        <div style="margin: 16px 0;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Quarterly Estimated Tax</option>
+                                <option>Annual Tax Return</option>
+                                <option>Sales Tax Filing</option>
+                                <option>Payroll Tax Return</option>
+                                <option>1099 Filings</option>
+                            </select>
+                            <input type="text" placeholder="Tax period (e.g., Q4 2024)" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <button class="action-btn" onclick="prepareTaxReturn()">Prepare Return</button>
+                            <button class="action-btn secondary" onclick="trackDeduction()">Track Deduction</button>
+                        </div>
+                    `
+                },
+                'payroll-suite': {
+                    title: 'Payroll Management',
+                    content: `
+                        <h3>Payroll Overview</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Active Employees:</strong> 12 employees</div>
+                            <div><strong>Monthly Payroll:</strong> $45,600</div>
+                            <div><strong>Tax Withholdings:</strong> $8,940</div>
+                            <div><strong>Next Pay Date:</strong> December 30, 2024</div>
+                        </div>
+                        <h3>Process Payroll</h3>
+                        <div style="margin: 16px 0;">
+                            <input type="date" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>All Employees</option>
+                                <option>Salaried Only</option>
+                                <option>Hourly Only</option>
+                                <option>Contractors</option>
+                            </select>
+                            <label><input type="checkbox" checked> Include Benefits</label><br>
+                            <label><input type="checkbox" checked> Calculate Tax Withholdings</label><br>
+                            <button class="action-btn" onclick="processPayroll()">Process Payroll</button>
+                            <button class="action-btn secondary" onclick="generatePayrollReports()">Tax Forms</button>
+                        </div>
                     `
                 },
                 'crypto-trading': {
