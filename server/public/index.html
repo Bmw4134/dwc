@@ -9,27 +9,23 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <script>
-        // AGGRESSIVE cache clearing for production deployment
+        // Cache clearing for deployment without infinite loops
         (function() {
             const timestamp = Date.now();
             
-            // Clear all browser caches
+            // Clear browser caches once
             if ('caches' in window) {
                 caches.keys().then(names => {
                     names.forEach(name => caches.delete(name));
                 });
             }
             
-            // Clear localStorage and sessionStorage
-            try {
-                localStorage.clear();
-                sessionStorage.clear();
-            } catch(e) {}
-            
-            // Force reload if cached version detected
-            const meta = document.createElement('meta');
-            meta.setAttribute('http-equiv', 'refresh');
-            meta.setAttribute('content', '0');
+            // Clear service workers once
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    registrations.forEach(registration => registration.unregister());
+                });
+            }
             
             console.log('[CACHE-BUST] Production content loading:', timestamp);
         })();
@@ -3606,7 +3602,13 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
             // Check for button clicks specifically
             if (e.target.tagName === 'BUTTON') {
                 console.log('[BUTTON] Button clicked:', e.target.textContent);
-                speakText('Button clicked: ' + e.target.textContent);
+                // Only announce important buttons, not every click
+                if (e.target.textContent.includes('Access NEXUS') || 
+                    e.target.textContent.includes('Login') || 
+                    e.target.textContent.includes('Logout') ||
+                    e.target.textContent.includes('Emergency')) {
+                    speakText('Button clicked: ' + e.target.textContent);
+                }
                 showNotification('Button Click', e.target.textContent + ' activated');
             }
             
@@ -3629,7 +3631,8 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
         document.addEventListener('touchstart', function(e) {
             console.log('[TOUCH] Touch started on:', e.target);
             console.log('[TOUCH] Touch coordinates:', e.touches[0].clientX, e.touches[0].clientY);
-            speakText('Touch detected');
+            // Touch detected - logging only, no voice announcement
+            console.log('[TOUCH] Touch detected');
         });
 
         // Testing Panel Functions
