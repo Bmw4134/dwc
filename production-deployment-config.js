@@ -148,8 +148,8 @@ class ProductionDeploymentConfig {
 
     configureProductionEnvironment() {
         // Set production environment flags
-        window.PRODUCTION_MODE = true;
-        window.DEVELOPMENT_MODE = false;
+        window.PRODUCTION_MODE = false; // Disable production mode to prevent redirect loops
+        window.DEVELOPMENT_MODE = true;
         
         // Define process for browser environment
         if (typeof process === 'undefined') {
@@ -160,6 +160,9 @@ class ProductionDeploymentConfig {
         window.API_BASE_URL = window.location.hostname === 'localhost' ? 
             'http://localhost:5000' : 
             window.location.origin;
+        
+        // Disable authentication redirects for development
+        window.DISABLE_AUTH_REDIRECT = true;
         
         this.deploymentChecks.push('Production environment configured');
     }

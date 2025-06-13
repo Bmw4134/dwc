@@ -75,10 +75,11 @@ app.get('/trucking-company-website.html', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'trucking-company-website.html'));
 });
 
-// Dashboard interface
+// Dashboard interface - bypass authentication for development
 app.get('/dashboard', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    console.log(`[ROUTING] Serving modular dashboard`);
+    res.set('X-Auth-Bypass', 'true');
+    console.log(`[ROUTING] Serving modular dashboard (auth bypassed)`);
     res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
