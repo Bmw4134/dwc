@@ -1006,6 +1006,7 @@
         let isAuthenticated = false;
         let isListening = false;
         let recognition = null;
+        let currentUser = null;
 
         // Authentication
         function handleLogin(event) {
@@ -1022,12 +1023,8 @@
                 document.getElementById('logout-btn').style.display = 'block';
                 
                 console.log('[AUTH] Authentication successful - Enterprise dashboard access granted');
+                speakText('Welcome admin. Enterprise dashboard access granted.');
                 initializePlatformFeatures();
-                
-                // Show testing panel for admin
-                setTimeout(() => {
-                    showTestingPanel();
-                }, 2000);
                 
             } else if (username === 'watson' && password === 'watson123') {
                 isAuthenticated = true;
@@ -1037,12 +1034,8 @@
                 document.getElementById('logout-btn').style.display = 'block';
                 
                 console.log('[AUTH] Watson authentication successful - Master control access granted');
+                speakText('Welcome Watson. Master control access granted.');
                 initializePlatformFeatures();
-                
-                // Show testing panel for watson
-                setTimeout(() => {
-                    showTestingPanel();
-                }, 2000);
                 
             } else {
                 alert('Invalid credentials. Please try again.');
