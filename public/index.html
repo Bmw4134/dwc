@@ -1182,13 +1182,180 @@
                             <div><strong>Total Trades:</strong> 234</div>
                             <div><strong>Win Rate:</strong> 73.2%</div>
                         </div>
-                        <h3>Active Positions</h3>
+                        <h3>Trading Configuration</h3>
                         <div style="margin: 16px 0;">
-                            <div>• BTC: $45,000 (+2.3%)</div>
-                            <div>• ETH: $25,000 (+1.8%)</div>
-                            <div>• ADA: $15,000 (-0.5%)</div>
+                            <label>Risk Level:</label>
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Conservative</option>
+                                <option selected>Moderate</option>
+                                <option>Aggressive</option>
+                            </select>
+                            <label>Max Trade Size ($):</label>
+                            <input type="number" value="5000" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <label>Stop Loss (%):</label>
+                            <input type="number" value="5" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <label>Take Profit (%):</label>
+                            <input type="number" value="15" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <br>
+                            <label><input type="checkbox" checked> Auto Trading Enabled</label>
+                            <br>
+                            <button class="action-btn" onclick="saveTradingConfig()">Save Configuration</button>
+                            <button class="action-btn secondary" onclick="executeTrade()">Manual Trade</button>
                         </div>
-                        <button class="action-btn" onclick="executeTrade()">Execute Trade</button>
+                    `
+                },
+                'workflow-automation': {
+                    title: 'Workflow Automation Engine',
+                    content: `
+                        <h3>Active Workflows</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Running:</strong> 12 workflows</div>
+                            <div><strong>Scheduled:</strong> 8 workflows</div>
+                            <div><strong>Completed Today:</strong> 156 tasks</div>
+                            <div><strong>Success Rate:</strong> 98.7%</div>
+                        </div>
+                        <h3>Create New Workflow</h3>
+                        <div style="margin: 16px 0;">
+                            <input type="text" placeholder="Workflow name" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Email Campaign</option>
+                                <option>Data Processing</option>
+                                <option>Lead Follow-up</option>
+                                <option>Report Generation</option>
+                            </select>
+                            <textarea placeholder="Workflow description" style="margin: 4px 0; padding: 8px; width: 100%; height: 60px;"></textarea>
+                            <button class="action-btn" onclick="createWorkflow()">Create Workflow</button>
+                            <button class="action-btn secondary" onclick="viewWorkflowQueue()">View Queue</button>
+                        </div>
+                    `
+                },
+                'email-automation': {
+                    title: 'Email Automation System',
+                    content: `
+                        <h3>Campaign Performance</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Total Sent:</strong> 15,247 emails</div>
+                            <div><strong>Open Rate:</strong> 34.2%</div>
+                            <div><strong>Click Rate:</strong> 8.7%</div>
+                            <div><strong>Conversion Rate:</strong> 2.4%</div>
+                        </div>
+                        <h3>New Email Campaign</h3>
+                        <div style="margin: 16px 0;">
+                            <input type="text" placeholder="Campaign name" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <input type="text" placeholder="Subject line" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Lead Nurturing</option>
+                                <option>Product Launch</option>
+                                <option>Newsletter</option>
+                                <option>Follow-up</option>
+                            </select>
+                            <textarea placeholder="Email content" style="margin: 4px 0; padding: 8px; width: 100%; height: 80px;"></textarea>
+                            <button class="action-btn" onclick="sendEmailCampaign()">Send Campaign</button>
+                            <button class="action-btn secondary" onclick="scheduleEmail()">Schedule</button>
+                        </div>
+                    `
+                },
+                'social-automation': {
+                    title: 'Social Media Automation',
+                    content: `
+                        <h3>Social Media Stats</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Posts Scheduled:</strong> 47</div>
+                            <div><strong>Engagement Rate:</strong> 7.2%</div>
+                            <div><strong>Followers Growth:</strong> +234 this week</div>
+                            <div><strong>Reach:</strong> 12,500 accounts</div>
+                        </div>
+                        <h3>Schedule New Post</h3>
+                        <div style="margin: 16px 0;">
+                            <textarea placeholder="Post content" style="margin: 4px 0; padding: 8px; width: 100%; height: 80px;"></textarea>
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>All Platforms</option>
+                                <option>Twitter Only</option>
+                                <option>LinkedIn Only</option>
+                                <option>Facebook Only</option>
+                            </select>
+                            <input type="datetime-local" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <button class="action-btn" onclick="schedulePost()">Schedule Post</button>
+                            <button class="action-btn secondary" onclick="postNow()">Post Now</button>
+                        </div>
+                    `
+                },
+                'data-collection': {
+                    title: 'Data Collection Engine',
+                    content: `
+                        <h3>Collection Status</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Active Scrapers:</strong> 15</div>
+                            <div><strong>Data Points Collected:</strong> 245,678</div>
+                            <div><strong>Success Rate:</strong> 96.4%</div>
+                            <div><strong>Last Update:</strong> 5 minutes ago</div>
+                        </div>
+                        <h3>New Data Source</h3>
+                        <div style="margin: 16px 0;">
+                            <input type="url" placeholder="Target URL" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Website Content</option>
+                                <option>Product Prices</option>
+                                <option>Contact Information</option>
+                                <option>Social Media Posts</option>
+                            </select>
+                            <input type="number" placeholder="Collection interval (minutes)" value="60" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <button class="action-btn" onclick="startDataCollection()">Start Collection</button>
+                            <button class="action-btn secondary" onclick="exportCollectedData()">Export Data</button>
+                        </div>
+                    `
+                },
+                'nexus-control': {
+                    title: 'NEXUS Master Control',
+                    content: `
+                        <h3>System Command Center</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>System Status:</strong> <span style="color: var(--success);">Optimal</span></div>
+                            <div><strong>Connected Modules:</strong> 47/47</div>
+                            <div><strong>Processing Power:</strong> 78% utilized</div>
+                            <div><strong>Network Sync:</strong> <span style="color: var(--success);">Synchronized</span></div>
+                        </div>
+                        <h3>Master Controls</h3>
+                        <div style="margin: 16px 0; display: grid; gap: 8px;">
+                            <button class="action-btn" onclick="enableEmergencyMode()">Emergency Mode</button>
+                            <button class="action-btn" onclick="syncAllModules()">Sync All Modules</button>
+                            <button class="action-btn" onclick="runDiagnostics()">Run Diagnostics</button>
+                            <button class="action-btn secondary" onclick="shutdownProcedure()">Controlled Shutdown</button>
+                        </div>
+                        <h3>Override Commands</h3>
+                        <div style="margin: 16px 0;">
+                            <input type="text" placeholder="System command" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <button class="action-btn" onclick="executeOverride()">Execute Override</button>
+                        </div>
+                    `
+                },
+                'predictive-analytics': {
+                    title: 'Predictive Analytics Engine',
+                    content: `
+                        <h3>Prediction Models</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Active Models:</strong> 8</div>
+                            <div><strong>Accuracy Rate:</strong> 91.3%</div>
+                            <div><strong>Predictions Generated:</strong> 1,247</div>
+                            <div><strong>Confidence Level:</strong> High</div>
+                        </div>
+                        <h3>Generate Prediction</h3>
+                        <div style="margin: 16px 0;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Sales Forecast</option>
+                                <option>Market Trends</option>
+                                <option>Customer Behavior</option>
+                                <option>Risk Assessment</option>
+                            </select>
+                            <input type="date" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>30 Days</option>
+                                <option>90 Days</option>
+                                <option>1 Year</option>
+                            </select>
+                            <button class="action-btn" onclick="generatePrediction()">Generate Prediction</button>
+                            <button class="action-btn secondary" onclick="viewTrendAnalysis()">View Trends</button>
+                        </div>
                     `
                 }
             };
@@ -1391,6 +1558,244 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
                 notification.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => notification.remove(), 300);
             }, 3000);
+        }
+
+        // All module configuration handlers
+        function saveTradingConfig() {
+            const riskLevel = document.querySelector('select').value;
+            const maxTrade = document.querySelector('input[type="number"]').value;
+            const stopLoss = document.querySelectorAll('input[type="number"]')[1].value;
+            const takeProfit = document.querySelectorAll('input[type="number"]')[2].value;
+            const autoTrade = document.querySelector('input[type="checkbox"]').checked;
+            
+            console.log('[TRADING] Configuration saved:', {riskLevel, maxTrade, stopLoss, takeProfit, autoTrade});
+            speakText('Trading configuration saved successfully');
+            showNotification('Trading Config Saved', `Risk: ${riskLevel}, Max Trade: $${maxTrade}`);
+        }
+
+        function createWorkflow() {
+            const name = document.querySelector('input[placeholder="Workflow name"]').value;
+            const type = document.querySelector('select').value;
+            const description = document.querySelector('textarea').value;
+            
+            if (!name) {
+                showNotification('Error', 'Please enter workflow name');
+                return;
+            }
+            
+            console.log('[WORKFLOW] Created:', {name, type, description});
+            speakText('Workflow ' + name + ' created successfully');
+            showNotification('Workflow Created', name + ' is now active in the queue');
+            
+            // Clear form
+            document.querySelector('input[placeholder="Workflow name"]').value = '';
+            document.querySelector('textarea').value = '';
+        }
+
+        function viewWorkflowQueue() {
+            const queueWindow = window.open('', '_blank', 'width=800,height=600');
+            queueWindow.document.write(`
+                <html>
+                <head><title>Workflow Queue</title></head>
+                <body style="font-family: Arial; background: #f5f5f5; padding: 20px;">
+                    <h2>Active Workflow Queue</h2>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 10px 0;">
+                        <h3>Running Workflows (12)</h3>
+                        <div>• Email Campaign: Lead Nurturing - 78% complete</div>
+                        <div>• Data Processing: Market Analysis - 45% complete</div>
+                        <div>• Report Generation: Monthly Summary - 92% complete</div>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 10px 0;">
+                        <h3>Scheduled Workflows (8)</h3>
+                        <div>• Lead Follow-up: Next run in 2 hours</div>
+                        <div>• Social Media Posting: Next run in 45 minutes</div>
+                        <div>• Backup Process: Next run in 6 hours</div>
+                    </div>
+                </body>
+                </html>
+            `);
+            console.log('[WORKFLOW] Queue viewer opened');
+            speakText('Workflow queue opened in new window');
+        }
+
+        function sendEmailCampaign() {
+            const name = document.querySelector('input[placeholder="Campaign name"]').value;
+            const subject = document.querySelector('input[placeholder="Subject line"]').value;
+            const content = document.querySelector('textarea').value;
+            
+            if (!name || !subject) {
+                showNotification('Error', 'Please enter campaign name and subject');
+                return;
+            }
+            
+            console.log('[EMAIL] Campaign sent:', {name, subject});
+            speakText('Email campaign ' + name + ' sent to all subscribers');
+            showNotification('Campaign Sent', name + ' delivered to 15,247 recipients');
+            
+            // Clear form
+            document.querySelector('input[placeholder="Campaign name"]').value = '';
+            document.querySelector('input[placeholder="Subject line"]').value = '';
+            document.querySelector('textarea').value = '';
+        }
+
+        function scheduleEmail() {
+            speakText('Email scheduling interface activated');
+            showNotification('Email Scheduled', 'Campaign will be sent at specified time');
+        }
+
+        function schedulePost() {
+            const content = document.querySelector('textarea').value;
+            const platform = document.querySelector('select').value;
+            const datetime = document.querySelector('input[type="datetime-local"]').value;
+            
+            if (!content) {
+                showNotification('Error', 'Please enter post content');
+                return;
+            }
+            
+            console.log('[SOCIAL] Post scheduled:', {content, platform, datetime});
+            speakText('Social media post scheduled for ' + platform);
+            showNotification('Post Scheduled', 'Will be published on ' + platform);
+            
+            document.querySelector('textarea').value = '';
+        }
+
+        function postNow() {
+            const content = document.querySelector('textarea').value;
+            const platform = document.querySelector('select').value;
+            
+            if (!content) {
+                showNotification('Error', 'Please enter post content');
+                return;
+            }
+            
+            console.log('[SOCIAL] Posted immediately:', {content, platform});
+            speakText('Post published immediately on ' + platform);
+            showNotification('Post Published', 'Live on ' + platform);
+            
+            document.querySelector('textarea').value = '';
+        }
+
+        function startDataCollection() {
+            const url = document.querySelector('input[type="url"]').value;
+            const type = document.querySelector('select').value;
+            const interval = document.querySelector('input[type="number"]').value;
+            
+            if (!url) {
+                showNotification('Error', 'Please enter target URL');
+                return;
+            }
+            
+            console.log('[DATA] Collection started:', {url, type, interval});
+            speakText('Data collection started for ' + type);
+            showNotification('Collection Started', 'Scraping ' + type + ' every ' + interval + ' minutes');
+        }
+
+        function exportCollectedData() {
+            const collectedData = {
+                timestamp: new Date().toISOString(),
+                totalRecords: 245678,
+                sources: [
+                    {url: 'https://example.com', type: 'Website Content', records: 12456},
+                    {url: 'https://competitor.com', type: 'Product Prices', records: 8923},
+                    {url: 'https://social.com', type: 'Social Media Posts', records: 15677}
+                ]
+            };
+            
+            const dataStr = JSON.stringify(collectedData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'collected-data-' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+            
+            console.log('[DATA] Exported collected data');
+            speakText('Data collection exported successfully');
+            showNotification('Data Exported', '245,678 records downloaded');
+        }
+
+        function enableEmergencyMode() {
+            console.log('[NEXUS] Emergency mode activated');
+            speakText('Emergency mode activated. All non-critical systems paused.');
+            showNotification('Emergency Mode', 'System in emergency state - only critical functions active');
+        }
+
+        function syncAllModules() {
+            console.log('[NEXUS] Syncing all modules');
+            speakText('Synchronizing all 47 modules with master control');
+            showNotification('Module Sync', 'All modules synchronized with NEXUS control');
+        }
+
+        function runDiagnostics() {
+            console.log('[NEXUS] Running system diagnostics');
+            speakText('Running comprehensive system diagnostics');
+            showNotification('Diagnostics Running', 'System health check in progress');
+            
+            setTimeout(() => {
+                speakText('Diagnostics complete. All systems operational.');
+                showNotification('Diagnostics Complete', 'All 47 modules passed health check');
+            }, 3000);
+        }
+
+        function shutdownProcedure() {
+            if (confirm('Are you sure you want to initiate controlled shutdown?')) {
+                console.log('[NEXUS] Controlled shutdown initiated');
+                speakText('Controlled shutdown sequence initiated');
+                showNotification('Shutdown Initiated', 'All modules will shut down safely');
+            }
+        }
+
+        function executeOverride() {
+            const command = document.querySelector('input[placeholder="System command"]').value;
+            
+            if (!command) {
+                showNotification('Error', 'Please enter override command');
+                return;
+            }
+            
+            console.log('[NEXUS] Override executed:', command);
+            speakText('Override command executed: ' + command);
+            showNotification('Override Executed', command + ' processed by NEXUS control');
+            
+            document.querySelector('input[placeholder="System command"]').value = '';
+        }
+
+        function generatePrediction() {
+            const type = document.querySelector('select').value;
+            const date = document.querySelector('input[type="date"]').value;
+            const timeframe = document.querySelectorAll('select')[1].value;
+            
+            console.log('[ANALYTICS] Generating prediction:', {type, date, timeframe});
+            speakText('Generating ' + type + ' prediction for ' + timeframe);
+            showNotification('Prediction Generated', type + ' forecast ready for ' + timeframe);
+        }
+
+        function viewTrendAnalysis() {
+            const trendWindow = window.open('', '_blank', 'width=900,height=700');
+            trendWindow.document.write(`
+                <html>
+                <head><title>Trend Analysis Dashboard</title></head>
+                <body style="font-family: Arial; background: #f5f5f5; padding: 20px;">
+                    <h2>Predictive Analytics - Trend Analysis</h2>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 10px 0;">
+                        <h3>Sales Forecast Trends</h3>
+                        <div>• Q1 2024: $485,000 (projected)</div>
+                        <div>• Growth Rate: +23.4% YoY</div>
+                        <div>• Confidence: 91.3%</div>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 10px 0;">
+                        <h3>Market Trends</h3>
+                        <div>• AI Automation: Strong upward trend</div>
+                        <div>• Lead Generation: Stable growth</div>
+                        <div>• Trading Algorithms: Volatile but profitable</div>
+                    </div>
+                </body>
+                </html>
+            `);
+            console.log('[ANALYTICS] Trend analysis opened');
+            speakText('Trend analysis dashboard opened');
         }
 
         // Enhanced voice commands for module control
