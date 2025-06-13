@@ -991,6 +991,52 @@
                     <span>API Key Control</span>
                 </div>
             </div>
+
+            <!-- Business Operations Section -->
+            <div class="nav-section">
+                <div class="nav-title">Business Ops</div>
+                <div class="nav-item" onclick="showModule('investor')">
+                    <span class="nav-icon">📊</span>
+                    <span>Investor Deck</span>
+                </div>
+                <div class="nav-item" onclick="showModule('pricing')">
+                    <span class="nav-icon">💳</span>
+                    <span>Pricing Plans</span>
+                </div>
+                <div class="nav-item" onclick="showModule('contact')">
+                    <span class="nav-icon">✉️</span>
+                    <span>Request for Info</span>
+                </div>
+                <div class="nav-item" onclick="showModule('cta')">
+                    <span class="nav-icon">🚀</span>
+                    <span>Call to Action</span>
+                </div>
+            </div>
+
+            <!-- AI Assistants Section -->
+            <div class="nav-section">
+                <div class="nav-title">AI Assistants</div>
+                <div class="nav-item" onclick="showModule('pitchgen')">
+                    <span class="nav-icon">🧠</span>
+                    <span>Pitch Generator</span>
+                </div>
+                <div class="nav-item" onclick="showModule('copybuilder')">
+                    <span class="nav-icon">✍️</span>
+                    <span>Site Copy Builder</span>
+                </div>
+                <div class="nav-item" onclick="showModule('research')">
+                    <span class="nav-icon">🌍</span>
+                    <span>Market Research</span>
+                </div>
+                <div class="nav-item" onclick="showModule('voicecommand')">
+                    <span class="nav-icon">🎤</span>
+                    <span>Voice Commands</span>
+                </div>
+                <div class="nav-item" onclick="showModule('watson')">
+                    <span class="nav-icon">⚡</span>
+                    <span>Watson AI</span>
+                </div>
+            </div>
         </nav>
 
         <main class="main-content">
@@ -1104,6 +1150,687 @@
                         <div class="stat-item">
                             <span class="stat-label">Total Value:</span>
                             <span id="total-lead-value">$0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Operations Modules -->
+            
+            <!-- Investor Deck Module -->
+            <div id="investor-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">📊 DWC Systems - Investor Deck</h2>
+                    <p class="module-subtitle">Enterprise-grade intelligence platform with proven ROI metrics</p>
+                </div>
+                
+                <div class="business-content">
+                    <div class="pitch-deck-container">
+                        <div class="deck-section">
+                            <div class="deck-slide">
+                                <h3>Market Opportunity</h3>
+                                <div class="metric-grid">
+                                    <div class="metric-card">
+                                        <div class="metric-value">$847B</div>
+                                        <div class="metric-label">Global B2B SaaS Market</div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-value">23.8%</div>
+                                        <div class="metric-label">Annual Growth Rate</div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-value">89%</div>
+                                        <div class="metric-label">Businesses Need Lead Intelligence</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="deck-section">
+                            <div class="deck-slide">
+                                <h3>DWC Platform Advantage</h3>
+                                <div class="advantage-list">
+                                    <div class="advantage-item">
+                                        <span class="advantage-icon">🧠</span>
+                                        <div>
+                                            <strong>Quantum Intelligence Scoring (QNIS)</strong>
+                                            <p>Proprietary AI-driven lead qualification system with 94% accuracy</p>
+                                        </div>
+                                    </div>
+                                    <div class="advantage-item">
+                                        <span class="advantage-icon">🗺️</span>
+                                        <div>
+                                            <strong>Geographic Lead Mapping</strong>
+                                            <p>Real-time coordinate tracking with intelligent market analysis</p>
+                                        </div>
+                                    </div>
+                                    <div class="advantage-item">
+                                        <span class="advantage-icon">⚡</span>
+                                        <div>
+                                            <strong>Autonomous Pipeline</strong>
+                                            <p>Zero-touch lead processing from discovery to outreach</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="deck-section">
+                            <div class="deck-slide">
+                                <h3>Financial Projections</h3>
+                                <div class="projection-table">
+                                    <table class="financial-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Year</th>
+                                                <th>ARR</th>
+                                                <th>Customers</th>
+                                                <th>Market Share</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2025</td>
+                                                <td>$2.4M</td>
+                                                <td>850</td>
+                                                <td>0.1%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2026</td>
+                                                <td>$8.7M</td>
+                                                <td>2,400</td>
+                                                <td>0.3%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2027</td>
+                                                <td>$24.1M</td>
+                                                <td>6,200</td>
+                                                <td>0.8%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Plans Module -->
+            <div id="pricing-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">💳 Pricing Plans</h2>
+                    <p class="module-subtitle">Flexible plans designed to scale with your business needs</p>
+                </div>
+                
+                <div class="business-content">
+                    <div class="pricing-grid">
+                        <div class="pricing-card starter">
+                            <div class="pricing-header">
+                                <h4>Solo</h4>
+                                <div class="price">
+                                    <span class="currency">$</span>
+                                    <span class="amount">97</span>
+                                    <span class="period">/month</span>
+                                </div>
+                                <p class="pricing-description">Perfect for individual entrepreneurs</p>
+                            </div>
+                            <div class="pricing-features">
+                                <div class="feature">✓ Up to 500 leads/month</div>
+                                <div class="feature">✓ Basic QNIS scoring</div>
+                                <div class="feature">✓ Geographic mapping</div>
+                                <div class="feature">✓ Email support</div>
+                                <div class="feature">✓ Standard automation</div>
+                            </div>
+                            <button class="pricing-btn">Start Solo Plan</button>
+                        </div>
+                        
+                        <div class="pricing-card professional recommended">
+                            <div class="pricing-badge">Most Popular</div>
+                            <div class="pricing-header">
+                                <h4>Pro</h4>
+                                <div class="price">
+                                    <span class="currency">$</span>
+                                    <span class="amount">297</span>
+                                    <span class="period">/month</span>
+                                </div>
+                                <p class="pricing-description">Advanced features for growing businesses</p>
+                            </div>
+                            <div class="pricing-features">
+                                <div class="feature">✓ Up to 2,500 leads/month</div>
+                                <div class="feature">✓ Advanced QNIS analytics</div>
+                                <div class="feature">✓ NLP lead navigator</div>
+                                <div class="feature">✓ Voice commands</div>
+                                <div class="feature">✓ Priority support</div>
+                                <div class="feature">✓ Custom integrations</div>
+                            </div>
+                            <button class="pricing-btn primary">Start Pro Plan</button>
+                        </div>
+                        
+                        <div class="pricing-card enterprise">
+                            <div class="pricing-header">
+                                <h4>Agency</h4>
+                                <div class="price">
+                                    <span class="currency">$</span>
+                                    <span class="amount">897</span>
+                                    <span class="period">/month</span>
+                                </div>
+                                <p class="pricing-description">Complete solution for agencies</p>
+                            </div>
+                            <div class="pricing-features">
+                                <div class="feature">✓ Up to 10,000 leads/month</div>
+                                <div class="feature">✓ Multi-client management</div>
+                                <div class="feature">✓ White-label interface</div>
+                                <div class="feature">✓ Autonomous pipeline</div>
+                                <div class="feature">✓ Dedicated account manager</div>
+                                <div class="feature">✓ Custom reporting</div>
+                            </div>
+                            <button class="pricing-btn">Start Agency Plan</button>
+                        </div>
+                        
+                        <div class="pricing-card enterprise">
+                            <div class="pricing-header">
+                                <h4>Enterprise</h4>
+                                <div class="price">
+                                    <span class="text">Custom</span>
+                                </div>
+                                <p class="pricing-description">Tailored solutions for large organizations</p>
+                            </div>
+                            <div class="pricing-features">
+                                <div class="feature">✓ Unlimited leads</div>
+                                <div class="feature">✓ Custom AI models</div>
+                                <div class="feature">✓ On-premise deployment</div>
+                                <div class="feature">✓ 24/7 support</div>
+                                <div class="feature">✓ SLA guarantees</div>
+                                <div class="feature">✓ Custom development</div>
+                            </div>
+                            <button class="pricing-btn">Contact Sales</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact/Request for Info Module -->
+            <div id="contact-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">✉️ Request for Information</h2>
+                    <p class="module-subtitle">Get in touch with our team for detailed information</p>
+                </div>
+                
+                <div class="business-content">
+                    <div class="contact-form-container">
+                        <form id="contact-form" class="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-name">Full Name *</label>
+                                    <input type="text" id="contact-name" name="name" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-email">Email Address *</label>
+                                    <input type="email" id="contact-email" name="email" class="form-input" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-company">Company Name</label>
+                                    <input type="text" id="contact-company" name="company" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-role">Role/Title</label>
+                                    <input type="text" id="contact-role" name="role" class="form-input">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-interest">Interest Area</label>
+                                <select id="contact-interest" name="interest" class="form-select">
+                                    <option value="">Select your primary interest...</option>
+                                    <option value="lead-generation">Lead Generation & QNIS</option>
+                                    <option value="automation">Autonomous Pipeline</option>
+                                    <option value="integration">API & Integrations</option>
+                                    <option value="enterprise">Enterprise Solutions</option>
+                                    <option value="partnership">Partnership Opportunities</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-message">Message</label>
+                                <textarea id="contact-message" name="message" class="form-input" rows="5" placeholder="Tell us about your needs, current challenges, or specific questions..."></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="action-btn primary">Send Request</button>
+                                <button type="button" class="action-btn secondary" onclick="clearContactForm()">Clear Form</button>
+                            </div>
+                        </form>
+                        
+                        <div class="contact-info">
+                            <div class="contact-method">
+                                <span class="contact-icon">📧</span>
+                                <div>
+                                    <strong>Email</strong>
+                                    <p>info@dwcsystems.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-method">
+                                <span class="contact-icon">📞</span>
+                                <div>
+                                    <strong>Phone</strong>
+                                    <p>+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            <div class="contact-method">
+                                <span class="contact-icon">🌐</span>
+                                <div>
+                                    <strong>Website</strong>
+                                    <p>dwcsystems.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to Action Module -->
+            <div id="cta-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">🚀 Take Action</h2>
+                    <p class="module-subtitle">Ready to transform your lead generation process?</p>
+                </div>
+                
+                <div class="business-content">
+                    <div class="cta-grid">
+                        <div class="cta-card primary">
+                            <div class="cta-icon">📅</div>
+                            <h3>Book a Demo</h3>
+                            <p>See DWC Systems in action with a personalized 30-minute demonstration of our quantum intelligence platform.</p>
+                            <button class="cta-btn primary" onclick="scheduleDemo()">Schedule Demo</button>
+                            <div class="cta-features">
+                                <span>✓ Live QNIS demonstration</span>
+                                <span>✓ Custom use case review</span>
+                                <span>✓ ROI analysis</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cta-card secondary">
+                            <div class="cta-icon">🔧</div>
+                            <h3>Start AI Fix</h3>
+                            <p>Let our autonomous pipeline analyze and improve your current lead generation process in real-time.</p>
+                            <button class="cta-btn secondary" onclick="startAIFix()">Start AI Analysis</button>
+                            <div class="cta-features">
+                                <span>✓ Instant lead audit</span>
+                                <span>✓ Improvement recommendations</span>
+                                <span>✓ Custom solution preview</span>
+                            </div>
+                        </div>
+                        
+                        <div class="cta-card tertiary">
+                            <div class="cta-icon">📋</div>
+                            <h3>Download Audit</h3>
+                            <p>Get a comprehensive analysis of your current lead generation capabilities and improvement opportunities.</p>
+                            <button class="cta-btn tertiary" onclick="downloadAudit()">Download Report</button>
+                            <div class="cta-features">
+                                <span>✓ Executive summary</span>
+                                <span>✓ Technical analysis</span>
+                                <span>✓ Implementation roadmap</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="urgency-banner">
+                        <div class="urgency-content">
+                            <span class="urgency-icon">⚡</span>
+                            <div class="urgency-text">
+                                <strong>Limited Time Offer:</strong> 
+                                Get 3 months free with annual Pro or Agency plan signup before month end.
+                            </div>
+                            <button class="urgency-btn" onclick="claimOffer()">Claim Offer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Assistants Modules -->
+            
+            <!-- Pitch Generator Module -->
+            <div id="pitchgen-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">🧠 AI Pitch Generator</h2>
+                    <p class="module-subtitle">Generate compelling investor pitches and business proposals using GPT</p>
+                </div>
+                
+                <div class="ai-assistant-container">
+                    <div class="ai-status-bar">
+                        <div class="ai-status-item">
+                            <span class="status-label">API Status:</span>
+                            <span id="pitch-api-status" class="status-indicator">Checking...</span>
+                        </div>
+                        <div class="ai-status-item">
+                            <span class="status-label">Model:</span>
+                            <span class="status-value">GPT-4</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-input-section">
+                        <div class="form-group">
+                            <label for="pitch-type">Pitch Type</label>
+                            <select id="pitch-type" class="form-select">
+                                <option value="investor">Investor Deck</option>
+                                <option value="sales">Sales Presentation</option>
+                                <option value="partnership">Partnership Proposal</option>
+                                <option value="product">Product Launch</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pitch-company">Company/Product Name</label>
+                            <input type="text" id="pitch-company" class="form-input" placeholder="DWC Systems">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pitch-industry">Industry</label>
+                            <input type="text" id="pitch-industry" class="form-input" placeholder="B2B SaaS Intelligence">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pitch-details">Key Details & Requirements</label>
+                            <textarea id="pitch-details" class="form-input" rows="4" placeholder="Describe your unique value proposition, target market, key metrics, funding goals, or specific requirements..."></textarea>
+                        </div>
+                        
+                        <div class="ai-actions">
+                            <button id="generate-pitch" class="action-btn primary">Generate Pitch</button>
+                            <button id="clear-pitch" class="action-btn secondary">Clear</button>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-output-section">
+                        <div class="output-header">
+                            <h4>Generated Pitch</h4>
+                            <div class="output-actions">
+                                <button id="copy-pitch" class="action-btn secondary">Copy</button>
+                                <button id="export-pitch" class="action-btn secondary">Export</button>
+                            </div>
+                        </div>
+                        <div id="pitch-output" class="ai-output">
+                            Click "Generate Pitch" to create a compelling presentation based on your inputs.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Site Copy Builder Module -->
+            <div id="copybuilder-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">✍️ AI Site Copy Builder</h2>
+                    <p class="module-subtitle">Create professional website copy and marketing content with GPT</p>
+                </div>
+                
+                <div class="ai-assistant-container">
+                    <div class="ai-status-bar">
+                        <div class="ai-status-item">
+                            <span class="status-label">API Status:</span>
+                            <span id="copy-api-status" class="status-indicator">Checking...</span>
+                        </div>
+                        <div class="ai-status-item">
+                            <span class="status-label">Model:</span>
+                            <span class="status-value">GPT-4</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-input-section">
+                        <div class="form-group">
+                            <label for="copy-type">Content Type</label>
+                            <select id="copy-type" class="form-select">
+                                <option value="homepage">Homepage Hero</option>
+                                <option value="about">About Page</option>
+                                <option value="services">Services Description</option>
+                                <option value="landing">Landing Page</option>
+                                <option value="email">Email Campaign</option>
+                                <option value="social">Social Media Posts</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="copy-business">Business Name</label>
+                            <input type="text" id="copy-business" class="form-input" placeholder="Your business name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="copy-audience">Target Audience</label>
+                            <input type="text" id="copy-audience" class="form-input" placeholder="Enterprise clients, SMBs, startups...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="copy-tone">Tone & Style</label>
+                            <select id="copy-tone" class="form-select">
+                                <option value="professional">Professional</option>
+                                <option value="friendly">Friendly & Approachable</option>
+                                <option value="authoritative">Authoritative</option>
+                                <option value="casual">Casual</option>
+                                <option value="technical">Technical</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="copy-details">Additional Context</label>
+                            <textarea id="copy-details" class="form-input" rows="3" placeholder="Unique selling points, specific features to highlight, call-to-action goals..."></textarea>
+                        </div>
+                        
+                        <div class="ai-actions">
+                            <button id="generate-copy" class="action-btn primary">Generate Copy</button>
+                            <button id="clear-copy" class="action-btn secondary">Clear</button>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-output-section">
+                        <div class="output-header">
+                            <h4>Generated Copy</h4>
+                            <div class="output-actions">
+                                <button id="copy-copy" class="action-btn secondary">Copy</button>
+                                <button id="refine-copy" class="action-btn secondary">Refine</button>
+                            </div>
+                        </div>
+                        <div id="copy-output" class="ai-output">
+                            Click "Generate Copy" to create professional website content based on your specifications.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Research Agent Module -->
+            <div id="research-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">🌍 AI Market Research Agent</h2>
+                    <p class="module-subtitle">Real-time market intelligence and competitive analysis using Perplexity AI</p>
+                </div>
+                
+                <div class="ai-assistant-container">
+                    <div class="ai-status-bar">
+                        <div class="ai-status-item">
+                            <span class="status-label">API Status:</span>
+                            <span id="research-api-status" class="status-indicator">Checking...</span>
+                        </div>
+                        <div class="ai-status-item">
+                            <span class="status-label">Model:</span>
+                            <span class="status-value">Perplexity Sonar</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-input-section">
+                        <div class="form-group">
+                            <label for="research-type">Research Type</label>
+                            <select id="research-type" class="form-select">
+                                <option value="market">Market Analysis</option>
+                                <option value="competitor">Competitor Research</option>
+                                <option value="industry">Industry Trends</option>
+                                <option value="pricing">Pricing Analysis</option>
+                                <option value="opportunities">Market Opportunities</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="research-query">Research Query</label>
+                            <textarea id="research-query" class="form-input" rows="3" placeholder="e.g., 'Latest trends in B2B SaaS lead generation tools 2024' or 'Top competitors to HubSpot in small business market'"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="research-timeframe">Timeframe</label>
+                            <select id="research-timeframe" class="form-select">
+                                <option value="month">Past Month</option>
+                                <option value="quarter">Past Quarter</option>
+                                <option value="year">Past Year</option>
+                                <option value="all">All Time</option>
+                            </select>
+                        </div>
+                        
+                        <div class="ai-actions">
+                            <button id="start-research" class="action-btn primary">Start Research</button>
+                            <button id="clear-research" class="action-btn secondary">Clear</button>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-output-section">
+                        <div class="output-header">
+                            <h4>Research Results</h4>
+                            <div class="output-actions">
+                                <button id="copy-research" class="action-btn secondary">Copy</button>
+                                <button id="export-research" class="action-btn secondary">Export Report</button>
+                            </div>
+                        </div>
+                        <div id="research-output" class="ai-output">
+                            Enter your research query and click "Start Research" to get real-time market intelligence.
+                        </div>
+                        <div id="research-sources" class="research-sources" style="display: none;">
+                            <h5>Sources:</h5>
+                            <div id="sources-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Command Center Module -->
+            <div id="voicecommand-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">🎤 Voice Command Center</h2>
+                    <p class="module-subtitle">Control all AI assistants and platform functions through voice commands</p>
+                </div>
+                
+                <div class="ai-assistant-container">
+                    <div class="voice-status-section">
+                        <div class="voice-visualizer">
+                            <div class="voice-icon">🎤</div>
+                            <div id="voice-status" class="voice-status">Ready to listen</div>
+                        </div>
+                        
+                        <div class="voice-controls">
+                            <button id="start-listening" class="voice-btn primary">Start Listening</button>
+                            <button id="stop-listening" class="voice-btn secondary" disabled>Stop</button>
+                        </div>
+                    </div>
+                    
+                    <div class="voice-commands-grid">
+                        <div class="command-category">
+                            <h4>Navigation Commands</h4>
+                            <div class="command-examples">
+                                <span class="command">"Show QNIS map"</span>
+                                <span class="command">"Open investor deck"</span>
+                                <span class="command">"Go to pricing"</span>
+                            </div>
+                        </div>
+                        
+                        <div class="command-category">
+                            <h4>AI Assistant Commands</h4>
+                            <div class="command-examples">
+                                <span class="command">"Generate pitch for SaaS company"</span>
+                                <span class="command">"Research competitors in my industry"</span>
+                                <span class="command">"Create copy for homepage"</span>
+                            </div>
+                        </div>
+                        
+                        <div class="command-category">
+                            <h4>Lead Commands</h4>
+                            <div class="command-examples">
+                                <span class="command">"Find leads in California"</span>
+                                <span class="command">"Show tech companies over 50K"</span>
+                                <span class="command">"Process lead with AI"</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="voice-output-section">
+                        <div class="output-header">
+                            <h4>Command History</h4>
+                            <button id="clear-history" class="action-btn secondary">Clear</button>
+                        </div>
+                        <div id="voice-history" class="voice-history">
+                            Voice commands will appear here...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Watson AI Module -->
+            <div id="watson-module" class="module-view" style="display: none;">
+                <div class="module-header">
+                    <h2 class="module-title">⚡ Watson AI Command Center</h2>
+                    <p class="module-subtitle">Advanced AI orchestration and autonomous decision making</p>
+                </div>
+                
+                <div class="ai-assistant-container">
+                    <div class="watson-dashboard">
+                        <div class="watson-status-grid">
+                            <div class="watson-metric">
+                                <div class="metric-label">Active Pipelines</div>
+                                <div class="metric-value" id="watson-pipelines">0</div>
+                            </div>
+                            <div class="watson-metric">
+                                <div class="metric-label">AI Operations</div>
+                                <div class="metric-value" id="watson-operations">Ready</div>
+                            </div>
+                            <div class="watson-metric">
+                                <div class="metric-label">Learning Mode</div>
+                                <div class="metric-value" id="watson-learning">Active</div>
+                            </div>
+                        </div>
+                        
+                        <div class="watson-controls">
+                            <div class="watson-section">
+                                <h4>Autonomous Operations</h4>
+                                <div class="watson-toggles">
+                                    <label class="watson-toggle">
+                                        <input type="checkbox" id="auto-lead-processing">
+                                        <span>Auto Lead Processing</span>
+                                    </label>
+                                    <label class="watson-toggle">
+                                        <input type="checkbox" id="auto-content-generation">
+                                        <span>Auto Content Generation</span>
+                                    </label>
+                                    <label class="watson-toggle">
+                                        <input type="checkbox" id="auto-research">
+                                        <span>Auto Market Research</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="watson-section">
+                                <h4>Direct Command Interface</h4>
+                                <div class="watson-command-input">
+                                    <input type="text" id="watson-command" class="form-input" placeholder="Enter Watson command...">
+                                    <button id="execute-watson" class="action-btn primary">Execute</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="watson-log">
+                            <div class="output-header">
+                                <h4>Watson Activity Log</h4>
+                                <button id="clear-watson-log" class="action-btn secondary">Clear</button>
+                            </div>
+                            <div id="watson-activity" class="watson-activity-log">
+                                Watson AI system initialized and ready for autonomous operations...
+                            </div>
                         </div>
                     </div>
                 </div>
