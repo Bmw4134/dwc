@@ -724,9 +724,315 @@
             }
         }
 
+        // QNIS Quantum Lead Mapping Engine
+        let qnisMap = {
+            canvas: null,
+            ctx: null,
+            leads: [],
+            isInitialized: false
+        };
+
+        // KaizenGPT Command Interface
+        window.kaizen_command = async function(command, params = {}) {
+            try {
+                const response = await fetch('/api/kaizen/command', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command, params })
+                });
+                
+                const result = await response.json();
+                console.log('[KAIZEN] Command executed:', result);
+                
+                if (result.success) {
+                    // Handle specific command responses
+                    if (command === 'generate_map') {
+                        updateQuantumMap(result.result);
+                    } else if (command === 'reset_all_modules') {
+                        resetDashboardData();
+                    }
+                    return result.result;
+                } else {
+                    console.error('[KAIZEN] Command failed:', result.error);
+                    return { error: result.error };
+                }
+            } catch (error) {
+                console.error('[KAIZEN] Command error:', error);
+                return { error: error.message };
+            }
+        };
+
+        function initializeQuantumMap() {
+            const canvas = document.getElementById('lead-map');
+            if (!canvas) return;
+
+            qnisMap.canvas = canvas;
+            qnisMap.ctx = canvas.getContext('2d');
+            qnisMap.isInitialized = true;
+
+            // Set canvas size
+            canvas.width = 800;
+            canvas.height = 400;
+
+            // Hide loading message
+            const loading = document.querySelector('.map-loading');
+            if (loading) loading.style.display = 'none';
+
+            // Start real-time lead fetching
+            startLeadTracking();
+            console.log('[QNIS] Quantum map initialized');
+        }
+
+        async function startLeadTracking() {
+            // Initial load
+            await updateLeadData();
+            
+            // Update every 5 seconds
+            setInterval(updateLeadData, 5000);
+        }
+
+        async function updateLeadData() {
+            try {
+                const response = await fetch('/api/qnis/leads');
+                const leads = await response.json();
+                
+                qnisMap.leads = leads;
+                renderQuantumMap();
+                updateLeadStats();
+                
+                // Update lead counter
+                const counter = document.getElementById('lead-counter');
+                if (counter) counter.textContent = `Leads: ${leads.length}`;
+                
+            } catch (error) {
+                console.error('[QNIS] Failed to fetch leads:', error);
+            }
+        }
+
+        function renderQuantumMap() {
+            if (!qnisMap.isInitialized || !qnisMap.ctx) return;
+
+            const ctx = qnisMap.ctx;
+            const canvas = qnisMap.canvas;
+
+            // Clear canvas
+            ctx.fillStyle = '#001122';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw US map outline (simplified)
+            drawUSMapOutline(ctx);
+
+            // Plot leads
+            qnisMap.leads.forEach((lead, index) => {
+                const x = latLngToCanvas(lead.coordinates.lat, lead.coordinates.lng).x;
+                const y = latLngToCanvas(lead.coordinates.lat, lead.coordinates.lng).y;
+
+                // Draw lead point
+                ctx.save();
+                
+                // Priority-based coloring
+                let color = '#00ff88'; // default green
+                if (lead.priority === 'HIGH') color = '#ff4444';
+                else if (lead.priority === 'MEDIUM') color = '#ffaa00';
+
+                // Animated pulse effect
+                const pulse = Math.sin(Date.now() / 300 + index) * 0.3 + 0.7;
+                const radius = 4 + (pulse * 3);
+
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 10;
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // City label
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '10px Arial';
+                ctx.fillText(lead.coordinates.city, x + 8, y - 8);
+
+                ctx.restore();
+            });
+
+            // Draw connection lines between recent leads
+            drawLeadConnections(ctx);
+        }
+
+        function drawUSMapOutline(ctx) {
+            // Simplified US border outline
+            ctx.strokeStyle = '#00ff88';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.3;
+
+            ctx.beginPath();
+            // West coast
+            ctx.moveTo(50, 300);
+            ctx.lineTo(80, 100);
+            ctx.lineTo(120, 80);
+            
+            // North border
+            ctx.lineTo(700, 80);
+            
+            // East coast
+            ctx.lineTo(720, 300);
+            ctx.lineTo(680, 350);
+            
+            // South border
+            ctx.lineTo(200, 370);
+            ctx.lineTo(100, 350);
+            ctx.closePath();
+            
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawLeadConnections(ctx) {
+            if (qnisMap.leads.length < 2) return;
+
+            ctx.strokeStyle = '#00ff88';
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.2;
+
+            for (let i = 1; i < Math.min(qnisMap.leads.length, 10); i++) {
+                const current = latLngToCanvas(qnisMap.leads[i].coordinates.lat, qnisMap.leads[i].coordinates.lng);
+                const previous = latLngToCanvas(qnisMap.leads[i-1].coordinates.lat, qnisMap.leads[i-1].coordinates.lng);
+
+                ctx.beginPath();
+                ctx.moveTo(previous.x, previous.y);
+                ctx.lineTo(current.x, current.y);
+                ctx.stroke();
+            }
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        function latLngToCanvas(lat, lng) {
+            // Convert lat/lng to canvas coordinates (simplified US projection)
+            const minLat = 25, maxLat = 49;
+            const minLng = -125, maxLng = -67;
+            
+            const x = ((lng - minLng) / (maxLng - minLng)) * 750 + 25;
+            const y = ((maxLat - lat) / (maxLat - minLat)) * 350 + 25;
+            
+            return { x, y };
+        }
+
+        async function updateLeadStats() {
+            try {
+                const response = await fetch('/api/qnis/stats');
+                const stats = await response.json();
+
+                // Update stats display
+                document.getElementById('high-priority-count').textContent = stats.high_priority;
+                document.getElementById('avg-qnis-score').textContent = stats.average_qnis;
+                document.getElementById('total-lead-value').textContent = `$${Math.floor(stats.total_value / 1000)}K`;
+
+            } catch (error) {
+                console.error('[QNIS] Failed to fetch stats:', error);
+            }
+        }
+
+        async function clearLeadData() {
+            try {
+                await kaizen_command('reset_all_modules');
+                qnisMap.leads = [];
+                renderQuantumMap();
+                updateLeadStats();
+                console.log('[QNIS] Lead data cleared');
+            } catch (error) {
+                console.error('[QNIS] Failed to clear leads:', error);
+            }
+        }
+
+        async function resetDashboardData() {
+            // Reset all dashboard counters to zero
+            document.getElementById('active-modules').textContent = '0';
+            document.getElementById('system-uptime').textContent = '0%';
+            document.getElementById('cash-balance').textContent = '$0';
+            document.getElementById('ai-accuracy').textContent = '0%';
+            
+            // Reset business module data
+            document.getElementById('active-contracts').textContent = '0';
+            document.getElementById('pending-contracts').textContent = '0';
+            document.getElementById('expiring-contracts').textContent = '0';
+            document.getElementById('cash-balance-detail').textContent = '0.00';
+            document.getElementById('monthly-revenue').textContent = '0.00';
+            document.getElementById('net-profit').textContent = '0.0%';
+
+            console.log('[DASHBOARD] All data reset to clean slate');
+        }
+
+        function updateQuantumMap(mapData) {
+            if (mapData.coordinates) {
+                qnisMap.leads = mapData.coordinates.map(coord => ({
+                    coordinates: coord,
+                    priority: 'MEDIUM',
+                    qnis_score: 85
+                }));
+                renderQuantumMap();
+            }
+        }
+
+        // Enhanced module switching with QNIS integration
+        function showModule(moduleId) {
+            const modules = document.querySelectorAll('.module-view');
+            modules.forEach(module => module.classList.remove('active'));
+
+            const targetModule = document.getElementById(moduleId + '-module');
+            if (targetModule) {
+                targetModule.classList.add('active');
+                
+                // Initialize QNIS map when showing that module
+                if (moduleId === 'qnis' && !qnisMap.isInitialized) {
+                    setTimeout(initializeQuantumMap, 100);
+                }
+            }
+
+            // Update navigation state
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            const activeNav = document.querySelector(`[onclick="showModule('${moduleId}')"]`);
+            if (activeNav) activeNav.classList.add('active');
+        }
+
+        // Voice command integration
+        function processVoiceCommand(command) {
+            switch(command) {
+                case 'show business':
+                    showModule('business');
+                    break;
+                case 'show legal':
+                    showModule('legal');
+                    break;
+                case 'show accounting':
+                    showModule('accounting');
+                    break;
+                case 'show qnis map':
+                case 'show lead map':
+                    showModule('qnis');
+                    break;
+                case 'reset data':
+                    kaizen_command('reset_all_modules');
+                    break;
+                case 'refresh map':
+                    updateLeadData();
+                    break;
+                case 'logout':
+                    logout();
+                    break;
+            }
+        }
+
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
             initializeVoiceCommands();
+            
+            // Add refresh button functionality
+            const refreshBtn = document.getElementById('refresh-map');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', updateLeadData);
+            }
         });
     </script>
 </body>
