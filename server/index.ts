@@ -595,11 +595,11 @@ app.get('/', (req, res) => {
   const sessionId = req.headers['x-session-id'] || req.cookies?.session_id;
   const authToken = req.headers['authorization'] || req.cookies?.auth_token;
   
-  // Force landing page for all unauthenticated users
+  // Force verified landing page for all unauthenticated users
   if (!sessionId && !authToken) {
     console.log(`[NEXUS-REPAIR] Serving verified landing page for unauthenticated user: ${Date.now()}`);
     try {
-      return res.sendFile(path.resolve(process.cwd(), 'landing.html'));
+      return res.sendFile(path.resolve(process.cwd(), 'landing-verified.html'));
     } catch (error) {
       console.log(`[NEXUS-REPAIR] Landing page fallback active`);
       return res.redirect('/landing');
@@ -664,7 +664,7 @@ app.get('/dashboard', requireAuth, (req, res) => {
 // Add dedicated landing page route for fallback
 app.get('/landing', (req, res) => {
   console.log(`[NEXUS-REPAIR] Direct landing page access`);
-  res.sendFile(path.resolve(process.cwd(), 'landing.html'));
+  res.sendFile(path.resolve(process.cwd(), 'landing-verified.html'));
 });
 
 // Serve the main application
@@ -679,7 +679,7 @@ app.get('*', (req, res) => {
   
   if (!sessionId && !authToken) {
     console.log(`[NEXUS-REPAIR] Catch-all serving verified landing page for unauthenticated user`);
-    return res.sendFile(path.resolve(process.cwd(), 'landing.html'));
+    return res.sendFile(path.resolve(process.cwd(), 'landing-verified.html'));
   }
   
   console.log(`[NEXUS-REPAIR] Catch-all serving dashboard for authenticated user`);

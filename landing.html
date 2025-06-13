@@ -22,41 +22,43 @@
         }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.7; }
+        }
+        .typing-animation {
+            border-right: 2px solid #667eea;
+            animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #667eea; }
         }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex justify-between items-center">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <div class="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center">
-                        <span class="text-white font-bold text-2xl">D</span>
-                    </div>
-                    <div class="ml-3">
-                        <span class="text-2xl font-bold text-gray-900">DWC Systems</span>
-                        <div class="text-sm text-gray-600">Enterprise Intelligence Platform</div>
-                    </div>
+                    <div class="text-2xl font-bold text-gray-900">DWC Systems</div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <button onclick="scrollToSection('pricing')" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                        Pricing
-                    </button>
-                    <button onclick="scrollToSection('features')" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                        Features
-                    </button>
-                    <button onclick="window.location.href='/sales'" class="text-blue-600 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium border border-blue-600 hover:border-blue-800">
-                        Sales Portal
-                    </button>
-                    <button onclick="handleSignIn()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                        Sign In
-                    </button>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#features" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                        <a href="#pricing" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
+                        <a href="#about" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <button onclick="handleLogin()" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
+                            Login
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Hero Section -->
     <section class="gradient-bg py-20">
@@ -79,291 +81,59 @@
         </div>
     </section>
 
-    <!-- Real-time Metrics Section -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
-                Live Platform Metrics
-            </h2>
-            <div class="grid md:grid-cols-4 gap-8">
-                <div class="text-center p-6 bg-gray-50 rounded-lg">
-                    <div class="text-3xl font-bold text-blue-600 mb-2" id="leads-today">Loading...</div>
-                    <div class="text-gray-600">Leads Today</div>
-                    <div class="text-sm text-green-600 mt-1">+12% from yesterday</div>
-                </div>
-                <div class="text-center p-6 bg-gray-50 rounded-lg">
-                    <div class="text-3xl font-bold text-green-600 mb-2" id="total-leads">Loading...</div>
-                    <div class="text-gray-600">Total Leads</div>
-                    <div class="text-sm text-blue-600 mt-1">Real-time tracking</div>
-                </div>
-                <div class="text-center p-6 bg-gray-50 rounded-lg">
-                    <div class="text-3xl font-bold text-purple-600 mb-2" id="geo-zones">Loading...</div>
-                    <div class="text-gray-600">Active Geo Zones</div>
-                    <div class="text-sm text-purple-600 mt-1">Geographic coverage</div>
-                </div>
-                <div class="text-center p-6 bg-gray-50 rounded-lg">
-                    <div class="text-3xl font-bold text-orange-600 mb-2" id="qnis-score">Loading...</div>
-                    <div class="text-gray-600">Avg QNIS Score</div>
-                    <div class="text-sm text-orange-600 mt-1">Intelligence rating</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Features Section -->
-    <section id="features" class="py-16 bg-gray-50">
+    <section id="features" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
-                Powerful Features for Modern Businesses
-            </h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center p-8 bg-white rounded-lg card-hover">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-blue-600 text-3xl">🗺️</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">Geospatial Intelligence</h3>
-                    <p class="text-gray-600">Advanced mapping with real-time lead visualization and geographic insights powered by our QNIS engine</p>
-                </div>
-                <div class="text-center p-8 bg-white rounded-lg card-hover">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-green-600 text-3xl">🤖</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">AI-Driven Analytics</h3>
-                    <p class="text-gray-600">Machine learning algorithms that identify patterns and optimize lead conversion with Watson AI integration</p>
-                </div>
-                <div class="text-center p-8 bg-white rounded-lg card-hover">
-                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-purple-600 text-3xl">⚡</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">Automation Engine</h3>
-                    <p class="text-gray-600">Streamline workflows with intelligent automation and custom triggers through our NEXUS platform</p>
-                </div>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Powerful Features</h2>
+                <p class="text-xl text-gray-600">Everything you need to dominate your market</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Subscription Plans -->
-    <section id="pricing" class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
-                Choose Your Plan
-            </h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Starter Plan -->
-                <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Starter</h3>
-                    <div class="mb-4">
-                        <span class="text-4xl font-bold text-gray-900">$49</span>
-                        <span class="text-gray-600">/month</span>
-                    </div>
-                    <p class="text-gray-600 mb-6">Perfect for small businesses getting started</p>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Up to 1,000 leads tracked</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Basic lead mapping</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Email support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">5 automation workflows</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Standard reporting</span>
-                        </li>
-                    </ul>
-                    <button onclick="selectPlan('starter')" class="w-full border-2 border-blue-600 text-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
-                        Get Started
-                    </button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">🗺️</div>
+                    <h3 class="text-xl font-semibold mb-3">Real-Time Lead Mapping</h3>
+                    <p class="text-gray-600">Advanced geospatial intelligence tracks 50+ authentic leads across 10 major cities with real-time updates.</p>
                 </div>
-
-                <!-- Professional Plan -->
-                <div class="bg-white border-2 border-blue-500 rounded-lg shadow-lg p-8 relative scale-105">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                            Most Popular
-                        </span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Professional</h3>
-                    <div class="mb-4">
-                        <span class="text-4xl font-bold text-gray-900">$149</span>
-                        <span class="text-gray-600">/month</span>
-                    </div>
-                    <p class="text-gray-600 mb-6">Advanced features for growing businesses</p>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Unlimited lead tracking</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Advanced geospatial mapping</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Priority phone & email support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Unlimited automation workflows</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Custom reporting & analytics</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">API access</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Team collaboration tools</span>
-                        </li>
-                    </ul>
-                    <button onclick="selectPlan('professional')" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                        Get Started
-                    </button>
+                
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-semibold mb-3">AI-Powered Analytics</h3>
+                    <p class="text-gray-600">Quantum intelligence scoring (QNIS) with predictive lead analysis and automated prioritization.</p>
                 </div>
-
-                <!-- Enterprise Plan -->
-                <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
-                    <div class="mb-4">
-                        <span class="text-4xl font-bold text-gray-900">$399</span>
-                        <span class="text-gray-600">/month</span>
-                    </div>
-                    <p class="text-gray-600 mb-6">Complete solution for large organizations</p>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Everything in Professional</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">White-label options</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Dedicated account manager</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Custom integrations</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">Advanced security features</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">SLA guarantee</span>
-                        </li>
-                        <li class="flex items-center">
-                            <span class="text-green-500 mr-3">✓</span>
-                            <span class="text-gray-700">On-premise deployment option</span>
-                        </li>
-                    </ul>
-                    <button onclick="selectPlan('enterprise')" class="w-full border-2 border-blue-600 text-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
-                        Get Started
-                    </button>
+                
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl font-semibold mb-3">Automated Workflows</h3>
+                    <p class="text-gray-600">Self-healing automation modules with 14 core business intelligence components.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Hosting Solutions -->
-    <section class="py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
-                Hosting Solutions
-            </h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-lg p-8 card-hover">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Cloud Hosting</h3>
-                    <p class="text-gray-600 mb-6">Fully managed cloud infrastructure with automatic scaling</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            99.9% uptime SLA
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Automatic backups
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Global CDN
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            SSL certificates
-                        </li>
-                    </ul>
+                
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">💼</div>
+                    <h3 class="text-xl font-semibold mb-3">Portfolio Management</h3>
+                    <p class="text-gray-600">Complete client portfolio system with automated website generation for business leads.</p>
                 </div>
-                <div class="bg-white rounded-lg p-8 card-hover">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Dedicated Server</h3>
-                    <p class="text-gray-600 mb-6">High-performance dedicated resources for maximum control</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Dedicated resources
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Custom configurations
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Enhanced security
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Priority support
-                        </li>
-                    </ul>
+                
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-semibold mb-3">Commission Tracking</h3>
+                    <p class="text-gray-600">Built-in sales commission management with 90% payouts to sales teams and transparent analytics.</p>
                 </div>
-                <div class="bg-white rounded-lg p-8 card-hover">
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Hybrid Solution</h3>
-                    <p class="text-gray-600 mb-6">Combine cloud flexibility with on-premise security</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Best of both worlds
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Data sovereignty
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Flexible scaling
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <span class="text-blue-500 mr-3">•</span>
-                            Custom architecture
-                        </li>
-                    </ul>
+                
+                <div class="card-hover bg-gray-50 p-8 rounded-lg">
+                    <div class="text-blue-600 text-4xl mb-4">🌐</div>
+                    <h3 class="text-xl font-semibold mb-3">Website Automation</h3>
+                    <p class="text-gray-600">AI-powered website reinvention module creates custom sites for all authenticated business leads.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 gradient-bg">
+    <section class="gradient-bg py-20">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-white mb-6">
-                Ready to Transform Your Business?
-            </h2>
-            <p class="text-xl text-blue-100 mb-8">
-                Join thousands of companies already using our platform to drive growth and success.
-            </p>
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Transform Your Business?</h2>
+            <p class="text-xl text-blue-100 mb-8">Join companies using our advanced intelligence platform to dominate their markets.</p>
             <button onclick="handleGetStarted()" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">
                 Start Your Free Trial Today
             </button>
@@ -373,198 +143,55 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <div class="flex items-center mb-4">
-                        <div class="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold">D</span>
-                        </div>
-                        <span class="ml-2 text-xl font-bold">DWC Systems</span>
-                    </div>
-                    <p class="text-gray-400">
-                        Advanced enterprise intelligence platform for modern businesses.
-                    </p>
+                    <h3 class="text-2xl font-bold mb-4">DWC Systems</h3>
+                    <p class="text-gray-400">Advanced enterprise intelligence platform for the modern business.</p>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Product</h4>
+                    <h4 class="text-lg font-semibold mb-4">Platform</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#features" class="hover:text-white">Features</a></li>
-                        <li><a href="#" class="hover:text-white">Integrations</a></li>
-                        <li><a href="#pricing" class="hover:text-white">Pricing</a></li>
-                        <li><a href="#" class="hover:text-white">Security</a></li>
+                        <li>Lead Mapping</li>
+                        <li>AI Analytics</li>
+                        <li>Automation</li>
+                        <li>Portfolio Management</li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Company</h4>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">About</a></li>
-                        <li><a href="#" class="hover:text-white">Careers</a></li>
-                        <li><a href="#" class="hover:text-white">Contact</a></li>
-                        <li><a href="#" class="hover:text-white">Blog</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold mb-4">Support</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white">Documentation</a></li>
-                        <li><a href="#" class="hover:text-white">API Reference</a></li>
-                        <li><a href="#" class="hover:text-white">Status</a></li>
+                        <li>About Us</li>
+                        <li>Contact</li>
+                        <li>Support</li>
+                        <li>Privacy</li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 DWC Systems. All rights reserved.</p>
+                <p>&copy; 2025 DWC Systems LLC. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Authentication and navigation functions
-        function handleSignIn() {
-            showLoginModal();
-        }
-
-        function handleGetStarted() {
-            showLoginModal();
-        }
-
-        function showLoginModal() {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            modal.innerHTML = `
-                <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-                    <h2 class="text-2xl font-bold mb-6 text-center">Sign In to DWC Systems</h2>
-                    <form id="loginForm">
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
-                            <input type="text" id="username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                            <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button type="submit" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
-                                Sign In
-                            </button>
-                            <button type="button" onclick="closeLoginModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition-colors">
-                                Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            document.getElementById('loginForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                
-                try {
-                    const response = await fetch('/api/login', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ username, password })
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        window.location.href = '/dashboard';
-                    } else {
-                        alert('Invalid credentials. Please try again.');
-                    }
-                } catch (error) {
-                    alert('Login failed. Please try again.');
-                }
-            });
-        }
-
-        function closeLoginModal() {
-            const modal = document.querySelector('.fixed.inset-0');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        function selectPlan(planType) {
-            // Store selected plan and redirect to authentication
-            localStorage.setItem('selectedPlan', planType);
+        function handleLogin() {
+            console.log('[LANDING] User initiated login');
             window.location.href = '/api/login';
         }
 
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({ 
-                behavior: 'smooth' 
-            });
+        function handleGetStarted() {
+            console.log('[LANDING] User clicked Get Started');
+            window.location.href = '/api/login';
         }
 
         function showDemo() {
-            alert('Demo functionality coming soon! Sign up for early access.');
+            console.log('[LANDING] User requested demo');
+            alert('Demo will be available soon! Click "Start Free Trial" to access the platform.');
         }
 
-        // Load real-time metrics from the platform
-        async function loadMetrics() {
-            try {
-                const response = await fetch('/api/qnis/metrics');
-                const data = await response.json();
-                
-                if (data.success) {
-                    const elements = {
-                        'leads-today': data.leads.today,
-                        'total-leads': data.leads.total,
-                        'geo-zones': data.geoZones,
-                        'qnis-score': data.avgScore
-                    };
-                    
-                    Object.entries(elements).forEach(([id, value]) => {
-                        const element = document.getElementById(id);
-                        if (element) element.textContent = value;
-                    });
-                }
-            } catch (error) {
-                console.log('Metrics loading failed, using fallback values');
-                const fallbackValues = {
-                    'leads-today': '12',
-                    'total-leads': '247',
-                    'geo-zones': '18',
-                    'qnis-score': '87'
-                };
-                
-                Object.entries(fallbackValues).forEach(([id, value]) => {
-                    const element = document.getElementById(id);
-                    if (element) element.textContent = value;
-                });
-            }
-        }
-
-        // Load metrics when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            loadMetrics();
-            
-            // Refresh metrics every 30 seconds
-            setInterval(loadMetrics, 30000);
-        });
-
-        // Add smooth scrolling for all anchor links
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
+        // Landing page analytics
+        console.log('[LANDING] DWC Systems landing page loaded');
+        console.log('[LANDING] Platform ready for user engagement');
     </script>
 </body>
 </html>
