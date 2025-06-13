@@ -1173,7 +1173,7 @@
                 <div class="log-entry" style="padding: 2px 0; color: var(--text-secondary);">[12:34:59] All 47 modules operational</div>
             </div>
 
-            <div id="business-modules" class="dashboard-grid module-category" style="display: none; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; padding: 20px;">
+            <div id="business-modules" class="dashboard-grid module-category" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; padding: 20px; visibility: visible; opacity: 1;">
                 <div class="module-card clickable" onclick="activateModule('legal-suite')">
                     <div class="module-title">Legal Management Suite</div>
                     <div class="module-status">Active</div>
@@ -1335,7 +1335,7 @@
             <!-- Advanced Module Navigation with Filters -->
             <div class="module-navigation-advanced">
                 <div class="nav-primary">
-                    <button class="nav-btn active" onclick="showModuleCategory('overview', event)">
+                    <button class="nav-btn" onclick="showModuleCategory('overview', event)">
                         <span class="nav-icon">📊</span>
                         <span class="nav-text">Overview</span>
                         <span class="nav-count">4</span>
@@ -1365,7 +1365,7 @@
                         <span class="nav-text">Control</span>
                         <span class="nav-count">8</span>
                     </button>
-                    <button class="nav-btn" onclick="showModuleCategory('business', event)">
+                    <button class="nav-btn active" onclick="showModuleCategory('business', event)">
                         <span class="nav-icon">💼</span>
                         <span class="nav-text">Business</span>
                         <span class="nav-count">12</span>

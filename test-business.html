@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWC Business Modules Test</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; background: #1a1a1a; color: white; }
+        .module-card { background: #2a2a2a; border: 1px solid #444; border-radius: 8px; padding: 20px; margin: 10px 0; }
+        .module-title { font-size: 20px; font-weight: bold; color: #00ff88; margin-bottom: 10px; }
+        .module-status { color: #00aaff; font-size: 14px; margin-bottom: 10px; }
+        .module-description { color: #ccc; margin-bottom: 15px; }
+        .action-btn { background: #0066cc; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin: 5px; cursor: pointer; }
+        .action-btn:hover { background: #0088ff; }
+        .test-header { color: #00ff88; font-size: 24px; margin-bottom: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="test-header">DWC Systems - Business Management Suite Test</div>
+    
+    <div class="module-card">
+        <div class="module-title">Legal Management Suite</div>
+        <div class="module-status">Active</div>
+        <div class="module-description">Contract management, compliance tracking, and legal document automation for LLC operations.</div>
+        <button class="action-btn" onclick="alert('Legal Suite: Contract generation initiated')">Generate Contract</button>
+        <button class="action-btn" onclick="alert('Legal Suite: Compliance dashboard opened')">Compliance Dashboard</button>
+    </div>
+    
+    <div class="module-card">
+        <div class="module-title">Accounting Management</div>
+        <div class="module-status">Processing</div>
+        <div class="module-description">Full double-entry bookkeeping, financial statements, and automated accounting workflows.</div>
+        <button class="action-btn" onclick="alert('Accounting Suite: Journal entry interface opened')">Journal Entries</button>
+        <button class="action-btn" onclick="alert('Accounting Suite: Financial reports generated')">Financial Reports</button>
+    </div>
+    
+    <div class="module-card">
+        <div class="module-title">Tax Management Suite</div>
+        <div class="module-status">Current</div>
+        <div class="module-description">Tax preparation, quarterly filings, deduction tracking, and compliance automation.</div>
+        <button class="action-btn" onclick="alert('Tax Suite: Return preparation started')">File Returns</button>
+        <button class="action-btn" onclick="alert('Tax Suite: Deduction tracking activated')">Deduction Tracker</button>
+    </div>
+    
+    <div class="module-card">
+        <div class="module-title">Payroll Management</div>
+        <div class="module-status">Active</div>
+        <div class="module-description">Employee payroll processing, tax withholdings, and benefits administration.</div>
+        <button class="action-btn" onclick="alert('Payroll Suite: Payroll processing initiated')">Process Payroll</button>
+        <button class="action-btn" onclick="alert('Payroll Suite: Tax forms generated')">Tax Forms</button>
+    </div>
+    
+    <div class="module-card">
+        <div class="module-title">Invoice & Billing</div>
+        <div class="module-status">Running</div>
+        <div class="module-description">Automated invoicing, payment tracking, and accounts receivable management.</div>
+        <button class="action-btn" onclick="alert('Invoice Suite: Invoice creation started')">Create Invoice</button>
+        <button class="action-btn" onclick="alert('Invoice Suite: Payment status displayed')">Payment Status</button>
+    </div>
+
+    <script>
+        console.log('DWC Business Modules Test Page Loaded Successfully');
+        console.log('All 5 business management suites are operational');
+    </script>
+</body>
+</html>
