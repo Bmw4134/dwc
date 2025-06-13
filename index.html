@@ -1248,15 +1248,25 @@
             
             // Hide all module categories
             const categories = document.querySelectorAll('.module-category');
-            categories.forEach(cat => cat.style.display = 'none');
+            categories.forEach(cat => {
+                cat.style.display = 'none';
+                console.log('[MODULES] Hiding category:', cat.id);
+            });
             
             // Show selected category
             const selectedCategory = document.getElementById(category + '-modules');
             if (selectedCategory) {
                 selectedCategory.style.display = 'grid';
+                selectedCategory.style.visibility = 'visible';
+                selectedCategory.style.opacity = '1';
                 console.log('[MODULES] Displayed:', category, 'modules');
                 console.log('[MODULES] Element found:', selectedCategory);
                 console.log('[MODULES] Children count:', selectedCategory.children.length);
+                console.log('[MODULES] Element styles:', {
+                    display: selectedCategory.style.display,
+                    visibility: selectedCategory.style.visibility,
+                    opacity: selectedCategory.style.opacity
+                });
             } else {
                 console.error('[MODULES] Category not found:', category + '-modules');
                 console.log('[MODULES] Available categories:', Array.from(document.querySelectorAll('.module-category')).map(el => el.id));
