@@ -3368,8 +3368,15 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
         };
 
         window.showCompetitiveAnalysis = function() {
-            const analysisWindow = window.open('', '_blank', 'width=1200,height=800');
-            analysisWindow.document.write(`
+            try {
+                const analysisWindow = window.open('', '_blank', 'width=1200,height=800');
+                if (!analysisWindow) {
+                    alert('Please allow popups to view the competitive analysis report');
+                    return;
+                }
+                
+                setTimeout(() => {
+                    analysisWindow.document.write(`
                 <html>
                 <head>
                     <title>DWC Systems - Competitive Analysis</title>
@@ -3464,9 +3471,17 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
                     </div>
                 </body>
                 </html>
-            `);
-            
-            speakText('Competitive analysis report opened. DWC Systems outperforms major competitors while costing significantly less.');
+                    `);
+                }, 100);
+            } catch (error) {
+                console.error('Popup blocked or error:', error);
+                if (typeof showNotification === 'function') {
+                    showNotification('Popup Blocked', 'Please enable popups to view competitive analysis');
+                }
+                if (typeof speakText === 'function') {
+                    speakText('Popup blocked. Please enable popups to view the competitive analysis report.');
+                }
+            }
         };
 
         // Diagnostic Trace Integration
