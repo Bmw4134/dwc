@@ -2061,15 +2061,6 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
             document.querySelector('input[placeholder="Command phrase"]').value = '';
             document.querySelector('textarea').value = '';
         }
-                        speakText(`${data.count} qualified leads mapped successfully`);
-                        showNotification('Generation Complete', `${data.count} real prospects located`);
-                    }
-                })
-                .catch(err => {
-                    console.error('[LEADS] Error:', err);
-                    showNotification('Error', 'Unable to connect to lead databases');
-                });
-        }
 
         function displayLeadMap(leads) {
             const mapContainer = document.createElement('div');
