@@ -186,7 +186,9 @@ app.get('*', (req, res) => {
         res.set('Pragma', 'no-cache');
         res.set('Expires', '0');
         res.set('X-Cache-Bust', timestamp.toString());
-        console.log(`[NEXUS] Serving platform: ${timestamp}`);
+        res.set('X-Fresh-Content', 'true');
+        res.set('X-Production-Ready', 'deployment-cleared');
+        console.log(`[PRODUCTION] Serving fresh content: ${timestamp}`);
     }
     
     // Serve the NEXUS platform with forced refresh
