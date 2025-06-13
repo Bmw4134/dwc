@@ -1476,6 +1476,19 @@
 
             <!-- Enhanced Sidebar Content -->
             <div class="sidebar-content">
+                <!-- Navigation Controls -->
+                <div class="nav-section navigation-controls">
+                    <div class="nav-title">Navigation</div>
+                    <div class="nav-item" onclick="window.location.href='/'" data-module="landing">
+                        <span class="nav-icon">🏠</span>
+                        <span>Landing Page</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='/logout'" data-module="logout">
+                        <span class="nav-icon">🚪</span>
+                        <span>Logout</span>
+                    </div>
+                </div>
+
                 <div class="nav-section">
                     <div class="nav-title">Business Operations</div>
                     <div class="nav-item active" onclick="showModule('business')" data-module="business">
@@ -2383,6 +2396,9 @@
         <p>Your QNIS score of {{qnisScore}} indicates high potential...</p>
         <a href="{{ctaLink}}" style="background: #00ff88; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px;">Schedule Demo</a>
     </div>
+
+    <!-- Emergency NEXUS Fix Script -->
+    <script src="/emergency-nexus-fix.js"></script>
 </body>
 </html>
                                     </textarea>

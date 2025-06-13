@@ -66,22 +66,15 @@ const isAuthenticated = (req, res, next) => {
     next();
 };
 
-// Primary routing - serve React app for authentication flow
-app.get('/', isAuthenticated, (req, res) => {
+// Primary routing - serve landing page by default, dashboard for authenticated users
+app.get('/', (req, res) => {
     const timestamp = Date.now();
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
     
-    // If user is authenticated, serve dashboard content
-    if (req.user) {
-        console.log(`[ROUTING] Serving dashboard for authenticated user: ${timestamp}`);
-        res.sendFile(path.join(process.cwd(), 'dashboard-internal.html'));
-    } else {
-        console.log(`[ROUTING] Serving landing page for unauthenticated user: ${timestamp}`);
-        // For now, serve dashboard since React app needs build setup
-        res.sendFile(path.join(process.cwd(), 'dashboard-internal.html'));
-    }
+    console.log(`[ROUTING] Serving landing page: ${timestamp}`);
+    res.sendFile(path.join(process.cwd(), 'landing.html'));
 });
 
 // Pro bono trucking company website
@@ -97,6 +90,19 @@ app.get('/dashboard', (req, res) => {
     res.set('X-Auth-Bypass', 'true');
     console.log(`[ROUTING] Serving modular dashboard (auth bypassed)`);
     res.sendFile(path.join(process.cwd(), 'dashboard-internal.html'));
+});
+
+// Logout route
+app.get('/logout', (req, res) => {
+    console.log('[AUTH] User logout requested');
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.redirect('/');
+});
+
+// Login route - go to dashboard
+app.get('/login', (req, res) => {
+    console.log('[AUTH] User login requested');
+    res.redirect('/dashboard');
 });
 
 // DWC Sales Portal - separate from client login
