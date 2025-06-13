@@ -590,18 +590,24 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// Landing page route (public access)
+// Landing page route (public access) - NEXUS DIAGNOSTIC REPAIR
 app.get('/', (req, res) => {
   const sessionId = req.headers['x-session-id'] || req.cookies?.session_id;
   const authToken = req.headers['authorization'] || req.cookies?.auth_token;
   
+  // Force landing page for all unauthenticated users
   if (!sessionId && !authToken) {
-    console.log(`[ROUTING] Serving landing page for unauthenticated user: ${Date.now()}`);
-    return res.sendFile(path.join(process.cwd(), 'landing.html'));
+    console.log(`[NEXUS-REPAIR] Serving verified landing page for unauthenticated user: ${Date.now()}`);
+    try {
+      return res.sendFile(path.resolve(process.cwd(), 'landing.html'));
+    } catch (error) {
+      console.log(`[NEXUS-REPAIR] Landing page fallback active`);
+      return res.redirect('/landing');
+    }
   }
   
-  console.log(`[ROUTING] Authenticated user accessing dashboard`);
-  res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+  console.log(`[NEXUS-REPAIR] Authenticated user accessing dashboard`);
+  res.sendFile(path.resolve(process.cwd(), 'dashboard.html'));
 });
 
 // Login endpoint to create authenticated session
@@ -655,6 +661,12 @@ app.get('/dashboard', requireAuth, (req, res) => {
   res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
+// Add dedicated landing page route for fallback
+app.get('/landing', (req, res) => {
+  console.log(`[NEXUS-REPAIR] Direct landing page access`);
+  res.sendFile(path.resolve(process.cwd(), 'landing.html'));
+});
+
 // Serve the main application
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {
@@ -666,12 +678,12 @@ app.get('*', (req, res) => {
   const authToken = req.headers['authorization'] || req.cookies?.auth_token;
   
   if (!sessionId && !authToken) {
-    console.log(`[ROUTING] Catch-all serving landing page for unauthenticated user`);
-    return res.sendFile(path.join(process.cwd(), 'landing.html'));
+    console.log(`[NEXUS-REPAIR] Catch-all serving verified landing page for unauthenticated user`);
+    return res.sendFile(path.resolve(process.cwd(), 'landing.html'));
   }
   
-  console.log(`[ROUTING] Catch-all serving dashboard for authenticated user`);
-  res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+  console.log(`[NEXUS-REPAIR] Catch-all serving dashboard for authenticated user`);
+  res.sendFile(path.resolve(process.cwd(), 'dashboard.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
