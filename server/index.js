@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 
-// Serve static files from public directory for Vercel compatibility
-app.use(express.static(path.join(__dirname, '../public'), {
+// Serve static files from server/public directory - THIS IS THE CORRECT PLATFORM
+app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.js')) {
       res.set('Content-Type', 'application/javascript');
@@ -73,7 +73,7 @@ app.get('/api/modules/:moduleId', (req, res) => {
     }
 });
 
-// Serve the main application only for non-API routes and non-static files
+// Serve the comprehensive NEXUS platform for all routes
 app.get('*', (req, res) => {
     // Don't serve index.html for API routes or file extensions
     if (req.path.startsWith('/api/') || 
@@ -84,7 +84,8 @@ app.get('*', (req, res) => {
         req.path.includes('.ico')) {
         return res.status(404).send('Not found');
     }
-    res.sendFile(path.join(__dirname, '../index.html'));
+    // Serve the comprehensive platform from server/public/index.html
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
