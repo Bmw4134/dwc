@@ -11,6 +11,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Essential middleware setup
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from root directory
+app.use(express.static(process.cwd()));
+app.use('/public', express.static(path.join(process.cwd(), 'public')));
+app.use('/client', express.static(path.join(process.cwd(), 'client')));
+
 // Initialize QNIS Lead Engine, API Key Vault, NLP Parser, and Autonomous Pipeline
 const qnisEngine = new QNISLeadEngine();
 const keyVault = new APIKeyVault();
@@ -1418,29 +1427,15 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'landing.html'));
 });
 
-// Catch-all route for SPA behavior
+// Error handler for API routes only
+app.use('/api/*', (req, res) => {
+    res.status(404).json({ error: 'API endpoint not found' });
+});
+
+// Catch-all route - serve landing page for all unmatched routes
 app.get('*', (req, res) => {
-    // Don't serve HTML for API routes or file extensions
-    if (req.path.startsWith('/api/') || 
-        req.path.startsWith('/health') ||
-        req.path.includes('.js') || 
-        req.path.includes('.css') || 
-        req.path.includes('.png') || 
-        req.path.includes('.jpg') || 
-        req.path.includes('.ico') ||
-        req.path.includes('.html')) {
-        return res.status(404).json({ error: 'Not found' });
-    }
-    
-    // Default to landing page for unknown routes in production
-    if (isProduction) {
-        console.log(`[ROUTING] Production: redirecting ${req.path} to landing`);
-        return res.redirect('/');
-    }
-    
-    // In development, serve dashboard for convenience
-    console.log(`[ROUTING] Development: serving dashboard for ${req.path}`);
-    res.sendFile(path.join(__dirname, '..', 'dashboard-internal.html'));
+    console.log(`[ROUTING] Catch-all serving landing page for: ${req.path}`);
+    res.sendFile(path.join(process.cwd(), 'landing.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
