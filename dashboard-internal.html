@@ -3992,44 +3992,157 @@
     </div>
 
     <script>
-        // Emergency sidebar restoration system
+        // Force immediate sidebar injection
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('[NEXUS] Emergency sidebar restoration initiated...');
-            
-            // Immediate sidebar restore
-            setTimeout(() => {
-                restoreFullSidebar();
-                expandAllSections();
-                initializeAllModules();
-            }, 500);
+            console.log('[NEXUS] Force injecting complete sidebar...');
+            injectCompleteSidebar();
         });
 
-        function restoreFullSidebar() {
-            console.log('[NEXUS] Restoring complete sidebar structure...');
+        function injectCompleteSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            if (!sidebar) return;
             
-            // Force expand all collapsed sections
-            const collapsedSections = document.querySelectorAll('.nav-section-content.collapsed');
+            // Clear existing content and inject complete structure
+            const navHeader = sidebar.querySelector('.nav-header');
+            sidebar.innerHTML = '';
+            
+            // Restore header
+            if (navHeader) {
+                sidebar.appendChild(navHeader);
+            } else {
+                sidebar.innerHTML += `
+                <div class="nav-header">
+                    <h1 class="nav-logo">DWC NEXUS</h1>
+                    <div class="search-container">
+                        <input type="text" id="nav-search" placeholder="Search modules & features" class="search-input">
+                        <div class="search-icon">🔍</div>
+                    </div>
+                </div>`;
+            }
+            
+            // Inject all navigation sections
+            sidebar.innerHTML += `
+            <!-- Core Intelligence Section -->
+            <div class="nav-section">
+                <div class="nav-title">Core Intelligence</div>
+                <div class="nav-item active" onclick="showModule('qnis')">
+                    <span class="nav-icon">🗺️</span>
+                    <span>QNIS Lead Map</span>
+                </div>
+                <div class="nav-item" onclick="showModule('overview')">
+                    <span class="nav-icon">📊</span>
+                    <span>Live Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="showModule('leadgen')">
+                    <span class="nav-icon">🎯</span>
+                    <span>Lead Generation</span>
+                </div>
+                <div class="nav-item" onclick="showModule('analytics')">
+                    <span class="nav-icon">📈</span>
+                    <span>Analytics</span>
+                </div>
+            </div>
+
+            <!-- Business Operations Section -->
+            <div class="nav-section">
+                <div class="nav-title">Business Operations</div>
+                <div class="nav-item" onclick="showModule('accounting')">
+                    <span class="nav-icon">💰</span>
+                    <span>Accounting</span>
+                </div>
+                <div class="nav-item" onclick="showModule('sales-management')">
+                    <span class="nav-icon">🤝</span>
+                    <span>Sales Management</span>
+                </div>
+                <div class="nav-item" onclick="showModule('investor')">
+                    <span class="nav-icon">📊</span>
+                    <span>Investor Deck</span>
+                </div>
+                <div class="nav-item" onclick="showModule('pricing')">
+                    <span class="nav-icon">💳</span>
+                    <span>Pricing Plans</span>
+                </div>
+            </div>
+
+            <!-- AI Operations Section -->
+            <div class="nav-section">
+                <div class="nav-title">AI Operations</div>
+                <div class="nav-item" onclick="showModule('watson')">
+                    <span class="nav-icon">⚡</span>
+                    <span>Watson AI</span>
+                </div>
+                <div class="nav-item" onclick="showModule('pitchgen')">
+                    <span class="nav-icon">🧠</span>
+                    <span>Pitch Generator</span>
+                </div>
+                <div class="nav-item" onclick="showModule('research')">
+                    <span class="nav-icon">🌍</span>
+                    <span>Market Research</span>
+                </div>
+                <div class="nav-item" onclick="showModule('workflows')">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Workflows</span>
+                </div>
+            </div>
+
+            <!-- System Administration Section -->
+            <div class="nav-section">
+                <div class="nav-title">System</div>
+                <div class="nav-item" onclick="showModule('admin')">
+                    <span class="nav-icon">🛠️</span>
+                    <span>Administration</span>
+                </div>
+                <div class="nav-item" onclick="showModule('apikeys')">
+                    <span class="nav-icon">🔐</span>
+                    <span>API Key Vault</span>
+                </div>
+                <div class="nav-item" onclick="showModule('tradingbot')">
+                    <span class="nav-icon">🤖</span>
+                    <span>Trading Bot</span>
+                </div>
+            </div>`;
+            
+            console.log('[NEXUS] Complete sidebar injected successfully');
+        }
+
+        function restoreFullSidebar() {
+            console.log('[NEXUS] Force restoring complete sidebar structure...');
+            
+            // Force page refresh to reload sidebar
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+            
+            // Immediate sidebar fixes
+            const collapsedSections = document.querySelectorAll('.nav-section-content.collapsed, .nav-section-content[style*="max-height: 0"]');
             collapsedSections.forEach(section => {
                 section.classList.remove('collapsed');
-                section.style.maxHeight = '500px';
+                section.style.maxHeight = '500px !important';
                 section.style.padding = '0 16px 12px 16px';
+                section.style.display = 'block';
             });
             
             // Reset all toggle indicators
-            const toggles = document.querySelectorAll('.section-toggle.collapsed');
+            const toggles = document.querySelectorAll('.section-toggle.collapsed, .section-toggle[style*="rotate"]');
             toggles.forEach(toggle => {
                 toggle.classList.remove('collapsed');
                 toggle.style.transform = 'rotate(0deg)';
             });
             
-            // Ensure all nav sections are visible
+            // Force all nav sections visible
             const navSections = document.querySelectorAll('.nav-section');
             navSections.forEach(section => {
-                section.style.display = 'block';
+                section.style.display = 'block !important';
                 section.style.opacity = '1';
+                section.style.visibility = 'visible';
             });
             
-            console.log('[NEXUS] Sidebar structure restored');
+            // Force browser to recalculate layout
+            document.querySelector('.sidebar').style.display = 'none';
+            document.querySelector('.sidebar').offsetHeight; // trigger reflow
+            document.querySelector('.sidebar').style.display = 'flex';
+            
+            console.log('[NEXUS] Sidebar structure force restored with refresh');
         }
 
         function expandAllSections() {
