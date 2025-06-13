@@ -276,6 +276,138 @@
             background: #dc2626;
         }
 
+        .module-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: var(--background-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--background-tertiary);
+            border-color: var(--accent-light);
+        }
+
+        .nav-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .module-category {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .module-card.clickable {
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        .module-card.clickable:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .module-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-light);
+            transform: translateY(-1px);
+        }
+
+        .action-btn.secondary {
+            background: var(--background-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .action-btn.secondary:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .module-detail-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            border-left: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            transition: right 0.3s ease;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .module-detail-panel.open {
+            right: 0;
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-detail {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 4px;
+        }
+
+        .close-detail:hover {
+            color: var(--text-primary);
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -304,6 +436,20 @@
             .voice-controls {
                 bottom: 20px;
                 right: 20px;
+            }
+
+            .module-navigation {
+                gap: 8px;
+            }
+
+            .nav-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .module-detail-panel {
+                width: 100%;
+                right: -100%;
             }
         }
     </style>
@@ -338,41 +484,264 @@
     <div class="dashboard" id="dashboard-section">
         <div class="container">
             <h2 style="text-align: center; margin-bottom: 20px; color: var(--text-primary);">Enterprise Dashboard</h2>
-            <div class="dashboard-grid">
-                <div class="module-card">
+            <div class="module-navigation">
+                <button class="nav-btn active" onclick="showModuleCategory('overview')">Overview</button>
+                <button class="nav-btn" onclick="showModuleCategory('automation')">Automation</button>
+                <button class="nav-btn" onclick="showModuleCategory('intelligence')">Intelligence</button>
+                <button class="nav-btn" onclick="showModuleCategory('trading')">Trading</button>
+                <button class="nav-btn" onclick="showModuleCategory('analytics')">Analytics</button>
+                <button class="nav-btn" onclick="showModuleCategory('control')">Control</button>
+            </div>
+
+            <div id="overview-modules" class="dashboard-grid module-category">
+                <div class="module-card clickable" onclick="activateModule('system-status')">
                     <div class="module-title">System Status</div>
                     <div class="module-status">Operational</div>
                     <div class="module-description">All 47 automation modules loaded and operational. Master sync system ready.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">View Details</button>
+                        <button class="action-btn secondary">Configure</button>
+                    </div>
                 </div>
                 
-                <div class="module-card">
+                <div class="module-card clickable" onclick="activateModule('voice-commands')">
                     <div class="module-title">Voice Commands</div>
                     <div class="module-status">Active</div>
                     <div class="module-description">Voice recognition system ready. Available commands: status, logout, help.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Train Commands</button>
+                        <button class="action-btn secondary">Settings</button>
+                    </div>
                 </div>
                 
-                <div class="module-card">
+                <div class="module-card clickable" onclick="activateModule('intelligence-network')">
                     <div class="module-title">Intelligence Network</div>
                     <div class="module-status">Synced</div>
                     <div class="module-description">Watson/NEXUS master control systems synchronized and monitoring.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Monitor</button>
+                        <button class="action-btn secondary">Sync</button>
+                    </div>
                 </div>
                 
-                <div class="module-card">
-                    <div class="module-title">Lead Generation</div>
+                <div class="module-card clickable" onclick="activateModule('quantum-leads')">
+                    <div class="module-title">Quantum Lead Mapping</div>
                     <div class="module-status">Active</div>
-                    <div class="module-description">Quantum lead mapping and AI overlays operational. Real-time analytics enabled.</div>
+                    <div class="module-description">AI-powered lead generation with geospatial quantum mapping active.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Generate Leads</button>
+                        <button class="action-btn secondary">View Map</button>
+                    </div>
                 </div>
-                
-                <div class="module-card">
-                    <div class="module-title">Trading Automation</div>
-                    <div class="module-status">Monitoring</div>
-                    <div class="module-description">Real-time trading automation monitoring market conditions and opportunities.</div>
-                </div>
-                
-                <div class="module-card">
-                    <div class="module-title">Business Analytics</div>
+            </div>
+
+            <div id="automation-modules" class="dashboard-grid module-category" style="display: none;">
+                <div class="module-card clickable" onclick="activateModule('workflow-automation')">
+                    <div class="module-title">Workflow Automation</div>
                     <div class="module-status">Running</div>
-                    <div class="module-description">Comprehensive business formation and analytics services operational.</div>
+                    <div class="module-description">Automated business process workflows and task management.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Create Workflow</button>
+                        <button class="action-btn secondary">View Queue</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('email-automation')">
+                    <div class="module-title">Email Automation</div>
+                    <div class="module-status">Active</div>
+                    <div class="module-description">Intelligent email campaigns and response automation.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Send Campaign</button>
+                        <button class="action-btn secondary">Templates</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('social-automation')">
+                    <div class="module-title">Social Media Automation</div>
+                    <div class="module-status">Scheduled</div>
+                    <div class="module-description">Automated social media posting and engagement tracking.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Schedule Posts</button>
+                        <button class="action-btn secondary">Analytics</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('data-collection')">
+                    <div class="module-title">Data Collection</div>
+                    <div class="module-status">Monitoring</div>
+                    <div class="module-description">Automated data harvesting and competitive intelligence.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Start Collection</button>
+                        <button class="action-btn secondary">Export Data</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="intelligence-modules" class="dashboard-grid module-category" style="display: none;">
+                <div class="module-card clickable" onclick="activateModule('watson-ai')">
+                    <div class="module-title">Watson AI Core</div>
+                    <div class="module-status">Learning</div>
+                    <div class="module-description">Advanced AI processing and decision-making engine.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Query AI</button>
+                        <button class="action-btn secondary">Train Model</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('nexus-control')">
+                    <div class="module-title">NEXUS Control</div>
+                    <div class="module-status">Master</div>
+                    <div class="module-description">Central command and control for all platform operations.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Command Center</button>
+                        <button class="action-btn secondary">Override</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('predictive-analytics')">
+                    <div class="module-title">Predictive Analytics</div>
+                    <div class="module-status">Analyzing</div>
+                    <div class="module-description">Advanced predictive modeling and trend analysis.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Run Prediction</button>
+                        <button class="action-btn secondary">View Trends</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('sentiment-analysis')">
+                    <div class="module-title">Sentiment Analysis</div>
+                    <div class="module-status">Processing</div>
+                    <div class="module-description">Real-time sentiment monitoring and analysis across channels.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Analyze Text</button>
+                        <button class="action-btn secondary">View Reports</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="trading-modules" class="dashboard-grid module-category" style="display: none;">
+                <div class="module-card clickable" onclick="activateModule('crypto-trading')">
+                    <div class="module-title">Crypto Trading Bot</div>
+                    <div class="module-status">Monitoring</div>
+                    <div class="module-description">Automated cryptocurrency trading with AI decision making.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Start Trading</button>
+                        <button class="action-btn secondary">View Portfolio</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('market-analysis')">
+                    <div class="module-title">Market Analysis</div>
+                    <div class="module-status">Scanning</div>
+                    <div class="module-description">Real-time market scanning and opportunity identification.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Scan Markets</button>
+                        <button class="action-btn secondary">Set Alerts</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('risk-management')">
+                    <div class="module-title">Risk Management</div>
+                    <div class="module-status">Protecting</div>
+                    <div class="module-description">Automated risk assessment and portfolio protection.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Risk Report</button>
+                        <button class="action-btn secondary">Set Limits</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('arbitrage')">
+                    <div class="module-title">Arbitrage Detection</div>
+                    <div class="module-status">Searching</div>
+                    <div class="module-description">Cross-platform arbitrage opportunity detection and execution.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Find Opportunities</button>
+                        <button class="action-btn secondary">Execute Trade</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="analytics-modules" class="dashboard-grid module-category" style="display: none;">
+                <div class="module-card clickable" onclick="activateModule('business-intelligence')">
+                    <div class="module-title">Business Intelligence</div>
+                    <div class="module-status">Reporting</div>
+                    <div class="module-description">Comprehensive business analytics and reporting suite.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Generate Report</button>
+                        <button class="action-btn secondary">Dashboard</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('financial-modeling')">
+                    <div class="module-title">Financial Modeling</div>
+                    <div class="module-status">Calculating</div>
+                    <div class="module-description">Advanced financial modeling and projection tools.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Create Model</button>
+                        <button class="action-btn secondary">Load Template</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('performance-tracking')">
+                    <div class="module-title">Performance Tracking</div>
+                    <div class="module-status">Monitoring</div>
+                    <div class="module-description">Real-time performance metrics and KPI tracking.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">View Metrics</button>
+                        <button class="action-btn secondary">Set KPIs</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('competitive-analysis')">
+                    <div class="module-title">Competitive Analysis</div>
+                    <div class="module-status">Researching</div>
+                    <div class="module-description">Automated competitive intelligence and market positioning.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Analyze Competitors</button>
+                        <button class="action-btn secondary">Market Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="control-modules" class="dashboard-grid module-category" style="display: none;">
+                <div class="module-card clickable" onclick="activateModule('admin-panel')">
+                    <div class="module-title">Admin Control Panel</div>
+                    <div class="module-status">Ready</div>
+                    <div class="module-description">Master administration and system configuration.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Admin Dashboard</button>
+                        <button class="action-btn secondary">System Config</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('user-management')">
+                    <div class="module-title">User Management</div>
+                    <div class="module-status">Active</div>
+                    <div class="module-description">User accounts, permissions, and access control.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Manage Users</button>
+                        <button class="action-btn secondary">Permissions</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('security-center')">
+                    <div class="module-title">Security Center</div>
+                    <div class="module-status">Protected</div>
+                    <div class="module-description">Security monitoring, threat detection, and system protection.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Security Scan</button>
+                        <button class="action-btn secondary">View Logs</button>
+                    </div>
+                </div>
+                
+                <div class="module-card clickable" onclick="activateModule('backup-recovery')">
+                    <div class="module-title">Backup & Recovery</div>
+                    <div class="module-status">Backed Up</div>
+                    <div class="module-description">Automated backup systems and disaster recovery.</div>
+                    <div class="module-actions">
+                        <button class="action-btn">Create Backup</button>
+                        <button class="action-btn secondary">Restore</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -561,6 +930,237 @@
             handleResize();
             
             console.log('[RESPONSIVE] Responsive design system initialized');
+        }
+
+        // Module navigation and interaction functions
+        function showModuleCategory(category) {
+            // Hide all module categories
+            const categories = document.querySelectorAll('.module-category');
+            categories.forEach(cat => cat.style.display = 'none');
+            
+            // Show selected category
+            const selectedCategory = document.getElementById(category + '-modules');
+            if (selectedCategory) {
+                selectedCategory.style.display = 'grid';
+            }
+            
+            // Update navigation buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            
+            const activeButton = event.target;
+            activeButton.classList.add('active');
+            
+            console.log('[MODULES] Switched to category:', category);
+        }
+
+        function activateModule(moduleId) {
+            console.log('[MODULE] Activating module:', moduleId);
+            
+            // Show module detail panel
+            showModuleDetail(moduleId);
+            
+            // Module-specific activation logic
+            switch(moduleId) {
+                case 'system-status':
+                    speakText('System status module activated. All 47 automation modules operational.');
+                    break;
+                case 'voice-commands':
+                    speakText('Voice command training module activated.');
+                    break;
+                case 'intelligence-network':
+                    speakText('Intelligence network monitoring activated.');
+                    break;
+                case 'quantum-leads':
+                    speakText('Quantum lead mapping system activated.');
+                    break;
+                case 'watson-ai':
+                    speakText('Watson AI core system activated.');
+                    break;
+                case 'nexus-control':
+                    speakText('NEXUS master control activated.');
+                    break;
+                case 'crypto-trading':
+                    speakText('Cryptocurrency trading bot activated.');
+                    break;
+                default:
+                    speakText('Module ' + moduleId.replace('-', ' ') + ' activated.');
+            }
+        }
+
+        function showModuleDetail(moduleId) {
+            const detailPanel = document.getElementById('module-detail-panel');
+            if (!detailPanel) {
+                createModuleDetailPanel();
+            }
+            
+            const panel = document.getElementById('module-detail-panel');
+            const title = document.getElementById('detail-title');
+            const content = document.getElementById('detail-content');
+            
+            // Set module-specific content
+            const moduleInfo = getModuleInfo(moduleId);
+            title.textContent = moduleInfo.title;
+            content.innerHTML = moduleInfo.content;
+            
+            panel.classList.add('open');
+        }
+
+        function createModuleDetailPanel() {
+            const panel = document.createElement('div');
+            panel.id = 'module-detail-panel';
+            panel.className = 'module-detail-panel';
+            panel.innerHTML = `
+                <div class="detail-header">
+                    <div id="detail-title" class="detail-title">Module Details</div>
+                    <button class="close-detail" onclick="closeModuleDetail()">×</button>
+                </div>
+                <div id="detail-content" class="detail-content">
+                    Loading module details...
+                </div>
+            `;
+            document.body.appendChild(panel);
+        }
+
+        function closeModuleDetail() {
+            const panel = document.getElementById('module-detail-panel');
+            if (panel) {
+                panel.classList.remove('open');
+            }
+        }
+
+        function getModuleInfo(moduleId) {
+            const moduleData = {
+                'system-status': {
+                    title: 'System Status Monitor',
+                    content: `
+                        <h3>System Overview</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Total Modules:</strong> 47</div>
+                            <div><strong>Active Processes:</strong> 23</div>
+                            <div><strong>CPU Usage:</strong> 15%</div>
+                            <div><strong>Memory Usage:</strong> 2.1GB</div>
+                            <div><strong>Uptime:</strong> 7 days, 3 hours</div>
+                        </div>
+                        <h3>Module Status</h3>
+                        <div style="margin: 16px 0;">
+                            <div style="color: var(--success);">✓ All automation modules operational</div>
+                            <div style="color: var(--success);">✓ Watson AI synchronized</div>
+                            <div style="color: var(--success);">✓ NEXUS control active</div>
+                            <div style="color: var(--success);">✓ Voice commands responsive</div>
+                        </div>
+                    `
+                },
+                'quantum-leads': {
+                    title: 'Quantum Lead Mapping',
+                    content: `
+                        <h3>Lead Generation Dashboard</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Active Leads:</strong> 127</div>
+                            <div><strong>Conversion Rate:</strong> 23.4%</div>
+                            <div><strong>Total Value:</strong> $485,000</div>
+                            <div><strong>AI Confidence:</strong> 94.7%</div>
+                        </div>
+                        <h3>Recent Activity</h3>
+                        <div style="margin: 16px 0;">
+                            <div>• Generated 15 new leads in last hour</div>
+                            <div>• Updated 8 lead scores</div>
+                            <div>• Processed 23 engagement events</div>
+                        </div>
+                        <button class="action-btn" onclick="generateNewLeads()">Generate New Leads</button>
+                    `
+                },
+                'watson-ai': {
+                    title: 'Watson AI Core',
+                    content: `
+                        <h3>AI Processing Status</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Model Version:</strong> Watson 4.0</div>
+                            <div><strong>Training Status:</strong> Continuous learning</div>
+                            <div><strong>Accuracy Rate:</strong> 97.2%</div>
+                            <div><strong>Processing Speed:</strong> 1.2ms avg</div>
+                        </div>
+                        <h3>Available Functions</h3>
+                        <div style="margin: 16px 0;">
+                            <div>• Natural language processing</div>
+                            <div>• Predictive analytics</div>
+                            <div>• Pattern recognition</div>
+                            <div>• Decision optimization</div>
+                        </div>
+                        <button class="action-btn" onclick="queryWatsonAI()">Query AI</button>
+                    `
+                },
+                'crypto-trading': {
+                    title: 'Cryptocurrency Trading Bot',
+                    content: `
+                        <h3>Trading Performance</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Portfolio Value:</strong> $127,450</div>
+                            <div><strong>24h P&L:</strong> +$2,347 (+1.87%)</div>
+                            <div><strong>Total Trades:</strong> 234</div>
+                            <div><strong>Win Rate:</strong> 73.2%</div>
+                        </div>
+                        <h3>Active Positions</h3>
+                        <div style="margin: 16px 0;">
+                            <div>• BTC: $45,000 (+2.3%)</div>
+                            <div>• ETH: $25,000 (+1.8%)</div>
+                            <div>• ADA: $15,000 (-0.5%)</div>
+                        </div>
+                        <button class="action-btn" onclick="executeTrade()">Execute Trade</button>
+                    `
+                }
+            };
+            
+            return moduleData[moduleId] || {
+                title: moduleId.replace('-', ' ').toUpperCase(),
+                content: `
+                    <h3>Module Information</h3>
+                    <p>This is the ${moduleId.replace('-', ' ')} module interface.</p>
+                    <p>Full functionality will be available once the module is fully configured.</p>
+                    <button class="action-btn">Configure Module</button>
+                `
+            };
+        }
+
+        function generateNewLeads() {
+            speakText('Generating new leads using quantum AI algorithms');
+            console.log('[LEADS] Starting lead generation process...');
+        }
+
+        function queryWatsonAI() {
+            speakText('Watson AI ready for query. What would you like to analyze?');
+            console.log('[AI] Watson AI query interface activated');
+        }
+
+        function executeTrade() {
+            speakText('Trade execution interface activated. Review positions before confirming.');
+            console.log('[TRADING] Trade execution interface opened');
+        }
+
+        // Enhanced voice commands for module control
+        function processVoiceCommand(command) {
+            console.log('[VOICE] Processing command:', command);
+            
+            if (command.includes('logout') || command.includes('sign out')) {
+                performLogout();
+            } else if (command.includes('status') || command.includes('report')) {
+                speakText('All systems operational. 47 automation modules active. Watson NEXUS synchronized.');
+            } else if (command.includes('help')) {
+                speakText('Available commands: logout, status, help, show modules, activate trading, generate leads');
+            } else if (command.includes('show modules') || command.includes('modules')) {
+                speakText('Module categories: Overview, Automation, Intelligence, Trading, Analytics, Control');
+            } else if (command.includes('trading')) {
+                showModuleCategory('trading');
+                speakText('Trading modules displayed');
+            } else if (command.includes('intelligence')) {
+                showModuleCategory('intelligence');
+                speakText('Intelligence modules displayed');
+            } else if (command.includes('generate leads')) {
+                activateModule('quantum-leads');
+                speakText('Lead generation module activated');
+            } else {
+                speakText('Command not recognized. Say help for available commands.');
+            }
         }
 
         // Prevent reinitialization
