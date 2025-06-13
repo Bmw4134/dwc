@@ -116,6 +116,107 @@ app.get('/api/qnis/leads/:city', (req, res) => {
     res.json(leads);
 });
 
+// Trucking API endpoints - inline implementation
+app.get('/api/trucking/company/:dotNumber', (req, res) => {
+    const dotNumber = req.params.dotNumber;
+    
+    if (dotNumber === "1949781") {
+        const companyData = {
+            dotNumber: "1949781",
+            companyName: "Premier Logistics Solutions",
+            operatingStatus: "ACTIVE",
+            telephone: "1-800-373-4448",
+            emailAddress: "dispatch@premierlogistics.com",
+            safetyRating: "SATISFACTORY",
+            totalDrivers: 25,
+            totalPowerUnits: 18,
+            businessMetrics: {
+                yearsInBusiness: new Date().getFullYear() - 2008,
+                estimatedAnnualRevenue: "$2.5M - $5M",
+                fleetSize: "Medium (15-50 vehicles)",
+                serviceArea: "Nationwide",
+                specializations: [
+                    "Long Haul Freight",
+                    "Expedited Shipping", 
+                    "Refrigerated Transport",
+                    "Hazmat Certified"
+                ]
+            },
+            websiteUrl: "/trucking-company-website.html",
+            leadPipelineActive: true,
+            lastUpdated: new Date().toISOString()
+        };
+        res.json(companyData);
+    } else {
+        res.json({
+            dotNumber: dotNumber,
+            status: "Company data not available in our pro bono program",
+            message: "This service is currently configured for DOT #1949781"
+        });
+    }
+});
+
+app.post('/api/trucking/quote', (req, res) => {
+    const { origin, destination, weight, freightType } = req.body;
+    
+    const baseRates = {
+        'General Freight': 2.50,
+        'Refrigerated': 3.25,
+        'Hazmat': 3.75,
+        'Oversized': 4.50,
+        'Expedited Shipping': 5.00
+    };
+    
+    const estimatedDistance = Math.floor(Math.random() * 2000) + 500;
+    const baseRate = (baseRates[freightType] || 2.50) * estimatedDistance;
+    const fuelSurcharge = baseRate * 0.35;
+    const totalRate = baseRate + fuelSurcharge;
+    
+    const quote = {
+        quoteId: `PL${Date.now()}`,
+        companyInfo: {
+            name: "Premier Logistics Solutions",
+            dotNumber: "1949781",
+            phone: "1-800-373-4448",
+            email: "dispatch@premierlogistics.com"
+        },
+        shipmentDetails: { origin, destination, weight, freightType },
+        rateBreakdown: {
+            baseRate: Math.round(baseRate),
+            fuelSurcharge: Math.round(fuelSurcharge),
+            totalRate: Math.round(totalRate)
+        },
+        serviceDetails: {
+            estimatedTransitDays: Math.ceil(estimatedDistance / 500),
+            equipmentType: freightType === 'Refrigerated' ? '53\' Refrigerated Trailer' : '53\' Dry Van',
+            tracking: "Real-time GPS tracking included"
+        },
+        validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+    };
+    
+    res.json(quote);
+});
+
+app.post('/api/trucking/contact', (req, res) => {
+    const { company, contact, phone, email, service, details } = req.body;
+    const leadId = `LEAD_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    console.log('[TRUCKING-LEAD] New lead received:', {
+        leadId, company, contact, phone, email, service, details
+    });
+    
+    res.json({
+        success: true,
+        leadId: leadId,
+        message: "Thank you for your inquiry! Our team will contact you within 2 hours.",
+        contactInfo: {
+            phone: "1-800-373-4448",
+            email: "dispatch@premierlogistics.com",
+            hours: "24/7 Dispatch Available"
+        }
+    });
+});
+
 // Dashboard state management
 let dashboardState = {
     modules: {

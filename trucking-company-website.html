@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premier Logistics Solutions - DOT #1949781 | Professional Trucking Services</title>
+    <meta name="description" content="Premier Logistics Solutions (DOT #1949781) - Reliable commercial trucking and freight transportation services with over 15 years of experience. Get a quote today.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #ed8936;
+            --accent-color: #3182ce;
+            --text-color: #2d3748;
+            --light-bg: #f7fafc;
+            --white: #ffffff;
+            --gray-100: #f7fafc;
+            --gray-200: #edf2f7;
+            --gray-600: #718096;
+            --green: #38a169;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: var(--white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+
+        .contact-btn {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: #dd7324;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f8ff" width="1200" height="600"/><path fill="%23b0d4f1" d="M0 450 Q300 350 600 400 T1200 450 V600 H0 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+            padding: 150px 2rem 100px;
+            margin-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .dot-number {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #dd7324;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary-color);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 2rem;
+            background: var(--light-bg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* About Section */
+        .about {
+            padding: 80px 2rem;
+            background: var(--white);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-600);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--gray-100);
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 2rem;
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .contact-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            color: var(--text-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a202c;
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Lead Generation Integration */
+        .lead-banner {
+            background: var(--green);
+            color: var(--white);
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lead-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .quote-calculator {
+            background: var(--gray-100);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .instant-quote-btn {
+            background: var(--green);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .instant-quote-btn:hover {
+            background: #2f855a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Lead Generation Banner -->
+    <div class="lead-banner">
+        <strong>📧 New Business Inquiry Received</strong> - Our team will contact you within 2 hours for freight solutions
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">Premier Logistics</a>
+            <nav class="nav-menu">
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="#quote">Get Quote</a>
+            </nav>
+            <a href="tel:+1-800-FREIGHT" class="contact-btn">Call Now</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="dot-number">DOT #1949781 - USDOT Certified</div>
+            <h1>Premier Logistics Solutions</h1>
+            <p class="hero-subtitle">Professional freight transportation and logistics services you can trust</p>
+            <div class="cta-buttons">
+                <a href="#quote" class="btn-primary">Get Instant Quote</a>
+                <a href="#contact" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Our Transportation Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Long Haul Freight</h3>
+                    <p>Reliable long-distance transportation services across all 48 states with real-time tracking and competitive rates.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Expedited Shipping</h3>
+                    <p>Time-critical deliveries with dedicated vehicles and priority handling for your urgent freight needs.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <h3>Logistics Management</h3>
+                    <p>Complete supply chain solutions including warehousing, inventory management, and distribution services.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Specialized Cargo</h3>
+                    <p>Expert handling of oversized, hazardous, and high-value cargo with specialized equipment and certified drivers.</p>
+                </div>
+            </div>
+
+            <!-- Instant Quote Calculator -->
+            <div class="quote-calculator" id="quote">
+                <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Get Instant Freight Quote</h3>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label>Origin City</label>
+                        <input type="text" placeholder="From where?" id="origin">
+                    </div>
+                    <div class="form-group">
+                        <label>Destination City</label>
+                        <input type="text" placeholder="To where?" id="destination">
+                    </div>
+                    <div class="form-group">
+                        <label>Freight Type</label>
+                        <select id="freight-type">
+                            <option>General Freight</option>
+                            <option>Refrigerated</option>
+                            <option>Hazmat</option>
+                            <option>Oversized</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (lbs)</label>
+                        <input type="number" placeholder="Weight" id="weight">
+                    </div>
+                </div>
+                <button class="instant-quote-btn" onclick="generateQuote()">
+                    <i class="fas fa-calculator"></i> Calculate Freight Rate
+                </button>
+                <div id="quote-result" style="margin-top: 1rem; text-align: center; font-weight: bold;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Trusted Transportation Partner Since 2008</h2>
+                    <p>Premier Logistics Solutions has been serving businesses across the United States with reliable, professional freight transportation services. Our USDOT certification #1949781 represents our commitment to safety, compliance, and excellence.</p>
+                    <p>With a modern fleet of well-maintained vehicles and experienced drivers, we ensure your freight arrives safely and on time, every time.</p>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">15+</span>
+                            <span class="stat-label">Years Experience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">50,000+</span>
+                            <span class="stat-label">Shipments Delivered</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">99.8%</span>
+                            <span class="stat-label">On-Time Delivery</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Customer Support</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div style="background: linear-gradient(45deg, var(--primary-color), var(--accent-color)); height: 400px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem;">
+                        <i class="fas fa-truck-moving"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Get In Touch</h2>
+                    <p>Ready to ship your freight? Contact us today for competitive rates and exceptional service.</p>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Phone:</strong><br>
+                            1-800-FREIGHT (1-800-373-4448)
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email:</strong><br>
+                            dispatch@premierlogistics.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Address:</strong><br>
+                            Business Operations Center<br>
+                            Available 24/7 for Dispatch
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-id-card"></i>
+                        <div>
+                            <strong>DOT Number:</strong><br>
+                            #1949781 (USDOT Certified)
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" onsubmit="submitContactForm(event)">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">Request a Quote</h3>
+                    <div class="form-group">
+                        <label>Company Name *</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Person *</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Service Needed</label>
+                        <select>
+                            <option>General Freight</option>
+                            <option>Expedited Shipping</option>
+                            <option>Specialized Cargo</option>
+                            <option>Logistics Management</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Additional Details</label>
+                        <textarea placeholder="Tell us about your shipping needs..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Send Quote Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Premier Logistics Solutions</h3>
+                <p>Professional freight transportation services you can trust.</p>
+                <p><strong>DOT #1949781</strong></p>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <a href="#services">Long Haul Freight</a>
+                <a href="#services">Expedited Shipping</a>
+                <a href="#services">Logistics Management</a>
+                <a href="#services">Specialized Cargo</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <a href="tel:+18003734448">1-800-FREIGHT</a>
+                <a href="mailto:dispatch@premierlogistics.com">dispatch@premierlogistics.com</a>
+                <p>Available 24/7</p>
+            </div>
+            <div class="footer-section">
+                <h3>Compliance</h3>
+                <p>USDOT Certified</p>
+                <p>Fully Insured</p>
+                <p>Safety First Priority</p>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #4a5568; padding-top: 1rem; text-align: center;">
+            <p>&copy; 2024 Premier Logistics Solutions. All rights reserved. | DOT #1949781</p>
+        </div>
+    </footer>
+
+    <script>
+        // Quote Calculator
+        function generateQuote() {
+            const origin = document.getElementById('origin').value;
+            const destination = document.getElementById('destination').value;
+            const weight = document.getElementById('weight').value;
+            const freightType = document.getElementById('freight-type').value;
+            
+            if (!origin || !destination || !weight) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Simulate quote calculation
+            const baseRate = 2.50;
+            const distance = Math.floor(Math.random() * 2000) + 500; // Simulate distance
+            let multiplier = 1;
+            
+            switch(freightType) {
+                case 'Refrigerated': multiplier = 1.3; break;
+                case 'Hazmat': multiplier = 1.5; break;
+                case 'Oversized': multiplier = 1.8; break;
+            }
+            
+            const totalCost = Math.floor((baseRate * distance * (weight / 1000) * multiplier));
+            
+            document.getElementById('quote-result').innerHTML = `
+                <div style="background: var(--green); color: white; padding: 1rem; border-radius: 5px; margin-top: 1rem;">
+                    <h4>Estimated Quote: $${totalCost.toLocaleString()}</h4>
+                    <p>Distance: ~${distance} miles | Transit Time: ${Math.ceil(distance / 500)} days</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">*Final quote subject to load details and current market rates</p>
+                </div>
+            `;
+            
+            // Log this as a lead in our system
+            logFreightLead({
+                origin: origin,
+                destination: destination,
+                weight: weight,
+                freightType: freightType,
+                estimatedValue: totalCost,
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Contact Form Submission
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            // Show success message
+            alert('Thank you for your quote request! Our team will contact you within 2 hours with a detailed quote.');
+            
+            // Log this as a qualified lead
+            logContactLead({
+                source: 'website_contact_form',
+                timestamp: new Date().toISOString(),
+                status: 'new_lead'
+            });
+            
+            // Reset form
+            event.target.reset();
+        }
+        
+        // Lead logging functions
+        function logFreightLead(leadData) {
+            console.log('[FREIGHT-LEAD]', leadData);
+            // In production, this would send to our CRM/lead management system
+        }
+        
+        function logContactLead(leadData) {
+            console.log('[CONTACT-LEAD]', leadData);
+            // In production, this would send to our CRM/lead management system
+        }
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Lead banner animation
+        setInterval(() => {
+            const banner = document.querySelector('.lead-banner');
+            banner.style.background = banner.style.background === 'var(--secondary-color)' ? 'var(--green)' : 'var(--secondary-color)';
+        }, 5000);
+    </script>
+</body>
+</html>

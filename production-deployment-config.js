@@ -5,7 +5,11 @@
 
 class ProductionDeploymentConfig {
     constructor() {
-        this.isProduction = process.env.NODE_ENV === 'production';
+        // Handle browser environment where process is undefined
+        this.isProduction = (typeof process !== 'undefined' && 
+                           process.env && 
+                           process.env.NODE_ENV === 'production') || 
+                           window.location.hostname !== 'localhost';
         this.deploymentChecks = [];
     }
 
