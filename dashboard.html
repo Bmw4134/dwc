@@ -6821,25 +6821,62 @@ KNOWLEDGE GRAPH CONNECTIONS:
             
             const mapContainer = document.getElementById('qnis-map');
             if (mapContainer) {
+                const leads = qnisMap?.leads || leadMapCache.leads || [];
+                const leadsList = leads.slice(0, 8).map(lead => `
+                    <div style="background: rgba(0,255,136,0.1); margin: 5px 0; padding: 8px; border-radius: 5px; border-left: 3px solid #00ff88;">
+                        <div style="font-weight: bold; color: #00ff88;">${lead.company || `Company ${lead.id?.slice(-4) || 'Unknown'}`}</div>
+                        <div style="font-size: 11px; color: #ccc;">${lead.city} | Score: ${lead.qnisScore} | ${lead.industry || 'Tech'}</div>
+                    </div>
+                `).join('');
+                
                 mapContainer.innerHTML = `
                     <div style="width: 100%; height: 500px; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); 
-                         border: 2px solid #00ff88; border-radius: 15px; position: relative; overflow: hidden;">
-                        <div style="position: absolute; top: 20px; left: 20px; color: #00ff88; font-weight: bold;">
-                            QNIS Quantum Lead Intelligence Map
+                         border: 2px solid #00ff88; border-radius: 15px; position: relative; overflow: hidden; display: flex;">
+                        
+                        <div style="flex: 1; padding: 20px;">
+                            <div style="color: #00ff88; font-weight: bold; font-size: 16px; margin-bottom: 15px;">
+                                QNIS Quantum Lead Intelligence Map
+                            </div>
+                            <div style="color: #fff; font-size: 12px; margin-bottom: 20px;">
+                                Live Geographic Tracking | ${leads.length} Active Leads
+                            </div>
+                            
+                            <div style="background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; height: 350px; overflow-y: auto;">
+                                <div style="color: #00ff88; font-weight: bold; margin-bottom: 10px;">Recent Lead Activity</div>
+                                ${leadsList}
+                                ${leads.length > 8 ? `<div style="color: #888; font-size: 11px; text-align: center; margin-top: 10px;">+ ${leads.length - 8} more leads...</div>` : ''}
+                            </div>
                         </div>
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                             text-align: center; color: #ffffff;">
-                            <div style="font-size: 48px; margin-bottom: 20px;">🗺️</div>
-                            <div style="font-size: 18px; margin-bottom: 10px;">Geographic Intelligence Active</div>
-                            <div style="color: #00ff88;">Tracking ${qnisMap?.leads?.length || 0} lead coordinates</div>
-                        </div>
-                        <div style="position: absolute; bottom: 20px; right: 20px; color: #00ff88; font-size: 14px;">
-                            Live coordinate injection active
+                        
+                        <div style="width: 200px; padding: 20px; background: rgba(0,255,136,0.05);">
+                            <div style="color: #00ff88; font-weight: bold; margin-bottom: 15px;">Live Stats</div>
+                            <div style="margin-bottom: 15px;">
+                                <div style="color: #ccc; font-size: 11px;">Total Leads</div>
+                                <div style="color: #fff; font-size: 18px; font-weight: bold;">${leads.length}</div>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <div style="color: #ccc; font-size: 11px;">Avg QNIS Score</div>
+                                <div style="color: #00ff88; font-size: 18px; font-weight: bold;">
+                                    ${leads.length > 0 ? Math.round(leads.reduce((sum, lead) => sum + (lead.qnisScore || 0), 0) / leads.length) : 0}
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <div style="color: #ccc; font-size: 11px;">Cache Status</div>
+                                <div style="color: #00ff88; font-size: 12px;">
+                                    ${leadMapCache.lastUpdate ? new Date(leadMapCache.lastUpdate).toLocaleTimeString() : 'No cache'}
+                                </div>
+                            </div>
+                            <div style="background: rgba(0,255,136,0.2); padding: 10px; border-radius: 5px; text-align: center;">
+                                <div style="color: #00ff88; font-size: 11px; font-weight: bold;">Recovery Mode</div>
+                                <div style="color: #fff; font-size: 10px;">Cache-powered display</div>
+                            </div>
                         </div>
                     </div>
                 `;
                 
-                console.log('[QNIS] Backup injection complete');
+                // Update debug overlay
+                updateDebugOverlay();
+                console.log('[QNIS] Enhanced backup injection complete with live lead data');
             }
         }
 
