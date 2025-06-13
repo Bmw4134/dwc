@@ -1004,6 +1004,42 @@ app.use((err, req, res, next) => {
 
 
 
+// Authentication middleware for protected routes
+function requireAuth(req, res, next) {
+    const authToken = req.headers.authorization || req.cookies?.auth_token;
+    
+    // In production, redirect unauthenticated users to landing page
+    if (isProduction && !authToken) {
+        return res.redirect('/');
+    }
+    
+    // In development, allow access for testing
+    if (!isProduction) {
+        return next();
+    }
+    
+    // Validate token (implement your auth logic here)
+    // For now, any token is considered valid
+    if (authToken) {
+        return next();
+    }
+    
+    res.redirect('/');
+}
+
+// Protected dashboard route
+app.get('/dashboard', requireAuth, (req, res) => {
+    console.log('[ROUTING] Serving modular dashboard');
+    res.sendFile(path.join(__dirname, '..', 'dashboard.html'));
+});
+
+// Landing page route (always accessible)
+app.get('/', (req, res) => {
+    const timestamp = Date.now();
+    console.log(`[ROUTING] Serving clean landing page: ${timestamp}`);
+    res.sendFile(path.join(__dirname, '..', 'landing.html'));
+});
+
 // Catch-all route for SPA behavior
 app.get('*', (req, res) => {
     // Don't serve HTML for API routes or file extensions
@@ -1018,9 +1054,15 @@ app.get('*', (req, res) => {
         return res.status(404).json({ error: 'Not found' });
     }
     
-    // Default to landing page for unknown routes
-    console.log(`[ROUTING] Unknown route ${req.path}, redirecting to landing`);
-    res.redirect('/');
+    // Default to landing page for unknown routes in production
+    if (isProduction) {
+        console.log(`[ROUTING] Production: redirecting ${req.path} to landing`);
+        return res.redirect('/');
+    }
+    
+    // In development, serve dashboard for convenience
+    console.log(`[ROUTING] Development: serving dashboard for ${req.path}`);
+    res.sendFile(path.join(__dirname, '..', 'dashboard.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
