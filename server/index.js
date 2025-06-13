@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import QNISLeadEngine from './qnis-lead-engine.js';
 import APIKeyVault from './api-key-vault.js';
+import NLPQueryParser from './nlp-query-parser.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,9 +11,10 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initialize QNIS Lead Engine and API Key Vault
+// Initialize QNIS Lead Engine, API Key Vault, and NLP Parser
 const qnisEngine = new QNISLeadEngine();
 const keyVault = new APIKeyVault();
+const nlpParser = new NLPQueryParser(keyVault);
 
 // Production environment configuration
 const isProduction = process.env.NODE_ENV === 'production';
@@ -371,6 +373,45 @@ app.get('/api/keys/scope/:scope', (req, res) => {
         res.status(500).json({
             success: false,
             error: error.message
+        });
+    }
+});
+
+// NLP Query Processing Endpoint
+app.post('/api/nlp/query', async (req, res) => {
+    try {
+        const { query } = req.body;
+        
+        if (!query || typeof query !== 'string') {
+            return res.status(400).json({
+                success: false,
+                error: 'Query string is required'
+            });
+        }
+
+        // Get current leads from QNIS engine
+        const currentLeads = qnisEngine.getActiveLeads();
+        
+        // Process the query
+        const result = await nlpParser.parseQuery(query, currentLeads);
+        
+        console.log(`[NLP] Processed query "${query}" - found ${result.results.count} results`);
+        
+        res.json({
+            success: true,
+            query: query,
+            parsedQuery: result.parsedQuery,
+            results: result.results,
+            method: result.method,
+            timestamp: new Date().toISOString()
+        });
+        
+    } catch (error) {
+        console.error('[NLP] Query processing failed:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message,
+            timestamp: new Date().toISOString()
         });
     }
 });

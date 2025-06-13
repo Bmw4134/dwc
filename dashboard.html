@@ -410,6 +410,154 @@
             box-shadow: 0 3px 12px rgba(0, 153, 255, 0.6);
         }
 
+        /* NLP Navigator Styles */
+        .nlp-navigator {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .navigator-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .navigator-header h4 {
+            margin: 0;
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .navigator-status {
+            padding: 4px 8px;
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .navigator-status.processing {
+            background: rgba(255, 170, 0, 0.2);
+            color: #ffaa00;
+        }
+
+        .navigator-status.error {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+
+        .navigator-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nlp-input {
+            flex: 1;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .nlp-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+        }
+
+        .voice-btn {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .voice-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .voice-btn.recording {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .nlp-results {
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .results-header {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 10px 15px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .results-content {
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-company {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .result-details {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .result-score {
+            background: var(--primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
         .lead-stats-panel {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -859,6 +1007,23 @@
                         <button id="locate-user" class="action-btn">📍 Locate Me</button>
                         <button id="clear-leads" class="action-btn secondary" onclick="clearLeadData()">Clear Leads</button>
                         <span id="lead-counter" class="lead-counter">Leads: 0</span>
+                    </div>
+
+                    <!-- NLP Lead Navigator -->
+                    <div class="nlp-navigator">
+                        <div class="navigator-header">
+                            <h4>AI Lead Navigator</h4>
+                            <span class="navigator-status" id="nlp-status">Ready</span>
+                        </div>
+                        <div class="navigator-input">
+                            <input type="text" id="nlp-query" placeholder="Ask me: 'Show tech leads in California over $50k' or 'Find legal contacts near Dallas'" class="nlp-input">
+                            <button id="voice-query" class="voice-btn" title="Voice Query">🎤</button>
+                            <button id="execute-query" class="action-btn primary">Search</button>
+                        </div>
+                        <div id="nlp-results" class="nlp-results" style="display: none;">
+                            <div class="results-header">Search Results</div>
+                            <div id="results-content" class="results-content"></div>
+                        </div>
                     </div>
                     
                     <div id="quantum-map-canvas" class="quantum-map-canvas">
@@ -1443,7 +1608,8 @@
 
             // Create marker
             const marker = L.marker([lead.coordinates.lat, lead.coordinates.lng], {
-                icon: markerIcon
+                icon: markerIcon,
+                leadId: lead.id  // Store lead ID for NLP filtering
             });
 
             // Add popup with lead information
@@ -1917,6 +2083,9 @@
 
             // Initialize API Key Management
             initializeAPIKeyManagement();
+
+            // Initialize NLP Navigator
+            initializeNLPNavigator();
         });
 
         // API Key Management Functions
@@ -2097,6 +2266,298 @@
                 }
             } catch (error) {
                 alert('Network error: ' + error.message);
+            }
+        }
+
+        // NLP Navigator Functions
+        let nlpNavigator = {
+            isRecording: false,
+            recognition: null,
+            lastQuery: null,
+            highlightedMarkers: []
+        };
+
+        function initializeNLPNavigator() {
+            const executeBtn = document.getElementById('execute-query');
+            const voiceBtn = document.getElementById('voice-query');
+            const queryInput = document.getElementById('nlp-query');
+
+            if (executeBtn) {
+                executeBtn.addEventListener('click', executeNLPQuery);
+            }
+
+            if (voiceBtn) {
+                voiceBtn.addEventListener('click', toggleVoiceRecording);
+            }
+
+            if (queryInput) {
+                queryInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        executeNLPQuery();
+                    }
+                });
+            }
+
+            // Initialize speech recognition
+            initializeSpeechRecognition();
+        }
+
+        function initializeSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                nlpNavigator.recognition = new SpeechRecognition();
+                
+                nlpNavigator.recognition.continuous = false;
+                nlpNavigator.recognition.interimResults = false;
+                nlpNavigator.recognition.lang = 'en-US';
+
+                nlpNavigator.recognition.onstart = () => {
+                    updateNLPStatus('Listening...', 'processing');
+                };
+
+                nlpNavigator.recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('nlp-query').value = transcript;
+                    executeNLPQuery();
+                };
+
+                nlpNavigator.recognition.onerror = (event) => {
+                    console.error('[NLP] Speech recognition error:', event.error);
+                    updateNLPStatus('Voice recognition failed', 'error');
+                    setTimeout(() => updateNLPStatus('Ready', 'ready'), 3000);
+                };
+
+                nlpNavigator.recognition.onend = () => {
+                    nlpNavigator.isRecording = false;
+                    const voiceBtn = document.getElementById('voice-query');
+                    if (voiceBtn) {
+                        voiceBtn.classList.remove('recording');
+                    }
+                };
+            }
+        }
+
+        function toggleVoiceRecording() {
+            if (!nlpNavigator.recognition) {
+                alert('Voice recognition not supported in this browser');
+                return;
+            }
+
+            const voiceBtn = document.getElementById('voice-query');
+
+            if (nlpNavigator.isRecording) {
+                nlpNavigator.recognition.stop();
+                voiceBtn.classList.remove('recording');
+                nlpNavigator.isRecording = false;
+                updateNLPStatus('Ready', 'ready');
+            } else {
+                nlpNavigator.recognition.start();
+                voiceBtn.classList.add('recording');
+                nlpNavigator.isRecording = true;
+            }
+        }
+
+        async function executeNLPQuery() {
+            const query = document.getElementById('nlp-query').value.trim();
+            if (!query) {
+                alert('Please enter a search query');
+                return;
+            }
+
+            updateNLPStatus('Processing...', 'processing');
+            
+            try {
+                const response = await fetch('/api/nlp/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayNLPResults(result);
+                    applyMapFiltering(result.results);
+                    updateNLPStatus(`Found ${result.results.count} results`, 'ready');
+                } else {
+                    updateNLPStatus('Query failed', 'error');
+                    alert('Query processing failed: ' + result.error);
+                }
+            } catch (error) {
+                updateNLPStatus('Network error', 'error');
+                alert('Network error: ' + error.message);
+                setTimeout(() => updateNLPStatus('Ready', 'ready'), 3000);
+            }
+        }
+
+        function updateNLPStatus(message, type) {
+            const statusElement = document.getElementById('nlp-status');
+            if (statusElement) {
+                statusElement.textContent = message;
+                statusElement.className = `navigator-status ${type}`;
+            }
+        }
+
+        function displayNLPResults(result) {
+            const resultsContainer = document.getElementById('nlp-results');
+            const resultsContent = document.getElementById('results-content');
+
+            if (!resultsContainer || !resultsContent) return;
+
+            if (result.results.count === 0) {
+                resultsContent.innerHTML = '<div style="text-align: center; color: var(--text-light); padding: 20px;">No leads found matching your criteria.</div>';
+                resultsContainer.style.display = 'block';
+                return;
+            }
+
+            const resultsHTML = result.results.leads.slice(0, 10).map(lead => {
+                const companyName = `${lead.coordinates.city} ${lead.industry} Corp`;
+                return `
+                    <div class="result-item" onclick="focusOnLead('${lead.id}')">
+                        <div class="result-info">
+                            <div class="result-company">${companyName}</div>
+                            <div class="result-details">
+                                ${lead.coordinates.city} • ${lead.industry} • ${lead.type} • $${Math.floor(lead.value_estimate / 1000)}K
+                            </div>
+                        </div>
+                        <div class="result-score">${lead.qnis_score}</div>
+                    </div>
+                `;
+            }).join('');
+
+            resultsContent.innerHTML = resultsHTML;
+            resultsContainer.style.display = 'block';
+
+            console.log(`[NLP] Displayed ${result.results.count} results for query: "${result.query}"`);
+        }
+
+        function applyMapFiltering(results) {
+            if (!qnisMap.isInitialized || !qnisMap.map) return;
+
+            // Clear previous highlights
+            clearNLPHighlights();
+
+            // Set map view to results area
+            if (results.mapCenter) {
+                qnisMap.map.setView([results.mapCenter.lat, results.mapCenter.lng], results.mapZoom);
+            }
+
+            // Update current leads with filtered results
+            const filteredLeadIds = new Set(results.leads.map(lead => lead.id));
+            
+            // Highlight matching markers and dim others
+            qnisMap.leadMarkers.forEach(marker => {
+                const leadId = marker.options.leadId;
+                if (filteredLeadIds.has(leadId)) {
+                    // Highlight matching leads
+                    const markerElement = marker.getElement();
+                    if (markerElement) {
+                        markerElement.style.transform = 'scale(1.3)';
+                        markerElement.style.zIndex = '1000';
+                        markerElement.style.filter = 'brightness(1.5) saturate(1.5)';
+                    }
+                    nlpNavigator.highlightedMarkers.push(marker);
+                } else {
+                    // Dim non-matching leads
+                    const markerElement = marker.getElement();
+                    if (markerElement) {
+                        markerElement.style.opacity = '0.3';
+                        markerElement.style.filter = 'grayscale(0.7)';
+                    }
+                }
+            });
+
+            // Focus on top result if available
+            if (results.leads.length > 0) {
+                const topLead = results.leads[0];
+                setTimeout(() => {
+                    const topMarker = qnisMap.leadMarkers.find(m => m.options.leadId === topLead.id);
+                    if (topMarker) {
+                        topMarker.openPopup();
+                    }
+                }, 1000);
+            }
+        }
+
+        function clearNLPHighlights() {
+            // Reset all markers to normal state
+            qnisMap.leadMarkers.forEach(marker => {
+                const markerElement = marker.getElement();
+                if (markerElement) {
+                    markerElement.style.transform = '';
+                    markerElement.style.zIndex = '';
+                    markerElement.style.opacity = '';
+                    markerElement.style.filter = '';
+                }
+            });
+
+            nlpNavigator.highlightedMarkers = [];
+        }
+
+        function focusOnLead(leadId) {
+            const lead = qnisMap.leads.find(l => l.id === leadId);
+            if (!lead) return;
+
+            // Center map on lead
+            qnisMap.map.setView([lead.coordinates.lat, lead.coordinates.lng], 12);
+
+            // Find and open the marker popup
+            const marker = qnisMap.leadMarkers.find(m => m.options.leadId === leadId);
+            if (marker) {
+                marker.openPopup();
+                
+                // Highlight the marker temporarily
+                const markerElement = marker.getElement();
+                if (markerElement) {
+                    markerElement.style.animation = 'pulse 2s ease-in-out 3';
+                }
+            }
+
+            // Show lead drilldown
+            setTimeout(() => {
+                showLeadDrilldown(lead);
+            }, 500);
+        }
+
+        // Enhanced voice command processing
+        function processVoiceCommand(command) {
+            switch(command) {
+                case 'show business':
+                    showModule('business');
+                    break;
+                case 'show legal':
+                    showModule('legal');
+                    break;
+                case 'show accounting':
+                    showModule('accounting');
+                    break;
+                case 'show qnis map':
+                case 'show lead map':
+                    showModule('qnis');
+                    break;
+                case 'show api keys':
+                    showModule('apikeys');
+                    break;
+                case 'reset data':
+                    kaizen_command('reset_all_modules');
+                    break;
+                case 'refresh map':
+                    updateLeadData();
+                    break;
+                case 'clear highlights':
+                    clearNLPHighlights();
+                    document.getElementById('nlp-results').style.display = 'none';
+                    break;
+                case 'logout':
+                    logout();
+                    break;
+                default:
+                    // If it's not a system command, treat as NLP query
+                    if (command.length > 10) {
+                        document.getElementById('nlp-query').value = command;
+                        executeNLPQuery();
+                    }
+                    break;
             }
         }
     </script>
