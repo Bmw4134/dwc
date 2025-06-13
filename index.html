@@ -2652,7 +2652,7 @@
             updateSimulationMetrics();
             logEvent('User behavior simulation started');
             
-            simulationInterval = setInterval(runSimulationCycle, 2000);
+            // simulationInterval = setInterval(runSimulationCycle, 2000); // DISABLED for production stability
         }
         
         function pauseSimulation() {
@@ -4445,13 +4445,13 @@
             console.log('[' + new Date().toLocaleTimeString() + '] ' + message);
         }
         
-        // Background validation (runs every 60 seconds)
-        setInterval(() => {
-            if (currentPage === 'dashboard') {
-                updateDashboardMetrics();
-                logEvent('Background validation completed - All systems operational');
-            }
-        }, 60000);
+        // Background validation disabled for production stability
+        // setInterval(() => {
+        //     if (currentPage === 'dashboard') {
+        //         updateDashboardMetrics();
+        //         logEvent('Background validation completed - All systems operational');
+        //     }
+        // }, 60000);
         
         // JDD Module Integration Variables
         let dwcSessionData = {
@@ -5691,19 +5691,11 @@ Just speak naturally - I understand everyday language!`);
         
         function enableContinuousDeviceDetection() {
             // PRODUCTION MODE: Continuous detection disabled for stability
-            // setInterval(() => {
-            //     if (window.responsiveEngine) {
-            //         const oldClass = window.responsiveEngine.deviceMetrics.deviceClass;
-            //         window.responsiveEngine.updateDeviceMetrics();
-            //         const newClass = window.responsiveEngine.deviceMetrics.deviceClass;
-                    
-                    if (oldClass !== newClass) {
-                        logEvent(`Device class changed: ${oldClass} → ${newClass}`);
-                        // Trigger adaptive optimizations
-                        window.responsiveEngine.applyAdaptiveStyles();
-                    }
-                }
-            // }, 1000); // DISABLED: Continuous detection causing loops
+            logEvent('Device detection: Single initialization only');
+            if (window.responsiveEngine) {
+                window.responsiveEngine.updateDeviceMetrics();
+                window.responsiveEngine.applyAdaptiveStyles();
+            }
         }
         
         function toggleDevicePreview() {
