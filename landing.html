@@ -358,6 +358,159 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
+        /* KPI Information Modal Styles */
+        .kpi-info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 2px solid #00ff88;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #00ff88;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-description {
+            color: #f1f5f9;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-details {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-details h4 {
+            color: #00ff88;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .modal-details p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .modal-cta {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-cta p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            color: #000000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalSlideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
         @media (max-width: 768px) {
             .hero-title { font-size: 2.5rem; }
             .hero-subtitle { font-size: 1.2rem; }
@@ -380,6 +533,23 @@
             
             .kpi-icon {
                 font-size: 1.5rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .modal-header {
+                padding: 1rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .modal-header h3 {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -532,29 +702,88 @@
             currentMetrics: {}
         };
 
-        // Navigation Functions for KPI Cards
+        // KPI Information Functions for Visitors
         function navigateToMap() {
-            window.location.href = '/dashboard?module=qnis';
+            showKPIInfo('Lead Tracking Intelligence', 
+                'Our quantum mapping system tracks high-value business leads across geographic regions in real-time. This metric shows leads identified and qualified today using advanced AI algorithms and geographic intelligence.',
+                'Features: Real-time lead scoring, geographic clustering, and predictive analytics for business development.'
+            );
         }
 
         function navigateToAnalytics() {
-            window.location.href = '/dashboard?module=analytics';
+            showKPIInfo('Geographic Coverage Analytics', 
+                'Active geo-zones represent regional markets where our platform is currently identifying and tracking business opportunities. Each zone includes demographic analysis and market intelligence.',
+                'Coverage: Major metropolitan areas with automated market analysis and competitive intelligence gathering.'
+            );
         }
 
         function navigateToBusinessSuite() {
-            window.location.href = '/dashboard?module=business-suite';
+            showKPIInfo('Business Outreach Metrics', 
+                'This metric tracks the number of businesses contacted through our automated outreach systems this week, including email campaigns, direct communication, and partnership development.',
+                'Capabilities: Automated CRM integration, personalized messaging, and conversion tracking across multiple channels.'
+            );
         }
 
         function navigateToAI() {
-            window.location.href = '/dashboard?module=ai-watson';
+            showKPIInfo('AI Optimization Engine', 
+                'Our platform continuously optimizes business processes using 47 interconnected AI modules. This metric shows optimization tasks completed this week across all client operations.',
+                'AI Features: Natural language processing, predictive analytics, automated workflow optimization, and intelligent decision support.'
+            );
         }
 
         function navigateToSystem() {
-            window.location.href = '/dashboard?module=admin-control';
+            showKPIInfo('System Reliability Metrics', 
+                'Platform uptime percentage showing consistent availability of all business intelligence services. Our enterprise-grade infrastructure ensures reliable access to critical business tools.',
+                'Infrastructure: 99.9% uptime guarantee, automated failover systems, and real-time monitoring across all services.'
+            );
         }
 
         function navigateToQNIS() {
-            window.location.href = '/dashboard?module=qnis';
+            showKPIInfo('Quality Network Intelligence Score', 
+                'QNIS measures the quality and potential value of business leads on a scale of 0-100. Higher scores indicate leads with greater conversion probability and business value.',
+                'Scoring Factors: Company size, industry relevance, decision-maker access, budget qualification, and timing indicators.'
+            );
+        }
+
+        function showKPIInfo(title, description, details) {
+            const modal = document.createElement('div');
+            modal.className = 'kpi-info-modal';
+            modal.innerHTML = `
+                <div class="modal-overlay" onclick="closeKPIModal()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>${title}</h3>
+                        <button onclick="closeKPIModal()" class="modal-close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-description">${description}</p>
+                        <div class="modal-details">
+                            <h4>Platform Capabilities</h4>
+                            <p>${details}</p>
+                        </div>
+                        <div class="modal-cta">
+                            <p>Interested in accessing these enterprise intelligence features?</p>
+                            <button onclick="scrollToLogin()" class="cta-button">Request Platform Access</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function closeKPIModal() {
+            const modal = document.querySelector('.kpi-info-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function scrollToLogin() {
+            closeKPIModal();
+            document.querySelector('.login-card').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
         }
 
         // Fetch Live Metrics from QNIS Engine
