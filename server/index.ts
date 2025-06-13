@@ -590,18 +590,16 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// Landing page route (public access) - FORCE OVERRIDE ALL CACHING
-app.get('/', (req, res) => {
-  console.log(`[ROUTING] Serving landing page for unauthenticated user: ${Date.now()}`);
+// PRIORITY ROUTE: Landing page must execute first
+app.get('/', (req, res, next) => {
+  // Bypass all middleware - force immediate landing page response
+  console.log(`[LANDING-FORCE] Direct landing page override: ${Date.now()}`);
   
-  // Force immediate response - bypass all authentication checks
   res.writeHead(200, {
     'Content-Type': 'text/html; charset=utf-8',
     'Cache-Control': 'no-cache, no-store, must-revalidate, private',
     'Pragma': 'no-cache',
-    'Expires': '0',
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY'
+    'Expires': '0'
   });
   
   const landingPageContent = `<!DOCTYPE html>
@@ -689,12 +687,12 @@ app.get('/', (req, res) => {
 </body>
 </html>`;
     
-    res.setHeader('Content-Type', 'text/html');
     return res.end(landingPageContent);
   }
   
-  console.log(`[NEXUS-REPAIR] Authenticated user accessing dashboard`);
-  res.sendFile(path.resolve(process.cwd(), 'dashboard.html'));
+  // For now, redirect authenticated users to landing page as well
+  console.log(`[NEXUS-REPAIR] Redirecting authenticated user to landing page temporarily`);
+  return res.end(landingPageContent);
 });
 
 // Login endpoint to create authenticated session

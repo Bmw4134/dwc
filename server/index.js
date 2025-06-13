@@ -76,11 +76,11 @@ app.get('/', isAuthenticated, (req, res) => {
     // If user is authenticated, serve dashboard content
     if (req.user) {
         console.log(`[ROUTING] Serving dashboard for authenticated user: ${timestamp}`);
-        res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+        res.sendFile(path.join(process.cwd(), 'dashboard-internal.html'));
     } else {
         console.log(`[ROUTING] Serving landing page for unauthenticated user: ${timestamp}`);
         // For now, serve dashboard since React app needs build setup
-        res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+        res.sendFile(path.join(process.cwd(), 'dashboard-internal.html'));
     }
 });
 
@@ -96,7 +96,7 @@ app.get('/dashboard', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('X-Auth-Bypass', 'true');
     console.log(`[ROUTING] Serving modular dashboard (auth bypassed)`);
-    res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+    res.sendFile(path.join(process.cwd(), 'dashboard-internal.html'));
 });
 
 // DWC Sales Portal - separate from client login
@@ -1402,7 +1402,7 @@ function requireAuth(req, res, next) {
 // Protected dashboard route
 app.get('/dashboard', requireAuth, (req, res) => {
     console.log('[ROUTING] Serving modular dashboard');
-    res.sendFile(path.join(__dirname, '..', 'dashboard.html'));
+    res.sendFile(path.join(__dirname, '..', 'dashboard-internal.html'));
 });
 
 // Landing page route (always accessible)
@@ -1434,7 +1434,7 @@ app.get('*', (req, res) => {
     
     // In development, serve dashboard for convenience
     console.log(`[ROUTING] Development: serving dashboard for ${req.path}`);
-    res.sendFile(path.join(__dirname, '..', 'dashboard.html'));
+    res.sendFile(path.join(__dirname, '..', 'dashboard-internal.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
