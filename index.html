@@ -3,6 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <script>
+        // PRODUCTION STABILITY LOCK - Prevent multiple initializations
+        if (window.nexusInitialized) {
+            document.write('<div style="text-align:center;padding:50px;font-family:Arial;">Platform already initialized. Please refresh manually if needed.</div>');
+            throw new Error('Multiple initialization prevented');
+        }
+        window.nexusInitialized = true;
+        window.nexusInitCount = (window.nexusInitCount || 0) + 1;
+        if (window.nexusInitCount > 1) {
+            console.warn('Multiple initialization attempts detected - blocking');
+            document.write('<div style="text-align:center;padding:50px;font-family:Arial;">Initialization loop detected. Refresh page manually.</div>');
+            throw new Error('Initialization loop prevented');
+        }
+    </script>
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
