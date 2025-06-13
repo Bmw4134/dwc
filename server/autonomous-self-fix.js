@@ -3,8 +3,12 @@
  * Powered by OpenAI and Perplexity APIs for real-time diagnosis and repair
  */
 
-const fs = require('fs').promises;
-const path = require('path');
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class AutonomousSelfFixSystem {
     constructor() {
@@ -595,4 +599,4 @@ Focus on enterprise-grade features and user experience.
     }
 }
 
-module.exports = AutonomousSelfFixSystem;
+export default AutonomousSelfFixSystem;
