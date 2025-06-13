@@ -590,16 +590,21 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// Landing page route (public access) - NEXUS EMERGENCY OVERRIDE
+// Landing page route (public access) - FORCE OVERRIDE ALL CACHING
 app.get('/', (req, res) => {
-  const sessionId = req.headers['x-session-id'] || req.cookies?.session_id;
-  const authToken = req.headers['authorization'] || req.cookies?.auth_token;
+  console.log(`[ROUTING] Serving landing page for unauthenticated user: ${Date.now()}`);
   
-  // EMERGENCY PROTOCOL: Force landing page content directly
-  if (!sessionId && !authToken) {
-    console.log(`[NEXUS-EMERGENCY] Force-serving landing page content: ${Date.now()}`);
-    
-    const landingPageContent = `<!DOCTYPE html>
+  // Force immediate response - bypass all authentication checks
+  res.writeHead(200, {
+    'Content-Type': 'text/html; charset=utf-8',
+    'Cache-Control': 'no-cache, no-store, must-revalidate, private',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY'
+  });
+  
+  const landingPageContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -685,7 +690,7 @@ app.get('/', (req, res) => {
 </html>`;
     
     res.setHeader('Content-Type', 'text/html');
-    return res.send(landingPageContent);
+    return res.end(landingPageContent);
   }
   
   console.log(`[NEXUS-REPAIR] Authenticated user accessing dashboard`);
