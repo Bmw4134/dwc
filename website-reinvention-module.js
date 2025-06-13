@@ -671,6 +671,8 @@ class WebsiteReinventionModule {
             return await this.analyzeWithOpenAI(url, websiteContent);
         } else if (this.apiKey.type === 'perplexity') {
             return await this.analyzeWithPerplexity(url, websiteContent);
+        } else if (this.apiKey.type === 'demo') {
+            return this.createDemoAnalysis(url, websiteContent);
         } else {
             throw new Error('No valid AI API configured');
         }
@@ -873,6 +875,90 @@ Provide analysis in JSON format with current issues, redesign suggestions, and i
                     title: "Modern Design Implementation",
                     description: textResponse.substring(0, 200),
                     priority: "High",
+                    effort: "Medium"
+                }
+            ]
+        };
+    }
+
+    createDemoAnalysis(url, content) {
+        const domain = new URL(url).hostname;
+        
+        return {
+            current_analysis: {
+                purpose: `Business website for ${domain}`,
+                brand_tone: "Professional and trustworthy",
+                structure: "Traditional corporate layout",
+                strengths: ["Established online presence", "Clear domain identity"],
+                weaknesses: ["Outdated design patterns", "Limited mobile optimization", "Weak conversion elements"]
+            },
+            issues: [
+                {
+                    category: "Design",
+                    issue: "Visual hierarchy needs improvement",
+                    impact: "High",
+                    fix: "Implement modern visual design principles"
+                },
+                {
+                    category: "UX",
+                    issue: "Navigation could be more intuitive",
+                    impact: "Medium",
+                    fix: "Redesign navigation structure"
+                },
+                {
+                    category: "Conversion",
+                    issue: "Weak call-to-action placement",
+                    impact: "High",
+                    fix: "Strategic CTA positioning and design"
+                },
+                {
+                    category: "Technical",
+                    issue: "Page load speed optimization needed",
+                    impact: "Medium",
+                    fix: "Optimize images and reduce code bloat"
+                }
+            ],
+            redesign: {
+                layout: "Modern responsive grid with hero section, clear navigation, and strategic content blocks",
+                color_scheme: "Contemporary palette with brand-aligned primary colors and high contrast",
+                typography: "Professional sans-serif font stack optimized for readability",
+                cta_strategy: "Multiple conversion points with A/B tested button designs",
+                content_structure: "Scannable hierarchy with clear value propositions"
+            },
+            score: {
+                current: 67,
+                potential: 94,
+                improvement_areas: ["Visual Design", "User Experience", "Conversion Optimization", "Mobile Responsiveness"]
+            },
+            recommendations: [
+                {
+                    title: "Complete Visual Redesign",
+                    description: "Modernize the entire visual identity with contemporary design trends, improved color schemes, and professional typography.",
+                    priority: "High",
+                    effort: "High"
+                },
+                {
+                    title: "Mobile-First Responsive Design",
+                    description: "Rebuild with mobile-first approach ensuring perfect display across all devices and screen sizes.",
+                    priority: "High",
+                    effort: "Medium"
+                },
+                {
+                    title: "Conversion Rate Optimization",
+                    description: "Strategic placement of call-to-action buttons, forms, and conversion elements to maximize lead generation.",
+                    priority: "High",
+                    effort: "Medium"
+                },
+                {
+                    title: "Performance Optimization",
+                    description: "Optimize loading speeds, implement caching, and reduce bandwidth usage for better user experience.",
+                    priority: "Medium",
+                    effort: "Low"
+                },
+                {
+                    title: "Content Strategy Enhancement",
+                    description: "Restructure content for better readability, SEO optimization, and user engagement.",
+                    priority: "Medium",
                     effort: "Medium"
                 }
             ]

@@ -211,6 +211,242 @@ app.post('/api/consultation-request', async (req, res) => {
   }
 });
 
+// Subscription page endpoint
+app.get('/subscription', (req, res) => {
+  const { website } = req.query;
+  
+  const subscriptionPage = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Website Redesign Subscription - DWC Systems</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+                color: white;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+            .subscription-container {
+                max-width: 800px;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(0, 255, 136, 0.3);
+                border-radius: 15px;
+                padding: 40px;
+                text-align: center;
+            }
+            .logo {
+                font-size: 24px;
+                color: #00ff88;
+                margin-bottom: 20px;
+                font-weight: bold;
+            }
+            h1 {
+                font-size: 36px;
+                color: #00ff88;
+                margin-bottom: 20px;
+            }
+            .website-info {
+                background: rgba(0, 255, 136, 0.1);
+                padding: 20px;
+                border-radius: 10px;
+                margin-bottom: 30px;
+            }
+            .pricing-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin: 30px 0;
+            }
+            .pricing-card {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                padding: 30px 20px;
+                text-align: center;
+                transition: all 0.3s ease;
+            }
+            .pricing-card:hover {
+                border-color: #00ff88;
+                transform: translateY(-5px);
+            }
+            .pricing-card.featured {
+                border-color: #00ff88;
+                background: rgba(0, 255, 136, 0.1);
+            }
+            .plan-name {
+                font-size: 24px;
+                color: #00ff88;
+                margin-bottom: 10px;
+            }
+            .plan-price {
+                font-size: 48px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .plan-features {
+                list-style: none;
+                margin-bottom: 30px;
+            }
+            .plan-features li {
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .cta-button {
+                background: linear-gradient(135deg, #0066cc, #00ff88);
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                width: 100%;
+            }
+            .cta-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+            }
+            .back-link {
+                color: #00ff88;
+                text-decoration: none;
+                margin-top: 20px;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="subscription-container">
+            <div class="logo">DWC Systems NEXUS</div>
+            <h1>Website Redesign Subscription</h1>
+            
+            ${website ? `
+            <div class="website-info">
+                <h3>Ready to transform: ${website}</h3>
+                <p>Complete redesign with AI-powered optimization</p>
+            </div>
+            ` : ''}
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="plan-name">Basic Redesign</div>
+                    <div class="plan-price">$2,499</div>
+                    <ul class="plan-features">
+                        <li>Complete visual redesign</li>
+                        <li>Mobile responsive</li>
+                        <li>SEO optimization</li>
+                        <li>3 revision rounds</li>
+                        <li>30-day support</li>
+                    </ul>
+                    <button class="cta-button" onclick="selectPlan('basic')">Choose Basic</button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="plan-name">Premium Package</div>
+                    <div class="plan-price">$4,999</div>
+                    <ul class="plan-features">
+                        <li>Everything in Basic</li>
+                        <li>Conversion optimization</li>
+                        <li>Performance tuning</li>
+                        <li>Analytics integration</li>
+                        <li>6 months maintenance</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <button class="cta-button" onclick="selectPlan('premium')">Choose Premium</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="plan-name">Ongoing Maintenance</div>
+                    <div class="plan-price">$299<span style="font-size: 16px;">/mo</span></div>
+                    <ul class="plan-features">
+                        <li>Monthly updates</li>
+                        <li>Security monitoring</li>
+                        <li>Performance optimization</li>
+                        <li>Content updates</li>
+                        <li>Technical support</li>
+                    </ul>
+                    <button class="cta-button" onclick="selectPlan('maintenance')">Subscribe</button>
+                </div>
+            </div>
+            
+            <a href="/" class="back-link">← Back to Analysis</a>
+        </div>
+        
+        <script>
+            function selectPlan(planType) {
+                const plans = {
+                    basic: { name: 'Basic Redesign', price: 2499 },
+                    premium: { name: 'Premium Package', price: 4999 },
+                    maintenance: { name: 'Ongoing Maintenance', price: 299 }
+                };
+                
+                const selectedPlan = plans[planType];
+                const website = new URLSearchParams(window.location.search).get('website');
+                
+                console.log('[SUBSCRIPTION] Plan selected:', selectedPlan);
+                console.log('[SUBSCRIPTION] Website:', website);
+                
+                alert(\`Thank you for selecting \${selectedPlan.name}!\n\nNext steps:\n1. Consultation call scheduling\n2. Project timeline discussion\n3. Contract and payment processing\n\nWe'll contact you within 24 hours to begin your website transformation.\`);
+                
+                // Track the subscription selection
+                fetch('/api/subscription-selected', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        plan: planType,
+                        website: website,
+                        timestamp: new Date().toISOString()
+                    })
+                }).then(response => response.json())
+                  .then(data => console.log('Subscription tracked:', data))
+                  .catch(error => console.error('Tracking error:', error));
+            }
+        </script>
+    </body>
+    </html>
+  `;
+  
+  res.send(subscriptionPage);
+});
+
+// Subscription selection tracking endpoint
+app.post('/api/subscription-selected', (req, res) => {
+  try {
+    const { plan, website, timestamp } = req.body;
+    
+    console.log(`[SUBSCRIPTION] Plan selected: ${plan} for website: ${website}`);
+    
+    res.json({
+      success: true,
+      message: 'Subscription selection tracked',
+      plan: plan,
+      website: website,
+      subscriptionId: `sub_${Date.now()}`,
+      nextSteps: [
+        'Consultation call within 24 hours',
+        'Project scope finalization',
+        'Development timeline creation',
+        'Contract and payment processing'
+      ]
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to track subscription selection',
+      message: error.message
+    });
+  }
+});
+
 app.get('/api/quantum/deep-dive', async (req, res) => {
   res.json({
     module: 'Quantum Deep Dive',
