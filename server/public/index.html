@@ -1825,14 +1825,63 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
         }
 
         function generateNewLeads() {
-            console.log('[LEADS] Generating new leads...');
-            speakText('Generating new leads using quantum mapping algorithms');
-            showNotification('Lead Generation', 'Processing 25 new prospects...');
+            console.log('[LEADS] Fetching real business data...');
+            speakText('Accessing live business intelligence databases');
+            showNotification('Lead Generation', 'Connecting to data sources...');
             
-            setTimeout(() => {
-                speakText('Lead generation complete. 25 new qualified prospects added.');
-                showNotification('Generation Complete', '25 new leads added to pipeline');
-            }, 2000);
+            // Fetch real lead data from API
+            fetch('/api/leads/generate')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayLeadMap(data.leads);
+                        speakText(`${data.count} qualified leads mapped successfully`);
+                        showNotification('Generation Complete', `${data.count} real prospects located`);
+                    }
+                })
+                .catch(err => {
+                    console.error('[LEADS] Error:', err);
+                    showNotification('Error', 'Unable to connect to lead databases');
+                });
+        }
+
+        function displayLeadMap(leads) {
+            const mapContainer = document.createElement('div');
+            mapContainer.id = 'lead-map';
+            mapContainer.style.cssText = `
+                position: fixed;
+                top: 10%;
+                left: 10%;
+                width: 80%;
+                height: 70%;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                z-index: 2000;
+                padding: 20px;
+                overflow-y: auto;
+            `;
+            
+            mapContainer.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; color: #1e293b;">Live Lead Intelligence Map</h2>
+                    <button onclick="document.getElementById('lead-map').remove()" style="background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Close</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+                    ${leads.map(lead => `
+                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background: #f8fafc;">
+                            <h3 style="margin: 0 0 8px 0; color: #1e293b;">${lead.businessName}</h3>
+                            <p style="margin: 4px 0; color: #64748b;">Industry: ${lead.industry}</p>
+                            <p style="margin: 4px 0; color: #64748b;">Location: ${lead.location.city}, ${lead.location.state}</p>
+                            <p style="margin: 4px 0; color: #059669; font-weight: 600;">Est. Value: $${lead.estimatedValue.toLocaleString()}</p>
+                            <p style="margin: 4px 0; color: #1e293b;">Confidence: ${lead.confidence}%</p>
+                            <span style="background: ${lead.priority === 'high' ? '#ef4444' : '#f59e0b'}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; text-transform: uppercase;">${lead.priority}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.body.appendChild(mapContainer);
         }
 
         function queryWatsonAI() {
