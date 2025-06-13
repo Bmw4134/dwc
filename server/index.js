@@ -187,28 +187,16 @@ app.get('*', (req, res) => {
     res.set('X-XSS-Protection', '1; mode=block');
     console.log(`[DEPLOYMENT] Serving cache-busted content: ${timestamp}`);
     
-    // Quantum cache bypass with content modification
+    // Serve the NEXUS platform with cache busting
     const indexPath = path.join(__dirname, 'public', 'index.html');
-    const fs = require('fs');
-    
-    // Read and modify content with unique hash
-    const contentHash = Date.now().toString(36);
-    let htmlContent = fs.readFileSync(indexPath, 'utf8');
-    
-    // Inject quantum cache-busting parameters
-    htmlContent = htmlContent.replace(
-        '6:13 AM CT | DEPLOYMENT FIXED | CACHE CLEARED',
-        `6:13 AM CT | QUANTUM HASH: ${contentHash} | LIVE DEPLOYMENT`
-    );
     
     // Force browser to bypass all caches
     res.set('X-Timestamp', Date.now().toString());
     res.set('X-Force-Refresh', 'true');
-    res.set('X-Content-Hash', contentHash);
-    res.set('X-Quantum-Bust', `deployment-${contentHash}`);
+    res.set('X-Content-Hash', Date.now().toString(36));
     
-    console.log(`[QUANTUM] Serving hash-modified content: ${contentHash}`);
-    res.send(htmlContent);
+    console.log(`[DEPLOYMENT] Serving fresh content from: ${indexPath}`);
+    res.sendFile(indexPath);
 });
 
 app.listen(PORT, '0.0.0.0', () => {
