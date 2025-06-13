@@ -11,9 +11,14 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 
-// Serve static files from server/public directory - THIS IS THE CORRECT PLATFORM
+// Serve static files from server/public directory - CACHE BUSTING ENABLED
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res, filePath) => {
+    // Force cache invalidation for all files
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    
     if (filePath.endsWith('.js')) {
       res.set('Content-Type', 'application/javascript');
     } else if (filePath.endsWith('.css')) {
@@ -84,6 +89,13 @@ app.get('*', (req, res) => {
         req.path.includes('.ico')) {
         return res.status(404).send('Not found');
     }
+    
+    // Force cache invalidation
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    res.set('ETag', false);
+    
     // Serve the comprehensive platform from server/public/index.html
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
