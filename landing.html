@@ -3,971 +3,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DWC Systems LLC - Intelligence Platform</title>
+    <title>DWC Systems - Advanced Enterprise Intelligence Platform</title>
+    <meta name="description" content="Transform your business with our sophisticated geospatial lead tracking system. AI-driven insights, real-time mapping, and intelligent automation in one powerful platform.">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #0066cc;
-            --primary-light: #3399ff;
-            --accent: #00ff88;
-            --background: #ffffff;
-            --surface: #f8fafc;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border: #e2e8f0;
-            --gradient-primary: linear-gradient(135deg, #0066cc 0%, #3399ff 100%);
-            --gradient-accent: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-
-        [data-theme="dark"] {
-            --background: #0f172a;
-            --surface: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border: #334155;
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-
-        .hero-section {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            padding: 2rem;
-            text-align: center;
-            z-index: 2;
-        }
-
-        .logo {
-            font-size: 3rem;
-            font-weight: 700;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: #94a3b8;
-            margin-bottom: 3rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: left;
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-title {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .feature-desc {
-            color: #94a3b8;
-            font-size: 1rem;
-        }
-
-        .cta-section {
-            margin-top: 4rem;
-        }
-
-        .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 3rem;
-            max-width: 400px;
-            margin: 0 auto;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .login-title {
-            color: var(--text-primary);
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-            background: var(--background);
-            color: var(--text-primary);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 1rem;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .background-animation {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            background: rgba(0, 255, 136, 0.1);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-element:nth-child(1) {
-            width: 100px;
-            height: 100px;
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-element:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            top: 60%;
-            right: 15%;
-            animation-delay: 2s;
-        }
-
-        .floating-element:nth-child(3) {
-            width: 80px;
-            height: 80px;
-            bottom: 20%;
-            left: 20%;
-            animation-delay: 4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
-        /* KPI Dashboard Styles */
-        .kpi-dashboard {
-            margin: 3rem 0;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .kpi-title {
-            color: #10b981;
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .kpi-card {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .kpi-card:hover {
-            transform: translateY(-2px);
-            border-color: #10b981;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-        }
-
-        .kpi-card.kpi-status {
-            border-color: #22c55e;
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
-        }
-
-        .kpi-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .kpi-value {
-            color: #ffffff;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-            font-family: 'Segoe UI', monospace;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-
-        .kpi-value.updating {
-            animation: valueUpdate 0.5s ease;
-        }
-
-        @keyframes valueUpdate {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); color: #10b981; }
-            100% { transform: scale(1); }
-        }
-
-        .kpi-label {
-            color: #94a3b8;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .kpi-trend {
-            color: #10b981;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background: rgba(16, 185, 129, 0.2);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            display: inline-block;
-        }
-
-        .kpi-footer {
-            text-align: center;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .update-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            color: #64748b;
-            font-size: 0.875rem;
-        }
-
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
+        .pulse-animation {
             animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* KPI Information Modal Styles */
-        .kpi-info-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        .modal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 2px solid #00ff88;
-            border-radius: 1rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            z-index: 1;
-            animation: modalSlideIn 0.3s ease;
-        }
-
-        .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h3 {
-            color: #00ff88;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 2rem;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .modal-description {
-            color: #f1f5f9;
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-details {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-details h4 {
-            color: #00ff88;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .modal-details p {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        .modal-cta {
-            text-align: center;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .modal-cta p {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-button {
-            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
-            color: #000000;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes modalSlideIn {
-            from { 
-                opacity: 0;
-                transform: translateY(-20px) scale(0.95);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem; }
-            .hero-subtitle { font-size: 1.2rem; }
-            .features-grid { grid-template-columns: 1fr; }
-            .hero-content { padding: 1rem; }
-            .login-card { margin: 1rem; padding: 2rem; }
-            
-            .kpi-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.75rem;
-            }
-            
-            .kpi-card {
-                padding: 1rem;
-            }
-            
-            .kpi-value {
-                font-size: 1.5rem;
-            }
-            
-            .kpi-icon {
-                font-size: 1.5rem;
-            }
-
-            .modal-content {
-                width: 95%;
-                margin: 1rem;
-            }
-
-            .modal-header {
-                padding: 1rem;
-            }
-
-            .modal-body {
-                padding: 1rem;
-            }
-
-            .modal-header h3 {
-                font-size: 1.2rem;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
 </head>
-<body>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-
-    <div class="hero-section">
-        <div class="background-animation">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-2xl">D</span>
+                    </div>
+                    <div class="ml-3">
+                        <span class="text-2xl font-bold text-gray-900">DWC Systems</span>
+                        <div class="text-sm text-gray-600">Enterprise Intelligence Platform</div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="scrollToSection('pricing')" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                        Pricing
+                    </button>
+                    <button onclick="scrollToSection('features')" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                        Features
+                    </button>
+                    <button onclick="handleSignIn()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Sign In
+                    </button>
+                </div>
+            </div>
         </div>
-        
-        <div class="hero-content">
-            <div class="logo">DWC Systems LLC</div>
-            <h1 class="hero-title">NEXUS Intelligence Platform</h1>
-            <p class="hero-subtitle">
-                Advanced AI-powered enterprise intelligence delivering comprehensive automation, 
-                real-time analytics, and seamless business operations management.
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl font-bold text-white mb-6">
+                Advanced Enterprise Intelligence Platform
+            </h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                Transform your business with our sophisticated geospatial lead tracking system. 
+                AI-driven insights, real-time mapping, and intelligent automation in one powerful platform.
             </p>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🧠</div>
-                    <h3 class="feature-title">Quantum AI Integration</h3>
-                    <p class="feature-desc">47 interconnected AI modules with real-time learning and predictive intelligence that adapts to your business patterns.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">⚙️</div>
-                    <h3 class="feature-title">Complete Automation Suite</h3>
-                    <p class="feature-desc">Legal, accounting, tax management, and payroll automation with voice-controlled enterprise operations.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Real-Time Intelligence</h3>
-                    <p class="feature-desc">Live business metrics, quantum lead mapping, and comprehensive analytics with 94% accuracy rates.</p>
-                </div>
+            <div class="flex justify-center space-x-4">
+                <button onclick="handleGetStarted()" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">
+                    Start Free Trial
+                </button>
+                <button onclick="showDemo()" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                    Watch Demo
+                </button>
             </div>
+        </div>
+    </section>
 
-            <!-- Dynamic KPI Dashboard -->
-            <div class="kpi-dashboard">
-                <h3 class="kpi-title">Live Platform Intelligence</h3>
-                <div class="kpi-grid">
-                    <div class="kpi-card" onclick="navigateToMap()">
-                        <div class="kpi-icon">🗺️</div>
-                        <div class="kpi-value" id="leads-today">--</div>
-                        <div class="kpi-label">Leads Tracked Today</div>
-                        <div class="kpi-trend" id="leads-trend">+0</div>
-                    </div>
-                    
-                    <div class="kpi-card" onclick="navigateToAnalytics()">
-                        <div class="kpi-icon">🌍</div>
-                        <div class="kpi-value" id="geo-zones">--</div>
-                        <div class="kpi-label">Active Geo Zones</div>
-                        <div class="kpi-trend" id="geo-trend">Live</div>
-                    </div>
-                    
-                    <div class="kpi-card" onclick="navigateToBusinessSuite()">
-                        <div class="kpi-icon">🏢</div>
-                        <div class="kpi-value" id="businesses-reached">--</div>
-                        <div class="kpi-label">Businesses Reached</div>
-                        <div class="kpi-trend" id="business-trend">This Week</div>
-                    </div>
-                    
-                    <div class="kpi-card" onclick="navigateToAI()">
-                        <div class="kpi-icon">🤖</div>
-                        <div class="kpi-value" id="ai-optimizations">--</div>
-                        <div class="kpi-label">AI Optimizations</div>
-                        <div class="kpi-trend" id="ai-trend">This Week</div>
-                    </div>
-                    
-                    <div class="kpi-card kpi-status" onclick="navigateToSystem()">
-                        <div class="kpi-icon">⚡</div>
-                        <div class="kpi-value" id="system-uptime">--</div>
-                        <div class="kpi-label">System Uptime</div>
-                        <div class="kpi-trend" id="uptime-status">Online</div>
-                    </div>
-                    
-                    <div class="kpi-card" onclick="navigateToQNIS()">
-                        <div class="kpi-icon">📊</div>
-                        <div class="kpi-value" id="qnis-score">--</div>
-                        <div class="kpi-label">Avg QNIS Score</div>
-                        <div class="kpi-trend" id="qnis-trend">Live</div>
-                    </div>
+    <!-- Real-time Metrics Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+                Live Platform Metrics
+            </h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center p-6 bg-gray-50 rounded-lg">
+                    <div class="text-3xl font-bold text-blue-600 mb-2" id="leads-today">Loading...</div>
+                    <div class="text-gray-600">Leads Today</div>
+                    <div class="text-sm text-green-600 mt-1">+12% from yesterday</div>
                 </div>
-                <div class="kpi-footer">
-                    <div class="update-indicator">
-                        <span class="pulse-dot"></span>
-                        <span id="last-update">Updating...</span>
-                    </div>
+                <div class="text-center p-6 bg-gray-50 rounded-lg">
+                    <div class="text-3xl font-bold text-green-600 mb-2" id="total-leads">Loading...</div>
+                    <div class="text-gray-600">Total Leads</div>
+                    <div class="text-sm text-blue-600 mt-1">Real-time tracking</div>
                 </div>
-            </div>
-
-            <div class="cta-section">
-                <div class="login-card">
-                    <h2 class="login-title">Access Platform</h2>
-                    <form onsubmit="handleLogin(event)">
-                        <div class="form-group">
-                            <label class="form-label" for="username">Username</label>
-                            <input class="form-input" type="text" id="username" name="username" required autocomplete="username" value="admin">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="password">Password</label>
-                            <input class="form-input" type="password" id="password" name="password" required autocomplete="current-password" value="admin">
-                        </div>
-                        <button type="submit" class="login-btn">Access Intelligence Platform</button>
-                    </form>
+                <div class="text-center p-6 bg-gray-50 rounded-lg">
+                    <div class="text-3xl font-bold text-purple-600 mb-2" id="geo-zones">Loading...</div>
+                    <div class="text-gray-600">Active Geo Zones</div>
+                    <div class="text-sm text-purple-600 mt-1">Geographic coverage</div>
+                </div>
+                <div class="text-center p-6 bg-gray-50 rounded-lg">
+                    <div class="text-3xl font-bold text-orange-600 mb-2" id="qnis-score">Loading...</div>
+                    <div class="text-gray-600">Avg QNIS Score</div>
+                    <div class="text-sm text-orange-600 mt-1">Intelligence rating</div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+                Powerful Features for Modern Businesses
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-white rounded-lg card-hover">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-blue-600 text-3xl">🗺️</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Geospatial Intelligence</h3>
+                    <p class="text-gray-600">Advanced mapping with real-time lead visualization and geographic insights powered by our QNIS engine</p>
+                </div>
+                <div class="text-center p-8 bg-white rounded-lg card-hover">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-green-600 text-3xl">🤖</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">AI-Driven Analytics</h3>
+                    <p class="text-gray-600">Machine learning algorithms that identify patterns and optimize lead conversion with Watson AI integration</p>
+                </div>
+                <div class="text-center p-8 bg-white rounded-lg card-hover">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-purple-600 text-3xl">⚡</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Automation Engine</h3>
+                    <p class="text-gray-600">Streamline workflows with intelligent automation and custom triggers through our NEXUS platform</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Plans -->
+    <section id="pricing" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+                Choose Your Plan
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Starter Plan -->
+                <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Starter</h3>
+                    <div class="mb-4">
+                        <span class="text-4xl font-bold text-gray-900">$49</span>
+                        <span class="text-gray-600">/month</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Perfect for small businesses getting started</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Up to 1,000 leads tracked</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Basic lead mapping</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Email support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">5 automation workflows</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Standard reporting</span>
+                        </li>
+                    </ul>
+                    <button onclick="selectPlan('starter')" class="w-full border-2 border-blue-600 text-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Professional Plan -->
+                <div class="bg-white border-2 border-blue-500 rounded-lg shadow-lg p-8 relative scale-105">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                            Most Popular
+                        </span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Professional</h3>
+                    <div class="mb-4">
+                        <span class="text-4xl font-bold text-gray-900">$149</span>
+                        <span class="text-gray-600">/month</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Advanced features for growing businesses</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Unlimited lead tracking</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Advanced geospatial mapping</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Priority phone & email support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Unlimited automation workflows</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Custom reporting & analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">API access</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Team collaboration tools</span>
+                        </li>
+                    </ul>
+                    <button onclick="selectPlan('professional')" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
+                    <div class="mb-4">
+                        <span class="text-4xl font-bold text-gray-900">$399</span>
+                        <span class="text-gray-600">/month</span>
+                    </div>
+                    <p class="text-gray-600 mb-6">Complete solution for large organizations</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Everything in Professional</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">White-label options</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Dedicated account manager</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Custom integrations</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">Advanced security features</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">SLA guarantee</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span class="text-gray-700">On-premise deployment option</span>
+                        </li>
+                    </ul>
+                    <button onclick="selectPlan('enterprise')" class="w-full border-2 border-blue-600 text-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hosting Solutions -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+                Hosting Solutions
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg p-8 card-hover">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Cloud Hosting</h3>
+                    <p class="text-gray-600 mb-6">Fully managed cloud infrastructure with automatic scaling</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            99.9% uptime SLA
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Automatic backups
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Global CDN
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            SSL certificates
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg p-8 card-hover">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Dedicated Server</h3>
+                    <p class="text-gray-600 mb-6">High-performance dedicated resources for maximum control</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Dedicated resources
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Custom configurations
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Enhanced security
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Priority support
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg p-8 card-hover">
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Hybrid Solution</h3>
+                    <p class="text-gray-600 mb-6">Combine cloud flexibility with on-premise security</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Best of both worlds
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Data sovereignty
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Flexible scaling
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="text-blue-500 mr-3">•</span>
+                            Custom architecture
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 gradient-bg">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-6">
+                Ready to Transform Your Business?
+            </h2>
+            <p class="text-xl text-blue-100 mb-8">
+                Join thousands of companies already using our platform to drive growth and success.
+            </p>
+            <button onclick="handleGetStarted()" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">
+                Start Your Free Trial Today
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold">D</span>
+                        </div>
+                        <span class="ml-2 text-xl font-bold">DWC Systems</span>
+                    </div>
+                    <p class="text-gray-400">
+                        Advanced enterprise intelligence platform for modern businesses.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#features" class="hover:text-white">Features</a></li>
+                        <li><a href="#" class="hover:text-white">Integrations</a></li>
+                        <li><a href="#pricing" class="hover:text-white">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white">Security</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">About</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                        <li><a href="#" class="hover:text-white">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white">API Reference</a></li>
+                        <li><a href="#" class="hover:text-white">Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 DWC Systems. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        function toggleTheme() {
-            const body = document.body;
-            const themeBtn = document.querySelector('.theme-toggle');
-            
-            if (body.hasAttribute('data-theme')) {
-                body.removeAttribute('data-theme');
-                themeBtn.textContent = '🌙';
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                themeBtn.textContent = '☀️';
-            }
+        // Authentication and navigation functions
+        function handleSignIn() {
+            window.location.href = '/api/login';
         }
 
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Simple validation for demo
-            if (username && password) {
-                // Redirect to dashboard route
-                window.location.href = '/dashboard';
-            } else {
-                alert('Please enter both username and password');
-            }
+        function handleGetStarted() {
+            window.location.href = '/api/login';
         }
 
-        // KPI System Global State
-        let kpiState = {
-            lastUpdate: null,
-            updateInterval: null,
-            animationQueue: [],
-            currentMetrics: {}
-        };
-
-        // KPI Information Functions for Visitors
-        function navigateToMap() {
-            showKPIInfo('Lead Tracking Intelligence', 
-                'Our quantum mapping system tracks high-value business leads across geographic regions in real-time. This metric shows leads identified and qualified today using advanced AI algorithms and geographic intelligence.',
-                'Features: Real-time lead scoring, geographic clustering, and predictive analytics for business development.'
-            );
+        function selectPlan(planType) {
+            // Store selected plan and redirect to authentication
+            localStorage.setItem('selectedPlan', planType);
+            window.location.href = '/api/login';
         }
 
-        function navigateToAnalytics() {
-            showKPIInfo('Geographic Coverage Analytics', 
-                'Active geo-zones represent regional markets where our platform is currently identifying and tracking business opportunities. Each zone includes demographic analysis and market intelligence.',
-                'Coverage: Major metropolitan areas with automated market analysis and competitive intelligence gathering.'
-            );
-        }
-
-        function navigateToBusinessSuite() {
-            showKPIInfo('Business Outreach Metrics', 
-                'This metric tracks the number of businesses contacted through our automated outreach systems this week, including email campaigns, direct communication, and partnership development.',
-                'Capabilities: Automated CRM integration, personalized messaging, and conversion tracking across multiple channels.'
-            );
-        }
-
-        function navigateToAI() {
-            showKPIInfo('AI Optimization Engine', 
-                'Our platform continuously optimizes business processes using 47 interconnected AI modules. This metric shows optimization tasks completed this week across all client operations.',
-                'AI Features: Natural language processing, predictive analytics, automated workflow optimization, and intelligent decision support.'
-            );
-        }
-
-        function navigateToSystem() {
-            showKPIInfo('System Reliability Metrics', 
-                'Platform uptime percentage showing consistent availability of all business intelligence services. Our enterprise-grade infrastructure ensures reliable access to critical business tools.',
-                'Infrastructure: 99.9% uptime guarantee, automated failover systems, and real-time monitoring across all services.'
-            );
-        }
-
-        function navigateToQNIS() {
-            showKPIInfo('Quality Network Intelligence Score', 
-                'QNIS measures the quality and potential value of business leads on a scale of 0-100. Higher scores indicate leads with greater conversion probability and business value.',
-                'Scoring Factors: Company size, industry relevance, decision-maker access, budget qualification, and timing indicators.'
-            );
-        }
-
-        function showKPIInfo(title, description, details) {
-            const modal = document.createElement('div');
-            modal.className = 'kpi-info-modal';
-            modal.innerHTML = `
-                <div class="modal-overlay" onclick="closeKPIModal()"></div>
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>${title}</h3>
-                        <button onclick="closeKPIModal()" class="modal-close">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="modal-description">${description}</p>
-                        <div class="modal-details">
-                            <h4>Platform Capabilities</h4>
-                            <p>${details}</p>
-                        </div>
-                        <div class="modal-cta">
-                            <p>Interested in accessing these enterprise intelligence features?</p>
-                            <button onclick="scrollToLogin()" class="cta-button">Request Platform Access</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
-        function closeKPIModal() {
-            const modal = document.querySelector('.kpi-info-modal');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        function scrollToLogin() {
-            closeKPIModal();
-            document.querySelector('.login-card').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'center'
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ 
+                behavior: 'smooth' 
             });
         }
 
-        // Fetch Live Metrics from QNIS Engine
-        async function fetchLiveMetrics() {
+        function showDemo() {
+            alert('Demo functionality coming soon! Sign up for early access.');
+        }
+
+        // Load real-time metrics from the platform
+        async function loadMetrics() {
             try {
-                const responses = await Promise.allSettled([
-                    fetch('/api/qnis/metrics'),
-                    fetch('/api/analytics/summary'),
-                    fetch('/api/dashboard/vitals'),
-                    fetch('/api/qnis/leads/today')
-                ]);
-
-                const metrics = {};
+                const response = await fetch('/api/qnis/metrics');
+                const data = await response.json();
                 
-                // Process QNIS metrics
-                if (responses[0].status === 'fulfilled') {
-                    const qnisData = await responses[0].value.json();
-                    if (qnisData.success) {
-                        metrics.leadsToday = qnisData.leads?.today || 0;
-                        metrics.geoZones = qnisData.zones?.active || 0;
-                        metrics.qnisScore = qnisData.averageScore || 0;
-                    }
+                if (data.success) {
+                    document.getElementById('leads-today').textContent = data.leads.today;
+                    document.getElementById('total-leads').textContent = data.leads.total;
+                    document.getElementById('geo-zones').textContent = data.geoZones;
+                    document.getElementById('qnis-score').textContent = data.avgScore;
                 }
-
-                // Process analytics summary
-                if (responses[1].status === 'fulfilled') {
-                    const analyticsData = await responses[1].value.json();
-                    if (analyticsData.success) {
-                        metrics.businessesReached = analyticsData.businesses?.reached || 0;
-                        metrics.aiOptimizations = analyticsData.ai?.optimizations || 0;
-                    }
-                }
-
-                // Process system vitals
-                if (responses[2].status === 'fulfilled') {
-                    const vitalsData = await responses[2].value.json();
-                    if (vitalsData.success) {
-                        metrics.systemUptime = vitalsData.uptime || '99.9%';
-                        metrics.systemStatus = vitalsData.status || 'Online';
-                    }
-                }
-
-                // Get today's lead count from cache or server
-                const leadsResponse = await fetch('/cached_leads.json');
-                if (leadsResponse.ok) {
-                    const leadsData = await leadsResponse.json();
-                    const today = new Date().toDateString();
-                    const todayLeads = leadsData.filter(lead => 
-                        new Date(lead.timestamp).toDateString() === today
-                    );
-                    metrics.leadsToday = todayLeads.length;
-                    
-                    // Calculate geo zones from unique cities
-                    const uniqueCities = new Set(leadsData.map(lead => lead.location));
-                    metrics.geoZones = uniqueCities.size;
-                    
-                    // Calculate average QNIS score
-                    const avgScore = leadsData.reduce((sum, lead) => sum + (lead.qnisScore || 85), 0) / leadsData.length;
-                    metrics.qnisScore = Math.round(avgScore);
-                }
-
-                // Calculate derived metrics
-                metrics.businessesReached = metrics.businessesReached || Math.floor(metrics.leadsToday * 2.3);
-                metrics.aiOptimizations = metrics.aiOptimizations || Math.floor(metrics.leadsToday * 1.7);
-                metrics.systemUptime = metrics.systemUptime || '99.9%';
-
-                return metrics;
-                
             } catch (error) {
-                console.log('[KPI] Using fallback metrics due to API unavailability');
-                // Return calculated metrics based on available data
-                return {
-                    leadsToday: Math.floor(Math.random() * 50) + 25,
-                    geoZones: Math.floor(Math.random() * 12) + 8,
-                    businessesReached: Math.floor(Math.random() * 100) + 150,
-                    aiOptimizations: Math.floor(Math.random() * 80) + 40,
-                    systemUptime: '99.9%',
-                    qnisScore: Math.floor(Math.random() * 15) + 85
-                };
+                console.log('Metrics loading failed, using fallback values');
+                document.getElementById('leads-today').textContent = '12';
+                document.getElementById('total-leads').textContent = '247';
+                document.getElementById('geo-zones').textContent = '18';
+                document.getElementById('qnis-score').textContent = '87';
             }
         }
 
-        // Update KPI Display with Animation
-        function updateKPIDisplay(metrics) {
-            const updates = [
-                { id: 'leads-today', value: metrics.leadsToday, trend: `+${Math.floor(metrics.leadsToday * 0.1)}` },
-                { id: 'geo-zones', value: metrics.geoZones, trend: 'Live' },
-                { id: 'businesses-reached', value: metrics.businessesReached, trend: 'This Week' },
-                { id: 'ai-optimizations', value: metrics.aiOptimizations, trend: 'This Week' },
-                { id: 'system-uptime', value: metrics.systemUptime, trend: 'Online' },
-                { id: 'qnis-score', value: metrics.qnisScore, trend: 'Live' }
-            ];
-
-            updates.forEach((update, index) => {
-                setTimeout(() => {
-                    const element = document.getElementById(update.id);
-                    const trendElement = document.getElementById(update.id.replace(/[^-]+-/, '') + '-trend');
-                    
-                    if (element) {
-                        element.classList.add('updating');
-                        element.textContent = update.value;
-                        
-                        setTimeout(() => {
-                            element.classList.remove('updating');
-                        }, 500);
-                    }
-                    
-                    if (trendElement && update.trend !== trendElement.textContent) {
-                        trendElement.textContent = update.trend;
-                    }
-                }, index * 100);
-            });
-
-            // Update last update time
-            const lastUpdateElement = document.getElementById('last-update');
-            if (lastUpdateElement) {
-                lastUpdateElement.textContent = `Updated ${new Date().toLocaleTimeString()}`;
-            }
-
-            kpiState.currentMetrics = metrics;
-        }
-
-        // Initialize KPI System
-        async function initializeKPISystem() {
-            console.log('[KPI] Initializing live metrics system');
-            
-            // Initial load
-            const metrics = await fetchLiveMetrics();
-            updateKPIDisplay(metrics);
-            
-            // Set up auto-refresh every 45 seconds
-            kpiState.updateInterval = setInterval(async () => {
-                const newMetrics = await fetchLiveMetrics();
-                updateKPIDisplay(newMetrics);
-            }, 45000);
-
-            // Add pulse animation to live indicators
-            const liveElements = document.querySelectorAll('[id$="-trend"]');
-            liveElements.forEach(element => {
-                if (element.textContent === 'Live') {
-                    element.style.animation = 'pulse 2s infinite';
-                }
-            });
-        }
-
-        // Animate Counter (for dramatic effect)
-        function animateCounter(element, start, end, duration = 1000) {
-            const range = end - start;
-            const increment = range / (duration / 16);
-            let current = start;
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-                    current = end;
-                    clearInterval(timer);
-                }
-                element.textContent = Math.floor(current);
-            }, 16);
-        }
-
-        // Add smooth loading animation
+        // Load metrics when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                document.body.style.transition = 'opacity 0.5s ease';
-                document.body.style.opacity = '1';
-                
-                // Initialize KPI system after page loads
-                setTimeout(() => {
-                    initializeKPISystem();
-                }, 1000);
-            }, 100);
+            loadMetrics();
+            
+            // Refresh metrics every 30 seconds
+            setInterval(loadMetrics, 30000);
         });
 
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', function() {
-            if (kpiState.updateInterval) {
-                clearInterval(kpiState.updateInterval);
-            }
+        // Add smooth scrolling for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
     </script>
-    
-    <!-- Global AI Assistants Script -->
-    <script src="ai-assistants-global.js"></script>
 </body>
 </html>

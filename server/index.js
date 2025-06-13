@@ -1118,6 +1118,132 @@ app.get('/api/qnis/leads/today', (req, res) => {
     }
 });
 
+// Authentication API endpoints for landing page integration
+app.get('/api/auth/user', (req, res) => {
+    // Simulate authentication check - in production this would use Replit Auth
+    const user = req.session?.user || null;
+    
+    if (user) {
+        res.json({
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            profileImageUrl: user.profileImageUrl
+        });
+    } else {
+        res.status(401).json({ message: 'Unauthorized' });
+    }
+});
+
+app.post('/api/login', (req, res) => {
+    // In production, this would redirect to Replit Auth
+    // For development, we'll simulate a login
+    const simulatedUser = {
+        id: 'dev_user_123',
+        email: 'demo@dwcsystems.com',
+        firstName: 'Demo',
+        lastName: 'User',
+        profileImageUrl: null
+    };
+    
+    req.session = req.session || {};
+    req.session.user = simulatedUser;
+    
+    res.json({ success: true, user: simulatedUser });
+});
+
+app.post('/api/logout', (req, res) => {
+    if (req.session) {
+        req.session.user = null;
+    }
+    res.json({ success: true });
+});
+
+// Stripe subscription endpoints
+app.post('/api/create-payment-intent', async (req, res) => {
+    try {
+        if (!process.env.STRIPE_SECRET_KEY) {
+            return res.status(503).json({
+                success: false,
+                error: 'Stripe not configured - missing secret key'
+            });
+        }
+        
+        const { amount } = req.body;
+        
+        // In production, this would use actual Stripe SDK
+        // For now, return a mock response structure
+        const mockPaymentIntent = {
+            client_secret: 'pi_mock_' + Date.now() + '_secret_mock',
+            id: 'pi_mock_' + Date.now(),
+            amount: Math.round(amount * 100), // Convert to cents
+            currency: 'usd',
+            status: 'requires_payment_method'
+        };
+        
+        res.json({ 
+            success: true,
+            clientSecret: mockPaymentIntent.client_secret,
+            paymentIntent: mockPaymentIntent
+        });
+        
+    } catch (error) {
+        console.error('Payment intent error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to create payment intent'
+        });
+    }
+});
+
+app.post('/api/create-subscription', async (req, res) => {
+    try {
+        if (!process.env.STRIPE_SECRET_KEY) {
+            return res.status(503).json({
+                success: false,
+                error: 'Stripe not configured - missing secret key'
+            });
+        }
+        
+        const { planType = 'professional' } = req.body;
+        
+        // Plan pricing mapping
+        const planPricing = {
+            starter: 4900, // $49.00
+            professional: 14900, // $149.00
+            enterprise: 39900 // $399.00
+        };
+        
+        const amount = planPricing[planType] || planPricing.professional;
+        
+        // Mock subscription response
+        const mockSubscription = {
+            id: 'sub_mock_' + Date.now(),
+            client_secret: 'seti_mock_' + Date.now() + '_secret_mock',
+            status: 'requires_payment_method',
+            latest_invoice: {
+                payment_intent: {
+                    client_secret: 'pi_mock_' + Date.now() + '_secret_mock'
+                }
+            }
+        };
+        
+        res.json({
+            success: true,
+            subscriptionId: mockSubscription.id,
+            clientSecret: mockSubscription.latest_invoice.payment_intent.client_secret
+        });
+        
+    } catch (error) {
+        console.error('Subscription creation error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to create subscription'
+        });
+    }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Server error:', err);
