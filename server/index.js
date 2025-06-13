@@ -189,8 +189,14 @@ app.get('*', (req, res) => {
         console.log(`[NEXUS] Serving platform: ${timestamp}`);
     }
     
-    // Serve the NEXUS platform
+    // Serve the NEXUS platform with forced refresh
     const indexPath = path.join(__dirname, 'public', 'index.html');
+    
+    // Force browser to bypass all caches
+    res.set('X-Timestamp', Date.now().toString());
+    res.set('X-Force-Refresh', 'true');
+    
+    console.log(`[NEXUS] Serving fresh content from: ${indexPath}`);
     res.sendFile(indexPath);
 });
 
