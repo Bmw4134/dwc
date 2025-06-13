@@ -154,19 +154,26 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Modular SaaS routing architecture
+// Primary routing - landing page first
 app.get('/', (req, res) => {
-    console.log(`[ROUTING] Serving landing page`);
+    const timestamp = Date.now();
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    console.log(`[ROUTING] Serving clean landing page: ${timestamp}`);
     res.sendFile(path.join(process.cwd(), 'landing.html'));
 });
 
+// Dashboard interface
 app.get('/dashboard', (req, res) => {
-    console.log(`[ROUTING] Serving dashboard interface`);
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    console.log(`[ROUTING] Serving modular dashboard`);
     res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
+// Legacy complex interface
 app.get('/legacy', (req, res) => {
-    console.log(`[ROUTING] Serving legacy interface`);
+    console.log(`[ROUTING] Serving legacy complex interface`);
     res.sendFile(path.join(process.cwd(), 'index.html'));
 });
 
