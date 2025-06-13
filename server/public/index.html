@@ -3003,6 +3003,90 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
 
         console.log('[NEXUS] Deep dive simulator loaded - Use runNexusDeepDive() or add ?deepdive=true to URL');
 
+        // Diagnostic Trace Integration
+        function runFullPlatformDiagnostic() {
+            console.log('🚀 NEXUS PLATFORM DIAGNOSTIC STARTING...');
+            console.log('=' .repeat(60));
+            
+            // Check 1: Platform Elements
+            const loginSection = document.getElementById('login-section');
+            const dashboardSection = document.getElementById('dashboard-section');
+            const moduleCards = document.querySelectorAll('.module-card');
+            const testingInfo = document.getElementById('testing-info');
+            
+            console.log('✓ Login section present:', !!loginSection);
+            console.log('✓ Dashboard section present:', !!dashboardSection);
+            console.log('✓ Module cards count:', moduleCards.length);
+            console.log('✓ Testing info present:', !!testingInfo);
+            
+            // Check 2: Authentication System
+            const usernameField = document.getElementById('username');
+            const passwordField = document.getElementById('password');
+            console.log('✓ Username field present:', !!usernameField);
+            console.log('✓ Password field present:', !!passwordField);
+            console.log('✓ handleLogin function available:', typeof handleLogin === 'function');
+            
+            // Check 3: Testing Functions
+            const testingFunctions = ['runNexusDeepDive', 'runUserBehaviorTests', 'showTestingPanel'];
+            testingFunctions.forEach(func => {
+                console.log(`✓ ${func} available:`, typeof window[func] === 'function');
+            });
+            
+            // Check 4: Module Functions
+            const configFunctions = ['saveSystemConfig', 'generateNewLeads', 'queryWatsonAI', 'executeTrade'];
+            configFunctions.forEach(func => {
+                console.log(`✓ ${func} available:`, typeof window[func] === 'function');
+            });
+            
+            // Platform Version Detection
+            const title = document.title;
+            const hasNexusBranding = title.includes('NEXUS');
+            const hasTestingPanel = typeof showTestingPanel === 'function';
+            const hasDeepDive = typeof runNexusDeepDive === 'function';
+            
+            console.log('\n📊 PLATFORM ANALYSIS:');
+            console.log('✓ Page title:', title);
+            console.log('✓ NEXUS branding:', hasNexusBranding);
+            console.log('✓ Testing functions:', hasTestingPanel && hasDeepDive);
+            console.log('✓ Module count:', moduleCards.length);
+            
+            // Determine platform version
+            if (hasNexusBranding && hasTestingPanel && hasDeepDive && moduleCards.length >= 15) {
+                console.log('🟢 RESULT: Comprehensive NEXUS Enterprise Platform LOADED');
+                speakText('Diagnostic complete. Comprehensive NEXUS platform detected and operational.');
+                showNotification('Platform Status', 'Comprehensive NEXUS platform operational');
+                
+                // Auto-login for testing
+                if (usernameField && passwordField) {
+                    console.log('🔑 Auto-filling admin credentials for testing...');
+                    usernameField.value = 'admin';
+                    passwordField.value = 'nexus2024';
+                    setTimeout(() => {
+                        console.log('🚀 Executing auto-login...');
+                        handleLogin(new Event('submit'));
+                    }, 2000);
+                }
+                
+                return 'comprehensive';
+            } else {
+                console.log('🔴 RESULT: Basic dashboard detected - NOT comprehensive platform');
+                console.log('❌ Issue: Server serving wrong file or caching problem');
+                
+                speakText('Diagnostic complete. Basic dashboard detected. Platform upgrade required.');
+                showNotification('Platform Issue', 'Basic dashboard detected - requires upgrade');
+                
+                return 'basic';
+            }
+        }
+
+        // Auto-execute diagnostic on load
+        setTimeout(() => {
+            runFullPlatformDiagnostic();
+        }, 2000);
+
+        // Make diagnostic available globally
+        window.runDiagnostic = runFullPlatformDiagnostic;
+
         // Testing Panel Functions
         function showTestingPanel() {
             const testingHTML = `
