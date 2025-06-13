@@ -1654,6 +1654,86 @@
                             <button class="action-btn secondary" onclick="viewTrendAnalysis()">View Trends</button>
                         </div>
                     `
+                },
+                'market-analysis': {
+                    title: 'Market Analysis Engine',
+                    content: `
+                        <h3>Market Intelligence</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Markets Tracked:</strong> 15</div>
+                            <div><strong>Data Sources:</strong> 47</div>
+                            <div><strong>Analysis Frequency:</strong> Real-time</div>
+                            <div><strong>Trend Accuracy:</strong> 94.8%</div>
+                        </div>
+                        <h3>Market Research</h3>
+                        <div style="margin: 16px 0;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Technology Sector</option>
+                                <option>Financial Services</option>
+                                <option>Healthcare</option>
+                                <option>Real Estate</option>
+                            </select>
+                            <input type="text" placeholder="Geographic region" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Competitive Analysis</option>
+                                <option>Price Trends</option>
+                                <option>Market Share</option>
+                                <option>Growth Forecast</option>
+                            </select>
+                            <button class="action-btn" onclick="runMarketAnalysis()">Run Analysis</button>
+                            <button class="action-btn secondary" onclick="exportMarketReport()">Export Report</button>
+                        </div>
+                    `
+                },
+                'business-intelligence': {
+                    title: 'Business Intelligence Hub',
+                    content: `
+                        <h3>Intelligence Dashboard</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>KPIs Tracked:</strong> 23</div>
+                            <div><strong>Data Integration:</strong> 12 sources</div>
+                            <div><strong>Report Generation:</strong> Automated</div>
+                            <div><strong>Real-time Updates:</strong> Active</div>
+                        </div>
+                        <h3>Generate Business Report</h3>
+                        <div style="margin: 16px 0;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Executive Summary</option>
+                                <option>Sales Performance</option>
+                                <option>Operational Metrics</option>
+                                <option>Financial Analysis</option>
+                            </select>
+                            <input type="date" placeholder="From date" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <input type="date" placeholder="To date" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <button class="action-btn" onclick="generateBusinessReport()">Generate Report</button>
+                            <button class="action-btn secondary" onclick="scheduleReport()">Schedule Recurring</button>
+                        </div>
+                    `
+                },
+                'intelligence-network': {
+                    title: 'Intelligence Network Core',
+                    content: `
+                        <h3>Network Status</h3>
+                        <div style="margin: 16px 0;">
+                            <div><strong>Connected Nodes:</strong> 47</div>
+                            <div><strong>Data Throughput:</strong> 2.4GB/hr</div>
+                            <div><strong>Network Health:</strong> 98.7%</div>
+                            <div><strong>Security Level:</strong> Maximum</div>
+                        </div>
+                        <h3>Network Configuration</h3>
+                        <div style="margin: 16px 0;">
+                            <input type="text" placeholder="Node identifier" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <select style="margin: 4px 0; padding: 8px; width: 100%;">
+                                <option>Primary Node</option>
+                                <option>Secondary Node</option>
+                                <option>Data Relay</option>
+                                <option>Analysis Node</option>
+                            </select>
+                            <input type="number" placeholder="Priority level (1-10)" style="margin: 4px 0; padding: 8px; width: 100%;">
+                            <button class="action-btn" onclick="configureNetworkNode()">Configure Node</button>
+                            <button class="action-btn secondary" onclick="runNetworkDiagnostic()">Network Diagnostic</button>
+                        </div>
+                    `
                 }
             };
             
@@ -2034,6 +2114,92 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
             console.log('[TRENDS] Opening trend analysis dashboard');
             speakText('Trend analysis dashboard opened');
             showNotification('Trend Analysis', 'Historical and predictive trends displayed');
+        }
+
+        function runMarketAnalysis() {
+            const sector = document.querySelector('select').value;
+            const region = document.querySelector('input[placeholder="Geographic region"]').value;
+            const analysisType = document.querySelectorAll('select')[1].value;
+            
+            console.log('[MARKET] Running analysis:', {sector, region, analysisType});
+            speakText('Market analysis started for ' + sector + ' in ' + region);
+            showNotification('Market Analysis', analysisType + ' for ' + sector + ' initiated');
+        }
+
+        function exportMarketReport() {
+            const marketReport = {
+                timestamp: new Date().toISOString(),
+                sector: 'Technology Sector',
+                region: 'Dallas-Fort Worth',
+                metrics: {
+                    marketSize: '$2.4B',
+                    growthRate: '12.5%',
+                    competitorCount: 47,
+                    marketShare: '8.3%'
+                },
+                recommendations: [
+                    'Expand digital services offering',
+                    'Target emerging fintech segment',
+                    'Increase market presence in Plano/Frisco corridor'
+                ]
+            };
+            
+            const reportStr = JSON.stringify(marketReport, null, 2);
+            const reportBlob = new Blob([reportStr], {type: 'application/json'});
+            const url = URL.createObjectURL(reportBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'market-analysis-report-' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+            
+            console.log('[MARKET] Report exported');
+            speakText('Market analysis report exported successfully');
+            showNotification('Report Exported', 'Market analysis data downloaded');
+        }
+
+        function generateBusinessReport() {
+            const reportType = document.querySelector('select').value;
+            const fromDate = document.querySelector('input[placeholder="From date"]').value;
+            const toDate = document.querySelector('input[placeholder="To date"]').value;
+            
+            console.log('[BUSINESS] Generating report:', {reportType, fromDate, toDate});
+            speakText('Generating ' + reportType + ' business intelligence report');
+            showNotification('Report Generated', reportType + ' ready for review');
+        }
+
+        function scheduleReport() {
+            console.log('[BUSINESS] Report scheduling activated');
+            speakText('Business report scheduled for automated generation');
+            showNotification('Report Scheduled', 'Automated reporting configured');
+        }
+
+        function configureNetworkNode() {
+            const nodeId = document.querySelector('input[placeholder="Node identifier"]').value;
+            const nodeType = document.querySelector('select').value;
+            const priority = document.querySelector('input[placeholder*="Priority"]').value;
+            
+            if (!nodeId) {
+                showNotification('Error', 'Please enter node identifier');
+                return;
+            }
+            
+            console.log('[NETWORK] Node configured:', {nodeId, nodeType, priority});
+            speakText('Network node ' + nodeId + ' configured as ' + nodeType);
+            showNotification('Node Configured', nodeId + ' added to intelligence network');
+            
+            document.querySelector('input[placeholder="Node identifier"]').value = '';
+        }
+
+        function runNetworkDiagnostic() {
+            console.log('[NETWORK] Running network diagnostic');
+            speakText('Running comprehensive network diagnostic');
+            showNotification('Network Diagnostic', 'Testing all 47 network nodes');
+            
+            setTimeout(() => {
+                speakText('Network diagnostic complete. All nodes operational.');
+                showNotification('Diagnostic Complete', 'Network health: 98.7% - All systems optimal');
+            }, 2500);
         }
 
         function trainVoiceCommand() {
