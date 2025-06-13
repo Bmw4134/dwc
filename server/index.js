@@ -58,14 +58,14 @@ app.get('/health', (req, res) => {
 // Middleware
 app.use(express.json());
 
-// Primary routing - must come before static middleware
+// Primary routing - serve dashboard by default to prevent loops
 app.get('/', (req, res) => {
     const timestamp = Date.now();
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
-    console.log(`[ROUTING] Serving clean landing page: ${timestamp}`);
-    res.sendFile(path.join(process.cwd(), 'landing.html'));
+    console.log(`[ROUTING] Serving dashboard as default: ${timestamp}`);
+    res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
 // Pro bono trucking company website
