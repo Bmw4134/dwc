@@ -138,6 +138,79 @@ app.get('/api/loc/credit', async (req, res) => {
   });
 });
 
+// Website content fetching endpoint for reinvention module
+app.get('/api/fetch-website', async (req, res) => {
+  try {
+    const { url } = req.query;
+    
+    if (!url) {
+      return res.status(400).json({ error: 'URL parameter is required' });
+    }
+    
+    // Use node-fetch to get website content
+    const fetch = await import('node-fetch');
+    const response = await fetch.default(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      },
+      timeout: 10000
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const content = await response.text();
+    
+    // Log the website analysis request
+    console.log(`[WEBSITE-ANALYSIS] Fetched content for: ${url}`);
+    
+    res.json({
+      success: true,
+      url: url,
+      content: content,
+      contentLength: content.length,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('[WEBSITE-ANALYSIS] Error fetching website:', error.message);
+    res.status(500).json({
+      error: 'Failed to fetch website content',
+      message: error.message,
+      url: req.query.url
+    });
+  }
+});
+
+// Website analysis consultation request endpoint
+app.post('/api/consultation-request', async (req, res) => {
+  try {
+    const { url, contact, analysis } = req.body;
+    
+    // Log consultation request
+    console.log(`[CONSULTATION] Request for website: ${url}`);
+    
+    res.json({
+      success: true,
+      message: 'Consultation request received',
+      url: url,
+      requestId: `consultation_${Date.now()}`,
+      nextSteps: [
+        'Analysis review within 24 hours',
+        'Consultation call scheduling',
+        'Custom proposal delivery'
+      ]
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      error: 'Failed to process consultation request',
+      message: error.message
+    });
+  }
+});
+
 app.get('/api/quantum/deep-dive', async (req, res) => {
   res.json({
     module: 'Quantum Deep Dive',

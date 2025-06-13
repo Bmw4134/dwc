@@ -1,0 +1,51 @@
+🔁 FULL SYSTEM DEPLOYMENT, SELF-EVOLUTION, AND CONSOLE BOOTSTRAP INITIATED
+
+1. Scan entire dashboard system for:
+   - Missing, broken, or placeholder modules
+   - Hidden/unlinked sidebar items
+   - Inactive API bindings
+   - Legacy or outdated component structure
+
+2. Run user simulation:
+   - Click every module and all nested buttons
+   - Validate render, logic, and data binding
+   - Flag and auto-repair any incomplete paths
+
+3. Fix map system:
+   - Inject fully interactive U.S. geographic map using OpenStreetMap or Leaflet fallback
+   - Ensure real-time lead overlays, location drilldowns, and live AI analytics reappear
+   - Restore contact click-to-generate logic and legacy site scraping UI
+
+4. Deploy full-featured Nexus Operator Console:
+   - Embed as SYSTEM module in sidebar
+   - Add commands for:
+     ▫ Trigger Self-Heal
+     ▫ Rerun Simulation
+     ▫ QA Sweep
+     ▫ API Key Vault Status
+     ▫ Firebase/Cloud Sync
+     ▫ Log Viewer
+   - Inject live heartbeat stream from OpenAI + Perplexity + Coinbase + CRM syncs
+
+5. UI + Mobile Optimization:
+   - Enable fullscreen toggle across all containers (mobile & desktop)
+   - Collapse sidebar groups by category (Business Ops, Automation, CRM, AI, Tools)
+   - Bind fullscreen icon to top nav (⬜ or ⛶) with fallback JS logic
+
+6. Finalize Production State:
+   - Remove all mock/demo/placeholder content
+   - Reinforce subscription layer, CRM sync, investor-ready UI
+   - Validate every module shows unique, functional output
+   - Confirm KPIs show on landing page with animated metrics
+   - Lock in system watermark for production release
+
+7. BONUS: Nexus LLM + AI Assistant
+   - If not present, create modal-accessible Kaizen LLM Console
+   - Allow code-based or natural prompt injection with logs
+   - Enable rapid user persona modeling & automation task chaining
+
+8. LOG EVERYTHING:
+   - Summarize every module fixed, simulated, evolved, or confirmed
+   - Display in the Nexus Operator Console with timestamp + fix status
+
+💥 This is a full production bootstrap — NO redundant rebuilds. ONLY enhance what’s incomplete, evolve what’s outdated, and preserve all custom visuals.
