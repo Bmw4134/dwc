@@ -38,21 +38,8 @@ import('./autonomous-pipeline.js').then(module => {
     console.log('[PIPELINE] Autonomous Lead-to-Solution Pipeline initialized');
 });
 
-import('./autonomous-self-fix.js').then(module => {
-    const AutonomousSelfFixSystem = module.default;
-    global.selfFixSystem = new AutonomousSelfFixSystem();
-    
-    // Initialize self-fix system in development mode
-    if (!isProduction) {
-        global.selfFixSystem.initialize().then(success => {
-            if (success) {
-                console.log('[SELF-FIX] Autonomous self-healing system activated');
-            } else {
-                console.log('[SELF-FIX] Self-healing system requires API keys');
-            }
-        });
-    }
-});
+// Autonomous self-fix system disabled to prevent API rate limits
+console.log('[SELF-FIX] System disabled to prevent OpenAI API rate limiting');
 
 // Production environment configuration
 const isProduction = process.env.NODE_ENV === 'production';

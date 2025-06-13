@@ -3992,9 +3992,19 @@
     </div>
 
     <script>
-        // Force immediate sidebar injection
+        // Force immediate sidebar injection - multiple triggers
         document.addEventListener('DOMContentLoaded', function() {
             console.log('[NEXUS] Force injecting complete sidebar...');
+            injectCompleteSidebar();
+            
+            // Additional triggers to ensure visibility
+            setTimeout(injectCompleteSidebar, 100);
+            setTimeout(injectCompleteSidebar, 500);
+            setTimeout(injectCompleteSidebar, 1000);
+        });
+        
+        // Trigger on window load as well
+        window.addEventListener('load', function() {
             injectCompleteSidebar();
         });
 
