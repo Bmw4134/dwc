@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DWC NEXUS Dashboard</title>
+    
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+    
+    <!-- Leaflet.js JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
     <style>
         :root {
             --primary: #0066cc;
@@ -306,8 +316,7 @@
         .quantum-map-canvas {
             position: relative;
             width: 100%;
-            height: 450px;
-            background: linear-gradient(135deg, #001122 0%, #002244 100%);
+            height: 500px;
             border-radius: 15px;
             border: 2px solid var(--accent);
             overflow: hidden;
@@ -321,13 +330,84 @@
             transform: translate(-50%, -50%);
             color: var(--accent);
             font-size: 18px;
-            z-index: 2;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
         }
 
-        #lead-map {
+        .leaflet-map {
             width: 100%;
             height: 100%;
-            display: block;
+            border-radius: 13px;
+        }
+
+        .map-overlay-controls {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .map-control-select {
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .map-control-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Custom Leaflet marker styles */
+        .lead-marker {
+            background: transparent;
+            border: none;
+        }
+
+        .lead-marker-content {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .lead-marker-high {
+            background: #ff4444;
+        }
+
+        .lead-marker-medium {
+            background: #ffaa00;
+        }
+
+        .lead-marker-low {
+            background: #00ff88;
+        }
+
+        .user-marker {
+            background: #0099ff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 3px 12px rgba(0, 153, 255, 0.6);
         }
 
         .lead-stats-panel {
@@ -782,8 +862,27 @@
                     </div>
                     
                     <div id="quantum-map-canvas" class="quantum-map-canvas">
-                        <div class="map-loading">Initializing Quantum Lead Map...</div>
-                        <canvas id="lead-map" width="800" height="400"></canvas>
+                        <div class="map-loading">Initializing Geographic Intelligence Map...</div>
+                        <div id="lead-map" class="leaflet-map"></div>
+                        
+                        <!-- Map Controls Overlay -->
+                        <div class="map-overlay-controls">
+                            <select id="map-layer-select" class="map-control-select">
+                                <option value="street">Street View</option>
+                                <option value="satellite">Satellite</option>
+                                <option value="terrain">Terrain</option>
+                            </select>
+                            <select id="jump-to-city" class="map-control-select">
+                                <option value="">Jump to City...</option>
+                                <option value="40.7589,-73.9851">New York</option>
+                                <option value="34.0522,-118.2437">Los Angeles</option>
+                                <option value="41.8781,-87.6298">Chicago</option>
+                                <option value="29.7604,-95.3698">Houston</option>
+                                <option value="37.7749,-122.4194">San Francisco</option>
+                                <option value="25.7617,-80.1918">Miami</option>
+                                <option value="32.7767,-96.7970">Dallas</option>
+                            </select>
+                        </div>
                         
                         <!-- Lead Drilldown Panel -->
                         <div id="lead-drilldown" class="lead-drilldown-panel" style="display: none;">
@@ -1127,14 +1226,21 @@
             }
         }
 
-        // QNIS Quantum Lead Mapping Engine
+        // QNIS Geographic Lead Mapping Engine
         let qnisMap = {
-            canvas: null,
-            ctx: null,
+            map: null,
             leads: [],
             isInitialized: false,
             userLocation: null,
-            selectedLead: null
+            selectedLead: null,
+            leadMarkers: [],
+            userMarker: null,
+            routeLines: [],
+            mapLayers: {
+                street: null,
+                satellite: null,
+                terrain: null
+            }
         };
 
         // KaizenGPT Command Interface
@@ -1168,28 +1274,92 @@
         };
 
         function initializeQuantumMap() {
-            const canvas = document.getElementById('lead-map');
-            if (!canvas) return;
+            const mapContainer = document.getElementById('lead-map');
+            if (!mapContainer) return;
 
-            qnisMap.canvas = canvas;
-            qnisMap.ctx = canvas.getContext('2d');
-            qnisMap.isInitialized = true;
+            // Initialize Leaflet map
+            qnisMap.map = L.map('lead-map', {
+                center: [39.8283, -98.5795], // Geographic center of USA
+                zoom: 4,
+                zoomControl: true,
+                attributionControl: false
+            });
 
-            // Set canvas size
-            canvas.width = 800;
-            canvas.height = 400;
-
+            // Initialize map layers
+            initializeMapLayers();
+            
             // Hide loading message
             const loading = document.querySelector('.map-loading');
             if (loading) loading.style.display = 'none';
 
+            qnisMap.isInitialized = true;
+
             // Start real-time lead fetching
             startLeadTracking();
             
-            // Add click event listener for lead interactions
-            canvas.addEventListener('click', handleCanvasClick);
+            // Initialize map controls
+            initializeMapControls();
             
-            console.log('[QNIS] Quantum map initialized');
+            console.log('[QNIS] Geographic intelligence map initialized');
+        }
+
+        function initializeMapLayers() {
+            // Street layer (OpenStreetMap)
+            qnisMap.mapLayers.street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 18
+            });
+
+            // Satellite layer (requires API key from vault)
+            qnisMap.mapLayers.satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri',
+                maxZoom: 17
+            });
+
+            // Terrain layer
+            qnisMap.mapLayers.terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenTopoMap contributors',
+                maxZoom: 15
+            });
+
+            // Add default street layer
+            qnisMap.mapLayers.street.addTo(qnisMap.map);
+        }
+
+        function initializeMapControls() {
+            // Layer switcher
+            const layerSelect = document.getElementById('map-layer-select');
+            if (layerSelect) {
+                layerSelect.addEventListener('change', (e) => {
+                    switchMapLayer(e.target.value);
+                });
+            }
+
+            // City jump selector
+            const citySelect = document.getElementById('jump-to-city');
+            if (citySelect) {
+                citySelect.addEventListener('change', (e) => {
+                    if (e.target.value) {
+                        const [lat, lng] = e.target.value.split(',').map(Number);
+                        qnisMap.map.setView([lat, lng], 10);
+                        e.target.value = ''; // Reset selector
+                    }
+                });
+            }
+        }
+
+        function switchMapLayer(layerType) {
+            // Remove current layer
+            Object.values(qnisMap.mapLayers).forEach(layer => {
+                if (qnisMap.map.hasLayer(layer)) {
+                    qnisMap.map.removeLayer(layer);
+                }
+            });
+
+            // Add selected layer
+            if (qnisMap.mapLayers[layerType]) {
+                qnisMap.mapLayers[layerType].addTo(qnisMap.map);
+            }
         }
 
         async function startLeadTracking() {
@@ -1219,59 +1389,142 @@
         }
 
         function renderQuantumMap() {
-            if (!qnisMap.isInitialized || !qnisMap.ctx) return;
+            if (!qnisMap.isInitialized || !qnisMap.map) return;
 
-            const ctx = qnisMap.ctx;
-            const canvas = qnisMap.canvas;
+            // Clear existing markers
+            clearMapMarkers();
 
-            // Clear canvas
-            ctx.fillStyle = '#001122';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw US map outline (simplified)
-            drawUSMapOutline(ctx);
-
-            // Plot leads
-            qnisMap.leads.forEach((lead, index) => {
-                const x = latLngToCanvas(lead.coordinates.lat, lead.coordinates.lng).x;
-                const y = latLngToCanvas(lead.coordinates.lat, lead.coordinates.lng).y;
-
-                // Draw lead point
-                ctx.save();
-                
-                // Priority-based coloring
-                let color = '#00ff88'; // default green
-                if (lead.priority === 'HIGH') color = '#ff4444';
-                else if (lead.priority === 'MEDIUM') color = '#ffaa00';
-
-                // Animated pulse effect
-                const pulse = Math.sin(Date.now() / 300 + index) * 0.3 + 0.7;
-                const radius = 4 + (pulse * 3);
-
-                // Store clickable area for lead
-                lead._canvasData = { x, y, radius: radius + 5 };
-
-                ctx.shadowColor = color;
-                ctx.shadowBlur = 10;
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2);
-                ctx.fill();
-
-                // City label
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '10px Arial';
-                ctx.fillText(lead.coordinates.city, x + 8, y - 8);
-
-                ctx.restore();
+            // Plot lead markers
+            qnisMap.leads.forEach((lead) => {
+                createLeadMarker(lead);
             });
 
-            // Draw connection lines between recent leads
-            drawLeadConnections(ctx);
-            
-            // Draw user location if available
+            // Add user location marker if available
             if (qnisMap.userLocation) {
-                drawUserLocation(ctx);
+                createUserMarker();
+            }
+
+            // Draw route lines between user and leads
+            if (qnisMap.userLocation && qnisMap.leads.length > 0) {
+                drawRouteLines();
+            }
+        }
+
+        function clearMapMarkers() {
+            // Remove existing lead markers
+            qnisMap.leadMarkers.forEach(marker => {
+                qnisMap.map.removeLayer(marker);
+            });
+            qnisMap.leadMarkers = [];
+
+            // Remove user marker
+            if (qnisMap.userMarker) {
+                qnisMap.map.removeLayer(qnisMap.userMarker);
+                qnisMap.userMarker = null;
+            }
+
+            // Remove route lines
+            qnisMap.routeLines.forEach(line => {
+                qnisMap.map.removeLayer(line);
+            });
+            qnisMap.routeLines = [];
+        }
+
+        function createLeadMarker(lead) {
+            const priorityClass = `lead-marker-${lead.priority.toLowerCase()}`;
+            
+            // Create custom marker icon
+            const markerIcon = L.divIcon({
+                className: 'lead-marker',
+                html: `<div class="lead-marker-content ${priorityClass}">${lead.qnis_score}</div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            // Create marker
+            const marker = L.marker([lead.coordinates.lat, lead.coordinates.lng], {
+                icon: markerIcon
+            });
+
+            // Add popup with lead information
+            const popupContent = `
+                <div style="font-family: Arial, sans-serif; min-width: 200px;">
+                    <h4 style="margin: 0 0 10px 0; color: #00ff88;">${lead.coordinates.city} Lead</h4>
+                    <p style="margin: 5px 0;"><strong>Industry:</strong> ${lead.industry}</p>
+                    <p style="margin: 5px 0;"><strong>Type:</strong> ${lead.type}</p>
+                    <p style="margin: 5px 0;"><strong>QNIS Score:</strong> ${lead.qnis_score}</p>
+                    <p style="margin: 5px 0;"><strong>Value:</strong> $${Math.floor(lead.value_estimate / 1000)}K</p>
+                    <p style="margin: 5px 0;"><strong>Priority:</strong> <span style="color: ${getPriorityColor(lead.priority)}">${lead.priority}</span></p>
+                    <button onclick="showLeadDrilldown(qnisMap.leads.find(l => l.id === '${lead.id}'))" 
+                            style="background: #00ff88; color: #000; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-top: 10px;">
+                        View Details
+                    </button>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent);
+
+            // Add click handler for detailed view
+            marker.on('click', () => {
+                showLeadDrilldown(lead);
+            });
+
+            // Add to map and tracking array
+            marker.addTo(qnisMap.map);
+            qnisMap.leadMarkers.push(marker);
+        }
+
+        function createUserMarker() {
+            const userIcon = L.divIcon({
+                className: 'user-marker',
+                html: '📍',
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+
+            qnisMap.userMarker = L.marker([qnisMap.userLocation.lat, qnisMap.userLocation.lng], {
+                icon: userIcon
+            });
+
+            qnisMap.userMarker.bindPopup(`
+                <div style="font-family: Arial, sans-serif;">
+                    <h4 style="margin: 0 0 10px 0; color: #0099ff;">Your Location</h4>
+                    <p style="margin: 5px 0;"><strong>City:</strong> ${qnisMap.userLocation.city || 'Unknown'}</p>
+                    <p style="margin: 5px 0;"><strong>Source:</strong> ${qnisMap.userLocation.source || 'GPS'}</p>
+                </div>
+            `);
+
+            qnisMap.userMarker.addTo(qnisMap.map);
+        }
+
+        function drawRouteLines() {
+            // Draw lines from user to top 3 priority leads
+            const sortedLeads = qnisMap.leads
+                .filter(lead => lead.priority === 'HIGH')
+                .slice(0, 3);
+
+            sortedLeads.forEach((lead, index) => {
+                const routeLine = L.polyline([
+                    [qnisMap.userLocation.lat, qnisMap.userLocation.lng],
+                    [lead.coordinates.lat, lead.coordinates.lng]
+                ], {
+                    color: getPriorityColor(lead.priority),
+                    weight: 2,
+                    opacity: 0.6,
+                    dashArray: index === 0 ? null : '5, 10' // Solid line for first, dashed for others
+                });
+
+                routeLine.addTo(qnisMap.map);
+                qnisMap.routeLines.push(routeLine);
+            });
+        }
+
+        function getPriorityColor(priority) {
+            switch (priority) {
+                case 'HIGH': return '#ff4444';
+                case 'MEDIUM': return '#ffaa00';
+                case 'LOW': return '#00ff88';
+                default: return '#00ff88';
             }
         }
 
@@ -1661,7 +1914,191 @@
             if (syncCRMBtn) {
                 syncCRMBtn.addEventListener('click', () => executeCRMAction('sync_crm'));
             }
+
+            // Initialize API Key Management
+            initializeAPIKeyManagement();
         });
+
+        // API Key Management Functions
+        async function initializeAPIKeyManagement() {
+            const addKeyBtn = document.getElementById('add-key-btn');
+            if (addKeyBtn) {
+                addKeyBtn.addEventListener('click', addNewAPIKey);
+            }
+
+            // Load existing keys when API Keys module is shown
+            await loadAPIKeys();
+        }
+
+        async function loadAPIKeys() {
+            try {
+                const response = await fetch('/api/keys');
+                const data = await response.json();
+
+                if (data.success) {
+                    displayAPIKeys(data.keys);
+                    console.log('[API KEYS] Loaded', data.keys.length, 'keys');
+                } else {
+                    console.error('[API KEYS] Failed to load:', data.error);
+                }
+            } catch (error) {
+                console.error('[API KEYS] Network error:', error);
+            }
+        }
+
+        function displayAPIKeys(keys) {
+            const keysList = document.getElementById('keys-list');
+            if (!keysList) return;
+
+            if (keys.length === 0) {
+                keysList.innerHTML = '<div class="loading-keys">No API keys configured</div>';
+                return;
+            }
+
+            keysList.innerHTML = keys.map(key => `
+                <div class="key-item" data-key-id="${key.id}">
+                    <div class="key-info">
+                        <div class="key-name">${key.name}</div>
+                        <div class="key-details">
+                            <span class="key-scope">${key.scope.toUpperCase()}</span>
+                            <span>Created: ${new Date(key.createdAt).toLocaleDateString()}</span>
+                            <span class="key-status ${key.status}">${key.status.toUpperCase()}</span>
+                        </div>
+                    </div>
+                    <div class="key-value-display" id="key-value-${key.id}">
+                        ${key.maskedValue}
+                    </div>
+                    <div class="key-actions">
+                        <button class="key-btn" onclick="revealAPIKey('${key.id}')">Reveal</button>
+                        <button class="key-btn" onclick="editAPIKey('${key.id}')">Edit</button>
+                        <button class="key-btn danger" onclick="revokeAPIKey('${key.id}')">Revoke</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function addNewAPIKey() {
+            const name = document.getElementById('key-name').value.trim();
+            const value = document.getElementById('key-value').value.trim();
+            const scope = document.getElementById('key-scope').value;
+            const expiry = document.getElementById('key-expiry').value || null;
+
+            if (!name || !value || !scope) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/keys', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        value: value,
+                        scope: scope,
+                        expiresAt: expiry
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Clear form
+                    document.getElementById('key-name').value = '';
+                    document.getElementById('key-value').value = '';
+                    document.getElementById('key-expiry').value = '';
+                    
+                    // Reload keys list
+                    await loadAPIKeys();
+                    
+                    console.log('[API KEYS] Added new key:', name);
+                } else {
+                    alert('Failed to add API key: ' + result.error);
+                }
+            } catch (error) {
+                alert('Network error: ' + error.message);
+            }
+        }
+
+        async function revealAPIKey(keyId) {
+            try {
+                const response = await fetch(`/api/keys/${keyId}/reveal`, {
+                    method: 'POST'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    const valueDisplay = document.getElementById(`key-value-${keyId}`);
+                    if (valueDisplay) {
+                        valueDisplay.textContent = result.value;
+                        valueDisplay.style.background = 'rgba(0, 255, 136, 0.1)';
+                        
+                        // Auto-hide after 10 seconds
+                        setTimeout(() => {
+                            valueDisplay.textContent = result.maskedValue;
+                            valueDisplay.style.background = '';
+                        }, 10000);
+                    }
+                } else {
+                    alert('Failed to reveal key: ' + result.error);
+                }
+            } catch (error) {
+                alert('Network error: ' + error.message);
+            }
+        }
+
+        async function revokeAPIKey(keyId) {
+            if (!confirm('Are you sure you want to revoke this API key?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/keys/${keyId}/revoke`, {
+                    method: 'POST'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    await loadAPIKeys();
+                    console.log('[API KEYS] Revoked key:', keyId);
+                } else {
+                    alert('Failed to revoke key: ' + result.error);
+                }
+            } catch (error) {
+                alert('Network error: ' + error.message);
+            }
+        }
+
+        function editAPIKey(keyId) {
+            // Simple implementation - could be enhanced with modal
+            const newName = prompt('Enter new name for this API key:');
+            if (newName && newName.trim()) {
+                updateAPIKey(keyId, { name: newName.trim() });
+            }
+        }
+
+        async function updateAPIKey(keyId, updates) {
+            try {
+                const response = await fetch(`/api/keys/${keyId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updates)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    await loadAPIKeys();
+                    console.log('[API KEYS] Updated key:', keyId);
+                } else {
+                    alert('Failed to update key: ' + result.error);
+                }
+            } catch (error) {
+                alert('Network error: ' + error.message);
+            }
+        }
     </script>
 </body>
 </html>
