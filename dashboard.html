@@ -10297,10 +10297,25 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
     
     <!-- DWC Production Deployment System -->
     <script src="quantum-map-rebuild.js"></script>
+    <script src="production-deployment-orchestrator.js"></script>
     <script src="dwc-production-finalizer.js"></script>
     <script src="system-health-optimizer.js"></script>
     <script src="health-boost-deployment.js"></script>
     <script src="production-ready-validator.js"></script>
     <script src="final-production-sprint.js"></script>
+    
+    <script>
+        // Initialize production deployment sequence with AI diagnostics
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[PRODUCTION] Starting full deployment sequence with OpenAI + Perplexity integration...');
+            
+            setTimeout(() => {
+                if (!window.dwcProductionReady && typeof ProductionDeploymentOrchestrator !== 'undefined') {
+                    const orchestrator = new ProductionDeploymentOrchestrator();
+                    orchestrator.initiateProductionDeployment();
+                }
+            }, 3000);
+        });
+    </script>
 </body>
 </html>
