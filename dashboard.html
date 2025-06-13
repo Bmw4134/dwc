@@ -2923,6 +2923,44 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Location Services Panel -->
+                <div class="module-card">
+                    <div class="card-icon">📍</div>
+                    <div class="card-title">Location Tracking Services</div>
+                    <div class="card-description">
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Active Leads in Map:</span>
+                                <strong style="color: var(--accent);" id="active-leads-count">24</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Search Radius:</span>
+                                <strong id="search-radius">25 miles</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Location Services:</span>
+                                <strong style="color: var(--primary);" id="location-status">Active</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Last Update:</span>
+                                <strong id="last-location-update">Real-time</strong>
+                            </div>
+                        </div>
+                        <div style="background: var(--background); padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
+                            <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Tracking Services</div>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <span style="background: var(--primary); color: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">Geolocation Engine</span>
+                                <span style="background: var(--accent); color: black; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">Real-time Updates</span>
+                                <span style="background: var(--primary); color: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">Lead Discovery</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn" onclick="expandSearchRadius()">Expand Search</button>
+                        <button class="action-btn secondary" onclick="refreshLocationData()">Refresh Location</button>
+                    </div>
+                </div>
             </div>
 
             <!-- Legal Module -->
@@ -4559,7 +4597,289 @@
 
             // Initialize AI Assistants
             initializeAIAssistants();
+
+            // Initialize sales data
+            refreshSalesData();
         });
+
+        // Location Tracking Functions
+        function expandSearchRadius() {
+            const currentRadius = parseInt(document.getElementById('search-radius').textContent);
+            const newRadius = currentRadius + 25;
+            document.getElementById('search-radius').textContent = newRadius + ' miles';
+            
+            showNotification('Search Expanded', `Searching ${newRadius} mile radius for new leads`);
+            
+            fetch('/api/leads/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    radius: newRadius,
+                    location: { lat: 32.7767, lng: -96.7970 }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('active-leads-count').textContent = data.data.leads.length;
+                    showNotification('Search Complete', `Found ${data.data.leads.length} leads in ${newRadius} mile radius`);
+                }
+            })
+            .catch(err => {
+                console.error('[LOCATION] Search error:', err);
+                showNotification('Search Error', 'Unable to expand search radius');
+            });
+        }
+
+        function refreshLocationData() {
+            showNotification('Location Refresh', 'Updating real-time location data...');
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        
+                        fetch('/api/leads/search', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                radius: parseInt(document.getElementById('search-radius').textContent),
+                                location: { lat: latitude, lng: longitude }
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                document.getElementById('active-leads-count').textContent = data.data.leads.length;
+                                document.getElementById('last-location-update').textContent = new Date().toLocaleTimeString();
+                                showNotification('Location Updated', `Found ${data.data.leads.length} nearby leads`);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('[LOCATION] Refresh error:', err);
+                            showNotification('Refresh Error', 'Unable to refresh location data');
+                        });
+                    },
+                    (error) => {
+                        console.error('[LOCATION] Geolocation error:', error);
+                        showNotification('Location Error', 'Enable location services for accurate tracking');
+                    }
+                );
+            } else {
+                showNotification('Location Error', 'Geolocation not supported by this browser');
+            }
+        }
+
+        // Salesperson Management Functions
+        let salespeople = JSON.parse(localStorage.getItem('dwc-salespeople') || '[]');
+
+        function showAddSalespersonModal() {
+            const modal = document.createElement('div');
+            modal.id = 'salesperson-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+
+            modal.innerHTML = `
+                <div style="background: var(--card-bg); padding: 2rem; border-radius: 12px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                    <h3 style="margin: 0 0 1.5rem 0; color: var(--text-primary);">Add New Salesperson</h3>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Full Name</label>
+                        <input type="text" id="salesperson-name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--background);" placeholder="John Smith">
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Employee ID</label>
+                        <input type="text" id="salesperson-id" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--background);" placeholder="dwc001">
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Role/Title</label>
+                        <select id="salesperson-role" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--background);">
+                            <option value="Senior Sales">Senior Sales</option>
+                            <option value="Account Executive">Account Executive</option>
+                            <option value="Business Development">Business Development</option>
+                            <option value="Sales Representative">Sales Representative</option>
+                            <option value="Lead Generator">Lead Generator</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Email</label>
+                        <input type="email" id="salesperson-email" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--background);" placeholder="john@dwcsystems.com">
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Phone</label>
+                        <input type="tel" id="salesperson-phone" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--background);" placeholder="+1-555-0123">
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Commission Rate</label>
+                        <input type="number" id="salesperson-commission" value="90" min="0" max="100" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--background);" readonly>
+                        <small style="color: var(--text-secondary);">Standard 90% commission rate</small>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button onclick="closeAddSalespersonModal()" style="padding: 0.75rem 1.5rem; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--text-secondary); cursor: pointer;">Cancel</button>
+                        <button onclick="saveSalesperson()" style="padding: 0.75rem 1.5rem; border: none; border-radius: 6px; background: var(--primary); color: white; cursor: pointer;">Add Salesperson</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeAddSalespersonModal();
+                }
+            });
+        }
+
+        function closeAddSalespersonModal() {
+            const modal = document.getElementById('salesperson-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function saveSalesperson() {
+            const name = document.getElementById('salesperson-name').value.trim();
+            const employeeId = document.getElementById('salesperson-id').value.trim();
+            const role = document.getElementById('salesperson-role').value;
+            const email = document.getElementById('salesperson-email').value.trim();
+            const phone = document.getElementById('salesperson-phone').value.trim();
+            const commission = parseInt(document.getElementById('salesperson-commission').value);
+
+            if (!name || !employeeId || !email) {
+                showNotification('Validation Error', 'Please fill in all required fields');
+                return;
+            }
+
+            if (salespeople.some(sp => sp.employeeId === employeeId)) {
+                showNotification('Duplicate ID', 'Employee ID already exists');
+                return;
+            }
+
+            const newSalesperson = {
+                id: Date.now().toString(),
+                name,
+                employeeId,
+                role,
+                email,
+                phone,
+                commission,
+                totalSales: 0,
+                totalEarned: 0,
+                dateAdded: new Date().toISOString(),
+                status: 'active'
+            };
+
+            salespeople.push(newSalesperson);
+            localStorage.setItem('dwc-salespeople', JSON.stringify(salespeople));
+            
+            closeAddSalespersonModal();
+            refreshSalesData();
+            showNotification('Success', `${name} added to sales team`);
+        }
+
+        function refreshSalesData() {
+            const salesList = document.getElementById('salespeople-list');
+            
+            if (salespeople.length === 0) {
+                salesList.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        No salespeople added yet. Click "Add Salesperson" to get started.
+                    </div>
+                `;
+                return;
+            }
+
+            salesList.innerHTML = salespeople.map(sp => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--background); border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                    <div>
+                        <div style="font-weight: 600;">${sp.name} (${sp.employeeId})</div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">${sp.role}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; color: var(--primary);">$${sp.totalSales.toLocaleString()}</div>
+                        <div style="font-size: 0.875rem; color: var(--accent);">$${sp.totalEarned.toLocaleString()} earned</div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button onclick="editSalesperson('${sp.id}')" style="padding: 0.25rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; background: transparent; color: var(--text-secondary); font-size: 0.75rem; cursor: pointer;">Edit</button>
+                        <button onclick="removeSalesperson('${sp.id}')" style="padding: 0.25rem 0.5rem; border: 1px solid #ff4444; border-radius: 4px; background: transparent; color: #ff4444; font-size: 0.75rem; cursor: pointer;">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateCommissionAnalytics();
+        }
+
+        function removeSalesperson(id) {
+            const salesperson = salespeople.find(sp => sp.id === id);
+            if (salesperson && confirm(`Remove ${salesperson.name} from the sales team?`)) {
+                salespeople = salespeople.filter(sp => sp.id !== id);
+                localStorage.setItem('dwc-salespeople', JSON.stringify(salespeople));
+                refreshSalesData();
+                showNotification('Removed', `${salesperson.name} removed from sales team`);
+            }
+        }
+
+        function updateCommissionAnalytics() {
+            const totalPending = salespeople.reduce((sum, sp) => sum + (sp.totalSales * 0.9 - sp.totalEarned), 0);
+            const totalSales = salespeople.reduce((sum, sp) => sum + sp.totalSales, 0);
+            
+            document.getElementById('pending-payouts').textContent = `$${totalPending.toLocaleString()}`;
+            
+            const monthlyTarget = localStorage.getItem('dwc-monthly-target');
+            if (monthlyTarget) {
+                const target = parseInt(monthlyTarget);
+                const achievement = Math.round((totalSales / target) * 100);
+                document.getElementById('achievement-percentage').textContent = `${achievement}%`;
+                document.getElementById('progress-bar').style.width = `${Math.min(achievement, 100)}%`;
+                document.getElementById('monthly-target').textContent = `$${target.toLocaleString()}`;
+            }
+        }
+
+        function setMonthlyTarget() {
+            const target = prompt('Set monthly sales target ($):');
+            if (target && !isNaN(target)) {
+                localStorage.setItem('dwc-monthly-target', target);
+                updateCommissionAnalytics();
+                showNotification('Target Set', `Monthly target set to $${parseInt(target).toLocaleString()}`);
+            }
+        }
+
+        function exportCommissionReport() {
+            const reportData = {
+                generatedAt: new Date().toISOString(),
+                totalSalespeople: salespeople.length,
+                totalSales: salespeople.reduce((sum, sp) => sum + sp.totalSales, 0),
+                totalCommissions: salespeople.reduce((sum, sp) => sum + sp.totalEarned, 0),
+                pendingPayouts: salespeople.reduce((sum, sp) => sum + (sp.totalSales * 0.9 - sp.totalEarned), 0),
+                salespeople: salespeople
+            };
+
+            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dwc-commission-report-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('Export Complete', 'Commission report downloaded');
+        }
 
         // API Key Management Functions
         async function initializeAPIKeyManagement() {
