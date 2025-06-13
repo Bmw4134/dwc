@@ -90,14 +90,19 @@ app.get('*', (req, res) => {
         return res.status(404).send('Not found');
     }
     
-    // Force cache invalidation
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    // Aggressive cache invalidation with timestamp
+    const timestamp = Date.now();
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
     res.set('ETag', false);
+    res.set('Last-Modified', new Date().toUTCString());
+    res.set('X-Cache-Bust', timestamp.toString());
     
-    // Serve the comprehensive platform from server/public/index.html
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    // Serve the updated NEXUS platform
+    const indexPath = path.join(__dirname, 'public', 'index.html');
+    console.log(`[NEXUS] Serving updated platform: ${indexPath} (${timestamp})`);
+    res.sendFile(indexPath);
 });
 
 app.listen(PORT, '0.0.0.0', () => {
