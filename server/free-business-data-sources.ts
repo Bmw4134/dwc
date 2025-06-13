@@ -35,11 +35,57 @@ export class FreeBusinessDataSources {
     }
   }
 
-  // Foursquare Places API (Free tier: 50,000 calls/month)
+  // US Business Directory API (Government data - completely free)
+  async searchUSBusinessDirectory(location: string, businessType?: string): Promise<BusinessListing[]> {
+    try {
+      // Using OpenCorporates API (free tier available)
+      const response = await axios.get('https://api.opencorporates.com/v0.4/companies/search', {
+        params: {
+          q: `${businessType || 'business'} ${location}`,
+          format: 'json',
+          per_page: 20,
+          jurisdiction_code: 'us'
+        },
+        timeout: 10000
+      });
+
+      return this.parseOpenCorporatesResponse(response.data);
+    } catch (error) {
+      console.error('US Business Directory API error:', error);
+      return [];
+    }
+  }
+
+  // Nominatim (OpenStreetMap) - Free geocoding and business search
+  async searchNominatim(location: string, businessType?: string): Promise<BusinessListing[]> {
+    try {
+      const query = businessType ? `${businessType} in ${location}` : location;
+      
+      const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+        params: {
+          q: query,
+          format: 'json',
+          addressdetails: 1,
+          extratags: 1,
+          limit: 25
+        },
+        headers: {
+          'User-Agent': 'DWC-NEXUS-Platform/1.0'
+        },
+        timeout: 10000
+      });
+
+      return this.parseNominatimResponse(response.data);
+    } catch (error) {
+      console.error('Nominatim API error:', error);
+      return [];
+    }
+  }
+
+  // Foursquare Places API (Free tier available)
   async searchFoursquare(location: string, businessType?: string): Promise<BusinessListing[]> {
     const apiKey = process.env.FOURSQUARE_API_KEY;
     if (!apiKey) {
-      console.log('Foursquare API key not configured');
       return [];
     }
 
@@ -52,11 +98,174 @@ export class FreeBusinessDataSources {
         params: {
           near: location,
           query: businessType || '',
-          limit: 50
-        }
+          limit: 20
+        },
+        timeout: 10000
       });
 
-      return response.data.results.map((place: any) => ({
+      return this.parseFoursquareResponse(response.data);
+    } catch (error) {
+      console.error('Foursquare API error:', error);
+      return [];
+    }
+  }
+
+  // Parse OpenCorporates API response
+  private parseOpenCorporatesResponse(data: any): BusinessListing[] {
+    const businesses: BusinessListing[] = [];
+    
+    if (data.results?.companies) {
+      for (const company of data.results.companies) {
+        businesses.push({
+          name: company.company.name,
+          address: company.company.registered_address_in_full || 'Address not available',
+          category: company.company.company_type || 'Business',
+          website: company.company.registry_url,
+          source: 'OpenCorporates',
+          coordinates: {
+            lat: 0, // Will be geocoded separately if needed
+            lng: 0
+          }
+        });
+      }
+    }
+    
+    return businesses;
+  }
+
+  // Parse Nominatim API response  
+  private parseNominatimResponse(data: any[]): BusinessListing[] {
+    const businesses: BusinessListing[] = [];
+    
+    for (const place of data) {
+      if (place.extratags?.amenity || place.extratags?.shop || place.extratags?.office) {
+        businesses.push({
+          name: place.display_name.split(',')[0],
+          address: place.display_name,
+          category: place.extratags.amenity || place.extratags.shop || place.extratags.office || 'Business',
+          phone: place.extratags.phone,
+          website: place.extratags.website,
+          source: 'OpenStreetMap',
+          coordinates: {
+            lat: parseFloat(place.lat),
+            lng: parseFloat(place.lon)
+          }
+        });
+      }
+    }
+    
+    return businesses;
+  }
+
+  // Parse Foursquare API response
+  private parseFoursquareResponse(data: any): BusinessListing[] {
+    const businesses: BusinessListing[] = [];
+    
+    if (data.results) {
+      for (const venue of data.results) {
+        businesses.push({
+          name: venue.name,
+          address: `${venue.location.address || ''} ${venue.location.locality || ''} ${venue.location.region || ''}`.trim(),
+          category: venue.categories?.[0]?.name || 'Business',
+          source: 'Foursquare',
+          coordinates: {
+            lat: venue.geocodes?.main?.latitude || 0,
+            lng: venue.geocodes?.main?.longitude || 0
+          }
+        });
+      }
+    }
+    
+    return businesses;
+  }
+
+  // Master search function that tries all available sources
+  async searchAllSources(location: string, businessType?: string): Promise<BusinessListing[]> {
+    const allBusinesses: BusinessListing[] = [];
+    const sources = [
+      () => this.searchNominatim(location, businessType),
+      () => this.searchUSBusinessDirectory(location, businessType),
+      () => this.searchOpenStreetMap(location, businessType)
+    ];
+
+    for (const searchSource of sources) {
+      try {
+        await this.delay(this.baseDelay);
+        const results = await searchSource();
+        allBusinesses.push(...results);
+        
+        if (allBusinesses.length >= 25) break;
+      } catch (error) {
+        console.error('Source search error:', error);
+        continue;
+      }
+    }
+
+    return this.deduplicateBusinesses(allBusinesses);
+  }
+
+  private deduplicateBusinesses(businesses: BusinessListing[]): BusinessListing[] {
+    const seen = new Set<string>();
+    return businesses.filter(business => {
+      const key = `${business.name.toLowerCase()}-${business.address.toLowerCase()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Additional parsing methods
+  private buildOverpassQuery(location: string, businessType?: string): string {
+    const bbox = this.getLocationBbox(location);
+    return `[out:json][timeout:25];
+(
+  node["amenity"~"restaurant|cafe|shop|office"](${bbox});
+  way["amenity"~"restaurant|cafe|shop|office"](${bbox});
+  relation["amenity"~"restaurant|cafe|shop|office"](${bbox});
+);
+out center meta;`;
+  }
+
+  private getLocationBbox(location: string): string {
+    // Simplified bbox for major US cities
+    const cityBounds: Record<string, string> = {
+      'new york': '40.4774,-74.2591,40.9176,-73.7004',
+      'los angeles': '33.7037,-118.6681,34.3373,-118.1553',
+      'chicago': '41.6444,-87.9073,42.0230,-87.5238',
+      'houston': '29.5274,-95.8755,30.1100,-95.0667',
+      'miami': '25.5516,-80.8315,25.9776,-80.1303'
+    };
+    
+    return cityBounds[location.toLowerCase()] || '25.5516,-124.8315,49.3776,-66.9463'; // US bounds
+  }
+
+  private parseOverpassResponse(data: any): BusinessListing[] {
+    const businesses: BusinessListing[] = [];
+    
+    if (data.elements) {
+      for (const element of data.elements) {
+        if (element.tags?.name) {
+          businesses.push({
+            name: element.tags.name,
+            address: `${element.tags['addr:street'] || ''} ${element.tags['addr:city'] || ''}`.trim(),
+            category: element.tags.amenity || element.tags.shop || 'Business',
+            phone: element.tags.phone,
+            website: element.tags.website,
+            source: 'OpenStreetMap',
+            coordinates: {
+              lat: element.lat || element.center?.lat || 0,
+              lng: element.lon || element.center?.lon || 0
+            }
+          });
+        }
+      }
+    }
+    
+    return businesses;
         name: place.name,
         address: place.location.formatted_address,
         category: place.categories?.[0]?.name || 'Business',
