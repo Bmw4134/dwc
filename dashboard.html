@@ -386,19 +386,19 @@
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value">47</div>
+                        <div class="stat-value" id="active-modules">0</div>
                         <div class="stat-label">Active Modules</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">97.8%</div>
+                        <div class="stat-value" id="system-uptime">0%</div>
                         <div class="stat-label">System Uptime</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">$247K</div>
+                        <div class="stat-value" id="cash-balance">$0</div>
                         <div class="stat-label">Cash Balance</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">94.2%</div>
+                        <div class="stat-value" id="ai-accuracy">0%</div>
                         <div class="stat-label">AI Accuracy</div>
                     </div>
                 </div>
@@ -461,9 +461,9 @@
                     <div class="module-card">
                         <div class="card-title">Contract Management</div>
                         <div class="card-description">
-                            <strong>Active Contracts:</strong> 47 agreements<br>
-                            <strong>Pending Review:</strong> 8 contracts<br>
-                            <strong>Expiring Soon:</strong> 3 within 30 days
+                            <strong>Active Contracts:</strong> <span id="active-contracts">0</span> agreements<br>
+                            <strong>Pending Review:</strong> <span id="pending-contracts">0</span> contracts<br>
+                            <strong>Expiring Soon:</strong> <span id="expiring-contracts">0</span> within 30 days
                         </div>
                         <div class="card-actions">
                             <button class="action-btn">Generate Contract</button>
@@ -500,9 +500,9 @@
                     <div class="module-card">
                         <div class="card-title">Financial Summary</div>
                         <div class="card-description">
-                            <strong>Cash Balance:</strong> $247,650<br>
-                            <strong>Monthly Revenue:</strong> $89,450<br>
-                            <strong>Net Profit:</strong> 41.0%
+                            <strong>Cash Balance:</strong> $<span id="cash-balance-detail">0.00</span><br>
+                            <strong>Monthly Revenue:</strong> $<span id="monthly-revenue">0.00</span><br>
+                            <strong>Net Profit:</strong> <span id="net-profit">0.0%</span>
                         </div>
                         <div class="card-actions">
                             <button class="action-btn">View Details</button>

@@ -1,12 +1,16 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import QNISLeadEngine from './qnis-lead-engine.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Initialize QNIS Lead Engine
+const qnisEngine = new QNISLeadEngine();
 
 // Production environment configuration
 const isProduction = process.env.NODE_ENV === 'production';
