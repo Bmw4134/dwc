@@ -2248,5 +2248,435 @@
     },
     "timestamp": "2025-06-13T16:11:36.078Z",
     "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:12:05.700Z"
+    },
+    "timestamp": "2025-06-13T16:12:05.700Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:12:05.762Z"
+    },
+    "timestamp": "2025-06-13T16:12:05.762Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:12:05.817Z"
+    },
+    "timestamp": "2025-06-13T16:12:05.817Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:12:05.870Z"
+    },
+    "timestamp": "2025-06-13T16:12:05.870Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:12:36.091Z"
+    },
+    "timestamp": "2025-06-13T16:12:36.091Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:12:36.154Z"
+    },
+    "timestamp": "2025-06-13T16:12:36.154Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:12:36.208Z"
+    },
+    "timestamp": "2025-06-13T16:12:36.208Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:12:36.262Z"
+    },
+    "timestamp": "2025-06-13T16:12:36.262Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:13:06.257Z"
+    },
+    "timestamp": "2025-06-13T16:13:06.257Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:13:06.306Z"
+    },
+    "timestamp": "2025-06-13T16:13:06.306Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:13:06.351Z"
+    },
+    "timestamp": "2025-06-13T16:13:06.351Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:13:06.396Z"
+    },
+    "timestamp": "2025-06-13T16:13:06.396Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:13:36.127Z"
+    },
+    "timestamp": "2025-06-13T16:13:36.127Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:13:36.206Z"
+    },
+    "timestamp": "2025-06-13T16:13:36.206Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:13:36.260Z"
+    },
+    "timestamp": "2025-06-13T16:13:36.260Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:13:36.314Z"
+    },
+    "timestamp": "2025-06-13T16:13:36.314Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:14:04.469Z"
+    },
+    "timestamp": "2025-06-13T16:14:04.469Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:14:04.551Z"
+    },
+    "timestamp": "2025-06-13T16:14:04.551Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:14:04.602Z"
+    },
+    "timestamp": "2025-06-13T16:14:04.602Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:14:04.648Z"
+    },
+    "timestamp": "2025-06-13T16:14:04.648Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:14:33.986Z"
+    },
+    "timestamp": "2025-06-13T16:14:33.986Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:14:34.035Z"
+    },
+    "timestamp": "2025-06-13T16:14:34.035Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:14:34.083Z"
+    },
+    "timestamp": "2025-06-13T16:14:34.083Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:14:34.133Z"
+    },
+    "timestamp": "2025-06-13T16:14:34.133Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:15:07.267Z"
+    },
+    "timestamp": "2025-06-13T16:15:07.267Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:15:07.314Z"
+    },
+    "timestamp": "2025-06-13T16:15:07.314Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:15:07.361Z"
+    },
+    "timestamp": "2025-06-13T16:15:07.361Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:15:07.405Z"
+    },
+    "timestamp": "2025-06-13T16:15:07.405Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:15:37.079Z"
+    },
+    "timestamp": "2025-06-13T16:15:37.079Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:15:37.154Z"
+    },
+    "timestamp": "2025-06-13T16:15:37.154Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:15:37.214Z"
+    },
+    "timestamp": "2025-06-13T16:15:37.215Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:15:37.282Z"
+    },
+    "timestamp": "2025-06-13T16:15:37.282Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:16:06.464Z"
+    },
+    "timestamp": "2025-06-13T16:16:06.464Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:16:06.517Z"
+    },
+    "timestamp": "2025-06-13T16:16:06.517Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:16:06.572Z"
+    },
+    "timestamp": "2025-06-13T16:16:06.572Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:16:06.619Z"
+    },
+    "timestamp": "2025-06-13T16:16:06.619Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:16:35.644Z"
+    },
+    "timestamp": "2025-06-13T16:16:35.644Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:16:35.697Z"
+    },
+    "timestamp": "2025-06-13T16:16:35.697Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:16:35.754Z"
+    },
+    "timestamp": "2025-06-13T16:16:35.754Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "legal-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Legal Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"createLegalDocument()\">New Document</button>\n        <button class=\"btn-secondary\" onclick=\"reviewPending()\">Review Pending</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"legal-dashboard\">\n        <div class=\"legal-stats\">\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Active Cases</span>\n                <span class=\"stat-value\" id=\"active-cases\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Pending Reviews</span>\n                <span class=\"stat-value\" id=\"pending-reviews\">--</span>\n            </div>\n            <div class=\"stat-item\">\n                <span class=\"stat-label\">Compliance Score</span>\n                <span class=\"stat-value\" id=\"compliance-score\">--</span>\n            </div>\n        </div>\n        <div class=\"document-types\">\n            <button class=\"doc-type-btn\" onclick=\"createContract()\">📄 Contracts</button>\n            <button class=\"doc-type-btn\" onclick=\"createAgreement()\">📋 Agreements</button>\n            <button class=\"doc-type-btn\" onclick=\"createCompliance()\">⚖️ Compliance</button>\n            <button class=\"doc-type-btn\" onclick=\"createIP()\">🔒 IP Protection</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:17:05.522Z"
+    },
+    "timestamp": "2025-06-13T16:17:05.522Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "tax-management",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Tax Management</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"calculateTaxes()\">Calculate Taxes</button>\n        <button class=\"btn-secondary\" onclick=\"generateTaxReport()\">Generate Report</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"tax-overview\">\n        <div class=\"tax-summary\">\n            <div class=\"summary-card\">\n                <h4>Federal Tax Liability</h4>\n                <div class=\"amount\" id=\"federal-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>State Tax Liability</h4>\n                <div class=\"amount\" id=\"state-tax\">$0.00</div>\n            </div>\n            <div class=\"summary-card\">\n                <h4>Total Deductions</h4>\n                <div class=\"amount\" id=\"total-deductions\">$0.00</div>\n            </div>\n        </div>\n        <div class=\"tax-actions\">\n            <button onclick=\"fileReturn()\">📄 File Return</button>\n            <button onclick=\"schedulePayment()\">💰 Schedule Payment</button>\n            <button onclick=\"trackRefund()\">💸 Track Refund</button>\n            <button onclick=\"viewTaxHistory()\">📊 Tax History</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:17:05.613Z"
+    },
+    "timestamp": "2025-06-13T16:17:05.613Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "qnis",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Qnis</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"initializeModule('qnis')\">Initialize</button>\n        <button class=\"btn-secondary\" onclick=\"refreshModule('qnis')\">Refresh</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"module-placeholder\">\n        <div class=\"placeholder-icon\">🚀</div>\n        <h3>Qnis Module</h3>\n        <p>This module is ready for configuration and customization.</p>\n        <div class=\"placeholder-actions\">\n            <button class=\"btn-primary\" onclick=\"configureModule('qnis')\">Configure Module</button>\n            <button class=\"btn-secondary\" onclick=\"viewDocumentation('qnis')\">View Documentation</button>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:17:05.670Z"
+    },
+    "timestamp": "2025-06-13T16:17:05.670Z",
+    "status": "APPLIED"
+  },
+  {
+    "moduleId": "watson-command",
+    "fix": {
+      "code": "\n<div class=\"module-header\">\n    <h2 class=\"module-title\">Watson Command</h2>\n    <div class=\"module-actions\">\n        <button class=\"btn-primary\" onclick=\"activateVoiceCommand()\">🎤 Voice Mode</button>\n        <button class=\"btn-secondary\" onclick=\"viewCommands()\">📋 Commands</button>\n    </div>\n</div>\n<div class=\"module-content\">\n    <div class=\"command-interface\">\n        <div class=\"voice-status\">\n            <div id=\"voice-indicator\" class=\"voice-off\">🔴 Voice Inactive</div>\n            <button id=\"voice-toggle\" onclick=\"toggleVoiceCommand()\">Activate Voice</button>\n        </div>\n        <div class=\"command-history\">\n            <h4>Recent Commands</h4>\n            <div id=\"command-log\" class=\"command-log\">\n                <div class=\"command-entry\">Ready for voice commands...</div>\n            </div>\n        </div>\n        <div class=\"available-commands\">\n            <h4>Available Commands</h4>\n            <div class=\"command-list\">\n                <div class=\"command-item\">\"Show leads\"</div>\n                <div class=\"command-item\">\"Generate report\"</div>\n                <div class=\"command-item\">\"Switch to analytics\"</div>\n                <div class=\"command-item\">\"Export data\"</div>\n            </div>\n        </div>\n    </div>\n</div>\n        ",
+      "source": "template",
+      "timestamp": "2025-06-13T16:17:05.722Z"
+    },
+    "timestamp": "2025-06-13T16:17:05.722Z",
+    "status": "APPLIED"
   }
 ]
