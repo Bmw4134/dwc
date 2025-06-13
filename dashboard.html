@@ -7894,6 +7894,50 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
             }
         }
 
+        // Logout functionality
+        function logout() {
+            console.log('[AUTH] Logout initiated');
+            
+            // Clear all authentication data
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Clear specific auth tokens
+            const authKeys = [
+                'nexus_auth_token',
+                'nexus_session_id', 
+                'dwc_user_context',
+                'admin_session',
+                'user_credentials',
+                'auth_timestamp',
+                'login_state',
+                'session_data'
+            ];
+            
+            authKeys.forEach(key => {
+                localStorage.removeItem(key);
+                sessionStorage.removeItem(key);
+            });
+            
+            // Clear cookies
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            
+            // Clear global auth state
+            window.isAuthenticated = false;
+            window.currentUser = null;
+            window.sessionActive = false;
+            
+            // Show logout confirmation
+            alert('You have been successfully logged out. Redirecting to login page...');
+            
+            // Redirect to landing page
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        }
+
         function updateAnalyticsCharts(leadCount) {
             const trendChart = document.getElementById('lead-trend-chart');
             const geoChart = document.getElementById('geo-chart');
