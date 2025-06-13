@@ -55,13 +55,14 @@
         }
         
         // Force cache clear on load
-        if ('caches' in window) {
-            caches.keys().then(function(names) {
-                for (let name of names) {
-                    caches.delete(name);
-                }
-            });
-        }
+        // Cache clearing disabled for production stability
+        // if ('caches' in window) {
+        //     caches.keys().then(function(names) {
+        //         for (let name of names) {
+        //             caches.delete(name);
+        //         }
+        //     });
+        // }
     </script>
     <style>
         * {
@@ -6555,9 +6556,9 @@ Just speak naturally - I understand everyday language!`);
         }
         
         function clearAllAuthenticationData() {
-            // Clear all storage mechanisms
-            localStorage.clear();
-            sessionStorage.clear();
+            // PRODUCTION MODE: Selective clearing only
+            // localStorage.clear(); // DISABLED - causing reinitialization loops
+            // sessionStorage.clear(); // DISABLED - causing reinitialization loops
             
             // Clear specific auth keys
             const authKeys = [
@@ -7124,12 +7125,12 @@ Just speak naturally - I understand everyday language!`);
             setTimeout(() => {
                 autoFixMobileLayout();
                 
-                // Step 3: Clear any cached styles/scripts
-                if ('caches' in window) {
-                    caches.keys().then(names => {
-                        names.forEach(name => caches.delete(name));
-                    });
-                }
+                // Step 3: Cache clearing disabled for production stability
+                // if ('caches' in window) {
+                //     caches.keys().then(names => {
+                //         names.forEach(name => caches.delete(name));
+                //     });
+                // }
                 
                 // Step 4: Reset viewport and force refresh
                 const viewport = document.querySelector('meta[name="viewport"]');
@@ -7509,12 +7510,19 @@ Just speak naturally - I understand everyday language!`);
             }, 1000);
         }
 
-        // Auto-initialize billion dollar enhancements
-        document.addEventListener('DOMContentLoaded', initializeBillionDollarEnhancements);
+        // PRODUCTION MODE: Single initialization only
+        let enhancementsInitialized = false;
+        function initializeOnce() {
+            if (!enhancementsInitialized) {
+                enhancementsInitialized = true;
+                initializeBillionDollarEnhancements();
+            }
+        }
+        
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeBillionDollarEnhancements);
+            document.addEventListener('DOMContentLoaded', initializeOnce, { once: true });
         } else {
-            initializeBillionDollarEnhancements();
+            initializeOnce();
         }
 
         // FORCE DEPLOYMENT CACHE INVALIDATION
