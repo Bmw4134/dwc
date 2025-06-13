@@ -1289,6 +1289,10 @@
                     <div class="section-toggle" id="business-toggle">▼</div>
                 </div>
                 <div class="nav-section-content" id="business-content">
+                    <div class="nav-item" onclick="showModule('sales-management')">
+                        <span class="nav-icon">💰</span>
+                        <span>Sales Management</span>
+                    </div>
                     <div class="nav-item" onclick="showModule('investor')">
                         <span class="nav-icon">📊</span>
                         <span>Investor Deck</span>
@@ -2828,6 +2832,121 @@
                         <div class="card-actions">
                             <button class="action-btn">Process Payroll</button>
                             <button class="action-btn secondary">Tax Forms</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Management Module -->
+            <div id="sales-management-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">Sales Management Dashboard</h2>
+                    <p class="module-subtitle">Master oversight of all sales team performance and commission tracking</p>
+                </div>
+
+                <div class="module-grid">
+                    <div class="module-card">
+                        <div class="card-icon">💰</div>
+                        <div class="card-title">Sales Team Overview</div>
+                        <div class="card-description">
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0;">
+                                <div style="text-align: center; padding: 1rem; background: var(--background); border-radius: 0.5rem;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">$45,780</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary);">Total Sales (Month)</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: var(--background); border-radius: 0.5rem;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent);">$41,202</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary);">Commissions Paid (90%)</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: var(--background); border-radius: 0.5rem;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">$4,578</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary);">Business Overhead (10%)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="window.open('/sales', '_blank')">Access Sales Portal</button>
+                            <button class="action-btn secondary" onclick="exportSalesReport()">Export Report</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="card-icon">👥</div>
+                        <div class="card-title">Individual Performance</div>
+                        <div class="card-description">
+                            <div style="margin: 1rem 0;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--background); border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                    <div>
+                                        <div style="font-weight: 600;">John Smith (dwc001)</div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Senior Sales</div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-weight: bold; color: var(--primary);">$18,450</div>
+                                        <div style="font-size: 0.875rem; color: var(--accent);">$16,605 earned</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--background); border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                    <div>
+                                        <div style="font-weight: 600;">Sarah Johnson (dwc002)</div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Account Executive</div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-weight: bold; color: var(--primary);">$15,330</div>
+                                        <div style="font-size: 0.875rem; color: var(--accent);">$13,797 earned</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--background); border-radius: 0.5rem;">
+                                    <div>
+                                        <div style="font-weight: 600;">Mike Wilson (dwc003)</div>
+                                        <div style="font-size: 0.875rem; color: var(--text-secondary);">Business Development</div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-weight: bold; color: var(--primary);">$12,000</div>
+                                        <div style="font-size: 0.875rem; color: var(--accent);">$10,800 earned</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="viewDetailedMetrics()">Detailed Metrics</button>
+                            <button class="action-btn secondary" onclick="processTeamPayouts()">Process Payouts</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="card-icon">📈</div>
+                        <div class="card-title">Commission Analytics</div>
+                        <div class="card-description">
+                            <div style="margin: 1rem 0;">
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Average Commission Rate:</span>
+                                        <strong>90%</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Pending Payouts:</span>
+                                        <strong style="color: var(--accent);">$2,340</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Monthly Target:</span>
+                                        <strong>$50,000</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>Achievement:</span>
+                                        <strong style="color: var(--primary);">91.6%</strong>
+                                    </div>
+                                </div>
+                                <div style="background: var(--background); padding: 1rem; border-radius: 0.5rem;">
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Progress to Target</div>
+                                    <div style="width: 100%; background: #e2e8f0; border-radius: 1rem; height: 8px;">
+                                        <div style="width: 91.6%; background: var(--gradient-primary); border-radius: 1rem; height: 8px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="viewCommissionBreakdown()">Commission Breakdown</button>
+                            <button class="action-btn secondary" onclick="setTeamTargets()">Set Targets</button>
                         </div>
                     </div>
                 </div>
