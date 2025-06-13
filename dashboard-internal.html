@@ -3992,22 +3992,77 @@
     </div>
 
     <script>
-        // Execute comprehensive sidebar cleanup and validation
+        // Emergency sidebar restoration system
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('[NEXUS] Initiating comprehensive sidebar cleanup and validation...');
+            console.log('[NEXUS] Emergency sidebar restoration initiated...');
             
-            // Trigger validation after page load
+            // Immediate sidebar restore
             setTimeout(() => {
-                if (window.sidebarValidator) {
-                    window.sidebarValidator.executeFullCleanup();
-                } else if (window.SidebarCleanupValidator) {
-                    window.sidebarValidator = new SidebarCleanupValidator();
-                    window.sidebarValidator.executeFullCleanup();
-                } else {
-                    console.log('[NEXUS] Loading sidebar validator...');
-                }
-            }, 2000);
+                restoreFullSidebar();
+                expandAllSections();
+                initializeAllModules();
+            }, 500);
         });
+
+        function restoreFullSidebar() {
+            console.log('[NEXUS] Restoring complete sidebar structure...');
+            
+            // Force expand all collapsed sections
+            const collapsedSections = document.querySelectorAll('.nav-section-content.collapsed');
+            collapsedSections.forEach(section => {
+                section.classList.remove('collapsed');
+                section.style.maxHeight = '500px';
+                section.style.padding = '0 16px 12px 16px';
+            });
+            
+            // Reset all toggle indicators
+            const toggles = document.querySelectorAll('.section-toggle.collapsed');
+            toggles.forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.style.transform = 'rotate(0deg)';
+            });
+            
+            // Ensure all nav sections are visible
+            const navSections = document.querySelectorAll('.nav-section');
+            navSections.forEach(section => {
+                section.style.display = 'block';
+                section.style.opacity = '1';
+            });
+            
+            console.log('[NEXUS] Sidebar structure restored');
+        }
+
+        function expandAllSections() {
+            console.log('[NEXUS] Expanding all navigation sections...');
+            
+            // Programmatically expand all collapsible sections
+            const sections = ['business', 'intelligence', 'automation', 'system'];
+            sections.forEach(sectionId => {
+                const content = document.getElementById(sectionId + '-content');
+                const toggle = document.getElementById(sectionId + '-toggle');
+                
+                if (content && content.classList.contains('collapsed')) {
+                    content.classList.remove('collapsed');
+                    content.style.maxHeight = '500px';
+                }
+                
+                if (toggle && toggle.classList.contains('collapsed')) {
+                    toggle.classList.remove('collapsed');
+                    toggle.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+
+        function initializeAllModules() {
+            console.log('[NEXUS] Initializing all navigation modules...');
+            
+            // Validate all nav items have proper click handlers
+            const navItems = document.querySelectorAll('.nav-item[onclick]');
+            console.log('[NEXUS] Found', navItems.length, 'navigation items');
+            
+            // Ensure accounting module is accessible but not the only one
+            showModule('qnis'); // Default to QNIS map instead of accounting
+        }
 
         function showModule(moduleId) {
             // Hide all module views
