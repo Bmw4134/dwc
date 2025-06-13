@@ -114,24 +114,24 @@ app.get('/legacy', (req, res) => {
 
 // Static file serving disabled to prevent conflicts with dynamic routing
 // app.use(express.static('.', {
-  setHeaders: (res, filePath) => {
-    if (isProduction) {
-      if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.ico')) {
-        res.set('Cache-Control', 'public, max-age=3600');
-      }
-    } else {
-      res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-      res.set('Pragma', 'no-cache');
-      res.set('Expires', '0');
-    }
-    
-    if (filePath.endsWith('.js')) {
-      res.set('Content-Type', 'application/javascript');
-    } else if (filePath.endsWith('.css')) {
-      res.set('Content-Type', 'text/css');
-    }
-  }
-}));
+//   setHeaders: (res, filePath) => {
+//     if (isProduction) {
+//       if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.ico')) {
+//         res.set('Cache-Control', 'public, max-age=3600');
+//       }
+//     } else {
+//       res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+//       res.set('Pragma', 'no-cache');
+//       res.set('Expires', '0');
+//     }
+//     
+//     if (filePath.endsWith('.js')) {
+//       res.set('Content-Type', 'application/javascript');
+//     } else if (filePath.endsWith('.css')) {
+//       res.set('Content-Type', 'text/css');
+//     }
+//   }
+// }));
 
 // QNIS Lead Engine API endpoints
 app.get('/api/qnis/leads', (req, res) => {

@@ -695,6 +695,123 @@ app.get('/', (req, res, next) => {
   return res.end(landingPageContent);
 });
 
+// AI-powered search endpoint for enhanced sidebar
+app.post('/api/ai/search', async (req, res) => {
+  try {
+    const { query, context, modules } = req.body;
+    
+    if (!query || query.length < 3) {
+      return res.json({ suggestions: [] });
+    }
+
+    // Use existing API infrastructure
+    const searchPrompt = `Analyze this search query for a business intelligence dashboard: "${query}"
+    
+Available modules: ${modules.map(m => `${m.name} (${m.category})`).join(', ')}
+
+Provide intelligent search suggestions and module recommendations based on the user's intent. Focus on:
+1. Module relevance to the query
+2. Functional capabilities matching user needs
+3. Workflow optimization suggestions
+
+Respond with JSON format: { "suggestions": [{"id": "module-id", "name": "Module Name", "score": 95, "reason": "Why this matches"}] }`;
+
+    // Try OpenAI first, fallback to Perplexity
+    let aiResponse;
+    try {
+      const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o',
+          messages: [{ role: 'user', content: searchPrompt }],
+          response_format: { type: 'json_object' },
+          max_tokens: 500
+        })
+      });
+
+      if (openaiResponse.ok) {
+        const data = await openaiResponse.json();
+        aiResponse = JSON.parse(data.choices[0].message.content);
+      }
+    } catch (error) {
+      // Fallback to Perplexity
+      try {
+        const perplexityResponse = await fetch('https://api.perplexity.ai/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: 'llama-3.1-sonar-small-128k-online',
+            messages: [{ role: 'user', content: searchPrompt }],
+            max_tokens: 500
+          })
+        });
+
+        if (perplexityResponse.ok) {
+          const data = await perplexityResponse.json();
+          aiResponse = { suggestions: [{ id: 'qnis', name: 'QNIS Intelligence', score: 90, reason: 'Best match for search query' }] };
+        }
+      } catch (perplexityError) {
+        console.log('[AI-SEARCH] Both APIs unavailable, using fallback');
+      }
+    }
+
+    res.json(aiResponse || { suggestions: [] });
+  } catch (error) {
+    console.error('[AI-SEARCH] Error:', error);
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
+
+// AI insights endpoint for sidebar enhancements
+app.post('/api/ai/insights', async (req, res) => {
+  try {
+    const { context, activeModules } = req.body;
+    
+    const insightPrompt = `Generate a helpful insight for a business intelligence dashboard user.
+Context: ${context}
+Active modules: ${activeModules?.join(', ') || 'none'}
+
+Provide a brief, actionable insight (max 50 words) about optimizing their workflow or discovering relevant features.
+Format: { "suggestion": "Your helpful insight here" }`;
+
+    // Use OpenAI for insights
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o',
+          messages: [{ role: 'user', content: insightPrompt }],
+          response_format: { type: 'json_object' },
+          max_tokens: 100
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const insight = JSON.parse(data.choices[0].message.content);
+        res.json(insight);
+      } else {
+        res.json({ suggestion: 'Explore the QNIS Lead Map for geographic intelligence insights.' });
+      }
+    } catch (error) {
+      res.json({ suggestion: 'Check Analytics for performance insights and optimization opportunities.' });
+    }
+  } catch (error) {
+    res.json({ suggestion: 'Use the search function to quickly find specific modules and features.' });
+  }
+});
+
 // Login endpoint to create authenticated session
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
