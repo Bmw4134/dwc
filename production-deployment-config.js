@@ -147,21 +147,15 @@ class ProductionDeploymentConfig {
         window.PRODUCTION_MODE = true;
         window.DEVELOPMENT_MODE = false;
         
-        // Disable development console logs in production
-        if (this.isProduction) {
-            const originalConsole = console.log;
-            console.log = function(...args) {
-                // Only log important messages in production
-                if (args[0] && (args[0].includes('[ERROR]') || args[0].includes('[DEPLOYMENT]'))) {
-                    originalConsole.apply(console, args);
-                }
-            };
+        // Define process for browser environment
+        if (typeof process === 'undefined') {
+            window.process = { env: { NODE_ENV: 'development' } };
         }
         
         // Configure production API endpoints
-        window.API_BASE_URL = this.isProduction ? 
-            window.location.origin : 
-            'http://localhost:5000';
+        window.API_BASE_URL = window.location.hostname === 'localhost' ? 
+            'http://localhost:5000' : 
+            window.location.origin;
         
         this.deploymentChecks.push('Production environment configured');
     }

@@ -519,28 +519,31 @@ window.fixAllInteractivity = () => {
 };
 
 // Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInDown {
-        from {
-            transform: translate(-50%, -100%);
-            opacity: 0;
+if (!document.getElementById('interactive-fix-styles')) {
+    const styleElement = document.createElement('style');
+    styleElement.id = 'interactive-fix-styles';
+    styleElement.textContent = `
+        @keyframes slideInDown {
+            from {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
         }
-        to {
-            transform: translate(-50%, 0);
-            opacity: 1;
+        
+        @keyframes slideOutUp {
+            from {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
         }
-    }
-    
-    @keyframes slideOutUp {
-        from {
-            transform: translate(-50%, 0);
-            opacity: 1;
-        }
-        to {
-            transform: translate(-50%, -100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
+    `;
+    document.head.appendChild(styleElement);
+}
