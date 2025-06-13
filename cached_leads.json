@@ -1,0 +1,39 @@
+{
+  "leads": [
+    {
+      "id": "cached_lead_001",
+      "company": "TechCorp Solutions",
+      "city": "San Francisco",
+      "lat": 37.7749,
+      "lng": -122.4194,
+      "qnisScore": 89,
+      "industry": "Technology",
+      "size": "Large",
+      "timestamp": "2025-06-13T15:00:00Z"
+    },
+    {
+      "id": "cached_lead_002", 
+      "company": "HealthTech Innovations",
+      "city": "Chicago",
+      "lat": 41.8781,
+      "lng": -87.6298,
+      "qnisScore": 82,
+      "industry": "Healthcare",
+      "size": "Medium",
+      "timestamp": "2025-06-13T14:55:00Z"
+    },
+    {
+      "id": "cached_lead_003",
+      "company": "Financial Services Group",
+      "city": "New York",
+      "lat": 40.7128,
+      "lng": -74.0060,
+      "qnisScore": 76,
+      "industry": "Finance",
+      "size": "Large", 
+      "timestamp": "2025-06-13T14:50:00Z"
+    }
+  ],
+  "lastUpdate": "2025-06-13T15:00:00Z",
+  "cacheVersion": "2.0.0"
+}

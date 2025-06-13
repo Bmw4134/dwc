@@ -40,6 +40,28 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: var(--background);
@@ -6489,68 +6511,142 @@ KNOWLEDGE GRAPH CONNECTIONS:
         }
 
         function forceCanvasHydration() {
-            console.log('[QNIS] Forcing canvas hydration with live data');
+            console.log('[QNIS] STAGE 1: Data injection - Starting forced canvas hydration');
             
-            // Get live leads from server immediately
+            // Enable debug logging if requested
+            const debugMode = localStorage.getItem('debugMap') === 'true';
+            if (debugMode) console.log('[DEBUG] Map debug mode enabled');
+            
+            // Get live leads from server with fallback cascade
             fetch('/api/qnis/leads')
                 .then(response => response.json())
                 .then(leads => {
-                    if (leads && leads.length > 0) {
-                        // Process leads with coordinates
-                        const cityCoordinates = {
-                            'New York': { lat: 40.7128, lng: -74.0060 },
-                            'Los Angeles': { lat: 34.0522, lng: -118.2437 },
-                            'Chicago': { lat: 41.8781, lng: -87.6298 },
-                            'Houston': { lat: 29.7604, lng: -95.3698 },
-                            'Phoenix': { lat: 33.4484, lng: -112.0740 },
-                            'Philadelphia': { lat: 39.9526, lng: -75.1652 },
-                            'San Antonio': { lat: 29.4241, lng: -98.4936 },
-                            'Dallas': { lat: 32.7767, lng: -96.7970 },
-                            'San Francisco': { lat: 37.7749, lng: -122.4194 },
-                            'Miami': { lat: 25.7617, lng: -80.1918 }
-                        };
-                        
-                        qnisMap.leads = leads.map(lead => {
-                            const coords = cityCoordinates[lead.city] || { lat: 39.8283, lng: -98.5795 };
-                            return {
-                                id: lead.id,
-                                company: lead.company || `Company ${lead.id.slice(-4)}`,
-                                city: lead.city,
-                                lat: lead.lat || coords.lat,
-                                lng: lead.lng || coords.lng,
-                                qnisScore: lead.qnisScore,
-                                industry: lead.industry || 'Technology',
-                                size: lead.size || 'Medium',
-                                timestamp: new Date(lead.timestamp)
-                            };
-                        });
-                        
-                        updateLeadCache(qnisMap.leads);
-                        drawLeadCanvas();
-                        console.log('[QNIS] Canvas hydration complete with', qnisMap.leads.length, 'leads');
-                    }
+                    console.log('[QNIS] STAGE 2: Lat/lng resolution - Processing', leads.length, 'live leads');
+                    processLeadData(leads, debugMode);
                 })
                 .catch(error => {
-                    console.log('[QNIS] API failed, using cached data for hydration');
-                    if (leadMapCache.leads.length > 0) {
-                        qnisMap.leads = leadMapCache.leads;
-                        drawLeadCanvas();
-                    }
+                    console.log('[QNIS] Live API failed, attempting cached_leads.json fallback');
+                    fetch('/cached_leads.json')
+                        .then(response => response.json())
+                        .then(cachedData => {
+                            console.log('[QNIS] STAGE 2: Lat/lng resolution - Using cached leads file');
+                            processLeadData(cachedData.leads || [], debugMode);
+                        })
+                        .catch(fallbackError => {
+                            console.log('[QNIS] All sources failed, using localStorage cache');
+                            if (leadMapCache.leads.length > 0) {
+                                processLeadData(leadMapCache.leads, debugMode);
+                            } else {
+                                console.error('[QNIS] No lead data available from any source');
+                            }
+                        });
                 });
         }
 
-        function drawLeadCanvas() {
-            console.log('[QNIS] Drawing visual heat map canvas');
+        function processLeadData(leads, debugMode = false) {
+            if (debugMode) console.log('[DEBUG] Processing lead data:', leads);
+            
+            if (leads && leads.length > 0) {
+                const cityCoordinates = {
+                    'New York': { lat: 40.7128, lng: -74.0060 },
+                    'Los Angeles': { lat: 34.0522, lng: -118.2437 },
+                    'Chicago': { lat: 41.8781, lng: -87.6298 },
+                    'Houston': { lat: 29.7604, lng: -95.3698 },
+                    'Phoenix': { lat: 33.4484, lng: -112.0740 },
+                    'Philadelphia': { lat: 39.9526, lng: -75.1652 },
+                    'San Antonio': { lat: 29.4241, lng: -98.4936 },
+                    'Dallas': { lat: 32.7767, lng: -96.7970 },
+                    'San Francisco': { lat: 37.7749, lng: -122.4194 },
+                    'Miami': { lat: 25.7617, lng: -80.1918 }
+                };
+                
+                qnisMap.leads = leads.map(lead => {
+                    const coords = cityCoordinates[lead.city] || { lat: 39.8283, lng: -98.5795 };
+                    return {
+                        id: lead.id,
+                        company: lead.company || `Company ${lead.id.slice(-4)}`,
+                        city: lead.city,
+                        lat: lead.lat || coords.lat,
+                        lng: lead.lng || coords.lng,
+                        qnisScore: lead.qnisScore,
+                        industry: lead.industry || 'Technology',
+                        size: lead.size || 'Medium',
+                        timestamp: new Date(lead.timestamp)
+                    };
+                });
+                
+                updateLeadCache(qnisMap.leads);
+                
+                console.log('[QNIS] STAGE 3: Canvas object verification - Attempting draw');
+                drawLeadCanvasWithVerification(debugMode);
+            } else {
+                console.error('[QNIS] No valid lead data to process');
+            }
+        }
+
+        function drawLeadCanvasWithVerification(debugMode = false, retryCount = 0) {
+            console.log('[QNIS] STAGE 4: Canvas dimension verification - Checking container');
             
             const mapContainer = document.getElementById('qnis-map');
-            if (!mapContainer) return;
+            if (!mapContainer) {
+                console.error('[QNIS] Map container missing - attempting DOM recovery');
+                if (retryCount < 3) {
+                    setTimeout(() => drawLeadCanvasWithVerification(debugMode, retryCount + 1), 500);
+                }
+                return;
+            }
+            
+            // Reset canvas size if dimensions are invalid
+            const containerRect = mapContainer.getBoundingClientRect();
+            if (containerRect.width < 100 || containerRect.height < 100) {
+                console.log('[QNIS] Resetting canvas dimensions - size was', containerRect.width, 'x', containerRect.height);
+                mapContainer.style.width = '100%';
+                mapContainer.style.height = '500px';
+                mapContainer.style.minHeight = '500px';
+            }
             
             const leads = qnisMap.leads || [];
+            if (debugMode) console.log('[DEBUG] Canvas verification - leads count:', leads.length);
+            
+            if (leads.length === 0) {
+                console.warn('[QNIS] No leads to render - showing empty state');
+                if (retryCount < 5) {
+                    setTimeout(() => drawLeadCanvasWithVerification(debugMode, retryCount + 1), 1000);
+                    return;
+                }
+            }
+            
             const avgScore = leads.length > 0 ? Math.round(leads.reduce((sum, lead) => sum + (lead.qnisScore || 0), 0) / leads.length) : 0;
             
-            // Create visual heat map representation
+            // Enhanced data validation and repair
+            const validLeads = leads.filter(lead => {
+                if (!lead || typeof lead !== 'object') return false;
+                if (!lead.city || typeof lead.city !== 'string') return false;
+                if (!lead.qnisScore || typeof lead.qnisScore !== 'number') return false;
+                return true;
+            });
+            
+            // Repair incomplete lead objects
+            const repairedLeads = validLeads.map(lead => ({
+                id: lead.id || `repair_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                company: lead.company || `Company ${lead.id?.slice(-4) || 'Unknown'}`,
+                city: lead.city,
+                lat: typeof lead.lat === 'number' ? lead.lat : null,
+                lng: typeof lead.lng === 'number' ? lead.lng : null,
+                qnisScore: lead.qnisScore,
+                industry: lead.industry || 'Technology',
+                size: lead.size || 'Medium',
+                timestamp: lead.timestamp ? new Date(lead.timestamp) : new Date()
+            }));
+            
+            if (validLeads.length !== leads.length) {
+                console.warn('[QNIS] Filtered', leads.length - validLeads.length, 'invalid lead objects');
+                console.log('[QNIS] Data validation complete - using', repairedLeads.length, 'valid leads');
+            }
+            
+            // Create visual heat map representation using repaired data
             const cityGroups = {};
-            leads.forEach(lead => {
+            repairedLeads.forEach(lead => {
                 if (!cityGroups[lead.city]) {
                     cityGroups[lead.city] = [];
                 }
@@ -6562,6 +6658,8 @@ KNOWLEDGE GRAPH CONNECTIONS:
                 const intensity = avgCityScore > 80 ? 'high' : avgCityScore > 60 ? 'medium' : 'low';
                 return { city, count: cityLeads.length, avgScore: avgCityScore, intensity };
             });
+            
+            console.log('[QNIS] STAGE 5: Node rendering - Processing', heatNodes.length, 'city clusters');
             
             mapContainer.innerHTML = `
                 <div style="width: 100%; height: 500px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
@@ -6626,7 +6724,130 @@ KNOWLEDGE GRAPH CONNECTIONS:
             
             updateDebugOverlay();
             qnisMap.isInitialized = true;
-            console.log('[QNIS] Visual heat map canvas rendered successfully');
+            
+            // Final verification and completion banner
+            if (heatNodes.length > 0) {
+                console.log('[QNIS] STAGE 6: Completion verification - Render confirmed with', heatNodes.length, 'nodes');
+                showMapLoadCompleteNotification(heatNodes.length);
+                
+                // Optional audio cue if debug mode enabled
+                if (debugMode) {
+                    playLeadRenderCue();
+                }
+                
+                // Bind canvas sync function
+                bindCanvasSyncWithLeadData();
+            } else {
+                console.warn('[QNIS] No heat nodes rendered - canvas incomplete');
+            }
+        }
+
+        function showMapLoadCompleteNotification(nodeCount) {
+            // Create floating completion banner
+            const banner = document.createElement('div');
+            banner.id = 'qnis-completion-banner';
+            banner.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #10b981, #059669);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-weight: bold;
+                font-size: 14px;
+                z-index: 10000;
+                box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+                animation: slideInRight 0.5s ease-out;
+            `;
+            banner.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="font-size: 18px;">🗺️</div>
+                    <div>
+                        <div>QNIS Map Load Complete</div>
+                        <div style="font-size: 11px; opacity: 0.8;">${nodeCount} geographic nodes active</div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(banner);
+            
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                if (banner.parentNode) {
+                    banner.style.animation = 'slideOutRight 0.5s ease-in';
+                    setTimeout(() => banner.remove(), 500);
+                }
+            }, 4000);
+            
+            console.log('[QNIS] Map completion banner displayed');
+        }
+
+        function playLeadRenderCue() {
+            // Soft audio confirmation using Web Audio API
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+                
+                console.log('[QNIS] Audio cue played for lead render confirmation');
+            } catch (error) {
+                console.log('[QNIS] Audio cue unavailable');
+            }
+        }
+
+        function bindCanvasSyncWithLeadData() {
+            console.log('[QNIS] Binding canvas sync function with lead data');
+            
+            // Create QNIS canvas sync API
+            window.QNIS = window.QNIS || {};
+            window.QNIS.canvas = {
+                syncWithLeadData: function() {
+                    console.log('[QNIS] Canvas sync triggered - refreshing with latest data');
+                    const debugMode = localStorage.getItem('debugMap') === 'true';
+                    
+                    // Re-fetch and re-render
+                    fetch('/api/qnis/leads')
+                        .then(response => response.json())
+                        .then(leads => {
+                            console.log('[QNIS] Sync: Retrieved', leads.length, 'leads');
+                            processLeadData(leads, debugMode);
+                        })
+                        .catch(error => {
+                            console.log('[QNIS] Sync failed, using cache');
+                            processLeadData(leadMapCache.leads, debugMode);
+                        });
+                },
+                getNodeCount: function() {
+                    return qnisMap?.leads?.length || 0;
+                },
+                getStatus: function() {
+                    return {
+                        initialized: qnisMap?.isInitialized || false,
+                        recoveryMode: qnisMap?.recoveryMode || false,
+                        leadCount: qnisMap?.leads?.length || 0,
+                        cacheCount: leadMapCache.leads.length
+                    };
+                }
+            };
+            
+            console.log('[QNIS] Canvas sync API bound to window.QNIS.canvas');
+        }
+
+        // Legacy drawLeadCanvas for compatibility
+        function drawLeadCanvas() {
+            const debugMode = localStorage.getItem('debugMap') === 'true';
+            drawLeadCanvasWithVerification(debugMode);
         }
 
         // Enhanced QNIS injection functions for cache binding
@@ -6685,6 +6906,44 @@ KNOWLEDGE GRAPH CONNECTIONS:
             console.log('[QNIS] DOM render count confirmed:', document.getElementById('qnis-map') ? 'Container exists' : 'Container missing');
             
             return status;
+        }
+
+        // Enhanced DOM binding verification loop
+        function verifyDOMBindingAfterLoad() {
+            let verificationAttempts = 0;
+            const maxAttempts = 10;
+            
+            const verificationLoop = setInterval(() => {
+                verificationAttempts++;
+                console.log(`[QNIS] DOM binding verification attempt ${verificationAttempts}/${maxAttempts}`);
+                
+                const container = document.getElementById('qnis-map');
+                const hasValidDimensions = container && container.getBoundingClientRect().width > 100;
+                const hasLeadData = qnisMap?.leads?.length > 0;
+                const canvasExists = container && container.querySelector('.qnis-heat-map');
+                
+                if (hasValidDimensions && hasLeadData && canvasExists) {
+                    console.log('[QNIS] DOM binding verification PASSED - all systems operational');
+                    clearInterval(verificationLoop);
+                    
+                    // Final sync trigger
+                    if (window.QNIS?.canvas?.syncWithLeadData) {
+                        console.log('[QNIS] Triggering final canvas sync verification');
+                        setTimeout(() => window.QNIS.canvas.syncWithLeadData(), 1000);
+                    }
+                    return;
+                }
+                
+                if (verificationAttempts >= maxAttempts) {
+                    console.warn('[QNIS] DOM binding verification FAILED after', maxAttempts, 'attempts');
+                    console.log('[QNIS] Container valid:', hasValidDimensions);
+                    console.log('[QNIS] Lead data exists:', hasLeadData);
+                    console.log('[QNIS] Canvas rendered:', canvasExists);
+                    clearInterval(verificationLoop);
+                }
+            }, 500);
+            
+            return verificationLoop;
         }
 
         // Manual recovery trigger for testing
