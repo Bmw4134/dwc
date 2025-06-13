@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWC NEXUS Dashboard</title>
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-light: #3399ff;
+            --accent: #00ff88;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --gradient-primary: linear-gradient(135deg, #0066cc 0%, #3399ff 100%);
+            --gradient-accent: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .dashboard-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .logout-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: var(--background);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .module-view {
+            display: none;
+        }
+
+        .module-view.active {
+            display: block;
+        }
+
+        .module-header {
+            margin-bottom: 2rem;
+        }
+
+        .module-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .module-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+        }
+
+        .module-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-status {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-weight: 500;
+        }
+
+        .status-active { background: #dcfce7; color: #166534; }
+        .status-processing { background: #dbeafe; color: #1d4ed8; }
+        .status-idle { background: #f3f4f6; color: #374151; }
+
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: transform 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .action-btn.secondary {
+            background: var(--background);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-layout { flex-direction: column; height: auto; }
+            .sidebar { width: 100%; }
+            .main-content { padding: 1rem; }
+            .module-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div class="header-left">
+            <h1>DWC NEXUS Dashboard</h1>
+        </div>
+        <div class="header-right">
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            <div class="user-info">
+                <div class="user-avatar">DW</div>
+                <span>Admin User</span>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="dashboard-layout">
+        <nav class="sidebar">
+            <div class="nav-section">
+                <div class="nav-title">Business Operations</div>
+                <div class="nav-item active" onclick="showModule('business')">
+                    <span class="nav-icon">💼</span>
+                    <span>Business Suite</span>
+                </div>
+                <div class="nav-item" onclick="showModule('legal')">
+                    <span class="nav-icon">⚖️</span>
+                    <span>Legal Management</span>
+                </div>
+                <div class="nav-item" onclick="showModule('accounting')">
+                    <span class="nav-icon">📊</span>
+                    <span>Accounting</span>
+                </div>
+                <div class="nav-item" onclick="showModule('tax')">
+                    <span class="nav-icon">🧾</span>
+                    <span>Tax Management</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Intelligence & Analytics</div>
+                <div class="nav-item" onclick="showModule('ai')">
+                    <span class="nav-icon">🧠</span>
+                    <span>AI & Watson</span>
+                </div>
+                <div class="nav-item" onclick="showModule('leads')">
+                    <span class="nav-icon">🎯</span>
+                    <span>Lead Generation</span>
+                </div>
+                <div class="nav-item" onclick="showModule('analytics')">
+                    <span class="nav-icon">📈</span>
+                    <span>Analytics</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Automation</div>
+                <div class="nav-item" onclick="showModule('workflow')">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Workflows</span>
+                </div>
+                <div class="nav-item" onclick="showModule('voice')">
+                    <span class="nav-icon">🎤</span>
+                    <span>Voice Commands</span>
+                </div>
+                <div class="nav-item" onclick="showModule('trading')">
+                    <span class="nav-icon">💹</span>
+                    <span>Trading Bot</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">System</div>
+                <div class="nav-item" onclick="showModule('admin')">
+                    <span class="nav-icon">🛠️</span>
+                    <span>Administration</span>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <!-- Business Suite Module -->
+            <div id="business-module" class="module-view active">
+                <div class="module-header">
+                    <h2 class="module-title">Business Operations Suite</h2>
+                    <p class="module-subtitle">Comprehensive business management and automation tools</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">47</div>
+                        <div class="stat-label">Active Modules</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">97.8%</div>
+                        <div class="stat-label">System Uptime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$247K</div>
+                        <div class="stat-label">Cash Balance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">94.2%</div>
+                        <div class="stat-label">AI Accuracy</div>
+                    </div>
+                </div>
+
+                <div class="module-grid">
+                    <div class="module-card">
+                        <div class="card-icon">⚖️</div>
+                        <div class="card-title">Legal Management</div>
+                        <div class="card-status status-active">Active</div>
+                        <div class="card-description">Contract management, compliance tracking, and legal document automation for LLC operations.</div>
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="openModule('legal')">Manage Contracts</button>
+                            <button class="action-btn secondary">Compliance</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="card-icon">📊</div>
+                        <div class="card-title">Accounting System</div>
+                        <div class="card-status status-processing">Processing</div>
+                        <div class="card-description">Full double-entry bookkeeping, financial statements, and automated accounting workflows.</div>
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="openModule('accounting')">Journal Entries</button>
+                            <button class="action-btn secondary">Reports</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="card-icon">🧾</div>
+                        <div class="card-title">Tax Management</div>
+                        <div class="card-status status-active">Current</div>
+                        <div class="card-description">Tax preparation, quarterly filings, deduction tracking, and compliance automation.</div>
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="openModule('tax')">File Returns</button>
+                            <button class="action-btn secondary">Deductions</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="card-icon">💰</div>
+                        <div class="card-title">Payroll System</div>
+                        <div class="card-status status-active">Active</div>
+                        <div class="card-description">Employee payroll processing, tax withholdings, and benefits administration.</div>
+                        <div class="card-actions">
+                            <button class="action-btn">Process Payroll</button>
+                            <button class="action-btn secondary">Tax Forms</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legal Module -->
+            <div id="legal-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">Legal Management Suite</h2>
+                    <p class="module-subtitle">Contract management and compliance automation</p>
+                </div>
+
+                <div class="module-grid">
+                    <div class="module-card">
+                        <div class="card-title">Contract Management</div>
+                        <div class="card-description">
+                            <strong>Active Contracts:</strong> 47 agreements<br>
+                            <strong>Pending Review:</strong> 8 contracts<br>
+                            <strong>Expiring Soon:</strong> 3 within 30 days
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn">Generate Contract</button>
+                            <button class="action-btn secondary">View All</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="card-title">Document Generator</div>
+                        <div class="card-description">
+                            <select style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid var(--border); border-radius: 0.25rem;">
+                                <option>Non-Disclosure Agreement</option>
+                                <option>Service Agreement</option>
+                                <option>Employment Contract</option>
+                                <option>Operating Agreement</option>
+                            </select>
+                            <input type="text" placeholder="Client/Party name" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid var(--border); border-radius: 0.25rem;">
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn">Generate Document</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accounting Module -->
+            <div id="accounting-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">Accounting Management</h2>
+                    <p class="module-subtitle">Financial management and reporting system</p>
+                </div>
+
+                <div class="module-grid">
+                    <div class="module-card">
+                        <div class="card-title">Financial Summary</div>
+                        <div class="card-description">
+                            <strong>Cash Balance:</strong> $247,650<br>
+                            <strong>Monthly Revenue:</strong> $89,450<br>
+                            <strong>Net Profit:</strong> 41.0%
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="module-card">
+                        <div class="card-title">Journal Entry</div>
+                        <div class="card-description">
+                            <input type="date" style="width: 100%; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid var(--border); border-radius: 0.25rem;">
+                            <input type="text" placeholder="Description" style="width: 100%; padding: 0.5rem; margin: 0.25rem 0; border: 1px solid var(--border); border-radius: 0.25rem;">
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="number" placeholder="Debit" style="flex: 1; padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.25rem;">
+                                <input type="number" placeholder="Credit" style="flex: 1; padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.25rem;">
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="action-btn">Post Entry</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add other modules here following the same pattern -->
+            
+        </main>
+    </div>
+
+    <script>
+        function showModule(moduleId) {
+            // Hide all module views
+            document.querySelectorAll('.module-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Show selected module
+            const targetModule = document.getElementById(moduleId + '-module');
+            if (targetModule) {
+                targetModule.classList.add('active');
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+        }
+
+        function openModule(moduleId) {
+            showModule(moduleId);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.querySelector('.theme-toggle');
+            
+            if (body.hasAttribute('data-theme')) {
+                body.removeAttribute('data-theme');
+                themeBtn.textContent = '🌙';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeBtn.textContent = '☀️';
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/landing.html';
+            }
+        }
+
+        // Voice command integration
+        function initializeVoiceCommands() {
+            if ('webkitSpeechRecognition' in window) {
+                const recognition = new webkitSpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = false;
+                
+                recognition.onresult = function(event) {
+                    const command = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+                    processVoiceCommand(command);
+                };
+                
+                recognition.start();
+            }
+        }
+
+        function processVoiceCommand(command) {
+            switch(command) {
+                case 'show business':
+                    showModule('business');
+                    break;
+                case 'show legal':
+                    showModule('legal');
+                    break;
+                case 'show accounting':
+                    showModule('accounting');
+                    break;
+                case 'logout':
+                    logout();
+                    break;
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeVoiceCommands();
+        });
+    </script>
+</body>
+</html>

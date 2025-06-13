@@ -27,8 +27,8 @@ app.get('/health', (req, res) => {
 // Middleware
 app.use(express.json());
 
-// Serve static assets from root public directory for deployment compatibility
-app.use(express.static(path.join(process.cwd(), 'public'), {
+// Serve static assets from root directory for modular architecture
+app.use(express.static('.', {
   setHeaders: (res, filePath) => {
     if (isProduction) {
       if (filePath.endsWith('.js') || filePath.endsWith('.css') || filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.ico')) {
@@ -154,42 +154,39 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Serve the comprehensive NEXUS platform for all routes
+// Modular SaaS routing architecture
+app.get('/', (req, res) => {
+    console.log(`[ROUTING] Serving landing page`);
+    res.sendFile(path.join(process.cwd(), 'landing.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+    console.log(`[ROUTING] Serving dashboard interface`);
+    res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+});
+
+app.get('/legacy', (req, res) => {
+    console.log(`[ROUTING] Serving legacy interface`);
+    res.sendFile(path.join(process.cwd(), 'index.html'));
+});
+
+// Catch-all route for SPA behavior
 app.get('*', (req, res) => {
-    // Don't serve index.html for API routes or file extensions
+    // Don't serve HTML for API routes or file extensions
     if (req.path.startsWith('/api/') || 
         req.path.startsWith('/health') ||
         req.path.includes('.js') || 
         req.path.includes('.css') || 
         req.path.includes('.png') || 
         req.path.includes('.jpg') || 
-        req.path.includes('.ico')) {
+        req.path.includes('.ico') ||
+        req.path.includes('.html')) {
         return res.status(404).json({ error: 'Not found' });
     }
     
-    // Force no-cache for both development and production to prevent deployment issues
-    const timestamp = Date.now();
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
-    res.set('Pragma', 'no-cache');
-    res.set('Expires', '0');
-    res.set('X-Cache-Bust', timestamp.toString());
-    res.set('X-Fresh-Content', 'true');
-    res.set('X-Production-Ready', 'deployment-fixed');
-    res.set('X-Content-Type-Options', 'nosniff');
-    res.set('X-Frame-Options', 'DENY');
-    res.set('X-XSS-Protection', '1; mode=block');
-    console.log(`[DEPLOYMENT] Serving cache-busted content: ${timestamp}`);
-    
-    // Serve from root level for deployment compatibility
-    const indexPath = path.join(process.cwd(), 'index.html');
-    
-    // Force browser to bypass all caches
-    res.set('X-Timestamp', Date.now().toString());
-    res.set('X-Force-Refresh', 'true');
-    res.set('X-Content-Hash', Date.now().toString(36));
-    
-    console.log(`[DEPLOYMENT] Serving from root: ${indexPath}`);
-    res.sendFile(indexPath);
+    // Default to landing page for unknown routes
+    console.log(`[ROUTING] Unknown route ${req.path}, redirecting to landing`);
+    res.redirect('/');
 });
 
 app.listen(PORT, '0.0.0.0', () => {
