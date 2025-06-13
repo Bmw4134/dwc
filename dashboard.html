@@ -1315,6 +1315,7 @@
                     <div id="quantum-map-canvas" class="quantum-map-canvas">
                         <div class="map-loading">Initializing Geographic Intelligence Map...</div>
                         <div id="qnis-map" class="leaflet-map"></div>
+                        <div id="cache-debug-overlay" style="position: absolute; top: 10px; right: 10px; z-index: 1000;"></div>
                         
                         <!-- Map Controls Overlay -->
                         <div class="map-overlay-controls">
@@ -6287,12 +6288,169 @@ KNOWLEDGE GRAPH CONNECTIONS:
             document.getElementById('completed-workflow-count').textContent = `${completedCount} Completed Today`;
         }
 
-        // Fix QNIS initialization - define the function properly
+        // Quantum Lead Map Recovery System
+        const leadMapCache = {
+            leads: [],
+            lastUpdate: null,
+            cacheVersion: '1.0.0',
+            totalLeads: 0,
+            mapConfig: { center: [39.8283, -98.5795], zoom: 4 }
+        };
+
+        // Cache management functions
+        function saveCacheToStorage() {
+            try {
+                const cacheData = {
+                    ...leadMapCache,
+                    lastUpdate: new Date().toISOString(),
+                    totalLeads: leadMapCache.leads.length
+                };
+                localStorage.setItem('qnisLeadMapCache', JSON.stringify(cacheData));
+                console.log(`[CACHE] Saved ${cacheData.totalLeads} leads to cache at ${cacheData.lastUpdate}`);
+            } catch (error) {
+                console.error('[CACHE] Failed to save cache:', error);
+            }
+        }
+
+        function loadCacheFromStorage() {
+            try {
+                const cached = localStorage.getItem('qnisLeadMapCache');
+                if (cached) {
+                    const cacheData = JSON.parse(cached);
+                    leadMapCache.leads = cacheData.leads || [];
+                    leadMapCache.lastUpdate = cacheData.lastUpdate;
+                    leadMapCache.totalLeads = cacheData.totalLeads || 0;
+                    console.log(`[CACHE] Loaded ${leadMapCache.totalLeads} leads from cache (${leadMapCache.lastUpdate})`);
+                    return true;
+                }
+            } catch (error) {
+                console.error('[CACHE] Failed to load cache:', error);
+            }
+            return false;
+        }
+
+        function updateLeadCache(leads) {
+            leadMapCache.leads = leads;
+            saveCacheToStorage();
+            updateDebugOverlay();
+        }
+
+        function updateDebugOverlay() {
+            const overlay = document.getElementById('cache-debug-overlay');
+            if (overlay) {
+                overlay.innerHTML = `
+                    <div style="font-size: 10px; color: #00ff88; background: rgba(0,0,0,0.8); padding: 5px; border-radius: 3px;">
+                        Cache: ${leadMapCache.totalLeads} leads | ${leadMapCache.lastUpdate ? new Date(leadMapCache.lastUpdate).toLocaleTimeString() : 'No data'}
+                    </div>
+                `;
+            }
+        }
+
+        function recoverFromCacheData() {
+            console.log('[RECOVERY] Initiating cache recovery system');
+            
+            if (leadMapCache.leads.length > 0) {
+                console.log(`[RECOVERY] Restoring ${leadMapCache.leads.length} leads from cache`);
+                qnisMap.leads = leadMapCache.leads;
+                
+                // Create emergency map display if container missing
+                let mapContainer = document.getElementById('qnis-map');
+                if (!mapContainer) {
+                    const canvasContainer = document.getElementById('quantum-map-canvas');
+                    if (canvasContainer) {
+                        mapContainer = document.createElement('div');
+                        mapContainer.id = 'qnis-map';
+                        mapContainer.className = 'leaflet-map';
+                        canvasContainer.appendChild(mapContainer);
+                        console.log('[RECOVERY] Emergency map container created');
+                    }
+                }
+                
+                // Force render cached leads
+                if (mapContainer) {
+                    runBackupMapInjection();
+                    console.log('[RECOVERY] Cache recovery complete');
+                }
+            } else {
+                console.log('[RECOVERY] No cached data available for recovery');
+                runBackupMapInjection();
+            }
+        }
+
+        // Enhanced QNIS injection with cache triggers
+        function injectLead(leadData) {
+            if (!qnisMap.leads) qnisMap.leads = [];
+            
+            // Add new lead
+            qnisMap.leads.push(leadData);
+            
+            // Update cache immediately
+            updateLeadCache(qnisMap.leads);
+            
+            // Re-render markers if map is initialized
+            if (qnisMap.isInitialized && qnisMap.map) {
+                renderLeadMarkers();
+            }
+            
+            console.log(`[QNIS] Lead injected and cached: ${leadData.company || leadData.id}`);
+        }
+
+        function updateLeads(newLeads) {
+            qnisMap.leads = newLeads || [];
+            updateLeadCache(qnisMap.leads);
+            
+            if (qnisMap.isInitialized && qnisMap.map) {
+                renderLeadMarkers();
+            }
+            
+            console.log(`[QNIS] ${qnisMap.leads.length} leads updated and cached`);
+        }
+
+        // Fix missing showModule function
+        function showModule(moduleId) {
+            console.log(`[NAV] Switching to module: ${moduleId}`);
+            
+            // Hide all modules
+            const modules = document.querySelectorAll('.module-view');
+            modules.forEach(module => {
+                module.style.display = 'none';
+            });
+            
+            // Show selected module
+            const targetModule = document.getElementById(`${moduleId}-module`);
+            if (targetModule) {
+                targetModule.style.display = 'block';
+                
+                // Initialize module-specific functionality
+                if (moduleId === 'qnis') {
+                    setTimeout(() => {
+                        initializeQNIS();
+                    }, 100);
+                }
+                
+                // Update navigation state
+                updateNavigationState(moduleId);
+            } else {
+                console.error(`[NAV] Module not found: ${moduleId}-module`);
+            }
+        }
+
+        function updateNavigationState(activeModule) {
+            // Update sidebar active states
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-module') === activeModule) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Enhanced QNIS initialization with recovery
         function initializeQNIS() {
             if (typeof initializeQNISMap === 'function') {
                 initializeQNISMap();
             } else {
-                // Initialize QNIS directly if function not found
                 setupQNISMap();
             }
         }
@@ -6524,6 +6682,8 @@ KNOWLEDGE GRAPH CONNECTIONS:
                             };
                         });
                         
+                        // Update cache with new leads
+                        updateLeadCache(qnisMap.leads);
                         renderLeadMarkers();
                         console.log('[QNIS] Live coordinate injection complete');
                     } else {
@@ -6532,6 +6692,12 @@ KNOWLEDGE GRAPH CONNECTIONS:
                 })
                 .catch(error => {
                     console.error('[QNIS] Failed to fetch leads from API:', error);
+                    // Fallback to cache recovery
+                    if (leadMapCache.leads.length > 0) {
+                        console.log('[QNIS] Using cached leads as fallback');
+                        qnisMap.leads = leadMapCache.leads;
+                        renderLeadMarkers();
+                    }
                 });
         }
 

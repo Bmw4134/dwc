@@ -1,0 +1,10 @@
+{
+  "leads": [],
+  "lastUpdate": null,
+  "cacheVersion": "1.0.0",
+  "totalLeads": 0,
+  "mapConfig": {
+    "center": [39.8283, -98.5795],
+    "zoom": 4
+  }
+}
