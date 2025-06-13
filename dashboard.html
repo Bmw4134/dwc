@@ -10298,6 +10298,8 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
     <!-- DWC Production Deployment System -->
     <script src="quantum-map-rebuild.js"></script>
     <script src="production-deployment-orchestrator.js"></script>
+    <script src="automated-website-builder.js"></script>
+    <script src="universal-text-content-reader.js"></script>
     <script src="dwc-production-finalizer.js"></script>
     <script src="system-health-optimizer.js"></script>
     <script src="health-boost-deployment.js"></script>
@@ -10314,6 +10316,92 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
                     const orchestrator = new ProductionDeploymentOrchestrator();
                     orchestrator.initiateProductionDeployment();
                 }
+                
+                // Add website builder activation button
+                setTimeout(() => {
+                    const websiteBuilderBtn = document.createElement('button');
+                    websiteBuilderBtn.innerHTML = '🚀 Build Websites for All Leads';
+                    websiteBuilderBtn.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        z-index: 9999;
+                        background: linear-gradient(135deg, #0066cc, #00ff88);
+                        color: white;
+                        border: none;
+                        padding: 15px 25px;
+                        border-radius: 8px;
+                        font-weight: bold;
+                        font-size: 14px;
+                        cursor: pointer;
+                        box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+                        transition: all 0.3s ease;
+                    `;
+                    
+                    websiteBuilderBtn.onmouseover = () => {
+                        websiteBuilderBtn.style.transform = 'translateY(-2px)';
+                        websiteBuilderBtn.style.boxShadow = '0 6px 20px rgba(0, 255, 136, 0.4)';
+                    };
+                    
+                    websiteBuilderBtn.onmouseout = () => {
+                        websiteBuilderBtn.style.transform = 'translateY(0)';
+                        websiteBuilderBtn.style.boxShadow = '0 4px 15px rgba(0, 255, 136, 0.3)';
+                    };
+                    
+                    websiteBuilderBtn.onclick = () => {
+                        if (window.automatedWebsiteBuilder) {
+                            console.log('[WEBSITE-BUILDER] Activating automated website generation...');
+                            window.automatedWebsiteBuilder.initializeWebsiteGeneration();
+                        } else {
+                            console.log('[WEBSITE-BUILDER] Website builder not ready, retrying...');
+                            setTimeout(() => websiteBuilderBtn.click(), 2000);
+                        }
+                    };
+                    
+                    document.body.appendChild(websiteBuilderBtn);
+                    
+                    // Add content reader activation button
+                    const contentReaderBtn = document.createElement('button');
+                    contentReaderBtn.innerHTML = '📄 Read All Content';
+                    contentReaderBtn.style.cssText = `
+                        position: fixed;
+                        top: 80px;
+                        right: 20px;
+                        z-index: 9999;
+                        background: linear-gradient(135deg, #6a4c93, #00d4aa);
+                        color: white;
+                        border: none;
+                        padding: 15px 25px;
+                        border-radius: 8px;
+                        font-weight: bold;
+                        font-size: 14px;
+                        cursor: pointer;
+                        box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+                        transition: all 0.3s ease;
+                    `;
+                    
+                    contentReaderBtn.onmouseover = () => {
+                        contentReaderBtn.style.transform = 'translateY(-2px)';
+                        contentReaderBtn.style.boxShadow = '0 6px 20px rgba(0, 212, 170, 0.4)';
+                    };
+                    
+                    contentReaderBtn.onmouseout = () => {
+                        contentReaderBtn.style.transform = 'translateY(0)';
+                        contentReaderBtn.style.boxShadow = '0 4px 15px rgba(0, 212, 170, 0.3)';
+                    };
+                    
+                    contentReaderBtn.onclick = () => {
+                        if (window.universalContentReader) {
+                            console.log('[CONTENT-READER] Activating universal content reading...');
+                            window.universalContentReader.initializeContentReading();
+                        } else {
+                            console.log('[CONTENT-READER] Content reader not ready, retrying...');
+                            setTimeout(() => contentReaderBtn.click(), 2000);
+                        }
+                    };
+                    
+                    document.body.appendChild(contentReaderBtn);
+                }, 5000);
             }, 3000);
         });
     </script>
