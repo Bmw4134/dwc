@@ -6549,7 +6549,147 @@ KNOWLEDGE GRAPH CONNECTIONS:
             }
         }
 
-        // Enhanced initialization with verification
+        // Collapsible Navigation System
+        function toggleSection(sectionId) {
+            const content = document.getElementById(sectionId + '-content');
+            const toggle = document.getElementById(sectionId + '-toggle');
+            
+            if (!content || !toggle) return;
+            
+            const isCollapsed = content.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                // Expand section
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+                toggle.setAttribute('aria-expanded', 'true');
+                
+                // Save state
+                sessionStorage.setItem(`sidebar-${sectionId}`, 'expanded');
+            } else {
+                // Collapse section
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+                toggle.setAttribute('aria-expanded', 'false');
+                
+                // Save state
+                sessionStorage.setItem(`sidebar-${sectionId}`, 'collapsed');
+            }
+        }
+
+        // Restore sidebar state from session storage
+        function restoreSidebarState() {
+            const sections = ['intelligence', 'automation', 'system', 'business'];
+            
+            sections.forEach(sectionId => {
+                const savedState = sessionStorage.getItem(`sidebar-${sectionId}`);
+                
+                if (savedState === 'collapsed') {
+                    const content = document.getElementById(sectionId + '-content');
+                    const toggle = document.getElementById(sectionId + '-toggle');
+                    
+                    if (content && toggle) {
+                        content.classList.add('collapsed');
+                        toggle.classList.add('collapsed');
+                        toggle.textContent = '▶';
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            });
+        }
+
+        // Keyboard navigation for accessibility
+        function initializeKeyboardNavigation() {
+            document.querySelectorAll('.nav-section-header').forEach(header => {
+                header.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // Arrow key navigation between nav items
+            document.querySelectorAll('.nav-item').forEach((item, index, items) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextIndex = (index + 1) % items.length;
+                        items[nextIndex].focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevIndex = (index - 1 + items.length) % items.length;
+                        items[prevIndex].focus();
+                    }
+                });
+                
+                // Make nav items focusable
+                item.setAttribute('tabindex', '0');
+            });
+        }
+
+        // Mobile-responsive sidebar behavior
+        function initializeMobileNavigation() {
+            const sidebar = document.querySelector('.sidebar');
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // Auto-collapse all sections on mobile for better UX
+                const sections = ['intelligence', 'automation', 'system', 'business'];
+                sections.forEach(sectionId => {
+                    const content = document.getElementById(sectionId + '-content');
+                    const toggle = document.getElementById(sectionId + '-toggle');
+                    
+                    if (content && toggle && !sessionStorage.getItem(`sidebar-${sectionId}`)) {
+                        content.classList.add('collapsed');
+                        toggle.classList.add('collapsed');
+                        toggle.textContent = '▶';
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        }
+
+        // Enhanced module display with section awareness
+        function showModule(moduleId) {
+            // Hide all module views
+            document.querySelectorAll('.module-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Show selected module
+            const targetModule = document.getElementById(moduleId + '-module');
+            if (targetModule) {
+                targetModule.classList.add('active');
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Find and activate the clicked nav item
+            const clickedNavItem = event?.target?.closest('.nav-item');
+            if (clickedNavItem) {
+                clickedNavItem.classList.add('active');
+                
+                // Ensure the section containing this module is expanded
+                const parentSection = clickedNavItem.closest('.nav-section.collapsible');
+                if (parentSection) {
+                    const sectionContent = parentSection.querySelector('.nav-section-content');
+                    const sectionToggle = parentSection.querySelector('.section-toggle');
+                    
+                    if (sectionContent?.classList.contains('collapsed')) {
+                        const sectionId = sectionContent.id.replace('-content', '');
+                        toggleSection(sectionId);
+                    }
+                }
+            }
+        }
+
+        // Enhanced initialization with verification and navigation
         document.addEventListener('DOMContentLoaded', function() {
             loadAPIKeys();
             initializeQNIS();
@@ -6565,12 +6705,25 @@ KNOWLEDGE GRAPH CONNECTIONS:
             initializeAnalytics();
             initializeLeadGeneration();
             
+            // Initialize collapsible navigation
+            restoreSidebarState();
+            initializeKeyboardNavigation();
+            initializeMobileNavigation();
+            
+            // Handle window resize for mobile responsiveness
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(initializeMobileNavigation, 250);
+            });
+            
             // Verify and rebind after 2 seconds
             setTimeout(() => {
                 verifyAndRebindModules();
             }, 2000);
             
             console.log('[QNIS] Platform initialization complete');
+            console.log('[NAV] Collapsible navigation system initialized');
         });
     </script>
 </body>
