@@ -447,6 +447,36 @@ app.post('/api/subscription-selected', (req, res) => {
   }
 });
 
+// QNIS metrics endpoint for landing page
+app.get('/api/qnis/metrics', (req, res) => {
+  // Calculate real metrics from generated leads
+  const totalLeads = generatedLeads.length;
+  const today = new Date().toDateString();
+  const leadsToday = generatedLeads.filter(lead => 
+    new Date(lead.timestamp).toDateString() === today
+  ).length;
+  
+  // Calculate unique geographic zones
+  const uniqueCities = [...new Set(generatedLeads.map(lead => lead.city))];
+  const geoZones = uniqueCities.length;
+  
+  // Calculate average QNIS score
+  const avgScore = Math.round(
+    generatedLeads.reduce((sum, lead) => sum + lead.qnisScore, 0) / totalLeads || 85
+  );
+  
+  res.json({
+    success: true,
+    leads: {
+      today: leadsToday,
+      total: totalLeads
+    },
+    geoZones: geoZones,
+    avgScore: avgScore,
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.get('/api/quantum/deep-dive', async (req, res) => {
   res.json({
     module: 'Quantum Deep Dive',
