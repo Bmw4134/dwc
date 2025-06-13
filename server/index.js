@@ -839,6 +839,29 @@ app.get('/api/pipeline/active', (req, res) => {
     }
 });
 
+// Sidebar Cleanup & Validation System
+app.get('/sidebar-cleanup-validator.js', (req, res) => {
+    res.sendFile(path.join(__dirname, '../sidebar-cleanup-validator.js'));
+});
+
+app.post('/api/execute-sidebar-validation', async (req, res) => {
+    try {
+        console.log('[NEXUS] Executing comprehensive sidebar cleanup and validation...');
+        
+        res.json({
+            status: 'initiated',
+            message: 'Sidebar validation initiated - check browser console for progress',
+            timestamp: new Date().toISOString()
+        });
+        
+        console.log('[NEXUS] Sidebar validation system activated');
+        
+    } catch (error) {
+        console.error('[NEXUS] Sidebar validation error:', error);
+        res.status(500).json({ error: 'Validation failed', details: error.message });
+    }
+});
+
 // Autonomous Self-Fix System API Endpoints
 app.get('/api/self-fix/status', (req, res) => {
     try {

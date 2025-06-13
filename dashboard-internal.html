@@ -21,6 +21,9 @@
     <!-- Self-QA Intelligence Layer -->
     <script src="/self-qa-intelligence.js"></script>
     
+    <!-- Sidebar Cleanup & Validation System -->
+    <script src="/sidebar-cleanup-validator.js"></script>
+    
     <!-- Comprehensive Module Styles -->
     <link rel="stylesheet" href="comprehensive-module-styles.css">
     
@@ -3989,6 +3992,23 @@
     </div>
 
     <script>
+        // Execute comprehensive sidebar cleanup and validation
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[NEXUS] Initiating comprehensive sidebar cleanup and validation...');
+            
+            // Trigger validation after page load
+            setTimeout(() => {
+                if (window.sidebarValidator) {
+                    window.sidebarValidator.executeFullCleanup();
+                } else if (window.SidebarCleanupValidator) {
+                    window.sidebarValidator = new SidebarCleanupValidator();
+                    window.sidebarValidator.executeFullCleanup();
+                } else {
+                    console.log('[NEXUS] Loading sidebar validator...');
+                }
+            }, 2000);
+        });
+
         function showModule(moduleId) {
             // Hide all module views
             document.querySelectorAll('.module-view').forEach(view => {
