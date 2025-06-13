@@ -11,10 +11,17 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initialize QNIS Lead Engine, API Key Vault, and NLP Parser
+// Initialize QNIS Lead Engine, API Key Vault, NLP Parser, and Autonomous Pipeline
 const qnisEngine = new QNISLeadEngine();
 const keyVault = new APIKeyVault();
 const nlpParser = new NLPQueryParser(keyVault);
+
+// Import and initialize autonomous pipeline
+import('./autonomous-pipeline.js').then(module => {
+    const AutonomousPipeline = module.default;
+    global.autonomousPipeline = new AutonomousPipeline(keyVault);
+    console.log('[PIPELINE] Autonomous Lead-to-Solution Pipeline initialized');
+});
 
 // Production environment configuration
 const isProduction = process.env.NODE_ENV === 'production';
@@ -412,6 +419,139 @@ app.post('/api/nlp/query', async (req, res) => {
             success: false,
             error: error.message,
             timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Autonomous Pipeline Endpoints
+app.post('/api/pipeline/process/:leadId', async (req, res) => {
+    try {
+        const { leadId } = req.params;
+        
+        if (!global.autonomousPipeline) {
+            return res.status(503).json({
+                success: false,
+                error: 'Autonomous pipeline not ready'
+            });
+        }
+
+        const lead = qnisEngine.getLeadById(leadId);
+        if (!lead) {
+            return res.status(404).json({
+                success: false,
+                error: 'Lead not found'
+            });
+        }
+
+        console.log(`[PIPELINE] Starting autonomous processing for lead: ${leadId}`);
+        
+        // Start processing asynchronously
+        global.autonomousPipeline.processLead(lead).catch(error => {
+            console.error(`[PIPELINE] Processing failed for lead ${leadId}:`, error);
+        });
+
+        res.json({
+            success: true,
+            message: 'Autonomous processing started',
+            leadId: leadId,
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.get('/api/pipeline/status/:pipelineId', (req, res) => {
+    try {
+        const { pipelineId } = req.params;
+        
+        if (!global.autonomousPipeline) {
+            return res.status(503).json({
+                success: false,
+                error: 'Autonomous pipeline not ready'
+            });
+        }
+
+        const status = global.autonomousPipeline.getPipelineStatus(pipelineId);
+        
+        if (!status) {
+            return res.status(404).json({
+                success: false,
+                error: 'Pipeline not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            pipeline: status
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.get('/api/pipeline/solution/:leadId', (req, res) => {
+    try {
+        const { leadId } = req.params;
+        
+        if (!global.autonomousPipeline) {
+            return res.status(503).json({
+                success: false,
+                error: 'Autonomous pipeline not ready'
+            });
+        }
+
+        const solution = global.autonomousPipeline.getCompletedSolution(leadId);
+        
+        if (!solution) {
+            return res.status(404).json({
+                success: false,
+                error: 'Solution not found or not completed'
+            });
+        }
+
+        res.json({
+            success: true,
+            solution: solution
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.get('/api/pipeline/active', (req, res) => {
+    try {
+        if (!global.autonomousPipeline) {
+            return res.status(503).json({
+                success: false,
+                error: 'Autonomous pipeline not ready'
+            });
+        }
+
+        const activePipelines = global.autonomousPipeline.getAllActivePipelines();
+        
+        res.json({
+            success: true,
+            count: activePipelines.length,
+            pipelines: activePipelines
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
         });
     }
 });
