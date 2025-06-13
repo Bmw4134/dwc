@@ -1109,12 +1109,12 @@
     </div>
 
     <div class="dashboard" id="dashboard-section" style="display: none;">
-        <!-- QNIS/PTNI Intelligence Overlay -->
-        <div class="qnis-overlay" id="qnis-overlay">
-            <div class="qnis-header">
-                <div class="qnis-logo">QNIS</div>
-                <div class="qnis-status">ACTIVE</div>
-                <div class="qnis-metrics">
+        <!-- QNIS/PTNI Intelligence Overlay - FORCE VISIBLE -->
+        <div class="qnis-overlay" id="qnis-overlay" style="display: block !important; position: fixed; top: 0; left: 0; right: 0; height: 60px; background: linear-gradient(135deg, #1e3a8a, #3730a3); z-index: 1000; border-bottom: 2px solid #60a5fa;">
+            <div class="qnis-header" style="display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 100%; color: white;">
+                <div class="qnis-logo" style="font-weight: bold; font-size: 18px; background: linear-gradient(45deg, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">QNIS</div>
+                <div class="qnis-status" style="background: #10b981; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold;">ACTIVE</div>
+                <div class="qnis-metrics" style="display: flex; gap: 20px; font-size: 12px;">
                     <span>Confidence: 94.7%</span>
                     <span>Lead Velocity: +23%</span>
                     <span>AI Processing: Online</span>
@@ -1122,61 +1122,61 @@
             </div>
         </div>
 
-        <!-- PTNI Processing Indicator -->
-        <div class="ptni-indicator" id="ptni-indicator">
-            <div class="ptni-pulse"></div>
+        <!-- PTNI Processing Indicator - FORCE VISIBLE -->
+        <div class="ptni-indicator" id="ptni-indicator" style="display: flex !important; position: fixed; top: 70px; right: 20px; background: rgba(0, 0, 0, 0.8); color: #34d399; padding: 8px 16px; border-radius: 20px; align-items: center; gap: 8px; z-index: 999; font-size: 12px;">
+            <div class="ptni-pulse" style="width: 8px; height: 8px; background: #34d399; border-radius: 50%; animation: pulse 1s infinite;"></div>
             <span>PTNI Engine Processing...</span>
         </div>
 
-        <!-- Advanced Navigation Panel -->
-        <div class="advanced-nav-panel">
-            <div class="nav-section">
-                <div class="nav-header">System Control</div>
-                <div class="nav-items">
-                    <div class="nav-item active" onclick="toggleSystemMode('enterprise')">Enterprise Mode</div>
-                    <div class="nav-item" onclick="toggleSystemMode('development')">Development</div>
-                    <div class="nav-item" onclick="toggleSystemMode('diagnostic')">Diagnostic</div>
+        <!-- Advanced Navigation Panel - FORCE VISIBLE -->
+        <div class="advanced-nav-panel" style="display: block !important; position: fixed; left: 0; top: 60px; width: 250px; height: calc(100vh - 60px); background: var(--surface); border-right: 1px solid var(--border); padding: 20px; overflow-y: auto; z-index: 998;">
+            <div class="nav-section" style="margin-bottom: 24px;">
+                <div class="nav-header" style="font-weight: bold; font-size: 14px; color: var(--text-primary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">System Control</div>
+                <div class="nav-items" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div class="nav-item active" onclick="toggleSystemMode('enterprise')" style="padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; background: var(--primary); color: white;">Enterprise Mode</div>
+                    <div class="nav-item" onclick="toggleSystemMode('development')" style="padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">Development</div>
+                    <div class="nav-item" onclick="toggleSystemMode('diagnostic')" style="padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">Diagnostic</div>
                 </div>
             </div>
-            <div class="nav-section">
-                <div class="nav-header">Intelligence Layers</div>
-                <div class="nav-items">
-                    <div class="nav-item" onclick="toggleIntelligence('qnis')">
+            <div class="nav-section" style="margin-bottom: 24px;">
+                <div class="nav-header" style="font-weight: bold; font-size: 14px; color: var(--text-primary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);">Intelligence Layers</div>
+                <div class="nav-items" style="display: flex; flex-direction: column; gap: 8px;">
+                    <div class="nav-item" onclick="toggleIntelligence('qnis')" style="padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px;">
                         <input type="checkbox" checked> QNIS Core
                     </div>
-                    <div class="nav-item" onclick="toggleIntelligence('ptni')">
+                    <div class="nav-item" onclick="toggleIntelligence('ptni')" style="padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px;">
                         <input type="checkbox" checked> PTNI Processing
                     </div>
-                    <div class="nav-item" onclick="toggleIntelligence('watson')">
+                    <div class="nav-item" onclick="toggleIntelligence('watson')" style="padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px;">
                         <input type="checkbox" checked> Watson AI
                     </div>
-                    <div class="nav-item" onclick="toggleIntelligence('nexus')">
+                    <div class="nav-item" onclick="toggleIntelligence('nexus')" style="padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px;">
                         <input type="checkbox" checked> NEXUS Control
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Session Logging Panel -->
-        <div class="session-panel">
-            <div class="session-header">
+        <!-- Session Logging Panel - FORCE VISIBLE -->
+        <div class="session-panel" style="display: block !important; position: fixed; right: 0; top: 60px; width: 300px; height: 400px; background: var(--surface); border-left: 1px solid var(--border); z-index: 998;">
+            <div class="session-header" style="padding: 12px 16px; background: var(--accent); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 14px;">
                 <span>Session Log</span>
-                <div class="session-controls">
-                    <button onclick="clearSessionLog()">Clear</button>
-                    <button onclick="exportSessionLog()">Export</button>
+                <div class="session-controls" style="display: flex; gap: 8px;">
+                    <button onclick="clearSessionLog()" style="padding: 4px 8px; border: none; background: var(--primary); color: white; border-radius: 4px; font-size: 11px; cursor: pointer;">Clear</button>
+                    <button onclick="exportSessionLog()" style="padding: 4px 8px; border: none; background: var(--primary); color: white; border-radius: 4px; font-size: 11px; cursor: pointer;">Export</button>
                 </div>
             </div>
-            <div class="session-log" id="session-log">
-                <div class="log-entry">[12:34:56] Enterprise dashboard initialized</div>
-                <div class="log-entry">[12:34:57] QNIS engine synchronization complete</div>
-                <div class="log-entry">[12:34:58] Watson AI systems online</div>
-                <div class="log-entry">[12:34:59] All 47 modules operational</div>
+            <div class="session-log" id="session-log" style="padding: 12px; height: calc(100% - 48px); overflow-y: auto; font-family: 'Courier New', monospace; font-size: 11px;">
+                <div class="log-entry" style="padding: 2px 0; color: var(--text-secondary);">[12:34:56] Enterprise dashboard initialized</div>
+                <div class="log-entry" style="padding: 2px 0; color: var(--text-secondary);">[12:34:57] QNIS engine synchronization complete</div>
+                <div class="log-entry" style="padding: 2px 0; color: var(--text-secondary);">[12:34:58] Watson AI systems online</div>
+                <div class="log-entry" style="padding: 2px 0; color: var(--text-secondary);">[12:34:59] All 47 modules operational</div>
             </div>
         </div>
 
-        <div class="container" id="dashboard">
+        <div class="container" id="dashboard" style="margin-left: 250px; margin-right: 300px; padding: 0 20px;">
             <!-- Enterprise Header with Live Metrics -->
-            <div class="enterprise-header">
+            <div class="enterprise-header" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: var(--surface); border-bottom: 2px solid var(--border); margin: 0 0 20px 0;">
                 <div class="header-left">
                     <h1>DWC Systems LLC - NEXUS Intelligence Platform</h1>
                     <div class="live-metrics">
@@ -1566,6 +1566,21 @@
                 document.getElementById('dashboard-section').style.display = 'block';
                 document.getElementById('logout-btn').style.display = 'block';
                 
+                // Force display of all enterprise elements
+                setTimeout(() => {
+                    const qnisOverlay = document.getElementById('qnis-overlay');
+                    const ptniIndicator = document.getElementById('ptni-indicator');
+                    const advancedNavPanel = document.querySelector('.advanced-nav-panel');
+                    const sessionPanel = document.querySelector('.session-panel');
+                    
+                    if (qnisOverlay) qnisOverlay.style.display = 'block';
+                    if (ptniIndicator) ptniIndicator.style.display = 'flex';
+                    if (advancedNavPanel) advancedNavPanel.style.display = 'block';
+                    if (sessionPanel) sessionPanel.style.display = 'block';
+                    
+                    console.log('[ENTERPRISE] All advanced UI elements forced visible');
+                }, 100);
+                
                 console.log('[AUTH] Authentication successful - Enterprise dashboard access granted');
                 speakText('Welcome admin. Enterprise dashboard access granted.');
                 initializePlatformFeatures();
@@ -1576,6 +1591,21 @@
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
                 document.getElementById('logout-btn').style.display = 'block';
+                
+                // Force display of all enterprise elements for Watson too
+                setTimeout(() => {
+                    const qnisOverlay = document.getElementById('qnis-overlay');
+                    const ptniIndicator = document.getElementById('ptni-indicator');
+                    const advancedNavPanel = document.querySelector('.advanced-nav-panel');
+                    const sessionPanel = document.querySelector('.session-panel');
+                    
+                    if (qnisOverlay) qnisOverlay.style.display = 'block';
+                    if (ptniIndicator) ptniIndicator.style.display = 'flex';
+                    if (advancedNavPanel) advancedNavPanel.style.display = 'block';
+                    if (sessionPanel) sessionPanel.style.display = 'block';
+                    
+                    console.log('[ENTERPRISE] All advanced UI elements forced visible for Watson');
+                }, 100);
                 
                 console.log('[AUTH] Watson authentication successful - Master control access granted');
                 speakText('Welcome Watson. Master control access granted.');
@@ -1610,16 +1640,39 @@
         function initializeQNISSystem() {
             console.log('[QNIS] Initializing Quantum Network Intelligence System...');
             
-            // Update QNIS metrics periodically
-            setInterval(updateQNISMetrics, 5000);
+            // Show QNIS overlay
+            const qnisOverlay = document.getElementById('qnis-overlay');
+            if (qnisOverlay) {
+                qnisOverlay.style.display = 'block';
+                console.log('[QNIS] Overlay activated');
+            }
             
-            // Initialize PTNI processing indicator
+            // Show PTNI indicator
             const ptniIndicator = document.getElementById('ptni-indicator');
             if (ptniIndicator) {
+                ptniIndicator.style.display = 'flex';
                 setInterval(() => {
                     ptniIndicator.style.opacity = ptniIndicator.style.opacity === '0.5' ? '1' : '0.5';
                 }, 2000);
+                console.log('[PTNI] Processing indicator activated');
             }
+            
+            // Show advanced nav panel
+            const advancedNavPanel = document.querySelector('.advanced-nav-panel');
+            if (advancedNavPanel) {
+                advancedNavPanel.style.display = 'block';
+                console.log('[NAV] Advanced navigation panel activated');
+            }
+            
+            // Show session panel
+            const sessionPanel = document.querySelector('.session-panel');
+            if (sessionPanel) {
+                sessionPanel.style.display = 'block';
+                console.log('[SESSION] Logging panel activated');
+            }
+            
+            // Update QNIS metrics periodically
+            setInterval(updateQNISMetrics, 5000);
             
             console.log('[QNIS] System initialized - Intelligence layers active');
         }
