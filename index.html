@@ -1173,7 +1173,7 @@
                 <div class="log-entry" style="padding: 2px 0; color: var(--text-secondary);">[12:34:59] All 47 modules operational</div>
             </div>
 
-            <div id="business-modules" class="dashboard-grid module-category" style="display: none;">
+            <div id="business-modules" class="dashboard-grid module-category" style="display: none; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; padding: 20px;">
                 <div class="module-card clickable" onclick="activateModule('legal-suite')">
                     <div class="module-title">Legal Management Suite</div>
                     <div class="module-status">Active</div>
@@ -2217,6 +2217,26 @@
                 case 'email-automation':
                     speakText('Email automation system activated.');
                     showNotification('Email Automation', 'Campaign system ready');
+                    break;
+                case 'legal-suite':
+                    speakText('Legal management suite activated.');
+                    showNotification('Legal Suite', 'Contract and compliance tools ready');
+                    break;
+                case 'accounting-suite':
+                    speakText('Accounting management system activated.');
+                    showNotification('Accounting Suite', 'Financial management tools ready');
+                    break;
+                case 'tax-suite':
+                    speakText('Tax management suite activated.');
+                    showNotification('Tax Suite', 'Tax preparation and filing tools ready');
+                    break;
+                case 'payroll-suite':
+                    speakText('Payroll management system activated.');
+                    showNotification('Payroll Suite', 'Employee payroll processing ready');
+                    break;
+                case 'invoice-suite':
+                    speakText('Invoice and billing management activated.');
+                    showNotification('Invoice Suite', 'Billing and payment tracking ready');
                     break;
                 default:
                     speakText('Module ' + moduleId.replace('-', ' ') + ' activated.');
@@ -3410,6 +3430,62 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
             console.log('[PAYROLL] Generating payroll tax forms...');
             speakText('Generating payroll tax forms and reports');
             showNotification('Tax Forms', 'Creating W-2 and quarterly tax reports...');
+        }
+
+        // Debug function to test business modules visibility
+        function testBusinessModules() {
+            console.log('[DEBUG] Testing business modules...');
+            const businessContainer = document.getElementById('business-modules');
+            if (businessContainer) {
+                console.log('[DEBUG] Business container found:', businessContainer);
+                console.log('[DEBUG] Current display:', businessContainer.style.display);
+                console.log('[DEBUG] Children count:', businessContainer.children.length);
+                
+                // Force show business modules
+                businessContainer.style.display = 'grid';
+                businessContainer.style.visibility = 'visible';
+                businessContainer.style.opacity = '1';
+                
+                console.log('[DEBUG] Business modules should now be visible');
+                speakText('Business modules activated for testing');
+                showNotification('Debug', 'Business modules forced visible');
+            } else {
+                console.error('[DEBUG] Business container not found');
+            }
+        }
+
+        // Add to voice commands for quick testing
+        function processVoiceCommand(command) {
+            console.log('[VOICE] Processing command:', command);
+            
+            switch(command.toLowerCase().trim()) {
+                case 'test business':
+                    testBusinessModules();
+                    break;
+                case 'show business':
+                    showModuleCategory('business', null);
+                    break;
+                case 'logout':
+                    handleLogout();
+                    break;
+                case 'status':
+                    speakText('All systems operational. 47 modules active.');
+                    break;
+                case 'help':
+                    speakText('Available commands: logout, status, help, show modules, activate trading, generate leads, test business, show business');
+                    break;
+                case 'show modules':
+                    speakText('Displaying all available modules');
+                    break;
+                case 'activate trading':
+                    showModuleCategory('trading', null);
+                    break;
+                case 'generate leads':
+                    activateModule('quantum-leads');
+                    break;
+                default:
+                    speakText('Command not recognized. Say help for available commands.');
+            }
         }
 
         function showNotification(title, message) {
