@@ -99,6 +99,13 @@ app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
+// DWC Sales Portal - separate from client login
+app.get('/sales', (req, res) => {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    console.log(`[ROUTING] Serving DWC Sales Portal`);
+    res.sendFile(path.join(process.cwd(), 'dwc-sales-portal.html'));
+});
+
 // Legacy complex interface
 app.get('/legacy', (req, res) => {
     console.log(`[ROUTING] Serving legacy complex interface`);
@@ -238,6 +245,120 @@ app.post('/api/trucking/contact', (req, res) => {
             email: "dispatch@premierlogistics.com",
             hours: "24/7 Dispatch Available"
         }
+    });
+});
+
+// DWC Sales Portal API Endpoints
+app.post('/api/sales/login', (req, res) => {
+    const { salesId, password } = req.body;
+    
+    // In production, this would authenticate against a database
+    const salesTeam = [
+        { id: 'dwc001', name: 'John Smith', password: 'sales123', email: 'john@dwcsystems.com', role: 'Senior Sales' },
+        { id: 'dwc002', name: 'Sarah Johnson', password: 'sales123', email: 'sarah@dwcsystems.com', role: 'Account Executive' },
+        { id: 'dwc003', name: 'Mike Wilson', password: 'sales123', email: 'mike@dwcsystems.com', role: 'Business Development' }
+    ];
+    
+    const salesPerson = salesTeam.find(person => person.id === salesId && person.password === password);
+    
+    if (salesPerson) {
+        console.log(`[DWC-SALES] Login successful for ${salesPerson.name} (${salesPerson.id})`);
+        // Remove password from response
+        const { password: _, ...salesPersonData } = salesPerson;
+        res.json({
+            success: true,
+            salesPerson: salesPersonData,
+            token: `dwc_token_${Date.now()}_${salesId}`
+        });
+    } else {
+        console.log(`[DWC-SALES] Login failed for ${salesId}`);
+        res.status(401).json({
+            success: false,
+            message: 'Invalid sales ID or password'
+        });
+    }
+});
+
+app.post('/api/sales/record-sale', (req, res) => {
+    const { salesPersonId, clientName, saleAmount, commissionRate, notes } = req.body;
+    
+    if (!salesPersonId || !clientName || !saleAmount || saleAmount <= 0) {
+        return res.status(400).json({
+            success: false,
+            message: 'Missing required fields'
+        });
+    }
+    
+    const totalCommission = saleAmount * (commissionRate / 100);
+    const salesPersonCommission = totalCommission * 0.9; // 90%
+    const overheadAmount = totalCommission * 0.1; // 10%
+    
+    const saleRecord = {
+        id: `sale_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+        date: new Date().toISOString().split('T')[0],
+        salesPersonId,
+        clientName,
+        saleAmount,
+        commissionRate,
+        commission: salesPersonCommission,
+        overheadAmount,
+        status: 'pending',
+        notes: notes || '',
+        createdAt: new Date().toISOString()
+    };
+    
+    console.log(`[DWC-SALES] New sale recorded: ${clientName} - $${saleAmount} (Commission: $${salesPersonCommission.toFixed(2)})`);
+    
+    res.json({
+        success: true,
+        sale: saleRecord,
+        message: 'Sale recorded successfully'
+    });
+});
+
+app.get('/api/sales/commission-summary/:salesPersonId', (req, res) => {
+    const { salesPersonId } = req.params;
+    
+    // In production, this would query the database
+    // For now, return realistic sample data based on the sales person
+    const sampleSales = [
+        {
+            id: 'sale_001',
+            date: new Date().toISOString().split('T')[0],
+            clientName: 'TechCorp Solutions',
+            saleAmount: 15000,
+            commission: 1350, // 90% of 10% commission
+            status: 'pending'
+        },
+        {
+            id: 'sale_002',
+            date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+            clientName: 'BusinessMax Inc',
+            saleAmount: 25000,
+            commission: 2250,
+            status: 'paid'
+        }
+    ];
+    
+    const totalEarnings = sampleSales.reduce((sum, sale) => sum + sale.commission, 0);
+    const pendingCommissions = sampleSales
+        .filter(sale => sale.status === 'pending')
+        .reduce((sum, sale) => sum + sale.commission, 0);
+    
+    const thisMonth = new Date().toISOString().slice(0, 7);
+    const thisMonthSales = sampleSales.filter(sale => sale.date.startsWith(thisMonth)).length;
+    
+    console.log(`[DWC-SALES] Commission summary requested for ${salesPersonId}`);
+    
+    res.json({
+        success: true,
+        summary: {
+            totalEarnings,
+            pendingCommissions,
+            totalSales: sampleSales.length,
+            thisMonthSales
+        },
+        recentSales: sampleSales
     });
 });
 

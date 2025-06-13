@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWC Sales Team Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .commission-card {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-paid { background: #d1fae5; color: #065f46; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- DWC Sales Login Screen -->
+    <div id="login-screen" class="min-h-screen gradient-bg flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-white font-bold text-2xl">D</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900">DWC Sales Portal</h1>
+                <p class="text-gray-600 mt-2">Sales Team Commission Tracker</p>
+            </div>
+            
+            <form id="sales-login-form" onsubmit="handleSalesLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Sales Person ID
+                    </label>
+                    <input type="text" id="sales-id" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                           placeholder="Enter your sales ID">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Password
+                    </label>
+                    <input type="password" id="sales-password" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                           placeholder="Enter your password">
+                </div>
+                
+                <button type="submit" class="w-full gradient-bg text-white font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
+                    Login to Portal
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Need access? Contact DWC Admin
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DWC Sales Dashboard -->
+    <div id="sales-dashboard" class="hidden min-h-screen bg-gray-50">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold">D</span>
+                        </div>
+                        <div class="ml-3">
+                            <span class="text-xl font-bold text-gray-900">DWC Sales Portal</span>
+                            <div class="text-sm text-gray-600" id="sales-person-name">Welcome, Sales Person</div>
+                        </div>
+                    </div>
+                    <button onclick="logout()" class="text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg border">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Commission Summary -->
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="commission-card">
+                    <div class="text-3xl font-bold mb-2" id="total-earnings">$0</div>
+                    <div class="text-sm opacity-90">Total Earnings (90%)</div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow card-hover">
+                    <div class="text-3xl font-bold text-blue-600 mb-2" id="pending-commissions">$0</div>
+                    <div class="text-sm text-gray-600">Pending Commissions</div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow card-hover">
+                    <div class="text-3xl font-bold text-purple-600 mb-2" id="total-sales">0</div>
+                    <div class="text-sm text-gray-600">Total Sales Made</div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow card-hover">
+                    <div class="text-3xl font-bold text-orange-600 mb-2" id="this-month-sales">0</div>
+                    <div class="text-sm text-gray-600">This Month Sales</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-lg shadow p-6 mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="recordNewSale()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                        💰 Record New Sale
+                    </button>
+                    <button onclick="viewPayoutHistory()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
+                        📋 View Payout History
+                    </button>
+                    <button onclick="downloadReport()" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors">
+                        📊 Download Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Sales -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900">Your Recent Sales</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sale Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Your Commission</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Sales will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- New Sale Modal -->
+    <div id="new-sale-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Record New Sale</h3>
+            <form id="new-sale-form" onsubmit="submitNewSale(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Client Name</label>
+                    <input type="text" id="client-name" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Sale Amount ($)</label>
+                    <input type="number" id="sale-amount" required min="0" step="0.01"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Commission Rate (%)</label>
+                    <input type="number" id="commission-rate" value="10" required min="0" max="100" step="0.1"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Notes (optional)</label>
+                    <textarea id="sale-notes" rows="3"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"></textarea>
+                </div>
+                <div class="flex gap-3">
+                    <button type="submit" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                        Record Sale
+                    </button>
+                    <button type="button" onclick="closeNewSaleModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // DWC Sales Portal System
+        class DWCSalesPortal {
+            constructor() {
+                this.currentSalesPerson = null;
+                this.salesData = [];
+                this.initializePortal();
+            }
+
+            initializePortal() {
+                this.loadSalesTeam();
+                this.loadSalesData();
+            }
+
+            loadSalesTeam() {
+                // Load or create DWC sales team data
+                const savedTeam = localStorage.getItem('dwc_sales_team');
+                if (savedTeam) {
+                    this.salesTeam = JSON.parse(savedTeam);
+                } else {
+                    // Create default sales team
+                    this.salesTeam = [
+                        { id: 'dwc001', name: 'John Smith', password: 'sales123', email: 'john@dwcsystems.com' },
+                        { id: 'dwc002', name: 'Sarah Johnson', password: 'sales123', email: 'sarah@dwcsystems.com' },
+                        { id: 'dwc003', name: 'Mike Wilson', password: 'sales123', email: 'mike@dwcsystems.com' }
+                    ];
+                    localStorage.setItem('dwc_sales_team', JSON.stringify(this.salesTeam));
+                }
+            }
+
+            loadSalesData() {
+                const savedData = localStorage.getItem('dwc_sales_data');
+                if (savedData) {
+                    this.salesData = JSON.parse(savedData);
+                } else {
+                    this.salesData = [];
+                }
+            }
+
+            saveSalesData() {
+                localStorage.setItem('dwc_sales_data', JSON.stringify(this.salesData));
+            }
+
+            login(salesId, password) {
+                const salesPerson = this.salesTeam.find(person => 
+                    person.id === salesId && person.password === password
+                );
+
+                if (salesPerson) {
+                    this.currentSalesPerson = salesPerson;
+                    sessionStorage.setItem('dwc_current_sales_person', JSON.stringify(salesPerson));
+                    this.showDashboard();
+                    return true;
+                }
+                return false;
+            }
+
+            showDashboard() {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('sales-dashboard').classList.remove('hidden');
+                
+                if (this.currentSalesPerson) {
+                    document.getElementById('sales-person-name').textContent = 
+                        `Welcome, ${this.currentSalesPerson.name}`;
+                    this.updateDashboard();
+                }
+            }
+
+            updateDashboard() {
+                const salesPersonData = this.salesData.filter(sale => 
+                    sale.salesPersonId === this.currentSalesPerson.id
+                );
+
+                // Calculate totals
+                const totalEarnings = salesPersonData.reduce((sum, sale) => sum + sale.commission, 0);
+                const pendingCommissions = salesPersonData
+                    .filter(sale => sale.status === 'pending')
+                    .reduce((sum, sale) => sum + sale.commission, 0);
+                const totalSales = salesPersonData.length;
+                
+                // This month sales
+                const thisMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+                const thisMonthSales = salesPersonData.filter(sale => 
+                    sale.date.startsWith(thisMonth)
+                ).length;
+
+                // Update dashboard
+                document.getElementById('total-earnings').textContent = `$${totalEarnings.toFixed(2)}`;
+                document.getElementById('pending-commissions').textContent = `$${pendingCommissions.toFixed(2)}`;
+                document.getElementById('total-sales').textContent = totalSales;
+                document.getElementById('this-month-sales').textContent = thisMonthSales;
+
+                // Update sales table
+                this.updateSalesTable(salesPersonData);
+            }
+
+            updateSalesTable(salesData) {
+                const tbody = document.getElementById('sales-table-body');
+                tbody.innerHTML = salesData.map(sale => `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sale.date}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${sale.clientName}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${sale.saleAmount.toLocaleString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">$${sale.commission.toFixed(2)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full status-${sale.status}">
+                                ${sale.status.toUpperCase()}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            recordSale(clientName, saleAmount, commissionRate, notes) {
+                if (!this.currentSalesPerson) return false;
+
+                const totalCommission = saleAmount * (commissionRate / 100);
+                const salesPersonCommission = totalCommission * 0.9; // 90%
+                const overheadAmount = totalCommission * 0.1; // 10%
+
+                const newSale = {
+                    id: 'sale_' + Date.now(),
+                    date: new Date().toISOString().split('T')[0],
+                    salesPersonId: this.currentSalesPerson.id,
+                    salesPersonName: this.currentSalesPerson.name,
+                    clientName: clientName,
+                    saleAmount: saleAmount,
+                    commissionRate: commissionRate,
+                    commission: salesPersonCommission,
+                    overheadAmount: overheadAmount,
+                    status: 'pending',
+                    notes: notes || '',
+                    createdAt: new Date().toISOString()
+                };
+
+                this.salesData.push(newSale);
+                this.saveSalesData();
+                this.updateDashboard();
+                
+                return true;
+            }
+
+            logout() {
+                this.currentSalesPerson = null;
+                sessionStorage.removeItem('dwc_current_sales_person');
+                document.getElementById('sales-dashboard').classList.add('hidden');
+                document.getElementById('login-screen').classList.remove('hidden');
+                
+                // Clear form
+                document.getElementById('sales-id').value = '';
+                document.getElementById('sales-password').value = '';
+            }
+
+            checkExistingSession() {
+                const savedSession = sessionStorage.getItem('dwc_current_sales_person');
+                if (savedSession) {
+                    this.currentSalesPerson = JSON.parse(savedSession);
+                    this.showDashboard();
+                }
+            }
+
+            downloadReport() {
+                if (!this.currentSalesPerson) return;
+
+                const salesPersonData = this.salesData.filter(sale => 
+                    sale.salesPersonId === this.currentSalesPerson.id
+                );
+
+                const report = {
+                    salesPerson: this.currentSalesPerson.name,
+                    generatedAt: new Date().toISOString(),
+                    summary: {
+                        totalSales: salesPersonData.length,
+                        totalEarnings: salesPersonData.reduce((sum, sale) => sum + sale.commission, 0),
+                        pendingCommissions: salesPersonData
+                            .filter(sale => sale.status === 'pending')
+                            .reduce((sum, sale) => sum + sale.commission, 0)
+                    },
+                    sales: salesPersonData
+                };
+
+                const dataStr = JSON.stringify(report, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `${this.currentSalesPerson.name.replace(' ', '_')}_commission_report_${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+            }
+        }
+
+        // Initialize portal
+        const salesPortal = new DWCSalesPortal();
+
+        // Check for existing session on page load
+        salesPortal.checkExistingSession();
+
+        // Event handlers
+        function handleSalesLogin(event) {
+            event.preventDefault();
+            const salesId = document.getElementById('sales-id').value;
+            const password = document.getElementById('sales-password').value;
+
+            if (salesPortal.login(salesId, password)) {
+                console.log('Login successful');
+            } else {
+                alert('Invalid sales ID or password. Try dwc001/sales123');
+            }
+        }
+
+        function recordNewSale() {
+            document.getElementById('new-sale-modal').classList.remove('hidden');
+        }
+
+        function closeNewSaleModal() {
+            document.getElementById('new-sale-modal').classList.add('hidden');
+            document.getElementById('new-sale-form').reset();
+        }
+
+        function submitNewSale(event) {
+            event.preventDefault();
+            
+            const clientName = document.getElementById('client-name').value;
+            const saleAmount = parseFloat(document.getElementById('sale-amount').value);
+            const commissionRate = parseFloat(document.getElementById('commission-rate').value);
+            const notes = document.getElementById('sale-notes').value;
+
+            if (salesPortal.recordSale(clientName, saleAmount, commissionRate, notes)) {
+                alert('Sale recorded successfully!');
+                closeNewSaleModal();
+            } else {
+                alert('Error recording sale. Please try again.');
+            }
+        }
+
+        function viewPayoutHistory() {
+            alert('Payout history feature coming soon!');
+        }
+
+        function downloadReport() {
+            salesPortal.downloadReport();
+        }
+
+        function logout() {
+            salesPortal.logout();
+        }
+
+        // Close modal on outside click
+        document.getElementById('new-sale-modal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeNewSaleModal();
+            }
+        });
+
+        console.log('[DWC SALES] Sales portal loaded - use dwc001/sales123 to login');
+    </script>
+</body>
+</html>
