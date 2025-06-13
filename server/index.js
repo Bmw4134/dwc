@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import QNISLeadEngine from './qnis-lead-engine.js';
+import APIKeyVault from './api-key-vault.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -9,8 +10,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initialize QNIS Lead Engine
+// Initialize QNIS Lead Engine and API Key Vault
 const qnisEngine = new QNISLeadEngine();
+const keyVault = new APIKeyVault();
 
 // Production environment configuration
 const isProduction = process.env.NODE_ENV === 'production';
@@ -164,6 +166,21 @@ function executeKaizenCommand(command, params = {}) {
                 return `Module ${module} activated`;
             }
             throw new Error(`Module ${module} not found`);
+
+        case 'generate_website_lead':
+        case 'scrape_legacy_lead':
+        case 'sync_crm_lead':
+            const leadId = params.lead_id;
+            const company = params.company;
+            const location = params.location;
+            return {
+                action: command,
+                lead_id: leadId,
+                company: company,
+                location: location,
+                status: 'completed',
+                timestamp: new Date().toISOString()
+            };
             
         default:
             throw new Error(`Unknown command: ${command}`);
@@ -204,6 +221,158 @@ app.get('/api/dashboard/state', (req, res) => {
         qnis_stats: qnisEngine.getLeadStats(),
         timestamp: new Date().toISOString()
     });
+});
+
+// API Key Management Endpoints
+app.get('/api/keys', (req, res) => {
+    try {
+        const keys = keyVault.listKeys(false);
+        res.json({
+            success: true,
+            keys: keys,
+            stats: keyVault.getVaultStats()
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.post('/api/keys', (req, res) => {
+    try {
+        const { name, value, scope, expiresAt } = req.body;
+        
+        if (!name || !value || !scope) {
+            return res.status(400).json({
+                success: false,
+                error: 'Name, value, and scope are required'
+            });
+        }
+
+        const keyId = keyVault.addKey(name, value, scope, expiresAt);
+        
+        res.json({
+            success: true,
+            keyId: keyId,
+            message: 'API key added successfully'
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.put('/api/keys/:id', (req, res) => {
+    try {
+        const { id } = req.params;
+        const updates = req.body;
+        
+        const updatedKey = keyVault.updateKey(id, updates);
+        
+        res.json({
+            success: true,
+            key: updatedKey,
+            message: 'API key updated successfully'
+        });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.post('/api/keys/:id/reveal', (req, res) => {
+    try {
+        const { id } = req.params;
+        const keyData = keyVault.getKey(id);
+        
+        if (!keyData) {
+            return res.status(404).json({
+                success: false,
+                error: 'API key not found or inactive'
+            });
+        }
+        
+        res.json({
+            success: true,
+            value: keyData.value,
+            maskedValue: keyVault.maskValue(keyData.value)
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.post('/api/keys/:id/revoke', (req, res) => {
+    try {
+        const { id } = req.params;
+        const revokedKey = keyVault.revokeKey(id);
+        
+        res.json({
+            success: true,
+            key: revokedKey,
+            message: 'API key revoked successfully'
+        });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.delete('/api/keys/:id', (req, res) => {
+    try {
+        const { id } = req.params;
+        keyVault.deleteKey(id);
+        
+        res.json({
+            success: true,
+            message: 'API key deleted successfully'
+        });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+app.get('/api/keys/scope/:scope', (req, res) => {
+    try {
+        const { scope } = req.params;
+        const keyData = keyVault.getKeyByScope(scope);
+        
+        if (!keyData) {
+            return res.status(404).json({
+                success: false,
+                error: `No active API key found for scope: ${scope}`
+            });
+        }
+        
+        res.json({
+            success: true,
+            key: {
+                id: keyData.id,
+                name: keyData.name,
+                scope: keyData.scope,
+                maskedValue: keyVault.maskValue(keyData.value)
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
 });
 
 // API endpoints

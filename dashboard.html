@@ -486,6 +486,182 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
+        /* API Key Management Styles */
+        .api-key-management {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .key-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .section-title {
+            color: var(--accent);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .key-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-input, .form-select {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+        }
+
+        .keys-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .key-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .key-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .key-name {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .key-details {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .key-scope {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .key-value-display {
+            font-family: 'Courier New', monospace;
+            color: var(--text-light);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            min-width: 200px;
+        }
+
+        .key-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .key-btn {
+            padding: 6px 12px;
+            background: none;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .key-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .key-btn.danger {
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .key-btn.danger:hover {
+            background: #ff4444;
+            color: white;
+        }
+
+        .loading-keys {
+            text-align: center;
+            color: var(--text-light);
+            padding: 40px;
+            font-style: italic;
+        }
+
+        .key-status {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .key-status.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .key-status.expired {
+            background: #ff4444;
+            color: white;
+        }
+
+        .key-status.inactive {
+            background: #666;
+            color: white;
+        }
+
         .theme-toggle {
             background: none;
             border: none;
@@ -582,6 +758,10 @@
                     <span class="nav-icon">🛠️</span>
                     <span>Administration</span>
                 </div>
+                <div class="nav-item" onclick="showModule('apikeys')">
+                    <span class="nav-icon">🔐</span>
+                    <span>API Key Control</span>
+                </div>
             </div>
         </nav>
 
@@ -660,6 +840,58 @@
                         <div class="stat-item">
                             <span class="stat-label">Total Value:</span>
                             <span id="total-lead-value">$0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Key Management Module -->
+            <div id="apikeys-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">API Key Control Center</h2>
+                    <p class="module-subtitle">Secure credential management with enterprise-grade encryption</p>
+                </div>
+                
+                <div class="api-key-management">
+                    <!-- Add New API Key Section -->
+                    <div class="key-section">
+                        <h3 class="section-title">Add New API Key</h3>
+                        <div class="key-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="key-name">Key Name</label>
+                                    <input type="text" id="key-name" placeholder="e.g., OpenAI Production Key" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="key-scope">Scope</label>
+                                    <select id="key-scope" class="form-select">
+                                        <option value="mapping">Mapping</option>
+                                        <option value="crm">CRM</option>
+                                        <option value="ai">AI</option>
+                                        <option value="scraper">Scraper</option>
+                                        <option value="all">All Access</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="key-value">API Key Value</label>
+                                    <input type="password" id="key-value" placeholder="Enter API key value" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="key-expiry">Expiration (Optional)</label>
+                                    <input type="date" id="key-expiry" class="form-input">
+                                </div>
+                            </div>
+                            <button id="add-key-btn" class="action-btn primary">Add API Key</button>
+                        </div>
+                    </div>
+
+                    <!-- Existing Keys Section -->
+                    <div class="key-section">
+                        <h3 class="section-title">Existing API Keys</h3>
+                        <div id="keys-list" class="keys-list">
+                            <div class="loading-keys">Loading API keys...</div>
                         </div>
                     </div>
                 </div>
@@ -1382,6 +1614,52 @@
             const refreshBtn = document.getElementById('refresh-map');
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateLeadData);
+            }
+
+            // Add locate user button functionality
+            const locateBtn = document.getElementById('locate-user');
+            if (locateBtn) {
+                locateBtn.addEventListener('click', async () => {
+                    locateBtn.textContent = 'Locating...';
+                    try {
+                        qnisMap.userLocation = await getUserLocation();
+                        locateBtn.textContent = '📍 Located!';
+                        console.log('[LOCATION] User located:', qnisMap.userLocation);
+                        renderQuantumMap();
+                        
+                        setTimeout(() => {
+                            locateBtn.textContent = '📍 Locate Me';
+                        }, 3000);
+                    } catch (error) {
+                        locateBtn.textContent = 'Location Failed';
+                        console.error('[LOCATION] Failed:', error);
+                        setTimeout(() => {
+                            locateBtn.textContent = '📍 Locate Me';
+                        }, 3000);
+                    }
+                });
+            }
+
+            // Add drilldown panel event handlers
+            const closeBtn = document.getElementById('close-drilldown');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', hideLeadDrilldown);
+            }
+
+            // Add CRM action handlers
+            const generateWebsiteBtn = document.getElementById('generate-website');
+            if (generateWebsiteBtn) {
+                generateWebsiteBtn.addEventListener('click', () => executeCRMAction('generate_website'));
+            }
+
+            const scrapeLegacyBtn = document.getElementById('scrape-legacy');
+            if (scrapeLegacyBtn) {
+                scrapeLegacyBtn.addEventListener('click', () => executeCRMAction('scrape_legacy'));
+            }
+
+            const syncCRMBtn = document.getElementById('sync-crm');
+            if (syncCRMBtn) {
+                syncCRMBtn.addEventListener('click', () => executeCRMAction('sync_crm'));
             }
         });
     </script>
