@@ -58,14 +58,30 @@ app.get('/health', (req, res) => {
 // Middleware
 app.use(express.json());
 
-// Primary routing - serve dashboard by default to prevent loops
-app.get('/', (req, res) => {
+// Authentication middleware simulation for development
+const isAuthenticated = (req, res, next) => {
+    // For development, we'll simulate authentication
+    // In production, this would connect to Replit Auth
+    req.user = req.session?.user || null;
+    next();
+};
+
+// Primary routing - serve React app for authentication flow
+app.get('/', isAuthenticated, (req, res) => {
     const timestamp = Date.now();
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
-    console.log(`[ROUTING] Serving dashboard as default: ${timestamp}`);
-    res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+    
+    // If user is authenticated, serve dashboard content
+    if (req.user) {
+        console.log(`[ROUTING] Serving dashboard for authenticated user: ${timestamp}`);
+        res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+    } else {
+        console.log(`[ROUTING] Serving landing page for unauthenticated user: ${timestamp}`);
+        // For now, serve dashboard since React app needs build setup
+        res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+    }
 });
 
 // Pro bono trucking company website
