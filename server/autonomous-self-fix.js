@@ -121,7 +121,7 @@ class AutonomousSelfFixSystem {
         const moduleAnalysis = await this.analyzeModulesWithOpenAI(moduleChecks);
         
         for (const module of moduleChecks) {
-            const analysis = moduleAnalysis.modules[module.id];
+            const analysis = moduleAnalysis.modules ? moduleAnalysis.modules[module.id] : null;
             
             if (!analysis || analysis.status === 'BROKEN' || analysis.status === 'INCOMPLETE') {
                 issues.push({
@@ -490,6 +490,331 @@ Focus on enterprise-grade features and user experience.
             <button onclick="recordExpense()">📉 Record Expense</button>
             <button onclick="reconcileAccounts()">🔄 Reconcile</button>
             <button onclick="viewReports()">📊 View Reports</button>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateTaxManagementModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">Tax Management</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="calculateTaxes()">Calculate Taxes</button>
+        <button class="btn-secondary" onclick="generateTaxReport()">Generate Report</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="tax-overview">
+        <div class="tax-summary">
+            <div class="summary-card">
+                <h4>Federal Tax Liability</h4>
+                <div class="amount" id="federal-tax">$0.00</div>
+            </div>
+            <div class="summary-card">
+                <h4>State Tax Liability</h4>
+                <div class="amount" id="state-tax">$0.00</div>
+            </div>
+            <div class="summary-card">
+                <h4>Total Deductions</h4>
+                <div class="amount" id="total-deductions">$0.00</div>
+            </div>
+        </div>
+        <div class="tax-actions">
+            <button onclick="fileReturn()">📄 File Return</button>
+            <button onclick="schedulePayment()">💰 Schedule Payment</button>
+            <button onclick="trackRefund()">💸 Track Refund</button>
+            <button onclick="viewTaxHistory()">📊 Tax History</button>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateAIWatsonModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">AI Watson</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="activateWatson()">Activate Watson</button>
+        <button class="btn-secondary" onclick="trainModel()">Train Model</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="watson-interface">
+        <div class="ai-chat">
+            <div id="watson-chat-log" class="chat-log">
+                <div class="ai-message">Hello! I'm Watson, your AI assistant. How can I help you today?</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="watson-input" placeholder="Ask Watson anything..." />
+                <button onclick="sendToWatson()">Send</button>
+            </div>
+        </div>
+        <div class="watson-capabilities">
+            <h4>Capabilities</h4>
+            <div class="capability-grid">
+                <div class="capability-card" onclick="askAnalysis()">📊 Data Analysis</div>
+                <div class="capability-card" onclick="askStrategy()">🎯 Strategy Planning</div>
+                <div class="capability-card" onclick="askResearch()">🔍 Market Research</div>
+                <div class="capability-card" onclick="askOptimization()">⚡ Process Optimization</div>
+            </div>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateLeadGenerationModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">Lead Generation</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="generateLeads()">Generate Leads</button>
+        <button class="btn-secondary" onclick="importLeads()">Import Leads</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="lead-generation">
+        <div class="generation-settings">
+            <h4>Generation Parameters</h4>
+            <div class="form-group">
+                <label>Target Industry</label>
+                <select id="lead-industry">
+                    <option value="technology">Technology</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="finance">Finance</option>
+                    <option value="retail">Retail</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Geographic Area</label>
+                <input type="text" id="lead-geography" placeholder="City, State or ZIP" />
+            </div>
+        </div>
+        <div class="lead-results">
+            <h4>Generated Leads</h4>
+            <div id="lead-list" class="lead-list">
+                <div class="lead-item">Ready to generate new leads...</div>
+            </div>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateAnalyticsModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">Analytics</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="refreshAnalytics()">Refresh Data</button>
+        <button class="btn-secondary" onclick="exportReport()">Export Report</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="analytics-dashboard">
+        <div class="chart-container">
+            <canvas id="analytics-chart" width="800" height="400"></canvas>
+        </div>
+        <div class="analytics-metrics">
+            <div class="metric-card">
+                <h4>Conversion Rate</h4>
+                <div class="metric-value" id="conversion-rate">--</div>
+            </div>
+            <div class="metric-card">
+                <h4>Revenue Growth</h4>
+                <div class="metric-value" id="revenue-growth">--</div>
+            </div>
+            <div class="metric-card">
+                <h4>Customer Acquisition</h4>
+                <div class="metric-value" id="customer-acquisition">--</div>
+            </div>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateAutomationModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">Automation</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="createWorkflow()">Create Workflow</button>
+        <button class="btn-secondary" onclick="viewActiveWorkflows()">View Active</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="automation-center">
+        <div class="workflow-builder">
+            <h4>Workflow Builder</h4>
+            <div class="workflow-canvas" id="workflow-canvas">
+                <div class="workflow-node" data-type="trigger">📧 Email Trigger</div>
+                <div class="workflow-node" data-type="action">⚡ Send Response</div>
+                <div class="workflow-node" data-type="condition">❓ If/Then Logic</div>
+            </div>
+        </div>
+        <div class="automation-list">
+            <h4>Active Automations</h4>
+            <div id="automation-list" class="automation-items">
+                <div class="automation-item">Email Follow-up Sequence</div>
+                <div class="automation-item">Lead Scoring Automation</div>
+            </div>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateWatsonCommandModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">Watson Command</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="activateVoiceCommand()">🎤 Voice Mode</button>
+        <button class="btn-secondary" onclick="viewCommands()">📋 Commands</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="command-interface">
+        <div class="voice-status">
+            <div id="voice-indicator" class="voice-off">🔴 Voice Inactive</div>
+            <button id="voice-toggle" onclick="toggleVoiceCommand()">Activate Voice</button>
+        </div>
+        <div class="command-history">
+            <h4>Recent Commands</h4>
+            <div id="command-log" class="command-log">
+                <div class="command-entry">Ready for voice commands...</div>
+            </div>
+        </div>
+        <div class="available-commands">
+            <h4>Available Commands</h4>
+            <div class="command-list">
+                <div class="command-item">"Show leads"</div>
+                <div class="command-item">"Generate report"</div>
+                <div class="command-item">"Switch to analytics"</div>
+                <div class="command-item">"Export data"</div>
+            </div>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateNexusOversightModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">Nexus Oversight</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="runSystemScan()">🔍 System Scan</button>
+        <button class="btn-secondary" onclick="viewSystemHealth()">💓 Health Check</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="oversight-dashboard">
+        <div class="system-status">
+            <h4>System Status</h4>
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="status-label">CPU Usage</span>
+                    <span class="status-value" id="cpu-usage">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Memory</span>
+                    <span class="status-value" id="memory-usage">--</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Database</span>
+                    <span class="status-value" id="db-status">Online</span>
+                </div>
+            </div>
+        </div>
+        <div class="module-health">
+            <h4>Module Health</h4>
+            <div id="module-health-list" class="health-list">
+                <div class="health-item">All modules operational</div>
+            </div>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateTradingBotModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">Trading Bot</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="startTradingBot()">▶️ Start Bot</button>
+        <button class="btn-secondary" onclick="configureTradingBot()">⚙️ Configure</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="trading-interface">
+        <div class="bot-status">
+            <h4>Bot Status</h4>
+            <div class="status-indicator" id="bot-status">🔴 Inactive</div>
+            <div class="performance-metrics">
+                <div class="metric">
+                    <span>24h P&L:</span>
+                    <span id="daily-pnl">$0.00</span>
+                </div>
+                <div class="metric">
+                    <span>Win Rate:</span>
+                    <span id="win-rate">0%</span>
+                </div>
+            </div>
+        </div>
+        <div class="trading-pairs">
+            <h4>Active Pairs</h4>
+            <div id="trading-pairs-list" class="pairs-list">
+                <div class="pair-item">BTC/USD - Monitoring</div>
+                <div class="pair-item">ETH/USD - Monitoring</div>
+            </div>
+        </div>
+    </div>
+</div>
+        `;
+    }
+
+    generateAdminControlModule() {
+        return `
+<div class="module-header">
+    <h2 class="module-title">Admin Control</h2>
+    <div class="module-actions">
+        <button class="btn-primary" onclick="backupSystem()">💾 Backup</button>
+        <button class="btn-secondary" onclick="viewSystemLogs()">📋 View Logs</button>
+    </div>
+</div>
+<div class="module-content">
+    <div class="admin-dashboard">
+        <div class="admin-controls">
+            <h4>System Controls</h4>
+            <div class="control-grid">
+                <button class="control-btn" onclick="restartServices()">🔄 Restart Services</button>
+                <button class="control-btn" onclick="clearCache()">🗑️ Clear Cache</button>
+                <button class="control-btn" onclick="updateSystem()">⬆️ Update System</button>
+                <button class="control-btn" onclick="exportData()">📤 Export Data</button>
+            </div>
+        </div>
+        <div class="admin-stats">
+            <h4>System Statistics</h4>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span>Uptime:</span>
+                    <span id="system-uptime">--</span>
+                </div>
+                <div class="stat-item">
+                    <span>Users:</span>
+                    <span id="active-users">--</span>
+                </div>
+                <div class="stat-item">
+                    <span>Storage:</span>
+                    <span id="storage-usage">--</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
