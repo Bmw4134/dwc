@@ -27,6 +27,29 @@ app.get('/health', (req, res) => {
 // Middleware
 app.use(express.json());
 
+// Primary routing - must come before static middleware
+app.get('/', (req, res) => {
+    const timestamp = Date.now();
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+    console.log(`[ROUTING] Serving clean landing page: ${timestamp}`);
+    res.sendFile(path.join(process.cwd(), 'landing.html'));
+});
+
+// Dashboard interface
+app.get('/dashboard', (req, res) => {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    console.log(`[ROUTING] Serving modular dashboard`);
+    res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+});
+
+// Legacy complex interface
+app.get('/legacy', (req, res) => {
+    console.log(`[ROUTING] Serving legacy complex interface`);
+    res.sendFile(path.join(process.cwd(), 'index.html'));
+});
+
 // Serve static assets from root directory for modular architecture
 app.use(express.static('.', {
   setHeaders: (res, filePath) => {
@@ -154,28 +177,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Primary routing - landing page first
-app.get('/', (req, res) => {
-    const timestamp = Date.now();
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.set('Pragma', 'no-cache');
-    res.set('Expires', '0');
-    console.log(`[ROUTING] Serving clean landing page: ${timestamp}`);
-    res.sendFile(path.join(process.cwd(), 'landing.html'));
-});
 
-// Dashboard interface
-app.get('/dashboard', (req, res) => {
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    console.log(`[ROUTING] Serving modular dashboard`);
-    res.sendFile(path.join(process.cwd(), 'dashboard.html'));
-});
-
-// Legacy complex interface
-app.get('/legacy', (req, res) => {
-    console.log(`[ROUTING] Serving legacy complex interface`);
-    res.sendFile(path.join(process.cwd(), 'index.html'));
-});
 
 // Catch-all route for SPA behavior
 app.get('*', (req, res) => {
