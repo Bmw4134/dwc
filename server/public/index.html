@@ -491,16 +491,16 @@
         </div>
     </div>
 
-    <div class="dashboard" id="dashboard-section">
-        <div class="container">
+    <div class="dashboard" id="dashboard-section" style="display: none;">
+        <div class="container" id="dashboard">
             <h2 style="text-align: center; margin-bottom: 20px; color: var(--text-primary);">Enterprise Dashboard</h2>
             <div class="module-navigation">
-                <button class="nav-btn active" onclick="showModuleCategory('overview')">Overview</button>
-                <button class="nav-btn" onclick="showModuleCategory('automation')">Automation</button>
-                <button class="nav-btn" onclick="showModuleCategory('intelligence')">Intelligence</button>
-                <button class="nav-btn" onclick="showModuleCategory('trading')">Trading</button>
-                <button class="nav-btn" onclick="showModuleCategory('analytics')">Analytics</button>
-                <button class="nav-btn" onclick="showModuleCategory('control')">Control</button>
+                <button class="nav-btn active" onclick="showModuleCategory('overview', event)">Overview</button>
+                <button class="nav-btn" onclick="showModuleCategory('automation', event)">Automation</button>
+                <button class="nav-btn" onclick="showModuleCategory('intelligence', event)">Intelligence</button>
+                <button class="nav-btn" onclick="showModuleCategory('trading', event)">Trading</button>
+                <button class="nav-btn" onclick="showModuleCategory('analytics', event)">Analytics</button>
+                <button class="nav-btn" onclick="showModuleCategory('control', event)">Control</button>
             </div>
 
             <div id="overview-modules" class="dashboard-grid module-category">
@@ -965,7 +965,15 @@
         }
 
         // Module navigation and interaction functions
-        function showModuleCategory(category) {
+        function showModuleCategory(category, event) {
+            // Prevent default behavior
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            console.log('[MODULES] Switching to category:', category);
+            
             // Hide all module categories
             const categories = document.querySelectorAll('.module-category');
             categories.forEach(cat => cat.style.display = 'none');
@@ -974,20 +982,45 @@
             const selectedCategory = document.getElementById(category + '-modules');
             if (selectedCategory) {
                 selectedCategory.style.display = 'grid';
+                console.log('[MODULES] Displayed:', category, 'modules');
+            } else {
+                console.error('[MODULES] Category not found:', category + '-modules');
             }
             
             // Update navigation buttons
             const navButtons = document.querySelectorAll('.nav-btn');
             navButtons.forEach(btn => btn.classList.remove('active'));
             
-            const activeButton = event.target;
-            activeButton.classList.add('active');
+            // Add active class to clicked button
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // Fallback - find button by text content
+                navButtons.forEach(btn => {
+                    if (btn.textContent.toLowerCase() === category.toLowerCase()) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
             
-            console.log('[MODULES] Switched to category:', category);
+            // Provide user feedback
+            speakText('Switched to ' + category + ' module category');
+            showNotification('Module Category', 'Viewing ' + category + ' modules');
+            
+            console.log('[MODULES] Successfully switched to category:', category);
         }
 
         function activateModule(moduleId) {
             console.log('[MODULE] Activating module:', moduleId);
+            
+            // Add visual feedback for click
+            const moduleCard = event.target.closest('.module-card');
+            if (moduleCard) {
+                moduleCard.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    moduleCard.style.transform = 'scale(1)';
+                }, 150);
+            }
             
             // Show module detail panel
             showModuleDetail(moduleId);
@@ -996,28 +1029,46 @@
             switch(moduleId) {
                 case 'system-status':
                     speakText('System status module activated. All 47 automation modules operational.');
+                    showNotification('System Status', 'All modules operational');
                     break;
                 case 'voice-commands':
                     speakText('Voice command training module activated.');
+                    showNotification('Voice Commands', 'Training module ready');
                     break;
                 case 'intelligence-network':
                     speakText('Intelligence network monitoring activated.');
+                    showNotification('Intelligence Network', 'Monitoring active');
                     break;
                 case 'quantum-leads':
                     speakText('Quantum lead mapping system activated.');
+                    showNotification('Quantum Leads', 'Lead generation active');
                     break;
                 case 'watson-ai':
                     speakText('Watson AI core system activated.');
+                    showNotification('Watson AI', 'AI system ready');
                     break;
                 case 'nexus-control':
                     speakText('NEXUS master control activated.');
+                    showNotification('NEXUS Control', 'Master control online');
                     break;
                 case 'crypto-trading':
                     speakText('Cryptocurrency trading bot activated.');
+                    showNotification('Crypto Trading', 'Trading bot ready');
+                    break;
+                case 'workflow-automation':
+                    speakText('Workflow automation engine activated.');
+                    showNotification('Workflow Automation', 'Engine ready');
+                    break;
+                case 'email-automation':
+                    speakText('Email automation system activated.');
+                    showNotification('Email Automation', 'Campaign system ready');
                     break;
                 default:
                     speakText('Module ' + moduleId.replace('-', ' ') + ' activated.');
+                    showNotification('Module Active', moduleId.replace('-', ' ') + ' ready');
             }
+            
+            console.log('[MODULE] Successfully activated:', moduleId);
         }
 
         function showModuleDetail(moduleId) {
@@ -3086,6 +3137,54 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
 
         // Make diagnostic available globally
         window.runDiagnostic = runFullPlatformDiagnostic;
+
+        // Add comprehensive click debugging
+        document.addEventListener('click', function(e) {
+            console.log('[CLICK] Element clicked:', e.target);
+            console.log('[CLICK] Element type:', e.target.tagName);
+            console.log('[CLICK] Element classes:', e.target.className);
+            console.log('[CLICK] Element ID:', e.target.id);
+            console.log('[CLICK] Click coordinates:', e.clientX, e.clientY);
+            
+            // Visual feedback for any click
+            e.target.style.outline = '2px solid #00d4ff';
+            setTimeout(() => {
+                e.target.style.outline = '';
+            }, 300);
+            
+            // Check if click target has onclick attribute
+            if (e.target.onclick || e.target.getAttribute('onclick')) {
+                console.log('[CLICK] Has onclick handler:', e.target.getAttribute('onclick'));
+            }
+            
+            // Check for button clicks specifically
+            if (e.target.tagName === 'BUTTON') {
+                console.log('[BUTTON] Button clicked:', e.target.textContent);
+                speakText('Button clicked: ' + e.target.textContent);
+                showNotification('Button Click', e.target.textContent + ' activated');
+            }
+            
+            // Check for module card clicks
+            if (e.target.closest('.module-card')) {
+                console.log('[MODULE-CARD] Module card area clicked');
+                speakText('Module card selected');
+            }
+        });
+
+        // Add keyboard debugging
+        document.addEventListener('keydown', function(e) {
+            console.log('[KEYBOARD] Key pressed:', e.key, 'Code:', e.code);
+            if (e.key === 'Enter' || e.key === ' ') {
+                console.log('[KEYBOARD] Activation key pressed on:', e.target);
+            }
+        });
+
+        // Add touch debugging for mobile
+        document.addEventListener('touchstart', function(e) {
+            console.log('[TOUCH] Touch started on:', e.target);
+            console.log('[TOUCH] Touch coordinates:', e.touches[0].clientX, e.touches[0].clientY);
+            speakText('Touch detected');
+        });
 
         // Testing Panel Functions
         function showTestingPanel() {
