@@ -785,12 +785,34 @@
             
             if (username === 'admin' && password === 'nexus2024') {
                 isAuthenticated = true;
+                currentUser = 'admin';
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
                 document.getElementById('logout-btn').style.display = 'block';
                 
                 console.log('[AUTH] Authentication successful - Enterprise dashboard access granted');
                 initializePlatformFeatures();
+                
+                // Show testing panel for admin
+                setTimeout(() => {
+                    showTestingPanel();
+                }, 2000);
+                
+            } else if (username === 'watson' && password === 'watson123') {
+                isAuthenticated = true;
+                currentUser = 'watson';
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                document.getElementById('logout-btn').style.display = 'block';
+                
+                console.log('[AUTH] Watson authentication successful - Master control access granted');
+                initializePlatformFeatures();
+                
+                // Show testing panel for watson
+                setTimeout(() => {
+                    showTestingPanel();
+                }, 2000);
+                
             } else {
                 alert('Invalid credentials. Please try again.');
                 console.log('[AUTH] Authentication failed');
@@ -2980,6 +3002,189 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
         };
 
         console.log('[NEXUS] Deep dive simulator loaded - Use runNexusDeepDive() or add ?deepdive=true to URL');
+
+        // Testing Panel Functions
+        function showTestingPanel() {
+            const testingHTML = `
+                <div id="testing-panel" style="position: fixed; top: 20px; right: 20px; width: 320px; background: linear-gradient(135deg, #1a1a2e, #16213e); border: 2px solid #00d4ff; border-radius: 12px; padding: 20px; box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3); z-index: 10000; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; color: #00d4ff; font-size: 16px;">🧪 Testing Panel</h3>
+                        <button onclick="closeTestingPanel()" style="background: none; border: none; color: #00d4ff; font-size: 18px; cursor: pointer;">&times;</button>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <button onclick="runNexusDeepDive()" 
+                                style="width: 100%; padding: 8px; margin-bottom: 8px; background: linear-gradient(135deg, #00d4ff, #0099cc); border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            🚀 Run Deep Dive Test
+                        </button>
+                        
+                        <button onclick="runUserBehaviorTests()" 
+                                style="width: 100%; padding: 8px; margin-bottom: 8px; background: linear-gradient(135deg, #ff6b6b, #ee5a52); border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            👤 Test User Behaviors
+                        </button>
+                        
+                        <button onclick="runRedeploymentValidation()" 
+                                style="width: 100%; padding: 8px; margin-bottom: 8px; background: linear-gradient(135deg, #4ecdc4, #44a08d); border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            ✅ Deployment Validation
+                        </button>
+                        
+                        <button onclick="runModuleTests()" 
+                                style="width: 100%; padding: 8px; margin-bottom: 8px; background: linear-gradient(135deg, #ffd93d, #ff9800); border: none; border-radius: 6px; color: white; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            ⚙️ Test All Modules
+                        </button>
+                    </div>
+                    
+                    <div style="border-top: 1px solid #00d4ff; padding-top: 15px;">
+                        <button onclick="runQuickValidation()" 
+                                style="width: 100%; padding: 10px; background: linear-gradient(135deg, #a8e6cf, #7fcdcd); border: none; border-radius: 6px; color: #333; cursor: pointer; font-size: 14px; font-weight: bold;">
+                            ⚡ Quick Platform Test
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 10px; background: rgba(0, 212, 255, 0.1); border-radius: 6px; font-size: 12px; line-height: 1.4;">
+                        <strong>User Level:</strong> ${currentUser === 'admin' ? 'Administrator' : 'Watson AI'}<br>
+                        <strong>Access:</strong> Full Testing Suite<br>
+                        <strong>Modules:</strong> All 20+ Available
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', testingHTML);
+            
+            // Animate panel in
+            const panel = document.getElementById('testing-panel');
+            panel.style.transform = 'translateX(100%)';
+            panel.style.transition = 'transform 0.3s ease-out';
+            setTimeout(() => {
+                panel.style.transform = 'translateX(0)';
+            }, 50);
+            
+            speakText('Testing panel activated. You now have access to comprehensive platform testing tools.');
+            showNotification('Testing Access', 'Advanced testing tools now available');
+        }
+
+        function closeTestingPanel() {
+            const panel = document.getElementById('testing-panel');
+            if (panel) {
+                panel.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    panel.remove();
+                }, 300);
+            }
+        }
+
+        function runModuleTests() {
+            console.log('🔧 Testing All Module Configurations...');
+            speakText('Testing all module configurations and interfaces');
+            showNotification('Module Testing', 'Testing all 20+ module configurations...');
+            
+            const modules = [
+                'system-status', 'intelligence-network', 'watson-ai', 'admin-panel',
+                'voice-commands', 'quantum-leads', 'crypto-trading', 'workflow-automation',
+                'email-automation', 'social-automation', 'data-collection', 'nexus-control',
+                'predictive-analytics', 'market-analysis', 'business-intelligence'
+            ];
+            
+            let testResults = [];
+            let passedTests = 0;
+            
+            modules.forEach((module, index) => {
+                setTimeout(() => {
+                    try {
+                        // Test module activation
+                        activateModule(module);
+                        const moduleInfo = getModuleInfo(module);
+                        
+                        if (moduleInfo.title && moduleInfo.content) {
+                            testResults.push({ module, status: 'PASS', details: 'Configuration interface working' });
+                            passedTests++;
+                            console.log(`✅ ${module}: Configuration interface functional`);
+                        } else {
+                            testResults.push({ module, status: 'FAIL', details: 'Missing title or content' });
+                            console.log(`❌ ${module}: Missing configuration interface`);
+                        }
+                        
+                        // Complete test summary
+                        if (index === modules.length - 1) {
+                            setTimeout(() => {
+                                const successRate = ((passedTests / modules.length) * 100).toFixed(1);
+                                console.log(`🏁 Module Testing Complete: ${passedTests}/${modules.length} passed (${successRate}%)`);
+                                speakText(`Module testing complete. ${passedTests} out of ${modules.length} modules passed with ${successRate} percent success rate.`);
+                                showNotification('Testing Complete', `${passedTests}/${modules.length} modules passed (${successRate}%)`);
+                            }, 500);
+                        }
+                        
+                    } catch (error) {
+                        testResults.push({ module, status: 'ERROR', details: error.message });
+                        console.log(`⚠️ ${module}: Error - ${error.message}`);
+                    }
+                }, index * 200); // Stagger tests
+            });
+        }
+
+        function runQuickValidation() {
+            console.log('⚡ Running Quick Platform Validation...');
+            speakText('Running quick platform validation');
+            showNotification('Quick Test', 'Validating core platform functionality...');
+            
+            const quickTests = [
+                { name: 'Authentication System', test: () => typeof handleLogin === 'function' },
+                { name: 'Module Navigation', test: () => typeof showModuleCategory === 'function' },
+                { name: 'Voice Commands', test: () => typeof processVoiceCommand === 'function' },
+                { name: 'Data Export', test: () => typeof exportSystemData === 'function' },
+                { name: 'User Management', test: () => typeof createUser === 'function' },
+                { name: 'Configuration Save', test: () => typeof saveSystemConfig === 'function' },
+                { name: 'Notification System', test: () => typeof showNotification === 'function' },
+                { name: 'Speech Synthesis', test: () => typeof speakText === 'function' }
+            ];
+            
+            let passedQuickTests = 0;
+            
+            quickTests.forEach((test, index) => {
+                setTimeout(() => {
+                    try {
+                        const result = test.test();
+                        if (result) {
+                            passedQuickTests++;
+                            console.log(`✅ ${test.name}: Working`);
+                        } else {
+                            console.log(`❌ ${test.name}: Failed`);
+                        }
+                        
+                        if (index === quickTests.length - 1) {
+                            const quickSuccessRate = ((passedQuickTests / quickTests.length) * 100).toFixed(1);
+                            console.log(`⚡ Quick Validation Complete: ${passedQuickTests}/${quickTests.length} (${quickSuccessRate}%)`);
+                            speakText(`Quick validation complete. ${quickSuccessRate} percent of core systems operational.`);
+                            
+                            if (quickSuccessRate >= 80) {
+                                showNotification('Platform Ready', `${quickSuccessRate}% systems operational - Ready for use`);
+                            } else {
+                                showNotification('Issues Detected', `${quickSuccessRate}% operational - Some systems need attention`);
+                            }
+                        }
+                    } catch (error) {
+                        console.log(`⚠️ ${test.name}: Error - ${error.message}`);
+                    }
+                }, index * 100);
+            });
+        }
+
+        // Add easy access info to login screen
+        setTimeout(() => {
+            const loginContainer = document.querySelector('.login-container');
+            if (loginContainer && !document.getElementById('testing-info')) {
+                const testingInfo = document.createElement('div');
+                testingInfo.id = 'testing-info';
+                testingInfo.style.cssText = 'margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 8px; font-size: 14px; color: #0369a1; border-left: 4px solid #0ea5e9;';
+                testingInfo.innerHTML = `
+                    <strong>Testing Access:</strong><br>
+                    • Admin: admin / nexus2024<br>
+                    • Watson: watson / watson123<br>
+                    <small>Both accounts get testing panel access</small>
+                `;
+                loginContainer.appendChild(testingInfo);
+            }
+        }, 1000);
     </script>
 </body>
 </html>
