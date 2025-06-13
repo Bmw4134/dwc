@@ -4,59 +4,6 @@
       "issues": [
         {
           "type": "MODULE_ISSUE",
-          "moduleId": "legal-management",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
-          "description": "The legal-management module currently lacks integration with external legal databases and does not fully automate document generation.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "tax-management",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
-          "description": "The tax-management module lacks support for international tax regulations and automated filing capabilities.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "qnis",
-          "severity": "HIGH",
-          "status": "BROKEN",
-          "description": "The QNIS module is currently non-functional due to issues with the quantum computing integration, leading to inaccurate lead mapping.",
-          "suggestedFix": "Rebuild module with core functionality"
-        },
-        {
-          "type": "MODULE_ISSUE",
-          "moduleId": "watson-command",
-          "severity": "HIGH",
-          "status": "INCOMPLETE",
-          "description": "The voice and command interface is partially implemented, lacking support for multiple languages and complex command structures.",
-          "suggestedFix": "Rebuild module with core functionality"
-        }
-      ],
-      "moduleCount": 13
-    },
-    "behavior": {
-      "optimizations": [],
-      "interactionCount": 0
-    },
-    "performance": {
-      "issues": []
-    },
-    "timestamp": "2025-06-13T19:45:21.989Z",
-    "metrics": {
-      "fixesApplied": 66,
-      "modulesHealed": 66,
-      "errorsDetected": 0,
-      "performanceOptimizations": 0
-    }
-  },
-  {
-    "diagnosis": {
-      "issues": [
-        {
-          "type": "MODULE_ISSUE",
           "moduleId": "business-suite",
           "severity": "HIGH",
           "status": "MISSING",
@@ -6377,6 +6324,138 @@
     "metrics": {
       "fixesApplied": 72,
       "modulesHealed": 72,
+      "errorsDetected": 0,
+      "performanceOptimizations": 0
+    }
+  },
+  {
+    "diagnosis": {
+      "issues": [
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "business-suite",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module business-suite is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "legal-management",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module legal-management is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "accounting",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module accounting is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "tax-management",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module tax-management is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "ai-watson",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module ai-watson is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "qnis",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module qnis is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "lead-generation",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module lead-generation is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "analytics",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module analytics is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "automation",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module automation is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "watson-command",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module watson-command is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "nexus-oversight",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module nexus-oversight is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "trading-bot",
+          "severity": "MEDIUM",
+          "status": "MISSING",
+          "description": "Module trading-bot is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        },
+        {
+          "type": "MODULE_ISSUE",
+          "moduleId": "admin-control",
+          "severity": "HIGH",
+          "status": "MISSING",
+          "description": "Module admin-control is not functional",
+          "suggestedFix": "Rebuild module with core functionality"
+        }
+      ],
+      "moduleCount": 13
+    },
+    "behavior": {
+      "optimizations": [],
+      "interactionCount": 0
+    },
+    "performance": {
+      "issues": [
+        {
+          "type": "MEMORY_HIGH",
+          "severity": "MEDIUM",
+          "description": "High memory usage detected",
+          "fix": "Implement memory optimization"
+        }
+      ]
+    },
+    "timestamp": "2025-06-13T20:38:05.418Z",
+    "metrics": {
+      "fixesApplied": 13,
+      "modulesHealed": 13,
       "errorsDetected": 0,
       "performanceOptimizations": 0
     }

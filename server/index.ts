@@ -554,7 +554,7 @@ function requireAuth(req, res, next) {
   // Verify session exists in our store
   if (sessionId && !activeSessions.has(sessionId)) {
     console.log(`[ROUTING] Invalid session ${sessionId} - serving landing page`);
-    return res.sendFile(path.join(__dirname, '../landing.html'));
+    return res.sendFile(path.join(process.cwd(), 'landing.html'));
   }
   
   next();
@@ -567,11 +567,11 @@ app.get('/', (req, res) => {
   
   if (!sessionId && !authToken) {
     console.log(`[ROUTING] Serving landing page for unauthenticated user: ${Date.now()}`);
-    return res.sendFile(path.join(__dirname, '../landing.html'));
+    return res.sendFile(path.join(process.cwd(), 'landing.html'));
   }
   
   console.log(`[ROUTING] Authenticated user accessing dashboard`);
-  res.sendFile(path.join(__dirname, '../dashboard.html'));
+  res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
 // Login endpoint to create authenticated session
@@ -622,7 +622,7 @@ app.post('/api/logout', (req, res) => {
 
 // Dashboard route (requires authentication)
 app.get('/dashboard', requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, '../dashboard.html'));
+  res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
 // Serve the main application
@@ -636,10 +636,12 @@ app.get('*', (req, res) => {
   const authToken = req.headers['authorization'] || req.cookies?.auth_token;
   
   if (!sessionId && !authToken) {
-    return res.sendFile(path.join(__dirname, '../landing.html'));
+    console.log(`[ROUTING] Catch-all serving landing page for unauthenticated user`);
+    return res.sendFile(path.join(process.cwd(), 'landing.html'));
   }
   
-  res.sendFile(path.join(__dirname, '../dashboard.html'));
+  console.log(`[ROUTING] Catch-all serving dashboard for authenticated user`);
+  res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
