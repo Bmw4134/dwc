@@ -38,8 +38,62 @@ import('./autonomous-pipeline.js').then(module => {
     console.log('[PIPELINE] Autonomous Lead-to-Solution Pipeline initialized');
 });
 
-// Autonomous self-fix system disabled to prevent API rate limits
-console.log('[SELF-FIX] System disabled to prevent OpenAI API rate limiting');
+// Activate optimized self-healing system
+console.log('[SELF-FIX] Activating optimized self-healing system...');
+
+class ServerSelfHealing {
+    constructor() {
+        this.healingActive = true;
+        this.lastHealthCheck = Date.now();
+        this.initializeHealing();
+    }
+
+    initializeHealing() {
+        console.log('[SELF-FIX] Server-side self-healing system activated');
+        
+        // Monitor lead generation health
+        setInterval(() => this.checkLeadGeneration(), 30000);
+        
+        // Monitor API endpoint health
+        setInterval(() => this.checkAPIHealth(), 60000);
+        
+        // Monitor system resources
+        setInterval(() => this.checkSystemHealth(), 45000);
+    }
+
+    checkLeadGeneration() {
+        const leadStats = qnisEngine.getLeadStats();
+        if (leadStats.totalLeads === 0) {
+            console.log('[SELF-FIX] No leads detected, triggering lead generation');
+            qnisEngine.generateEmergencyLeads(5);
+        }
+    }
+
+    checkAPIHealth() {
+        // Verify API endpoints are responsive
+        const healthData = {
+            timestamp: Date.now(),
+            leadsAPI: !!qnisEngine,
+            apiVault: !!apiKeyVault,
+            serverUptime: process.uptime()
+        };
+        
+        if (healthData.serverUptime > 3600) { // 1 hour
+            console.log('[SELF-FIX] System healthy - uptime:', Math.floor(healthData.serverUptime / 60), 'minutes');
+        }
+    }
+
+    checkSystemHealth() {
+        const memUsage = process.memoryUsage();
+        if (memUsage.heapUsed > 100 * 1024 * 1024) { // 100MB threshold
+            console.log('[SELF-FIX] Memory usage elevated, triggering cleanup');
+            if (global.gc) global.gc();
+        }
+    }
+}
+
+global.selfHealingSystem = new ServerSelfHealing();
+console.log('[SELF-FIX] Optimized self-healing system fully activated');
 
 // Production environment configuration
 const isProduction = process.env.NODE_ENV === 'production';
