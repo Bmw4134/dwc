@@ -6487,10 +6487,10 @@ KNOWLEDGE GRAPH CONNECTIONS:
                         mapContainer.style.minHeight = '500px';
                     }
                     
-                    // Initialize QNIS with U.S. map tiles - force display
+                    // NEXUS QUANTUM MAP OVERRIDE - Force visual display
                     setTimeout(() => {
-                        forceLeafletMapDisplay();
-                    }, 300);
+                        nexusQuantumMapOverride();
+                    }, 100);
                 }
                 
                 // Update navigation state
@@ -7218,6 +7218,233 @@ KNOWLEDGE GRAPH CONNECTIONS:
             notification.textContent = message;
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 3000);
+        }
+
+        function nexusQuantumMapOverride() {
+            console.log('[NEXUS] Quantum Map Override - Creating native visual map');
+            
+            const mapContainer = document.getElementById('qnis-map');
+            if (!mapContainer) return;
+            
+            // Clear and force container to display
+            mapContainer.innerHTML = '';
+            mapContainer.style.cssText = `
+                width: 100% !important; 
+                height: 500px !important; 
+                display: block !important; 
+                position: relative !important;
+                background: #1a1a2e !important;
+                border: 2px solid #10b981 !important;
+                border-radius: 12px !important;
+                overflow: hidden !important;
+            `;
+            
+            // Load lead data
+            loadCacheFromStorage();
+            const leads = qnisMap?.leads || leadMapCache?.leads || [];
+            
+            // Create native quantum map
+            mapContainer.innerHTML = `
+                <div style="position: relative; width: 100%; height: 100%; background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);">
+                    <!-- Map Header -->
+                    <div style="position: absolute; top: 0; left: 0; right: 0; background: rgba(16,185,129,0.1); padding: 15px; border-bottom: 1px solid rgba(16,185,129,0.3); z-index: 10;">
+                        <div style="color: #10b981; font-weight: bold; font-size: 18px; display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 24px;">🗺️</span>
+                            NEXUS U.S. Geographic Intelligence Map
+                            <span style="background: rgba(16,185,129,0.3); padding: 4px 12px; border-radius: 20px; font-size: 12px;">LIVE</span>
+                        </div>
+                        <div style="color: #64748b; font-size: 14px; margin-top: 5px;">
+                            Real-time lead tracking across ${new Set(leads.map(l => l.city || l.coordinates?.city)).size} cities | ${leads.length} active leads
+                        </div>
+                    </div>
+                    
+                    <!-- Interactive U.S. Map Background -->
+                    <div style="position: absolute; top: 60px; left: 20px; right: 20px; bottom: 20px; background-image: url('data:image/svg+xml;base64,${btoa(generateUSMapSVG())}'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                        
+                        <!-- Lead Markers Overlay -->
+                        <div id="lead-markers-container" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
+                            ${generateLeadMarkers(leads)}
+                        </div>
+                        
+                        <!-- Zoom Controls -->
+                        <div style="position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 5px;">
+                            <button onclick="zoomIn()" style="width: 40px; height: 40px; background: rgba(16,185,129,0.8); border: none; border-radius: 6px; color: white; font-size: 18px; cursor: pointer; font-weight: bold;">+</button>
+                            <button onclick="zoomOut()" style="width: 40px; height: 40px; background: rgba(16,185,129,0.8); border: none; border-radius: 6px; color: white; font-size: 18px; cursor: pointer; font-weight: bold;">−</button>
+                        </div>
+                        
+                        <!-- Map Legend -->
+                        <div style="position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px; border: 1px solid rgba(16,185,129,0.4);">
+                            <div style="color: #10b981; font-weight: bold; margin-bottom: 10px; font-size: 14px;">QNIS Score Legend</div>
+                            <div style="display: flex; flex-direction: column; gap: 5px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%;"></div>
+                                    <span style="color: white; font-size: 12px;">High Value (80+)</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #3b82f6; border-radius: 50%;"></div>
+                                    <span style="color: white; font-size: 12px;">Medium Value (60-79)</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #f59e0b; border-radius: 50%;"></div>
+                                    <span style="color: white; font-size: 12px;">Standard (< 60)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add interactive functionality
+            addMapInteractivity();
+            
+            console.log('[NEXUS] Quantum map override complete - visual map active');
+            
+            // Success notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; 
+                background: linear-gradient(135deg, #10b981, #059669); 
+                color: white; padding: 15px 25px; border-radius: 10px; 
+                font-weight: bold; z-index: 10000; 
+                box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+                font-family: 'Segoe UI', sans-serif;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 20px;">🗺️</span>
+                    <div>
+                        <div>NEXUS Map Active</div>
+                        <div style="font-size: 12px; opacity: 0.9;">${leads.length} leads mapped successfully</div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 4000);
+        }
+        
+        function generateUSMapSVG() {
+            return `<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#1e293b;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#334155;stop-opacity:0.8" />
+                    </linearGradient>
+                </defs>
+                <!-- Simplified U.S. outline -->
+                <path d="M 100 200 L 200 180 L 300 160 L 400 150 L 500 140 L 600 160 L 700 180 L 750 200 L 720 300 L 650 350 L 500 380 L 400 370 L 300 360 L 200 340 L 150 300 Z" 
+                      fill="url(#mapGrad)" 
+                      stroke="rgba(16,185,129,0.6)" 
+                      stroke-width="2"/>
+                <!-- State dividers -->
+                <line x1="200" y1="180" x2="200" y2="340" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+                <line x1="300" y1="160" x2="300" y2="360" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+                <line x1="400" y1="150" x2="400" y2="370" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+                <line x1="500" y1="140" x2="500" y2="380" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+                <line x1="600" y1="160" x2="600" y2="350" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+                <!-- Grid lines -->
+                <line x1="100" y1="220" x2="750" y2="220" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+                <line x1="100" y1="260" x2="750" y2="260" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+                <line x1="100" y1="300" x2="750" y2="300" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+            </svg>`;
+        }
+        
+        function generateLeadMarkers(leads) {
+            const cityPositions = {
+                'New York': { x: '650px', y: '180px' },
+                'Los Angeles': { x: '150px', y: '280px' },
+                'Chicago': { x: '450px', y: '200px' },
+                'Houston': { x: '350px', y: '320px' },
+                'Phoenix': { x: '250px', y: '280px' },
+                'Philadelphia': { x: '620px', y: '200px' },
+                'San Antonio': { x: '320px', y: '340px' },
+                'Dallas': { x: '380px', y: '300px' },
+                'San Francisco': { x: '80px', y: '240px' },
+                'Miami': { x: '600px', y: '360px' }
+            };
+            
+            return leads.map(lead => {
+                const city = lead.city || lead.coordinates?.city || 'Unknown';
+                const pos = cityPositions[city] || { x: '400px', y: '250px' };
+                const score = lead.qnisScore || lead.qnis_score || 75;
+                const color = score > 80 ? '#10b981' : score > 60 ? '#3b82f6' : '#f59e0b';
+                const size = Math.max(12, Math.min(24, score / 4));
+                const company = lead.company || lead.type || `Lead ${lead.id?.slice(-6)}`;
+                
+                return `
+                    <div style="position: absolute; left: ${pos.x}; top: ${pos.y}; transform: translate(-50%, -50%); cursor: pointer;" 
+                         onclick="showLeadDetails('${lead.id}', '${company}', '${city}', ${score})"
+                         onmouseover="this.style.transform='translate(-50%, -50%) scale(1.2)'"
+                         onmouseout="this.style.transform='translate(-50%, -50%) scale(1)'">
+                        <div style="width: ${size}px; height: ${size}px; background: ${color}; border: 3px solid #ffffff; 
+                             border-radius: 50%; box-shadow: 0 0 15px ${color}; animation: pulse 2s infinite;
+                             display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 10px;">
+                            ${score}
+                        </div>
+                        <div style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); 
+                             background: rgba(0,0,0,0.8); color: white; padding: 2px 6px; border-radius: 4px; 
+                             font-size: 10px; white-space: nowrap; opacity: 0; transition: opacity 0.3s;"
+                             onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                            ${city}: ${company}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function addMapInteractivity() {
+            window.zoomIn = function() {
+                const container = document.getElementById('lead-markers-container');
+                if (container) {
+                    const currentScale = container.style.transform ? parseFloat(container.style.transform.match(/scale\(([\d.]+)\)/)?.[1] || 1) : 1;
+                    const newScale = Math.min(currentScale * 1.2, 3);
+                    container.style.transform = `scale(${newScale})`;
+                    container.style.transformOrigin = 'center center';
+                }
+            };
+            
+            window.zoomOut = function() {
+                const container = document.getElementById('lead-markers-container');
+                if (container) {
+                    const currentScale = container.style.transform ? parseFloat(container.style.transform.match(/scale\(([\d.]+)\)/)?.[1] || 1) : 1;
+                    const newScale = Math.max(currentScale / 1.2, 0.5);
+                    container.style.transform = `scale(${newScale})`;
+                    container.style.transformOrigin = 'center center';
+                }
+            };
+            
+            window.showLeadDetails = function(id, company, city, score) {
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                    background: rgba(0,0,0,0.8); z-index: 20000; 
+                    display: flex; align-items: center; justify-content: center;
+                `;
+                
+                const color = score > 80 ? '#10b981' : score > 60 ? '#3b82f6' : '#f59e0b';
+                
+                modal.innerHTML = `
+                    <div style="background: #1e293b; padding: 30px; border-radius: 15px; 
+                         border: 2px solid ${color}; max-width: 400px; width: 90%;">
+                        <h3 style="color: ${color}; margin: 0 0 20px 0; font-size: 20px;">${company}</h3>
+                        <div style="color: white; margin-bottom: 15px;">
+                            <strong>Location:</strong> ${city}
+                        </div>
+                        <div style="color: white; margin-bottom: 15px;">
+                            <strong>QNIS Score:</strong> <span style="color: ${color}; font-weight: bold; font-size: 18px;">${score}</span>
+                        </div>
+                        <div style="color: white; margin-bottom: 20px;">
+                            <strong>Lead ID:</strong> ${id}
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" 
+                                style="background: ${color}; color: white; border: none; padding: 10px 20px; 
+                                border-radius: 6px; cursor: pointer; font-weight: bold;">Close</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+            };
         }
 
         function setupEmergencyCanvas() {
