@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DWC Enterprise UI Test</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        .test-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(135deg, #1e3a8a, #3730a3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            border-bottom: 2px solid #60a5fa;
+        }
+        .test-panel {
+            position: fixed;
+            left: 0;
+            top: 60px;
+            width: 250px;
+            height: calc(100vh - 60px);
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .test-session {
+            position: fixed;
+            right: 0;
+            top: 60px;
+            width: 300px;
+            height: 400px;
+            background: #f8fafc;
+            border-left: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .test-indicator {
+            position: fixed;
+            top: 70px;
+            right: 320px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #34d399;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .main-content {
+            margin: 60px 300px 0 250px;
+            padding: 20px;
+            background: white;
+            min-height: calc(100vh - 60px);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-overlay">
+        <div style="font-weight: bold; font-size: 18px;">QNIS</div>
+        <div style="background: #10b981; padding: 4px 12px; border-radius: 12px; font-size: 12px;">ACTIVE</div>
+        <div style="display: flex; gap: 20px; font-size: 12px;">
+            <span>Confidence: 94.7%</span>
+            <span>Lead Velocity: +23%</span>
+            <span>AI Processing: Online</span>
+        </div>
+    </div>
+    
+    <div class="test-indicator">PTNI Engine Processing...</div>
+    
+    <div class="test-panel">
+        <h3>System Control</h3>
+        <div style="margin: 8px 0; padding: 8px; background: #3b82f6; color: white; border-radius: 6px;">Enterprise Mode</div>
+        <div style="margin: 8px 0; padding: 8px; border-radius: 6px;">Development</div>
+        <div style="margin: 8px 0; padding: 8px; border-radius: 6px;">Diagnostic</div>
+        
+        <h3 style="margin-top: 24px;">Intelligence Layers</h3>
+        <div style="margin: 8px 0; padding: 8px; border-radius: 6px;"><input type="checkbox" checked> QNIS Core</div>
+        <div style="margin: 8px 0; padding: 8px; border-radius: 6px;"><input type="checkbox" checked> PTNI Processing</div>
+        <div style="margin: 8px 0; padding: 8px; border-radius: 6px;"><input type="checkbox" checked> Watson AI</div>
+        <div style="margin: 8px 0; padding: 8px; border-radius: 6px;"><input type="checkbox" checked> NEXUS Control</div>
+    </div>
+    
+    <div class="test-session">
+        <div style="padding: 12px; background: #e2e8f0; font-weight: bold; border-bottom: 1px solid #cbd5e1;">
+            Session Log
+            <div style="float: right;">
+                <button style="padding: 4px 8px; margin-left: 4px; background: #3b82f6; color: white; border: none; border-radius: 4px; font-size: 11px;">Clear</button>
+                <button style="padding: 4px 8px; margin-left: 4px; background: #3b82f6; color: white; border: none; border-radius: 4px; font-size: 11px;">Export</button>
+            </div>
+        </div>
+        <div style="padding: 12px; font-family: monospace; font-size: 11px; color: #64748b;">
+            <div>[12:34:56] Enterprise dashboard initialized</div>
+            <div>[12:34:57] QNIS engine synchronization complete</div>
+            <div>[12:34:58] Watson AI systems online</div>
+            <div>[12:34:59] All 47 modules operational</div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <h1>DWC Systems LLC - NEXUS Intelligence Platform</h1>
+        <div style="display: flex; gap: 24px; margin: 20px 0;">
+            <div>
+                <div style="font-size: 12px; color: #64748b;">Active Modules:</div>
+                <div style="font-size: 16px; font-weight: bold;">47</div>
+            </div>
+            <div>
+                <div style="font-size: 12px; color: #64748b;">Processing Load:</div>
+                <div style="font-size: 16px; font-weight: bold;">73.2%</div>
+            </div>
+            <div>
+                <div style="font-size: 12px; color: #64748b;">Network Status:</div>
+                <div style="font-size: 16px; font-weight: bold; color: #10b981;">ONLINE</div>
+            </div>
+        </div>
+        
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <h2>Enterprise Dashboard Active</h2>
+            <p>✓ QNIS/PTNI overlays visible at top</p>
+            <p>✓ Advanced navigation panel on left</p>
+            <p>✓ Session logging panel on right</p>
+            <p>✓ Enterprise header with live metrics</p>
+            <p>✓ Professional business interface layout</p>
+        </div>
+    </div>
+</body>
+</html>
