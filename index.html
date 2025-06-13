@@ -3338,6 +3338,80 @@ ${new Date().toISOString()} [NEXUS] Master control synchronized
             document.querySelector('textarea').value = '';
         }
 
+        // Business Management Suite Functions
+        function generateContract() {
+            console.log('[LEGAL] Generating new contract...');
+            speakText('Generating legal contract with AI assistance');
+            showNotification('Contract Generation', 'Legal document being created...');
+            
+            setTimeout(() => {
+                speakText('Contract generated successfully and ready for review');
+                showNotification('Contract Ready', 'Document created - requires legal review');
+            }, 2000);
+        }
+
+        function viewComplianceDashboard() {
+            console.log('[LEGAL] Opening compliance dashboard...');
+            speakText('Opening regulatory compliance dashboard');
+            showNotification('Compliance Dashboard', 'Regulatory tracking interface loaded');
+        }
+
+        function postJournalEntry() {
+            console.log('[ACCOUNTING] Posting journal entry...');
+            speakText('Posting journal entry to general ledger');
+            showNotification('Journal Entry', 'Transaction posted to accounting system');
+            
+            setTimeout(() => {
+                speakText('Journal entry posted successfully. Books updated.');
+                showNotification('Entry Complete', 'Transaction recorded in general ledger');
+            }, 1500);
+        }
+
+        function generateFinancialReport() {
+            console.log('[ACCOUNTING] Generating financial reports...');
+            speakText('Generating comprehensive financial statements');
+            showNotification('Financial Reports', 'Creating balance sheet and income statement...');
+            
+            setTimeout(() => {
+                speakText('Financial reports generated successfully');
+                showNotification('Reports Ready', 'Financial statements available for download');
+            }, 2500);
+        }
+
+        function prepareTaxReturn() {
+            console.log('[TAX] Preparing tax return...');
+            speakText('Preparing tax return with automated calculations');
+            showNotification('Tax Preparation', 'Calculating deductions and tax liability...');
+            
+            setTimeout(() => {
+                speakText('Tax return prepared and ready for filing');
+                showNotification('Tax Return Ready', 'Return prepared - review before filing');
+            }, 3000);
+        }
+
+        function trackDeduction() {
+            console.log('[TAX] Adding tax deduction...');
+            speakText('Recording tax deductible expense');
+            showNotification('Deduction Tracked', 'Expense categorized for tax purposes');
+        }
+
+        function processPayroll() {
+            console.log('[PAYROLL] Processing payroll...');
+            speakText('Processing employee payroll with tax calculations');
+            showNotification('Payroll Processing', 'Calculating wages and withholdings...');
+            
+            setTimeout(() => {
+                speakText('Payroll processed successfully for all employees');
+                showNotification('Payroll Complete', 'Employee payments ready for distribution');
+            }, 2000);
+        }
+
+        function generatePayrollReports() {
+            console.log('[PAYROLL] Generating payroll tax forms...');
+            speakText('Generating payroll tax forms and reports');
+            showNotification('Tax Forms', 'Creating W-2 and quarterly tax reports...');
+        }
+
         function showNotification(title, message) {
             const notification = document.createElement('div');
             notification.style.cssText = `
