@@ -110,16 +110,21 @@ class MapDisplayFix {
 
     generateSampleData() {
         return [
-            { id: '1', coordinates: { city: 'New York', lat: 40.7589, lng: -73.9851 }, qnis_score: 92, value_estimate: 45000 },
-            { id: '2', coordinates: { city: 'Los Angeles', lat: 34.0522, lng: -118.2437 }, qnis_score: 88, value_estimate: 38000 },
-            { id: '3', coordinates: { city: 'Chicago', lat: 41.8781, lng: -87.6298 }, qnis_score: 85, value_estimate: 32000 },
-            { id: '4', coordinates: { city: 'Houston', lat: 29.7604, lng: -95.3698 }, qnis_score: 90, value_estimate: 41000 },
-            { id: '5', coordinates: { city: 'Phoenix', lat: 33.4484, lng: -112.0740 }, qnis_score: 87, value_estimate: 35000 },
-            { id: '6', coordinates: { city: 'Philadelphia', lat: 39.9526, lng: -75.1652 }, qnis_score: 83, value_estimate: 29000 },
-            { id: '7', coordinates: { city: 'San Antonio', lat: 29.4241, lng: -98.4936 }, qnis_score: 86, value_estimate: 33000 },
-            { id: '8', coordinates: { city: 'San Diego', lat: 32.7157, lng: -117.1611 }, qnis_score: 89, value_estimate: 39000 },
-            { id: '9', coordinates: { city: 'Dallas', lat: 32.7767, lng: -96.7970 }, qnis_score: 91, value_estimate: 43000 },
-            { id: '10', coordinates: { city: 'San Francisco', lat: 37.7749, lng: -122.4194 }, qnis_score: 94, value_estimate: 52000 }
+            { id: '1', coordinates: { city: 'New York', lat: 40.7589, lng: -73.9851 }, qnis_score: 92, value_estimate: 45000, priority: 'HIGH' },
+            { id: '2', coordinates: { city: 'Los Angeles', lat: 34.0522, lng: -118.2437 }, qnis_score: 88, value_estimate: 38000, priority: 'HIGH' },
+            { id: '3', coordinates: { city: 'Chicago', lat: 41.8781, lng: -87.6298 }, qnis_score: 85, value_estimate: 32000, priority: 'MEDIUM' },
+            { id: '4', coordinates: { city: 'Houston', lat: 29.7604, lng: -95.3698 }, qnis_score: 90, value_estimate: 41000, priority: 'HIGH' },
+            { id: '5', coordinates: { city: 'Phoenix', lat: 33.4484, lng: -112.0740 }, qnis_score: 87, value_estimate: 35000, priority: 'MEDIUM' },
+            { id: '6', coordinates: { city: 'Philadelphia', lat: 39.9526, lng: -75.1652 }, qnis_score: 83, value_estimate: 29000, priority: 'MEDIUM' },
+            { id: '7', coordinates: { city: 'San Antonio', lat: 29.4241, lng: -98.4936 }, qnis_score: 86, value_estimate: 33000, priority: 'MEDIUM' },
+            { id: '8', coordinates: { city: 'San Diego', lat: 32.7157, lng: -117.1611 }, qnis_score: 89, value_estimate: 39000, priority: 'HIGH' },
+            { id: '9', coordinates: { city: 'Dallas', lat: 32.7767, lng: -96.7970 }, qnis_score: 91, value_estimate: 43000, priority: 'HIGH' },
+            { id: '10', coordinates: { city: 'San Francisco', lat: 37.7749, lng: -122.4194 }, qnis_score: 94, value_estimate: 52000, priority: 'HIGH' },
+            { id: '11', coordinates: { city: 'Seattle', lat: 47.6062, lng: -122.3321 }, qnis_score: 89, value_estimate: 47000, priority: 'HIGH' },
+            { id: '12', coordinates: { city: 'Denver', lat: 39.7392, lng: -104.9903 }, qnis_score: 84, value_estimate: 31000, priority: 'MEDIUM' },
+            { id: '13', coordinates: { city: 'Atlanta', lat: 33.7490, lng: -84.3880 }, qnis_score: 88, value_estimate: 36000, priority: 'HIGH' },
+            { id: '14', coordinates: { city: 'Boston', lat: 42.3601, lng: -71.0589 }, qnis_score: 93, value_estimate: 49000, priority: 'HIGH' },
+            { id: '15', coordinates: { city: 'Miami', lat: 25.7617, lng: -80.1918 }, qnis_score: 86, value_estimate: 34000, priority: 'MEDIUM' }
         ];
     }
 
@@ -130,19 +135,41 @@ class MapDisplayFix {
         // Create header
         const header = document.createElement('div');
         header.style.cssText = `
-            padding: 15px;
-            background: rgba(0, 255, 136, 0.1);
-            border-bottom: 1px solid #00ff88;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 102, 204, 0.1));
+            border-bottom: 2px solid #00ff88;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            backdrop-filter: blur(10px);
         `;
+        
+        const totalValue = this.leadData.reduce((sum, lead) => sum + (lead.value_estimate || 0), 0);
+        const highPriorityCount = this.leadData.filter(lead => lead.priority === 'HIGH').length;
+        
         header.innerHTML = `
-            <div style="color: #00ff88; font-weight: bold; font-size: 16px;">
-                🗺️ QNIS Lead Map - USA
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="color: #00ff88; font-weight: bold; font-size: 18px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">
+                    🗺️ QNIS Lead Intelligence Map
+                </div>
+                <div style="color: #64748b; font-size: 11px; background: rgba(100, 116, 139, 0.2); padding: 4px 8px; border-radius: 12px;">
+                    USA Coverage
+                </div>
             </div>
-            <div style="color: #64748b; font-size: 12px;">
-                ${this.leadData.length} Active Leads
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <div style="text-align: center;">
+                    <div style="color: #ffffff; font-weight: bold; font-size: 16px;">${this.leadData.length}</div>
+                    <div style="color: #64748b; font-size: 10px;">Active Leads</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #ff4444; font-weight: bold; font-size: 16px;">${highPriorityCount}</div>
+                    <div style="color: #64748b; font-size: 10px;">High Priority</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #00ff88; font-weight: bold; font-size: 16px;">$${(totalValue / 1000).toFixed(0)}K</div>
+                    <div style="color: #64748b; font-size: 10px;">Pipeline Value</div>
+                </div>
+                <div style="width: 8px; height: 8px; background: #00ff88; border-radius: 50%; animation: pulse 2s infinite;"></div>
             </div>
         `;
         this.mapContainer.appendChild(header);
@@ -218,30 +245,89 @@ class MapDisplayFix {
 
     drawLeadMarkers(ctx, width, height) {
         this.leadData.forEach(lead => {
+            // Validate lead data structure
+            if (!lead || !lead.coordinates || 
+                typeof lead.coordinates.lat === 'undefined' || 
+                typeof lead.coordinates.lng === 'undefined') {
+                console.warn('[MAP-FIX] Invalid lead data:', lead);
+                return;
+            }
+
             const x = this.longitudeToX(lead.coordinates.lng, width);
             const y = this.latitudeToY(lead.coordinates.lat, height);
 
+            // Determine marker color based on priority
+            let markerColor = '#00ff88'; // Default green for MEDIUM
+            let glowColor = '#00ff88';
+            
+            if (lead.priority === 'HIGH') {
+                markerColor = '#ff4444'; // Red for HIGH priority
+                glowColor = '#ff4444';
+            }
+
             // Draw marker glow
-            ctx.shadowColor = '#00ff88';
+            ctx.shadowColor = glowColor;
             ctx.shadowBlur = 15;
             
             // Draw marker
-            ctx.fillStyle = '#00ff88';
+            ctx.fillStyle = markerColor;
             ctx.beginPath();
-            ctx.arc(x, y, 8, 0, 2 * Math.PI);
+            ctx.arc(x, y, 10, 0, 2 * Math.PI);
             ctx.fill();
+
+            // Add priority indicator ring for HIGH priority
+            if (lead.priority === 'HIGH') {
+                ctx.strokeStyle = '#ffaa00';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, y, 15, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
 
             ctx.shadowBlur = 0;
 
-            // Draw city name
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '12px Arial';
-            ctx.fillText(lead.coordinates.city, x + 12, y + 4);
+            // Draw text background for better readability
+            const cityName = lead.coordinates.city || 'Unknown';
+            const qnisScore = lead.qnis_score || 0;
+            const valueEstimate = lead.value_estimate || 0;
 
-            // Draw QNIS score
-            ctx.fillStyle = '#00ff88';
-            ctx.font = '10px Arial';
-            ctx.fillText(`${lead.qnis_score}%`, x + 12, y + 16);
+            // Calculate text dimensions
+            ctx.font = 'bold 14px Arial';
+            const cityWidth = ctx.measureText(cityName).width;
+            ctx.font = '12px Arial';
+            const scoreText = `${qnisScore}%`;
+            const scoreWidth = ctx.measureText(scoreText).width;
+            ctx.font = '11px Arial';
+            const valueText = `$${(valueEstimate / 1000).toFixed(0)}K`;
+            const valueWidth = ctx.measureText(valueText).width;
+
+            const maxWidth = Math.max(cityWidth, scoreWidth, valueWidth);
+            const textHeight = 50;
+            const padding = 4;
+
+            // Draw text background
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+            ctx.fillRect(x + 18, y - 8, maxWidth + padding * 2, textHeight);
+
+            // Draw border around text background
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x + 18, y - 8, maxWidth + padding * 2, textHeight);
+
+            // Draw city name with enhanced visibility
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText(cityName, x + 20, y + 8);
+
+            // Draw QNIS score with color coding
+            ctx.fillStyle = qnisScore >= 90 ? '#00ff88' : qnisScore >= 85 ? '#ffaa00' : '#ff8800';
+            ctx.font = '12px Arial';
+            ctx.fillText(scoreText, x + 20, y + 24);
+
+            // Draw value estimate
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '11px Arial';
+            ctx.fillText(valueText, x + 20, y + 38);
         });
     }
 
@@ -323,29 +409,70 @@ class MapDisplayFix {
             position: absolute;
             top: 70px;
             right: 15px;
-            background: rgba(30, 41, 59, 0.9);
+            background: rgba(30, 41, 59, 0.95);
             border: 1px solid #00ff88;
             border-radius: 8px;
             padding: 15px;
             color: white;
             font-size: 12px;
-            min-width: 150px;
+            min-width: 180px;
+            backdrop-filter: blur(5px);
         `;
 
         const totalValue = this.leadData.reduce((sum, lead) => sum + lead.value_estimate, 0);
         const avgScore = Math.round(this.leadData.reduce((sum, lead) => sum + lead.qnis_score, 0) / this.leadData.length);
+        const highPriorityCount = this.leadData.filter(lead => lead.priority === 'HIGH').length;
+        const mediumPriorityCount = this.leadData.filter(lead => lead.priority === 'MEDIUM').length;
+        const topPerformers = this.leadData.filter(lead => lead.qnis_score >= 90).length;
 
         statsPanel.innerHTML = `
-            <div style="color: #00ff88; font-weight: bold; margin-bottom: 8px;">Lead Statistics</div>
-            <div>Total Leads: ${this.leadData.length}</div>
-            <div>Avg QNIS Score: ${avgScore}%</div>
-            <div>Total Value: $${totalValue.toLocaleString()}</div>
-            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #334155;">
-                <div style="color: #00ff88;">● Live</div>
+            <div style="color: #00ff88; font-weight: bold; margin-bottom: 12px; font-size: 14px;">Lead Analytics</div>
+            
+            <div style="margin-bottom: 10px;">
+                <div style="color: #64748b; font-size: 10px;">TOTAL METRICS</div>
+                <div>Leads: ${this.leadData.length}</div>
+                <div>Pipeline Value: $${(totalValue / 1000).toFixed(0)}K</div>
+                <div>Avg Score: ${avgScore}%</div>
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <div style="color: #64748b; font-size: 10px;">PRIORITY BREAKDOWN</div>
+                <div style="display: flex; align-items: center; margin: 2px 0;">
+                    <div style="width: 8px; height: 8px; background: #ff4444; border-radius: 50%; margin-right: 6px;"></div>
+                    <span>High: ${highPriorityCount}</span>
+                </div>
+                <div style="display: flex; align-items: center; margin: 2px 0;">
+                    <div style="width: 8px; height: 8px; background: #00ff88; border-radius: 50%; margin-right: 6px;"></div>
+                    <span>Medium: ${mediumPriorityCount}</span>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 8px;">
+                <div style="color: #64748b; font-size: 10px;">PERFORMANCE</div>
+                <div>Top Performers: ${topPerformers}</div>
+                <div>Conversion Rate: ${Math.round((topPerformers / this.leadData.length) * 100)}%</div>
+            </div>
+            
+            <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #334155;">
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 6px; height: 6px; background: #00ff88; border-radius: 50%; margin-right: 6px; animation: pulse 2s infinite;"></div>
+                    <span style="color: #00ff88; font-size: 11px;">Live Tracking</span>
+                </div>
             </div>
         `;
 
         this.mapContainer.appendChild(statsPanel);
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { opacity: 1; }
+                50% { opacity: 0.5; }
+                100% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
     }
 }
 
