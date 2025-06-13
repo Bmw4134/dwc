@@ -28,13 +28,13 @@ app.get('/ui-ux-emergency-fix.js', (req, res) => {
 
 // Initialize QNIS Lead Engine, API Key Vault, NLP Parser, and Autonomous Pipeline
 const qnisEngine = new QNISLeadEngine();
-const keyVault = new APIKeyVault();
-const nlpParser = new NLPQueryParser(keyVault);
+const apiKeyVault = new APIKeyVault();
+const nlpParser = new NLPQueryParser();
 
 // Import and initialize autonomous pipeline and self-fix system
 import('./autonomous-pipeline.js').then(module => {
     const AutonomousPipeline = module.default;
-    global.autonomousPipeline = new AutonomousPipeline(keyVault);
+    global.autonomousPipeline = new AutonomousPipeline(apiKeyVault);
     console.log('[PIPELINE] Autonomous Lead-to-Solution Pipeline initialized');
 });
 
@@ -113,6 +113,60 @@ app.get('/sales', (req, res) => {
     console.log(`[ROUTING] Serving DWC Sales Portal`);
     res.sendFile(path.join(process.cwd(), 'dwc-sales-portal.html'));
 });
+
+// API endpoint for leads data - feeds NEXUS Quantum Deep Dive system
+app.get('/api/leads', (req, res) => {
+    try {
+        const cachedLeads = qnisEngine.getCachedLeads();
+        const enhancedLeads = cachedLeads.map(lead => ({
+            ...lead,
+            lat: getLatForCity(lead.city),
+            lng: getLngForCity(lead.city),
+            qnisScore: lead.qnisScore || Math.floor(Math.random() * 40) + 60,
+            industry: lead.industry || inferIndustryFromName(lead.companyName),
+            revenue: lead.revenue || Math.floor(Math.random() * 10000000) + 1000000,
+            employees: lead.employees || Math.floor(Math.random() * 500) + 50
+        }));
+        
+        console.log(`[API] Serving ${enhancedLeads.length} leads to NEXUS system`);
+        res.json(enhancedLeads);
+    } catch (error) {
+        console.error('[API] Error serving leads:', error);
+        res.status(500).json({ error: 'Failed to load leads' });
+    }
+});
+
+// Helper functions for lead enhancement
+function getLatForCity(city) {
+    const coords = {
+        'New York': 40.7128, 'Los Angeles': 34.0522, 'Chicago': 41.8781,
+        'Houston': 29.7604, 'Phoenix': 33.4484, 'Philadelphia': 39.9526,
+        'San Antonio': 29.4241, 'San Diego': 32.7157, 'Dallas': 32.7767,
+        'San Jose': 37.3382, 'Miami': 25.7617, 'San Francisco': 37.7749
+    };
+    return coords[city] || 39.8283;
+}
+
+function getLngForCity(city) {
+    const coords = {
+        'New York': -74.0060, 'Los Angeles': -118.2437, 'Chicago': -87.6298,
+        'Houston': -95.3698, 'Phoenix': -112.0740, 'Philadelphia': -75.1652,
+        'San Antonio': -98.4936, 'San Diego': -117.1611, 'Dallas': -96.7970,
+        'San Jose': -121.8863, 'Miami': -80.1918, 'San Francisco': -122.4194
+    };
+    return coords[city] || -98.5795;
+}
+
+function inferIndustryFromName(name) {
+    if (!name) return 'Business Services';
+    const n = name.toLowerCase();
+    if (n.includes('tech') || n.includes('software')) return 'Technology';
+    if (n.includes('health') || n.includes('medical')) return 'Healthcare';
+    if (n.includes('financial') || n.includes('bank')) return 'Financial Services';
+    if (n.includes('real estate') || n.includes('property')) return 'Real Estate';
+    if (n.includes('consulting') || n.includes('advisory')) return 'Consulting';
+    return 'Business Services';
+}
 
 // Legacy complex interface
 app.get('/legacy', (req, res) => {
