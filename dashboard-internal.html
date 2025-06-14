@@ -11407,14 +11407,21 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
                 console.log('[NEXUS-VISUAL] Scanner initialized and ready');
             }
             
-            // Add manual map fix button
-            const fixButton = document.createElement('button');
-            fixButton.innerHTML = '🗺️ Fix Map Display';
-            fixButton.style.cssText = `
+            // Add manual map fix button and NEXUS controls
+            const controlPanel = document.createElement('div');
+            controlPanel.style.cssText = `
                 position: fixed;
                 top: 20px;
                 right: 20px;
                 z-index: 9999;
+                display: flex;
+                gap: 10px;
+                flex-direction: column;
+            `;
+            
+            const fixButton = document.createElement('button');
+            fixButton.innerHTML = '🗺️ Fix Map Display';
+            fixButton.style.cssText = `
                 background: #00ff88;
                 color: #000;
                 border: none;
@@ -11432,12 +11439,41 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
                 if (window.fixConsoleErrors) {
                     window.fixConsoleErrors();
                 }
+                if (window.initializeQNISMap) {
+                    window.initializeQNISMap();
+                }
                 this.textContent = '✓ Map Fixed';
                 setTimeout(() => {
                     this.textContent = '🗺️ Fix Map Display';
                 }, 2000);
             };
-            document.body.appendChild(fixButton);
+            
+            const nexusButton = document.createElement('button');
+            nexusButton.innerHTML = '🚀 NEXUS Mode';
+            nexusButton.style.cssText = `
+                background: #9333ea;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 14px;
+            `;
+            nexusButton.onclick = function() {
+                console.log('[NEXUS-MODE] Activating NEXUS validation');
+                if (window.runNEXUSValidation) {
+                    window.runNEXUSValidation();
+                }
+                this.textContent = '✓ NEXUS Active';
+                setTimeout(() => {
+                    this.textContent = '🚀 NEXUS Mode';
+                }, 3000);
+            };
+            
+            controlPanel.appendChild(fixButton);
+            controlPanel.appendChild(nexusButton);
+            document.body.appendChild(controlPanel);
         }, 2000);
     });
     </script>
