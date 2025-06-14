@@ -288,12 +288,12 @@ app.get('/trucking-company-website.html', (req, res) => {
     res.sendFile(path.join(process.cwd(), 'trucking-company-website.html'));
 });
 
-// Dashboard interface - bypass authentication for development
+// Dashboard interface - NEXUS 47-module quantum dashboard
 app.get('/dashboard', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('X-Auth-Bypass', 'true');
-    console.log(`[ROUTING] Serving executive investor dashboard (auth bypassed)`);
-    res.sendFile(path.join(process.cwd(), 'investor-dashboard.html'));
+    console.log(`[ROUTING] Serving NEXUS quantum dashboard with 47 modules`);
+    res.sendFile(path.join(process.cwd(), 'dashboard.html'));
 });
 
 // Logout route
