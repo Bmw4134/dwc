@@ -282,15 +282,27 @@ const isAuthenticated = (req, res, next) => {
     next();
 };
 
-// Primary routing - serve landing page by default, dashboard for authenticated users
+// Primary routing - serve quantum-optimized NEXUS landing page
 app.get('/', (req, res) => {
     const timestamp = Date.now();
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
+    res.set('ETag', `"nexus-${timestamp}"`);
     
-    console.log(`[ROUTING] Serving landing page: ${timestamp}`);
-    res.sendFile(path.join(process.cwd(), 'landing.html'));
+    console.log(`[ROUTING] Serving NEXUS landing page: ${timestamp}`);
+    
+    // Read and serve the quantum-optimized landing page directly
+    const landingPath = path.join(process.cwd(), 'landing.html');
+    try {
+        const landingContent = fs.readFileSync(landingPath, 'utf8');
+        res.set('Content-Type', 'text/html; charset=utf-8');
+        res.send(landingContent);
+        console.log('[NEXUS] Quantum-optimized landing page served successfully');
+    } catch (error) {
+        console.error('[ERROR] Failed to read landing.html:', error);
+        res.status(500).send('Error loading NEXUS platform');
+    }
 });
 
 // Pro bono trucking company website
