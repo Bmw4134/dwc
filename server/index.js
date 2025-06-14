@@ -259,6 +259,18 @@ app.get('/api/metrics', (req, res) => {
     res.json(metrics);
 });
 
+// Static file serving
+app.use(express.static(process.cwd(), {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.css')) {
+            res.setHeader('Content-Type', 'text/css');
+        }
+        if (path.endsWith('.js')) {
+            res.setHeader('Content-Type', 'application/javascript');
+        }
+    }
+}));
+
 // Middleware
 app.use(express.json());
 

@@ -1,0 +1,20 @@
+/* NEXUS Platform Styles */
+/* This file exists to prevent 404 errors - all styles are embedded in HTML files */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Minimal fallback styles */
+.gradient-bg {
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.nexus-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
