@@ -613,6 +613,14 @@
                 }
             };
             
+            // Check if module is a bridged React component first
+            if (window.NEXUSModuleBridge && window.NEXUSModuleBridge.moduleRegistry[moduleId]) {
+                const bridgedContent = await window.NEXUSModuleBridge.bridgeModule(moduleId);
+                mainModule.innerHTML = bridgedContent;
+                console.log(`[NEXUS] Activated React module: ${moduleId}`);
+                return;
+            }
+            
             const config = moduleConfigs[moduleId] || {
                 icon: '⚡',
                 title: moduleId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
@@ -910,5 +918,6 @@
     </script>
     
     <script src="nexus-deep-validation.js"></script>
+    <script src="nexus-module-bridge.js"></script>
 </body>
 </html>
