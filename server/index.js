@@ -90,6 +90,12 @@ app.use(rateLimit);
 // Serve static files from root directory
 app.use(express.static(process.cwd()));
 app.use('/public', express.static(path.join(process.cwd(), 'public')));
+
+// Serve clean execution system
+app.get('/nexus-clean-execution.js', (req, res) => {
+    res.setHeader('Content-Type', 'application/javascript');
+    res.sendFile(path.join(process.cwd(), 'nexus-clean-execution.js'));
+});
 app.use('/client', express.static(path.join(process.cwd(), 'client')));
 
 // UI/UX emergency fix script
