@@ -781,6 +781,16 @@
                     behaviorScript.src = '/nexus-behavior-simulation.js';
                     behaviorScript.onload = function() {
                         console.log('[NEXUS] Behavior simulation active');
+                        
+                        // Load final deployment validation
+                        setTimeout(() => {
+                            const deploymentScript = document.createElement('script');
+                            deploymentScript.src = '/nexus-final-deployment.js';
+                            deploymentScript.onload = function() {
+                                console.log('[NEXUS] Deployment validation executing');
+                            };
+                            document.head.appendChild(deploymentScript);
+                        }, 3000);
                     };
                     document.head.appendChild(behaviorScript);
                 }, 2000);
