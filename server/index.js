@@ -737,38 +737,8 @@ app.use(express.static(process.cwd(), {
     extensions: ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg']
 }));
 
-// Primary routing - serve quantum-optimized NEXUS landing page FIRST
-app.get('/', (req, res) => {
-    const timestamp = Date.now();
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.set('Pragma', 'no-cache');
-    res.set('Expires', '0');
-    res.set('ETag', `"nexus-${timestamp}"`);
-    
-    console.log(`[ROUTING] ROOT REQUEST - serving NEXUS landing page: ${timestamp}`);
-    
-    // Force serve the production-ready landing page
-    const landingPath = path.join(process.cwd(), 'index.html');
-    try {
-        const landingContent = fs.readFileSync(landingPath, 'utf8');
-        res.set('Content-Type', 'text/html; charset=utf-8');
-        res.send(landingContent);
-        console.log('[NEXUS] Production landing page served from PRIMARY root route');
-    } catch (error) {
-        console.error('[ERROR] Failed to read index.html:', error);
-        // Fallback to landing.html if index.html not found
-        try {
-            const fallbackPath = path.join(process.cwd(), 'landing.html');
-            const fallbackContent = fs.readFileSync(fallbackPath, 'utf8');
-            res.set('Content-Type', 'text/html; charset=utf-8');
-            res.send(fallbackContent);
-            console.log('[NEXUS] Fallback landing page served');
-        } catch (fallbackError) {
-            console.error('[ERROR] Failed to read fallback landing.html:', fallbackError);
-            res.status(500).send('Error loading NEXUS platform');
-        }
-    }
-});
+// Primary routing - serve React application with DWC Systems LLC branding
+console.log('[ROUTING] Setting up React application with DWC Systems LLC branding');
 
 // Investor presentation route
 app.get('/investor', (req, res) => {

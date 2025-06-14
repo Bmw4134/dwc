@@ -4,6 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import path from "path";
 import { z } from "zod";
 import Stripe from "stripe";
+import { setupVite } from "./vite";
 import { nexusMasterControl } from "./nexus-master-control";
 import { nexusTotalRecall } from "./nexus-total-recall";
 import { nexusReconciliation } from "./nexus-reconciliation";
@@ -1152,6 +1153,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: 'Complete intelligence report failed' });
     }
   });
+
+  // Setup Vite middleware for React application with DWC Systems LLC branding
+  console.log('[NEXUS] Integrating React application with DWC Systems LLC branding');
+  await setupVite(app, httpServer);
 
   return httpServer;
 }

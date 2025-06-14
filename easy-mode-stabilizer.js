@@ -16,7 +16,7 @@
     // Global recursion depth guard
     function withDepthGuard(fn, name = 'anonymous') {
         return function(...args) {
-            if (window.recursionDepth > 25) {
+            if (window.recursionDepth > 5) {
                 console.warn(`[EASY-MODE] Recursion depth limit reached for ${name}, blocking execution`);
                 return null;
             }
