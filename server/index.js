@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import QNISLeadEngine from './qnis-lead-engine.js';
 import APIKeyVault from './api-key-vault.js';
@@ -444,6 +445,32 @@ function formatExtractedLead(leadId, extractedData) {
         }
     };
 }
+
+// Process your attached screenshot directly
+app.post('/api/process-screenshot', async (req, res) => {
+    try {
+        console.log('[VISUAL-SCANNER] Processing your iPhone screenshot...');
+        
+        // Read the attached screenshot file
+        const imagePath = path.join(process.cwd(), 'attached_assets', 'image_1749861305805.jpg');
+        
+        if (!fs.existsSync(imagePath)) {
+            return res.status(404).json({ error: 'Screenshot not found' });
+        }
+        
+        const imageBuffer = fs.readFileSync(imagePath);
+        const base64Image = imageBuffer.toString('base64');
+        
+        const extractedLead = await processImageWithOCR(base64Image);
+        
+        console.log(`[VISUAL-SCANNER] Extracted lead from screenshot: ${extractedLead.companyName}`);
+        res.json(extractedLead);
+        
+    } catch (error) {
+        console.error('[VISUAL-SCANNER] Error processing screenshot:', error);
+        res.status(500).json({ error: 'Failed to process screenshot' });
+    }
+});
 
 // QNIS Lead Engine API endpoints
 app.get('/api/qnis/leads', (req, res) => {
