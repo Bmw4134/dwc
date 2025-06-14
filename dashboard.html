@@ -496,19 +496,19 @@
         <!-- Core Dashboard -->
         <div class="module-category">
             <div class="category-title">Core Dashboard (4)</div>
-            <div class="module-item active" onclick="activateModule('executive-dashboard')">
+            <div class="module-item active" onclick="loadModule('executive-dashboard')">
                 <div class="module-icon">📊</div>
                 <div class="module-name">Executive Dashboard</div>
             </div>
-            <div class="module-item" onclick="activateModule('system-metrics')">
+            <div class="module-item" onclick="loadModule('system-metrics')">
                 <div class="module-icon">📈</div>
                 <div class="module-name">System Metrics</div>
             </div>
-            <div class="module-item" onclick="activateModule('real-time-monitor')">
+            <div class="module-item" onclick="loadModule('real-time-monitor')">
                 <div class="module-icon">⚡</div>
                 <div class="module-name">Real-time Monitor</div>
             </div>
-            <div class="module-item" onclick="activateModule('alert-center')">
+            <div class="module-item" onclick="loadModule('alert-center')">
                 <div class="module-icon">🔔</div>
                 <div class="module-name">Alert Center</div>
             </div>
@@ -517,51 +517,51 @@
         <!-- AI Intelligence Suite -->
         <div class="module-category">
             <div class="category-title">AI Intelligence Suite (12)</div>
-            <div class="module-item" onclick="activateModule('perplexity-ai')">
+            <div class="module-item" onclick="loadModule('perplexity-ai')">
                 <div class="module-icon">🧠</div>
                 <div class="module-name">Perplexity AI</div>
             </div>
-            <div class="module-item" onclick="activateModule('openai-gpt')">
+            <div class="module-item" onclick="loadModule('openai-gpt')">
                 <div class="module-icon">🤖</div>
                 <div class="module-name">OpenAI GPT</div>
             </div>
-            <div class="module-item" onclick="activateModule('claude-ai')">
+            <div class="module-item" onclick="loadModule('claude-ai')">
                 <div class="module-icon">🎭</div>
                 <div class="module-name">Claude AI</div>
             </div>
-            <div class="module-item" onclick="activateModule('watson-ai')">
+            <div class="module-item" onclick="loadModule('watson-ai')">
                 <div class="module-icon">🔬</div>
                 <div class="module-name">Watson AI</div>
             </div>
-            <div class="module-item" onclick="activateModule('nlp-processor')">
+            <div class="module-item" onclick="loadModule('nlp-processor')">
                 <div class="module-icon">📝</div>
                 <div class="module-name">NLP Processor</div>
             </div>
-            <div class="module-item" onclick="activateModule('sentiment-analyzer')">
+            <div class="module-item" onclick="loadModule('sentiment-analyzer')">
                 <div class="module-icon">😊</div>
                 <div class="module-name">Sentiment Analyzer</div>
             </div>
-            <div class="module-item" onclick="activateModule('predictive-analytics')">
+            <div class="module-item" onclick="loadModule('predictive-analytics')">
                 <div class="module-icon">🔮</div>
                 <div class="module-name">Predictive Analytics</div>
             </div>
-            <div class="module-item" onclick="activateModule('machine-learning')">
+            <div class="module-item" onclick="loadModule('machine-learning')">
                 <div class="module-icon">⚙️</div>
                 <div class="module-name">Machine Learning</div>
             </div>
-            <div class="module-item" onclick="activateModule('computer-vision')">
+            <div class="module-item" onclick="loadModule('computer-vision')">
                 <div class="module-icon">👁️</div>
                 <div class="module-name">Computer Vision</div>
             </div>
-            <div class="module-item" onclick="activateModule('voice-recognition')">
+            <div class="module-item" onclick="loadModule('voice-recognition')">
                 <div class="module-icon">🎤</div>
                 <div class="module-name">Voice Recognition</div>
             </div>
-            <div class="module-item" onclick="activateModule('neural-networks')">
+            <div class="module-item" onclick="loadModule('neural-networks')">
                 <div class="module-icon">🧬</div>
                 <div class="module-name">Neural Networks</div>
             </div>
-            <div class="module-item" onclick="activateModule('ai-orchestrator')">
+            <div class="module-item" onclick="loadModule('ai-orchestrator')">
                 <div class="module-icon">🎼</div>
                 <div class="module-name">AI Orchestrator</div>
             </div>
@@ -570,11 +570,11 @@
         <!-- Operations Suite -->
         <div class="module-category">
             <div class="category-title">Operations Suite (8)</div>
-            <div class="module-item" onclick="activateModule('qnis-mapping')">
+            <div class="module-item" onclick="loadModule('qnis-mapping')">
                 <div class="module-icon">🗺️</div>
                 <div class="module-name">QNIS Lead Mapping</div>
             </div>
-            <div class="module-item" onclick="activateModule('lead-generation')">
+            <div class="module-item" onclick="loadModule('lead-generation')">
                 <div class="module-icon">🎯</div>
                 <div class="module-name">Lead Generation</div>
             </div>
@@ -1210,107 +1210,449 @@
         }
         
         function loadLeadIntelligence() {
-            // Load actual QNIS lead mapping with live data
+            // Load interactive Leaflet map with AI-powered lead generation
             const mainContent = document.querySelector('.main-content') || document.querySelector('.dashboard-content');
             if (mainContent) {
                 mainContent.innerHTML = `
                     <div class="dashboard-header">
                         <h2 style="color: var(--quantum-blue); font-family: 'Orbitron', monospace; font-size: 2rem;">QNIS Geospatial Intelligence</h2>
                         <div style="display: flex; gap: 1rem; align-items: center;">
-                            <button onclick="refreshLeadData()" style="padding: 8px 16px; background: rgba(74, 158, 255, 0.2); border: 1px solid var(--quantum-blue); color: var(--quantum-blue); border-radius: 6px; cursor: pointer;">
-                                🔄 Refresh Data
+                            <button onclick="generateNewLead()" style="padding: 8px 16px; background: rgba(0, 255, 127, 0.2); border: 1px solid var(--neo-green); color: var(--neo-green); border-radius: 6px; cursor: pointer;">
+                                🎯 Generate Lead
                             </button>
-                            <div style="color: var(--neo-green); font-weight: bold;">● LIVE</div>
+                            <button onclick="refreshMapData()" style="padding: 8px 16px; background: rgba(74, 158, 255, 0.2); border: 1px solid var(--quantum-blue); color: var(--quantum-blue); border-radius: 6px; cursor: pointer;">
+                                🔄 Refresh Map
+                            </button>
+                            <div style="color: var(--neo-green); font-weight: bold;">● LIVE AI</div>
                         </div>
                     </div>
                     
-                    <div id="qnisMapContainer" style="margin-bottom: 2rem;">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-                            <div class="metric-card" id="sanfrancisco-card">
-                                <h3 style="color: var(--quantum-blue);">San Francisco</h3>
-                                <div style="font-size: 2rem; color: var(--neo-green); font-weight: bold;" id="sf-revenue">$456K</div>
-                                <div style="color: rgba(255, 255, 255, 0.6);" id="sf-leads">12 active leads</div>
-                            </div>
-                            <div class="metric-card" id="newyork-card">
-                                <h3 style="color: var(--quantum-blue);">New York</h3>
-                                <div style="font-size: 2rem; color: var(--neo-green); font-weight: bold;" id="ny-revenue">$623K</div>
-                                <div style="color: rgba(255, 255, 255, 0.6);" id="ny-leads">18 active leads</div>
-                            </div>
-                            <div class="metric-card" id="chicago-card">
-                                <h3 style="color: var(--quantum-blue);">Chicago</h3>
-                                <div style="font-size: 2rem; color: var(--neo-green); font-weight: bold;" id="chi-revenue">$367K</div>
-                                <div style="color: rgba(255, 255, 255, 0.6);" id="chi-leads">9 active leads</div>
-                            </div>
-                            <div class="metric-card" id="dallas-card">
-                                <h3 style="color: var(--quantum-blue);">Dallas</h3>
-                                <div style="font-size: 2rem; color: var(--neo-green); font-weight: bold;" id="dal-revenue">$512K</div>
-                                <div style="color: rgba(255, 255, 255, 0.6);" id="dal-leads">15 active leads</div>
-                            </div>
-                            <div class="metric-card" id="losangeles-card">
-                                <h3 style="color: var(--quantum-blue);">Los Angeles</h3>
-                                <div style="font-size: 2rem; color: var(--neo-green); font-weight: bold;" id="la-revenue">$669K</div>
-                                <div style="color: rgba(255, 255, 255, 0.6);" id="la-leads">21 active leads</div>
-                            </div>
-                            <div class="metric-card" id="miami-card">
-                                <h3 style="color: var(--quantum-blue);">Miami</h3>
-                                <div style="font-size: 2rem; color: var(--neo-green); font-weight: bold;" id="mia-revenue">$299K</div>
-                                <div style="color: rgba(255, 255, 255, 0.6);" id="mia-leads">8 active leads</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 2rem;">
-                            <h3 style="color: var(--quantum-blue); margin-bottom: 1rem;">Live Lead Feed</h3>
-                            <div id="liveFeed" style="font-family: 'Courier New', monospace; color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; line-height: 1.6; max-height: 300px; overflow-y: auto;">
-                                Loading real-time leads...
-                            </div>
+                    <div style="display: grid; grid-template-columns: 1fr 400px; gap: 2rem; height: 70vh;">
+                        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 1rem;">
+                            <div id="leafletMap" style="height: 100%; border-radius: 10px; background: #1a1a1a;"></div>
                         </div>
                         
-                        <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 2rem;">
-                            <h3 style="color: var(--quantum-blue); margin-bottom: 1rem;">Analytics Summary</h3>
-                            <div style="display: grid; gap: 1rem;">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Total Pipeline:</span>
-                                    <span style="color: var(--neo-green); font-weight: bold;" id="totalPipeline">$2.93M</span>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 1.5rem;">
+                                <h3 style="color: var(--quantum-blue); margin-bottom: 1rem;">AI Lead Pipeline</h3>
+                                <div id="pipelineStats" style="display: grid; gap: 0.8rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>Total Pipeline:</span>
+                                        <span style="color: var(--neo-green); font-weight: bold;" id="totalPipeline">$2.64M</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>Active Leads:</span>
+                                        <span style="color: var(--neo-green); font-weight: bold;" id="activeLeads">47</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>AI Score:</span>
+                                        <span style="color: var(--neo-green); font-weight: bold;">94.7%</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>Conversion Rate:</span>
+                                        <span style="color: var(--neo-green); font-weight: bold;">34.2%</span>
+                                    </div>
                                 </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Active Leads:</span>
-                                    <span style="color: var(--neo-green); font-weight: bold;" id="totalLeads">83</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Conversion Rate:</span>
-                                    <span style="color: var(--neo-green); font-weight: bold;">34.7%</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Avg Deal Size:</span>
-                                    <span style="color: var(--neo-green); font-weight: bold;">$35.3K</span>
+                            </div>
+                            
+                            <div style="background: rgba(255, 255, 255, 0.05); border-radius: 15px; padding: 1.5rem; flex: 1;">
+                                <h3 style="color: var(--quantum-blue); margin-bottom: 1rem;">Live Lead Feed</h3>
+                                <div id="liveFeed" style="font-family: 'Courier New', monospace; color: rgba(255, 255, 255, 0.8); font-size: 0.85rem; line-height: 1.5; max-height: 300px; overflow-y: auto; background: rgba(0, 0, 0, 0.3); padding: 1rem; border-radius: 8px;">
+                                    Initializing AI lead generation...
                                 </div>
                             </div>
                         </div>
                     </div>
                 `;
                 
-                // Initialize live data feed
-                initializeQNISLiveData();
+                // Initialize the interactive map system
+                initializeInteractiveLeafletMap();
             }
         }
         
-        function initializeQNISLiveData() {
-            // Connect to live lead API
+        function initializeInteractiveLeafletMap() {
+            // Load Leaflet library and initialize the interactive map
+            const leafletCSS = document.createElement('link');
+            leafletCSS.rel = 'stylesheet';
+            leafletCSS.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+            document.head.appendChild(leafletCSS);
+            
+            const leafletJS = document.createElement('script');
+            leafletJS.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+            leafletJS.onload = () => {
+                createInteractiveMap();
+            };
+            document.head.appendChild(leafletJS);
+        }
+        
+        let qnisMap;
+        let leadMarkers = [];
+        let leadCount = 0;
+        
+        function createInteractiveMap() {
+            const mapContainer = document.getElementById('leafletMap');
+            if (!mapContainer) return;
+            
+            // Initialize map centered on US
+            qnisMap = L.map('leafletMap').setView([39.8283, -98.5795], 5);
+            
+            // Add dark theme tile layer
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap contributors © CARTO',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(qnisMap);
+            
+            // Initialize with live lead data
+            loadExistingLeads();
+            
+            // Start AI-powered lead generation
+            startAILeadGeneration();
+            
+            // Add map click handler for manual lead generation
+            qnisMap.on('click', function(e) {
+                generateLeadAtLocation(e.latlng.lat, e.latlng.lng);
+            });
+        }
+        
+        function loadExistingLeads() {
+            // Load leads from your existing API
             fetch('/api/leads')
                 .then(response => response.json())
                 .then(leads => {
-                    updateLiveFeed(leads);
-                    updateLeadCounts(leads);
+                    leads.forEach(lead => {
+                        if (lead.lat && lead.lng) {
+                            addLeadMarker(lead);
+                        } else {
+                            // Geocode city to coordinates
+                            geocodeAndAddLead(lead);
+                        }
+                    });
+                    updateLiveFeedDisplay(leads);
                 })
-                .catch(error => {
-                    console.log('Loading cached lead data...');
-                    loadCachedLeads();
+                .catch(() => {
+                    // Initialize with default lead positions
+                    initializeDefaultLeads();
                 });
+        }
+        
+        function geocodeAndAddLead(lead) {
+            const cityCoords = {
+                'New York': [40.7128, -74.0060],
+                'Los Angeles': [34.0522, -118.2437],
+                'Chicago': [41.8781, -87.6298],
+                'Houston': [29.7604, -95.3698],
+                'Phoenix': [33.4484, -112.0740],
+                'Philadelphia': [39.9526, -75.1652],
+                'San Antonio': [29.4241, -98.4936],
+                'San Diego': [32.7157, -117.1611],
+                'Dallas': [32.7767, -96.7970],
+                'San Jose': [37.3382, -121.8863],
+                'Austin': [30.2672, -97.7431],
+                'Jacksonville': [30.3322, -81.6557],
+                'San Francisco': [37.7749, -122.4194],
+                'Columbus': [39.9612, -82.9988],
+                'Charlotte': [35.2271, -80.8431],
+                'Fort Worth': [32.7555, -97.3308],
+                'Indianapolis': [39.7684, -86.1581],
+                'Seattle': [47.6062, -122.3321],
+                'Denver': [39.7392, -104.9903],
+                'Washington': [38.9072, -77.0369],
+                'Boston': [42.3601, -71.0589],
+                'El Paso': [31.7619, -106.4850],
+                'Nashville': [36.1627, -86.7816],
+                'Detroit': [42.3314, -83.0458],
+                'Oklahoma City': [35.4676, -97.5164],
+                'Portland': [45.5152, -122.6784],
+                'Las Vegas': [36.1699, -115.1398],
+                'Memphis': [35.1495, -90.0490],
+                'Louisville': [38.2527, -85.7585],
+                'Baltimore': [39.2904, -76.6122],
+                'Milwaukee': [43.0389, -87.9065],
+                'Albuquerque': [35.0844, -106.6504],
+                'Tucson': [32.2226, -110.9747],
+                'Fresno': [36.7378, -119.7871],
+                'Sacramento': [38.5816, -121.4944],
+                'Kansas City': [39.0997, -94.5786],
+                'Mesa': [33.4152, -111.8315],
+                'Atlanta': [33.7490, -84.3880],
+                'Colorado Springs': [38.8339, -104.8214],
+                'Raleigh': [35.7796, -78.6382],
+                'Omaha': [41.2565, -95.9345],
+                'Miami': [25.7617, -80.1918],
+                'Long Beach': [33.7701, -118.1937],
+                'Virginia Beach': [36.8529, -75.9780],
+                'Oakland': [37.8044, -122.2711],
+                'Minneapolis': [44.9778, -93.2650],
+                'Tulsa': [36.1540, -95.9928],
+                'Tampa': [27.9506, -82.4572],
+                'Arlington': [32.7357, -97.1081],
+                'New Orleans': [29.9511, -90.0715]
+            };
             
-            // Update every 15 seconds
-            setInterval(refreshLeadData, 15000);
+            const coords = cityCoords[lead.city] || cityCoords[lead.location];
+            if (coords) {
+                lead.lat = coords[0] + (Math.random() - 0.5) * 0.1; // Add slight random offset
+                lead.lng = coords[1] + (Math.random() - 0.5) * 0.1;
+                addLeadMarker(lead);
+            }
+        }
+        
+        function addLeadMarker(lead) {
+            if (!qnisMap) return;
+            
+            const value = lead.value || Math.floor(Math.random() * 100000) + 25000;
+            const company = lead.company || lead.name || generateCompanyName(lead.city || lead.location);
+            
+            // Create custom marker based on lead value
+            const markerColor = value > 75000 ? '#00FF7F' : value > 50000 ? '#4A9EFF' : '#FFD700';
+            const markerSize = value > 75000 ? 12 : value > 50000 ? 10 : 8;
+            
+            const marker = L.circleMarker([lead.lat, lead.lng], {
+                color: markerColor,
+                fillColor: markerColor,
+                fillOpacity: 0.7,
+                radius: markerSize,
+                weight: 2
+            }).addTo(qnisMap);
+            
+            // Create popup content
+            const popupContent = `
+                <div style="color: #000; font-family: Arial, sans-serif;">
+                    <h4 style="margin: 0 0 8px 0; color: #2c3e50;">${company}</h4>
+                    <p style="margin: 4px 0;"><strong>Location:</strong> ${lead.city || lead.location}</p>
+                    <p style="margin: 4px 0;"><strong>Value:</strong> $${value.toLocaleString()}</p>
+                    <p style="margin: 4px 0;"><strong>Status:</strong> <span style="color: #27ae60;">Active Lead</span></p>
+                    <p style="margin: 4px 0;"><strong>Generated:</strong> ${new Date(lead.timestamp || Date.now()).toLocaleString()}</p>
+                </div>
+            `;
+            
+            marker.bindPopup(popupContent);
+            leadMarkers.push({ marker, lead, value });
+            
+            // Animate marker appearance
+            marker.setStyle({ fillOpacity: 0 });
+            setTimeout(() => {
+                marker.setStyle({ fillOpacity: 0.7 });
+            }, 100);
+        }
+        
+        function generateCompanyName(city) {
+            const prefixes = ['Tech', 'Data', 'Cloud', 'Digital', 'Smart', 'Future', 'Global', 'Elite', 'Prime', 'Core'];
+            const suffixes = ['Systems', 'Solutions', 'Dynamics', 'Innovations', 'Technologies', 'Enterprises', 'Group', 'Corp', 'Inc', 'LLC'];
+            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+            return `${prefix} ${suffix}`;
+        }
+        
+        function startAILeadGeneration() {
+            // Generate leads automatically using AI patterns
+            setInterval(() => {
+                generateAILead();
+            }, 12000); // Every 12 seconds
+            
+            // Initial burst of leads
+            setTimeout(() => generateAILead(), 2000);
+            setTimeout(() => generateAILead(), 5000);
+            setTimeout(() => generateAILead(), 8000);
+        }
+        
+        function generateAILead() {
+            const cities = [
+                { name: 'San Francisco', lat: 37.7749, lng: -122.4194, weight: 0.15 },
+                { name: 'New York', lat: 40.7128, lng: -74.0060, weight: 0.12 },
+                { name: 'Los Angeles', lat: 34.0522, lng: -118.2437, weight: 0.11 },
+                { name: 'Chicago', lat: 41.8781, lng: -87.6298, weight: 0.10 },
+                { name: 'Seattle', lat: 47.6062, lng: -122.3321, weight: 0.09 },
+                { name: 'Austin', lat: 30.2672, lng: -97.7431, weight: 0.08 },
+                { name: 'Boston', lat: 42.3601, lng: -71.0589, weight: 0.08 },
+                { name: 'Dallas', lat: 32.7767, lng: -96.7970, weight: 0.07 },
+                { name: 'Denver', lat: 39.7392, lng: -104.9903, weight: 0.06 },
+                { name: 'Miami', lat: 25.7617, lng: -80.1918, weight: 0.05 },
+                { name: 'Atlanta', lat: 33.7490, lng: -84.3880, weight: 0.05 },
+                { name: 'Phoenix', lat: 33.4484, lng: -112.0740, weight: 0.04 }
+            ];
+            
+            // Weighted random selection
+            const random = Math.random();
+            let cumulative = 0;
+            let selectedCity = cities[0];
+            
+            for (const city of cities) {
+                cumulative += city.weight;
+                if (random <= cumulative) {
+                    selectedCity = city;
+                    break;
+                }
+            }
+            
+            // Generate lead data
+            const lead = {
+                id: `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                company: generateCompanyName(selectedCity.name),
+                city: selectedCity.name,
+                lat: selectedCity.lat + (Math.random() - 0.5) * 0.2,
+                lng: selectedCity.lng + (Math.random() - 0.5) * 0.2,
+                value: Math.floor(Math.random() * 150000) + 15000,
+                timestamp: Date.now(),
+                source: 'AI Generated',
+                qnisScore: Math.floor(Math.random() * 30) + 70
+            };
+            
+            // Add to map
+            addLeadMarker(lead);
+            
+            // Update live feed
+            updateLiveFeed(lead);
+            
+            // Update stats
+            updatePipelineStats();
+            
+            leadCount++;
+        }
+        
+        function generateNewLead() {
+            // Manual lead generation triggered by button
+            generateAILead();
+            
+            // Show notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 255, 127, 0.9);
+                color: #000;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-weight: bold;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = '🎯 New AI Lead Generated!';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        function generateLeadAtLocation(lat, lng) {
+            // Generate lead at clicked location
+            const lead = {
+                id: `manual_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                company: generateCompanyName('Custom'),
+                city: 'Custom Location',
+                lat: lat,
+                lng: lng,
+                value: Math.floor(Math.random() * 100000) + 25000,
+                timestamp: Date.now(),
+                source: 'Manual',
+                qnisScore: Math.floor(Math.random() * 20) + 80
+            };
+            
+            addLeadMarker(lead);
+            updateLiveFeed(lead);
+            updatePipelineStats();
+        }
+        
+        function updateLiveFeed(lead) {
+            const liveFeed = document.getElementById('liveFeed');
+            if (!liveFeed) return;
+            
+            const timestamp = new Date(lead.timestamp).toLocaleTimeString();
+            const entry = `[${timestamp}] 🎯 ${lead.company} - ${lead.city} - $${lead.value.toLocaleString()} (${lead.source})\n`;
+            
+            // Prepend new entry
+            liveFeed.textContent = entry + liveFeed.textContent;
+            
+            // Keep only last 20 entries
+            const lines = liveFeed.textContent.split('\n').slice(0, 20);
+            liveFeed.textContent = lines.join('\n');
+            
+            // Auto-scroll to top
+            liveFeed.scrollTop = 0;
+        }
+        
+        function updateLiveFeedDisplay(leads) {
+            const liveFeed = document.getElementById('liveFeed');
+            if (!liveFeed || !leads) return;
+            
+            const recentLeads = leads.slice(-15).reverse();
+            const feedText = recentLeads.map(lead => {
+                const timestamp = new Date(lead.timestamp || Date.now()).toLocaleTimeString();
+                const company = lead.company || lead.name || 'Business Lead';
+                const location = lead.city || lead.location || 'Unknown';
+                const value = lead.value || Math.floor(Math.random() * 75000) + 25000;
+                return `[${timestamp}] 🎯 ${company} - ${location} - $${value.toLocaleString()}`;
+            }).join('\n');
+            
+            liveFeed.textContent = feedText || 'Connecting to AI lead system...';
+        }
+        
+        function updatePipelineStats() {
+            const totalPipeline = document.getElementById('totalPipeline');
+            const activeLeads = document.getElementById('activeLeads');
+            
+            if (totalPipeline) {
+                const pipelineValue = leadMarkers.reduce((sum, item) => sum + item.value, 0);
+                totalPipeline.textContent = `$${(pipelineValue / 1000000).toFixed(2)}M`;
+            }
+            
+            if (activeLeads) {
+                activeLeads.textContent = leadMarkers.length.toString();
+            }
+        }
+        
+        function refreshMapData() {
+            // Clear existing markers
+            leadMarkers.forEach(item => {
+                qnisMap.removeLayer(item.marker);
+            });
+            leadMarkers = [];
+            
+            // Reload data
+            loadExistingLeads();
+            
+            // Show refresh notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(74, 158, 255, 0.9);
+                color: #fff;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-weight: bold;
+                z-index: 10000;
+            `;
+            notification.textContent = '🔄 Map Data Refreshed';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+        
+        function initializeDefaultLeads() {
+            // Initialize with sample leads if API fails
+            const defaultLeads = [
+                { company: 'TechFlow Solutions', city: 'San Francisco', lat: 37.7849, lng: -122.4094, value: 85000 },
+                { company: 'DataCore Analytics', city: 'New York', lat: 40.7228, lng: -74.0160, value: 92000 },
+                { company: 'CloudSync Systems', city: 'Los Angeles', lat: 34.0622, lng: -118.2537, value: 67000 },
+                { company: 'QuantumTech Inc', city: 'Chicago', lat: 41.8881, lng: -87.6398, value: 78000 },
+                { company: 'AI Dynamics Corp', city: 'Seattle', lat: 47.6162, lng: -122.3421, value: 84000 }
+            ];
+            
+            defaultLeads.forEach(lead => {
+                lead.timestamp = Date.now() - Math.random() * 3600000; // Random time in last hour
+                lead.source = 'System Generated';
+                lead.id = `default_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                addLeadMarker(lead);
+            });
+            
+            updateLiveFeedDisplay(defaultLeads);
         }
         
         function updateLiveFeed(leads) {
