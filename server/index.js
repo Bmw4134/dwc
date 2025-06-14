@@ -650,16 +650,26 @@ app.get('/', (req, res) => {
     
     console.log(`[ROUTING] ROOT REQUEST - serving NEXUS landing page: ${timestamp}`);
     
-    // Force serve the quantum-optimized landing page
-    const landingPath = path.join(process.cwd(), 'landing.html');
+    // Force serve the production-ready landing page
+    const landingPath = path.join(process.cwd(), 'index.html');
     try {
         const landingContent = fs.readFileSync(landingPath, 'utf8');
         res.set('Content-Type', 'text/html; charset=utf-8');
         res.send(landingContent);
-        console.log('[NEXUS] Quantum-optimized landing page served from PRIMARY root route');
+        console.log('[NEXUS] Production landing page served from PRIMARY root route');
     } catch (error) {
-        console.error('[ERROR] Failed to read landing.html:', error);
-        res.status(500).send('Error loading NEXUS platform');
+        console.error('[ERROR] Failed to read index.html:', error);
+        // Fallback to landing.html if index.html not found
+        try {
+            const fallbackPath = path.join(process.cwd(), 'landing.html');
+            const fallbackContent = fs.readFileSync(fallbackPath, 'utf8');
+            res.set('Content-Type', 'text/html; charset=utf-8');
+            res.send(fallbackContent);
+            console.log('[NEXUS] Fallback landing page served');
+        } catch (fallbackError) {
+            console.error('[ERROR] Failed to read fallback landing.html:', fallbackError);
+            res.status(500).send('Error loading NEXUS platform');
+        }
     }
 });
 

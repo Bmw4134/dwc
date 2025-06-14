@@ -1707,25 +1707,28 @@
         }
 
         // Generate AI-enhanced company names using OpenAI
-        async function generateAICompanyName(location) {
-            try {
-                const response = await fetch('/api/openai-enhance', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        prompt: `Generate a realistic technology company name for a business near coordinates ${location.lat}, ${location.lng}`,
-                        type: 'company_name'
-                    })
-                });
-                
+        function generateAICompanyName(location) {
+            return fetch('/api/openai-enhance', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    prompt: `Generate a realistic technology company name for a business near coordinates ${location.lat}, ${location.lng}`,
+                    type: 'company_name'
+                })
+            })
+            .then(response => {
                 if (response.ok) {
-                    const data = await response.json();
-                    return data.companyName || generateFallbackCompanyName();
+                    return response.json();
                 }
-            } catch (error) {
+                return null;
+            })
+            .then(data => {
+                return data ? data.companyName || generateFallbackCompanyName() : generateFallbackCompanyName();
+            })
+            .catch(error => {
                 console.error('OpenAI API error:', error);
-            }
-            return generateFallbackCompanyName();
+                return generateFallbackCompanyName();
+            });
         }
 
         // Generate AI contact information
