@@ -109,6 +109,103 @@ const qnisEngine = new QNISLeadEngine();
 const apiKeyVault = new APIKeyVault();
 const nlpParser = new NLPQueryParser();
 
+// Initialize Vision AI OCR system
+class VisionAIOCR {
+    constructor(apiKeyVault) {
+        this.keyVault = apiKeyVault;
+        this.openaiKey = this.keyVault.getKey('OPENAI_API_KEY');
+    }
+
+    async analyzeImage(base64Image, filename) {
+        if (!this.openaiKey) {
+            throw new Error('OpenAI API key not available for Vision AI');
+        }
+
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.openaiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "gpt-4o",
+                    messages: [
+                        {
+                            role: "user",
+                            content: [
+                                {
+                                    type: "text",
+                                    text: "Extract all text content from this image. Focus on business information like company names, contact details, addresses, phone numbers, emails, and any other business-relevant text. Return the extracted text in a clear, organized format."
+                                },
+                                {
+                                    type: "image_url",
+                                    image_url: {
+                                        url: `data:image/jpeg;base64,${base64Image}`
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    max_tokens: 1000
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Vision API request failed: ${response.status}`);
+            }
+
+            const result = await response.json();
+            const extractedText = result.choices[0]?.message?.content || '';
+
+            return {
+                filename: filename,
+                text: extractedText,
+                confidence: 0.95,
+                businessData: this.extractBusinessInfo(extractedText),
+                timestamp: new Date().toISOString()
+            };
+
+        } catch (error) {
+            console.error('[VISION-AI] OCR analysis failed:', error);
+            throw error;
+        }
+    }
+
+    extractBusinessInfo(text) {
+        const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+        const phoneRegex = /\b(?:\+?1[-.\s]?)?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})\b/g;
+        const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+        
+        const emails = text.match(emailRegex) || [];
+        const phones = text.match(phoneRegex) || [];
+        const urls = text.match(urlRegex) || [];
+        
+        // Extract company names using common business patterns
+        const companyPatterns = [
+            /([A-Z][a-z]+ (?:Inc|LLC|Corp|Company|Co\.|Ltd|Limited))/g,
+            /([A-Z][a-zA-Z\s]+ (?:Technologies|Tech|Systems|Solutions|Services))/g,
+            /([A-Z][a-zA-Z\s]+ (?:Group|Holdings|Enterprises|Industries))/g
+        ];
+        
+        let companies = [];
+        for (const pattern of companyPatterns) {
+            const matches = text.match(pattern) || [];
+            companies = companies.concat(matches);
+        }
+        
+        return {
+            emails: emails,
+            phones: phones,
+            urls: urls,
+            companies: [...new Set(companies)],
+            hasBusinessInfo: emails.length > 0 || phones.length > 0 || companies.length > 0
+        };
+    }
+}
+
+const visionAI = new VisionAIOCR(apiKeyVault);
+
 // Import and initialize autonomous pipeline and self-fix system
 import('./autonomous-pipeline.js').then(module => {
     const AutonomousPipeline = module.default;
