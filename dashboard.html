@@ -764,7 +764,29 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('[NEXUS] Dashboard initialized with 47 modules');
             console.log('[NEXUS] Quantum intelligence platform ready');
+            
+            // Auto-execute validation suite
+            loadValidationSuite();
         });
+        
+        function loadValidationSuite() {
+            const script = document.createElement('script');
+            script.src = '/nexus-validation-suite.js';
+            script.onload = function() {
+                console.log('[NEXUS] Validation suite loaded and executing...');
+                
+                // Load behavior simulation after validation
+                setTimeout(() => {
+                    const behaviorScript = document.createElement('script');
+                    behaviorScript.src = '/nexus-behavior-simulation.js';
+                    behaviorScript.onload = function() {
+                        console.log('[NEXUS] Behavior simulation active');
+                    };
+                    document.head.appendChild(behaviorScript);
+                }, 2000);
+            };
+            document.head.appendChild(script);
+        }
     </script>
 </body>
 </html>
