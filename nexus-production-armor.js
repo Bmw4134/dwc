@@ -19,7 +19,6 @@ class NEXUSProductionArmor {
         this.log('NEXUS Production Armor initializing...', 'system');
         this.implementRegressionProtection();
         this.startRecursiveValidation();
-        this.activateComponentSnapback();
         this.validateSystemIntegrity();
     }
 
@@ -152,7 +151,16 @@ class NEXUSProductionArmor {
     }
 
     validateSidebar() {
-        const sidebar = document.querySelector('.nexus-sidebar');
+        // Use DOM Safety Guard if available
+        const safeQuery = window.DOMGuard ? window.DOMGuard.safeQuerySelector.bind(window.DOMGuard) : (sel) => {
+            try { return document.querySelector(sel); } catch(e) { return null; }
+        };
+        
+        const safeQueryAll = window.DOMGuard ? window.DOMGuard.safeQuerySelectorAll.bind(window.DOMGuard) : (sel) => {
+            try { return Array.from(document.querySelectorAll(sel)); } catch(e) { return []; }
+        };
+
+        const sidebar = safeQuery('.nexus-sidebar');
         if (!sidebar) return false;
 
         const requiredSections = [
@@ -163,8 +171,14 @@ class NEXUSProductionArmor {
             'Development Tools'
         ];
 
-        const sectionHeaders = Array.from(sidebar.querySelectorAll('.section-title'));
-        const foundSections = sectionHeaders.map(h => h.textContent.trim());
+        const sectionHeaders = safeQueryAll('.section-title');
+        const foundSections = sectionHeaders.map(h => {
+            try {
+                return h.textContent ? h.textContent.trim() : '';
+            } catch(e) {
+                return '';
+            }
+        }).filter(Boolean);
 
         const allSectionsPresent = requiredSections.every(section => 
             foundSections.includes(section)
@@ -176,7 +190,7 @@ class NEXUSProductionArmor {
         }
 
         // Validate module counts
-        const moduleItems = sidebar.querySelectorAll('.module-item');
+        const moduleItems = safeQueryAll('.module-item');
         if (moduleItems.length < 25) {
             this.log(`Sidebar validation failed - insufficient modules: ${moduleItems.length}`, 'error');
             return false;
@@ -186,21 +200,34 @@ class NEXUSProductionArmor {
     }
 
     validateRouting() {
-        const moduleItems = document.querySelectorAll('.module-item');
+        const safeQueryAll = window.DOMGuard ? window.DOMGuard.safeQuerySelectorAll.bind(window.DOMGuard) : (sel) => {
+            try { return Array.from(document.querySelectorAll(sel)); } catch(e) { return []; }
+        };
+        
+        const safeGetElement = (id) => {
+            try { return document.getElementById(id); } catch(e) { return null; }
+        };
+
+        const moduleItems = safeQueryAll('.module-item');
         let validRoutes = 0;
 
         moduleItems.forEach(item => {
-            const moduleId = item.dataset.module;
-            const contentElement = document.getElementById(`${moduleId}-content`);
-            
-            if (contentElement) {
-                validRoutes++;
-            } else {
-                this.log(`Missing content for module: ${moduleId}`, 'warning');
+            try {
+                const moduleId = item.dataset ? item.dataset.module : item.getAttribute('data-module');
+                if (moduleId) {
+                    const contentElement = safeGetElement(`${moduleId}-content`);
+                    if (contentElement) {
+                        validRoutes++;
+                    } else {
+                        this.log(`Missing content for module: ${moduleId}`, 'warning');
+                    }
+                }
+            } catch(e) {
+                this.log('Error validating module routing', 'warning');
             }
         });
 
-        const routingIntegrity = validRoutes / moduleItems.length;
+        const routingIntegrity = moduleItems.length > 0 ? validRoutes / moduleItems.length : 0;
         return routingIntegrity > 0.8; // 80% routing integrity threshold
     }
 
@@ -242,19 +269,32 @@ class NEXUSProductionArmor {
             '--border-glow'
         ];
 
-        const computedStyle = getComputedStyle(document.documentElement);
-        const missingStyles = requiredStyles.filter(style => 
-            !computedStyle.getPropertyValue(style)
-        );
+        try {
+            const computedStyle = getComputedStyle(document.documentElement);
+            const missingStyles = requiredStyles.filter(style => {
+                try {
+                    return !computedStyle.getPropertyValue(style);
+                } catch(e) {
+                    return true;
+                }
+            });
 
-        if (missingStyles.length > 0) {
-            this.log(`Missing CSS variables: ${missingStyles.join(', ')}`, 'error');
+            if (missingStyles.length > 0) {
+                this.log(`Missing CSS variables: ${missingStyles.join(', ')}`, 'error');
+                return false;
+            }
+        } catch(e) {
+            this.log('Error validating CSS variables', 'warning');
             return false;
         }
 
-        // Validate design system consistency
-        const cards = document.querySelectorAll('.card');
-        const buttons = document.querySelectorAll('.btn');
+        // Validate design system consistency with safe queries
+        const safeQueryAll = window.DOMGuard ? window.DOMGuard.safeQuerySelectorAll.bind(window.DOMGuard) : (sel) => {
+            try { return Array.from(document.querySelectorAll(sel)); } catch(e) { return []; }
+        };
+        
+        const cards = safeQueryAll('.card');
+        const buttons = safeQueryAll('.btn');
         
         return cards.length > 0 && buttons.length > 0;
     }
