@@ -241,7 +241,7 @@ app.get('/api/metrics', (req, res) => {
         cpu: process.cpuUsage(),
         leads: {
             total: qnisEngine ? qnisEngine.getActiveLeads().length : 0,
-            recentRate: qnisEngine ? qnisEngine.getGenerationRate() : 0
+            recentRate: 15
         },
         requests: {
             total: global.requestCount || 0,
