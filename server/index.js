@@ -149,8 +149,8 @@ app.get('/trucking-company-website.html', (req, res) => {
 app.get('/dashboard', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('X-Auth-Bypass', 'true');
-    console.log(`[ROUTING] Serving modular dashboard (auth bypassed)`);
-    res.sendFile(path.join(process.cwd(), 'dashboard-internal.html'));
+    console.log(`[ROUTING] Serving executive investor dashboard (auth bypassed)`);
+    res.sendFile(path.join(process.cwd(), 'investor-dashboard.html'));
 });
 
 // Logout route

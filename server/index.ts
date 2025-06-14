@@ -889,8 +889,8 @@ app.get('*', (req, res) => {
     return res.sendFile(path.resolve(process.cwd(), 'landing-verified.html'));
   }
   
-  console.log(`[NEXUS-REPAIR] Catch-all serving dashboard for authenticated user`);
-  res.sendFile(path.resolve(process.cwd(), 'dashboard.html'));
+  console.log(`[NEXUS-REPAIR] Catch-all serving investor dashboard for authenticated user`);
+  res.sendFile(path.resolve(process.cwd(), 'investor-dashboard.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
