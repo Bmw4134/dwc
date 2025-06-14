@@ -18,6 +18,13 @@ import { dwcCommandModule } from "./dwc-command-module";
 import { qnisPrecisionCore } from "./qnis-precision-core";
 import { geolocationLeadEngine } from "./geolocation-lead-engine";
 import { notificationService } from "./notification-service";
+import { 
+  environmentCheck, 
+  testOpenAI, 
+  analyzeWithOpenAI, 
+  generateWithOpenAI, 
+  searchWithPerplexity 
+} from "./api-vault-endpoints";
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -394,6 +401,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     });
   });
+
+  // NEXUS API Vault Recovery endpoints
+  app.get('/api/environment-check', environmentCheck);
+  app.post('/api/openai/test', testOpenAI);
+  app.post('/api/openai/analyze', analyzeWithOpenAI);
+  app.post('/api/openai/generate', generateWithOpenAI);
+  app.post('/api/perplexity/search', searchWithPerplexity);
 
   const httpServer = createServer(app);
   
