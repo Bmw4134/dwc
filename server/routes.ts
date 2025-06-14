@@ -85,6 +85,11 @@ function generateQuantumBehavior() {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  const httpServer = createServer(app);
+  
+  // Setup Vite middleware for React application with DWC Systems LLC branding
+  console.log('[NEXUS] Setting up React application with DWC Systems LLC branding');
+  await setupVite(app, httpServer);
 
   // Dashboard metrics endpoint - real business data
   app.get('/api/dashboard/metrics', (req, res) => {
@@ -1153,10 +1158,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: 'Complete intelligence report failed' });
     }
   });
-
-  // Setup Vite middleware for React application with DWC Systems LLC branding
-  console.log('[NEXUS] Integrating React application with DWC Systems LLC branding');
-  await setupVite(app, httpServer);
 
   return httpServer;
 }

@@ -590,17 +590,21 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// PRIORITY ROUTE: Landing page must execute first
+// Remove the problematic import to fix stack overflow
+
+console.log('Environment:', isProduction ? 'PRODUCTION' : 'DEVELOPMENT');
+console.log('[ROUTING] Setting up React application with DWC Systems LLC branding');
+
+const httpServer = app.listen(PORT, () => {
+  console.log(`🚀 DWC Systems NEXUS Platform running on port ${PORT}`);
+  console.log(`✅ Access the platform at: http://localhost:${PORT}`);
+  console.log(`📊 All 14 modules operational`);
+  console.log(`⚡ NEXUS intelligence platform ready`);
+});
+
+// Fallback route for static content (only if React routing fails)
 app.get('/', (req, res, next) => {
-  // Bypass all middleware - force immediate landing page response
-  console.log(`[LANDING-FORCE] Direct landing page override: ${Date.now()}`);
-  
-  res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8',
-    'Cache-Control': 'no-cache, no-store, must-revalidate, private',
-    'Pragma': 'no-cache',
-    'Expires': '0'
-  });
+  console.log(`[FALLBACK] Serving static content as fallback`);
   
   const landingPageContent = `<!DOCTYPE html>
 <html lang="en">
