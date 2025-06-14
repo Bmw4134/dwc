@@ -634,35 +634,22 @@
         });
     </script>
 
-    <!-- NEXUS Auto-Fix System -->
-    <script src="/nexus-auto-fix-execution.js"></script>
+    <!-- NEXUS Unified Restore System -->
+    <script src="/nexus-unified-restore.js"></script>
     <script>
-        // Execute targeted fixes while preserving stable components
+        // Execute unified restore to reactivate all 47 modules
         window.addEventListener('load', () => {
             setTimeout(() => {
-                console.log('Executing infrastructure auto-fix with stability preservation');
+                console.log('[NEXUS] Initializing Unified Restore Mode');
                 
-                // Verify stable components first
-                const stableComponents = {
-                    revenue: document.querySelector('.pipeline-value')?.textContent?.includes('2,635,000'),
-                    llcFiling: typeof window.fileLLCTonight === 'function',
-                    intelligenceReport: typeof window.generateIntelligenceReport === 'function'
-                };
-                
-                if (stableComponents.revenue && stableComponents.llcFiling && stableComponents.intelligenceReport) {
-                    console.log('Stable components verified - proceeding with enhancements');
-                    
-                    if (window.NEXUSAutoFixExecution) {
-                        const autoFix = new NEXUSAutoFixExecution();
-                        autoFix.initializeAutoFix().then(report => {
-                            window.nexusAutoFixReport = report;
-                            console.log('Auto-fix execution complete');
-                        });
-                    }
-                } else {
-                    console.log('Stability check failed - preserving current state');
+                if (window.NEXUSUnifiedRestore) {
+                    const restore = new NEXUSUnifiedRestore();
+                    restore.executeUnifiedRestore().then(report => {
+                        window.nexusRestoreReport = report;
+                        console.log(`[NEXUS] Restore Complete - ${report.modulesRegistered}/47 modules registered`);
+                    });
                 }
-            }, 1500);
+            }, 1000);
         });
     </script>
 </body>
