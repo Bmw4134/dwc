@@ -174,7 +174,7 @@ app.get('/sales', (req, res) => {
 // API endpoint for leads data - feeds NEXUS Quantum Deep Dive system
 app.get('/api/leads', (req, res) => {
     try {
-        const cachedLeads = qnisEngine.getCachedLeads();
+        const cachedLeads = qnisEngine.getActiveLeads();
         const enhancedLeads = cachedLeads.map(lead => ({
             ...lead,
             lat: getLatForCity(lead.city),
@@ -309,9 +309,10 @@ async function processImageWithOCR(imageData) {
     const leadId = `visual_lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     try {
-        // Check if OpenAI API key is available
-        if (!process.env.OPENAI_API_KEY) {
-            console.log('[VISUAL-SCANNER] OpenAI API key not available, using fallback extraction');
+        // Check if OpenAI Vision API key is available
+        const apiKey = process.env.OPENAI_API_VISION_KEY || process.env.OPENAI_API_KEY;
+        if (!apiKey) {
+            console.log('[VISUAL-SCANNER] OpenAI Vision API key not available, using fallback extraction');
             return generateFallbackLead(leadId);
         }
 
@@ -320,7 +321,7 @@ async function processImageWithOCR(imageData) {
         const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -355,7 +356,8 @@ async function processImageWithOCR(imageData) {
         console.log('[VISUAL-SCANNER] OpenAI API response status:', openaiResponse.status);
 
         if (!openaiResponse.ok) {
-            console.log('[VISUAL-SCANNER] OpenAI API error, using fallback extraction');
+            const errorText = await openaiResponse.text();
+            console.log('[VISUAL-SCANNER] OpenAI API error:', openaiResponse.status, errorText);
             return generateFallbackLead(leadId);
         }
 
