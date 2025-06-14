@@ -206,6 +206,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(status);
   });
 
+  // Main leads endpoint for React app
+  app.get('/api/leads', (req, res) => {
+    const leads = Array.from(generatedLeads).map(lead => ({
+      id: lead.id,
+      company: lead.company,
+      city: lead.city,
+      estimatedValue: lead.estimatedValue,
+      qnisScore: lead.qnisScore,
+      timestamp: lead.timestamp
+    }));
+    
+    console.log(`[API] Serving ${leads.length} leads to React application`);
+    res.json(leads);
+  });
+
   // Geolocation lead discovery endpoint
   app.get('/api/leads/discover', (req, res) => {
     const { latitude, longitude, radius } = req.query;
