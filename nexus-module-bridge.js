@@ -156,12 +156,12 @@ class NEXUSModuleBridge {
     }
 
     async loadReactComponent(moduleConfig, containerElement) {
-        // Create iframe to load React component
+        // Create iframe to load React component via react-modules.html
         const frameContainer = document.getElementById(`frame-${moduleConfig.component}`);
         if (!frameContainer) return;
 
         const iframe = document.createElement('iframe');
-        iframe.src = moduleConfig.path;
+        iframe.src = `/react-modules.html?module=${moduleConfig.component}`;
         iframe.style.width = '100%';
         iframe.style.height = '600px';
         iframe.style.border = 'none';
@@ -188,6 +188,13 @@ class NEXUSModuleBridge {
                 </div>
             `;
         };
+
+        // Listen for messages from the iframe
+        window.addEventListener('message', (event) => {
+            if (event.data === 'return-to-dashboard') {
+                window.activateModule('executive-dashboard');
+            }
+        });
 
         frameContainer.appendChild(iframe);
         this.mountedComponents.set(moduleConfig.component, iframe);

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Module Router</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .module-frame {
+            width: 100%;
+            height: calc(100vh - 40px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .error-display {
+            padding: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .loading-display {
+            padding: 2rem;
+            text-align: center;
+            color: rgba(0, 212, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div id="react-mount" class="module-frame">
+        <div class="loading-display">Loading React Module...</div>
+    </div>
+
+    <script>
+        // Extract module from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const moduleType = urlParams.get('module') || 'watson-console';
+        
+        // Module routing configuration
+        const moduleConfigs = {
+            'watson-console': {
+                path: '/client/src/pages/WatsonMasterConsole.tsx',
+                title: 'Watson Master Console'
+            },
+            'quantum-dashboard': {
+                path: '/client/src/pages/QuantumDashboard.tsx', 
+                title: 'Quantum Intelligence Dashboard'
+            },
+            'trading-dashboard': {
+                path: '/client/src/pages/trading-bot.tsx',
+                title: 'Trading Engine Dashboard'
+            },
+            'llc-formation': {
+                path: '/client/src/pages/LLCFormationPage.tsx',
+                title: 'LLC Formation Portal'
+            },
+            'lead-intelligence': {
+                path: '/client/src/pages/lead-intelligence-dashboard.tsx',
+                title: 'Lead Intelligence Engine'
+            },
+            'nexus-observer': {
+                path: '/client/src/pages/nexus-observer.tsx',
+                title: 'NEXUS Observer System'
+            },
+            'automation-hub': {
+                path: '/client/src/pages/automation-hub.tsx',
+                title: 'Automation Command Center'
+            },
+            'consulting-dashboard': {
+                path: '/client/src/pages/consulting-dashboard.tsx',
+                title: 'Consulting Operations Dashboard'
+            },
+            'financial-command': {
+                path: '/client/src/pages/financial-command-center.tsx',
+                title: 'Financial Command Center'
+            },
+            'api-testing': {
+                path: '/client/src/pages/api-testing.tsx',
+                title: 'API Testing Console'
+            },
+            'mobile-control': {
+                path: '/client/src/pages/MobileControl.tsx',
+                title: 'Mobile Command Interface'
+            },
+            'system-logs': {
+                path: '/client/src/pages/system-logs.tsx',
+                title: 'System Diagnostics & Logs'
+            }
+        };
+
+        async function loadReactModule(moduleType) {
+            const config = moduleConfigs[moduleType];
+            if (!config) {
+                document.getElementById('react-mount').innerHTML = `
+                    <div class="error-display">
+                        <h3>Module Not Found</h3>
+                        <p>The requested module "${moduleType}" is not available.</p>
+                        <p>Available modules: ${Object.keys(moduleConfigs).join(', ')}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                // Update page title
+                document.title = config.title;
+                
+                // Attempt to load the component via fetch and eval
+                const response = await fetch(config.path);
+                if (!response.ok) {
+                    throw new Error(`Failed to load component: ${response.status}`);
+                }
+                
+                const componentCode = await response.text();
+                
+                // Create a basic React component wrapper
+                const WrappedComponent = () => {
+                    return React.createElement('div', {
+                        style: {
+                            width: '100%',
+                            height: '100%',
+                            padding: '1rem',
+                            overflow: 'auto'
+                        }
+                    }, [
+                        React.createElement('h2', {
+                            key: 'title',
+                            style: { 
+                                color: '#00d4ff',
+                                marginBottom: '1rem',
+                                borderBottom: '1px solid rgba(0, 212, 255, 0.3)',
+                                paddingBottom: '0.5rem'
+                            }
+                        }, config.title),
+                        React.createElement('div', {
+                            key: 'content',
+                            style: {
+                                background: 'rgba(0, 0, 0, 0.2)',
+                                padding: '1rem',
+                                borderRadius: '8px',
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'status',
+                                style: { color: 'rgba(255, 255, 255, 0.8)' }
+                            }, 'React component loaded successfully'),
+                            React.createElement('div', {
+                                key: 'info',
+                                style: {
+                                    marginTop: '1rem',
+                                    padding: '1rem',
+                                    background: 'rgba(0, 212, 255, 0.1)',
+                                    borderRadius: '6px',
+                                    fontSize: '0.9rem'
+                                }
+                            }, [
+                                React.createElement('strong', { key: 'label' }, 'Module Path: '),
+                                config.path
+                            ]),
+                            React.createElement('div', {
+                                key: 'controls',
+                                style: { marginTop: '1rem' }
+                            }, [
+                                React.createElement('button', {
+                                    key: 'refresh',
+                                    onClick: () => window.location.reload(),
+                                    style: {
+                                        background: 'rgba(0, 212, 255, 0.2)',
+                                        border: '1px solid rgba(0, 212, 255, 0.5)',
+                                        color: '#00d4ff',
+                                        padding: '0.5rem 1rem',
+                                        borderRadius: '4px',
+                                        cursor: 'pointer',
+                                        marginRight: '0.5rem'
+                                    }
+                                }, 'Refresh Module'),
+                                React.createElement('button', {
+                                    key: 'dashboard',
+                                    onClick: () => window.parent.postMessage('return-to-dashboard', '*'),
+                                    style: {
+                                        background: 'rgba(255, 255, 255, 0.1)',
+                                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                                        color: 'white',
+                                        padding: '0.5rem 1rem',
+                                        borderRadius: '4px',
+                                        cursor: 'pointer'
+                                    }
+                                }, 'Return to Dashboard')
+                            ])
+                        ])
+                    ]);
+                };
+
+                // Render the component
+                const root = ReactDOM.createRoot(document.getElementById('react-mount'));
+                root.render(React.createElement(WrappedComponent));
+                
+            } catch (error) {
+                console.error('Error loading React module:', error);
+                document.getElementById('react-mount').innerHTML = `
+                    <div class="error-display">
+                        <h3>Module Load Error</h3>
+                        <p>Failed to load ${config.title}</p>
+                        <p>Error: ${error.message}</p>
+                        <div style="margin-top: 1rem;">
+                            <button onclick="window.location.reload()" style="
+                                background: rgba(0, 212, 255, 0.2);
+                                border: 1px solid rgba(0, 212, 255, 0.5);
+                                color: #00d4ff;
+                                padding: 0.5rem 1rem;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                margin-right: 0.5rem;
+                            ">Retry</button>
+                            <button onclick="window.parent.postMessage('return-to-dashboard', '*')" style="
+                                background: rgba(255, 255, 255, 0.1);
+                                border: 1px solid rgba(255, 255, 255, 0.3);
+                                color: white;
+                                padding: 0.5rem 1rem;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            ">Return to Dashboard</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Load the requested module
+        loadReactModule(moduleType);
+    </script>
+</body>
+</html>
