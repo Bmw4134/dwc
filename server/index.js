@@ -38,11 +38,8 @@ import('./autonomous-pipeline.js').then(module => {
     console.log('[PIPELINE] Autonomous Lead-to-Solution Pipeline initialized');
 });
 
-// Initialize Visual Lead Scanner
-import('./nexus-visual-scanner.js').then(module => {
-    global.visualScanner = module.visualScanner;
-    console.log('[VISUAL-SCANNER] Nexus Visual Lead Scanner loaded');
-}).catch(err => console.error('[VISUAL-SCANNER] Failed to load scanner:', err));
+// Visual Lead Scanner will be loaded via frontend injection
+console.log('[VISUAL-SCANNER] Visual Lead Scanner will be available in frontend');
 
 // Activate optimized self-healing system
 console.log('[SELF-FIX] Activating optimized self-healing system...');

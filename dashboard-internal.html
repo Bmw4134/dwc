@@ -1641,6 +1641,10 @@
             <!-- AI Assistants Section -->
             <div class="nav-section">
                 <div class="nav-title">AI Assistants</div>
+                <div class="nav-item" onclick="showModule('visual-scanner')">
+                    <span class="nav-icon">📷</span>
+                    <span>Visual Lead Scanner</span>
+                </div>
                 <div class="nav-item" onclick="showModule('pitchgen')">
                     <span class="nav-icon">🧠</span>
                     <span>Pitch Generator</span>
@@ -3995,6 +3999,62 @@
                                     <button class="action-btn small">Edit</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Lead Scanner Module -->
+            <div id="visual-scanner-module" class="module-view">
+                <div class="module-header">
+                    <h2 class="module-title">📷 Visual Lead Scanner</h2>
+                    <p class="module-subtitle">Extract business leads from images using advanced OCR technology</p>
+                </div>
+
+                <div class="scanner-dashboard">
+                    <div class="scanner-stats">
+                        <div class="stat-card">
+                            <span class="stat-value" id="images-processed">0</span>
+                            <span class="stat-label">Images Processed</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value" id="leads-extracted">0</span>
+                            <span class="stat-label">Leads Extracted</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value" id="success-rate">0%</span>
+                            <span class="stat-label">Success Rate</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value" id="processing-time">0ms</span>
+                            <span class="stat-label">Avg Processing</span>
+                        </div>
+                    </div>
+
+                    <div class="upload-zone" id="upload-zone">
+                        <div class="upload-content">
+                            <div class="upload-icon">📷</div>
+                            <h3>Drag & Drop Images or Click to Upload</h3>
+                            <p>Upload truck signage, storefronts, business cards, or any image with business information</p>
+                            <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                            <button class="action-btn" onclick="document.getElementById('file-input').click()">
+                                Choose Files
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="processing-area" id="processing-area" style="display: none;">
+                        <h3>Processing Images...</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="processing-log" id="processing-log"></div>
+                    </div>
+
+                    <div class="results-section" id="results-section">
+                        <h3>Extracted Leads</h3>
+                        <div class="leads-grid" id="leads-grid">
+                            <!-- Lead cards will be populated here -->
                         </div>
                     </div>
                 </div>
