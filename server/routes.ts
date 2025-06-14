@@ -403,12 +403,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Executive Dashboard Route (investor-grade interface)
-  app.get('/dashboard', (req, res) => {
-    console.log('[ROUTING] Serving executive investor dashboard');
-    res.sendFile(path.join(__dirname, '../investor-dashboard.html'));
-  });
-
   // Live leads data for investor dashboard
   app.get('/api/leads/current', async (req, res) => {
     try {

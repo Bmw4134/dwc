@@ -862,9 +862,10 @@ app.post('/api/logout', (req, res) => {
   });
 });
 
-// Dashboard route (requires authentication)
-app.get('/dashboard', requireAuth, (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+// Dashboard route (serves investor-grade interface)
+app.get('/dashboard', (req, res) => {
+  console.log('[ROUTING] Serving executive investor dashboard');
+  res.sendFile(path.join(process.cwd(), 'investor-dashboard.html'));
 });
 
 // Add dedicated landing page route for fallback
