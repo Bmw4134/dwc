@@ -507,6 +507,123 @@ app.get('/api/investor/projections', (req, res) => {
     }
 });
 
+// Vision AI Image Analysis Endpoint
+app.post('/api/vision-analyze', async (req, res) => {
+    try {
+        const { image, prompt } = req.body;
+        
+        if (!image) {
+            return res.status(400).json({
+                success: false,
+                error: 'No image data provided'
+            });
+        }
+
+        // Get OpenAI API key from vault
+        const openaiKey = apiKeyVault.getKey('OPENAI_API_KEY') || process.env.OPENAI_API_KEY;
+        
+        if (!openaiKey) {
+            return res.status(500).json({
+                success: false,
+                error: 'OpenAI API key not configured'
+            });
+        }
+
+        // Call OpenAI Vision API
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${openaiKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o',
+                messages: [
+                    {
+                        role: 'user',
+                        content: [
+                            {
+                                type: 'text',
+                                text: prompt || 'Analyze this business image for company information, contact details, services, and any text visible in signs or documents. Extract business intelligence data.'
+                            },
+                            {
+                                type: 'image_url',
+                                image_url: {
+                                    url: `data:image/jpeg;base64,${image}`
+                                }
+                            }
+                        ]
+                    }
+                ],
+                max_tokens: 500
+            })
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(result.error?.message || 'OpenAI API error');
+        }
+
+        const analysis = result.choices[0].message.content;
+        
+        // Extract potential lead data from analysis
+        const leadData = extractLeadDataFromAnalysis(analysis);
+
+        res.json({
+            success: true,
+            analysis: analysis,
+            leadData: leadData,
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('[VISION-AI] Analysis error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Vision analysis failed',
+            message: error.message
+        });
+    }
+});
+
+// Helper function to extract lead data from Vision AI analysis
+function extractLeadDataFromAnalysis(analysis) {
+    const leadData = {};
+    
+    // Extract company name (look for business names, "LLC", "Inc", etc.)
+    const companyMatch = analysis.match(/(?:company|business|corporation|LLC|Inc|Ltd)[:\s]+([^.\n]+)/i);
+    if (companyMatch) {
+        leadData.company = companyMatch[1].trim();
+    }
+    
+    // Extract phone numbers
+    const phoneMatch = analysis.match(/(?:phone|tel|call)[:\s]*(\+?[\d\s\-\(\)]{10,})/i);
+    if (phoneMatch) {
+        leadData.phone = phoneMatch[1].trim();
+    }
+    
+    // Extract email addresses
+    const emailMatch = analysis.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+    if (emailMatch) {
+        leadData.email = emailMatch[1];
+    }
+    
+    // Extract location/address
+    const locationMatch = analysis.match(/(?:address|located|location)[:\s]+([^.\n]+)/i);
+    if (locationMatch) {
+        leadData.location = locationMatch[1].trim();
+    }
+    
+    // Extract services
+    const servicesMatch = analysis.match(/(?:services|offers|provides)[:\s]+([^.\n]+)/i);
+    if (servicesMatch) {
+        leadData.services = servicesMatch[1].trim();
+    }
+    
+    return Object.keys(leadData).length > 0 ? leadData : null;
+}
+
 // Static file serving - exclude HTML files to prevent route conflicts
 app.use(express.static(process.cwd(), {
     index: false, // Disable directory index serving
