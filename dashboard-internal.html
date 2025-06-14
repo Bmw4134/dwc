@@ -11368,6 +11368,12 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
     <!-- Enhanced Sidebar System with AI-Powered Search -->
     <script src="/enhanced-sidebar-system.js"></script>
     
+    <!-- Console Error Fix -->
+    <script src="/console-error-fix.js"></script>
+    
+    <!-- Map Visibility Fix -->
+    <script src="/map-visibility-fix.js"></script>
+    
     <!-- Visual Lead Scanner Integration -->
     <script src="/nexus-visual-lead-scanner.js"></script>
     
@@ -11394,6 +11400,38 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
                 window.nexusVisualScanner.initializeVisualScanner();
                 console.log('[NEXUS-VISUAL] Scanner initialized and ready');
             }
+            
+            // Add manual map fix button
+            const fixButton = document.createElement('button');
+            fixButton.innerHTML = '🗺️ Fix Map Display';
+            fixButton.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                background: #00ff88;
+                color: #000;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                font-weight: bold;
+                cursor: pointer;
+                font-size: 14px;
+            `;
+            fixButton.onclick = function() {
+                console.log('[MANUAL-FIX] User triggered map fix');
+                if (window.fixMapVisibility) {
+                    window.fixMapVisibility();
+                }
+                if (window.fixConsoleErrors) {
+                    window.fixConsoleErrors();
+                }
+                this.textContent = '✓ Map Fixed';
+                setTimeout(() => {
+                    this.textContent = '🗺️ Fix Map Display';
+                }, 2000);
+            };
+            document.body.appendChild(fixButton);
         }, 2000);
     });
     </script>
