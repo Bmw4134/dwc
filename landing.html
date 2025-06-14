@@ -6,7 +6,7 @@
     <title>DWC Systems - Advanced Enterprise Intelligence Platform</title>
     <meta name="description" content="Transform your business with our sophisticated geospatial lead tracking system. AI-driven insights, real-time mapping, and intelligent automation in one powerful platform.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/nexus-clean-execution.js"></script>
+    <script src="/nexus-47-instant-loader.js"></script>
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -190,9 +190,31 @@
             alert('Demo will be available soon! Click "Start Free Trial" to access the platform.');
         }
 
+        // Initialize 47-module NEXUS sidebar immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for clean execution script to load
+            if (typeof NEXUSCleanExecution !== 'undefined') {
+                window.nexusCleanExecution = new NEXUSCleanExecution();
+                window.nexusCleanExecution.executeCleanRepair();
+            } else {
+                // Fallback: Load clean execution if not already loaded
+                const script = document.createElement('script');
+                script.src = '/nexus-clean-execution.js';
+                script.onload = function() {
+                    if (typeof NEXUSCleanExecution !== 'undefined') {
+                        window.nexusCleanExecution = new NEXUSCleanExecution();
+                        window.nexusCleanExecution.executeCleanRepair();
+                        console.log('[NEXUS] 47-module system activated');
+                    }
+                };
+                document.head.appendChild(script);
+            }
+        });
+
         // Landing page analytics
         console.log('[LANDING] DWC Systems landing page loaded');
         console.log('[LANDING] Platform ready for user engagement');
+        console.log('[NEXUS] Initializing 47-module architecture...');
     </script>
 </body>
 </html>
