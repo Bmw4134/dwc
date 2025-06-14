@@ -225,211 +225,90 @@
 
     </style>
 </head>
-<body class="bg-gray-50">
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <div class="text-2xl font-bold text-gray-900">DWC Systems</div>
+<body>
+    <div class="nexus-hero">
+        <div class="particle-field" id="particleField"></div>
+        <div class="quantum-pulse"></div>
+        
+        <div class="nexus-content">
+            <h1 class="nexus-title">
+                <span class="quantum-gradient">NEXUS</span> Intelligence Platform
+            </h1>
+            
+            <p class="nexus-subtitle">
+                Experience the future of enterprise intelligence with our quantum-powered platform featuring 47 AI modules, 
+                real-time geospatial analytics, and autonomous lead generation systems.
+            </p>
+            
+            <div class="quantum-modules">
+                <div class="module-card">
+                    <div class="module-title">AI Intelligence Suite</div>
+                    <div class="module-count">12 Advanced Modules</div>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#features" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Features</a>
-                        <a href="#pricing" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
-                        <a href="#about" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">About</a>
-                        <button onclick="handleLogin()" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">Login</button>
-                    </div>
+                
+                <div class="module-card">
+                    <div class="module-title">Operations Control</div>
+                    <div class="module-count">8 System Modules</div>
                 </div>
+                
+                <div class="module-card">
+                    <div class="module-title">Business Intelligence</div>
+                    <div class="module-count">10 Analytics Modules</div>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-title">Trading & Finance</div>
+                    <div class="module-count">9 Market Modules</div>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-title">System Administration</div>
+                    <div class="module-count">8 Control Modules</div>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <button onclick="accessDashboard()" class="quantum-button">
+                    Access NEXUS Dashboard
+                </button>
+                <button onclick="viewDemo()" class="quantum-button secondary">
+                    View Live Demo
+                </button>
             </div>
         </div>
-    </nav>
-    
-    <section class="gradient-bg py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-5xl font-bold text-white mb-6">Advanced Enterprise Intelligence Platform</h1>
-            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">Transform your business with our sophisticated geospatial lead tracking system. AI-driven insights, real-time mapping, and intelligent automation in one powerful platform.</p>
-            <div class="flex justify-center space-x-4">
-                <button onclick="handleGetStarted()" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">Start Free Trial</button>
-                <button onclick="showDemo()" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">Watch Demo</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="features" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Powerful Features</h2>
-                <p class="text-xl text-gray-600">Everything you need to dominate your market</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="card-hover bg-white p-8 rounded-lg shadow-lg">
-                    <div class="text-blue-600 text-4xl mb-4">🗺️</div>
-                    <h3 class="text-xl font-semibold mb-3">Geospatial Intelligence</h3>
-                    <p class="text-gray-600">Advanced mapping technology with real-time lead visualization across multiple markets and territories.</p>
-                </div>
-                <div class="card-hover bg-white p-8 rounded-lg shadow-lg">
-                    <div class="text-blue-600 text-4xl mb-4">🤖</div>
-                    <h3 class="text-xl font-semibold mb-3">AI-Powered Analytics</h3>
-                    <p class="text-gray-600">Machine learning algorithms that identify patterns and predict market opportunities with unprecedented accuracy.</p>
-                </div>
-                <div class="card-hover bg-white p-8 rounded-lg shadow-lg">
-                    <div class="text-blue-600 text-4xl mb-4">⚡</div>
-                    <h3 class="text-xl font-semibold mb-3">Real-Time Automation</h3>
-                    <p class="text-gray-600">Intelligent workflow automation that streamlines your processes and maximizes conversion rates.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h2>
-                <p class="text-xl text-gray-600">Scale with confidence using our flexible pricing options</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="card-hover bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-bold mb-4">Starter</h3>
-                    <div class="text-3xl font-bold text-blue-600 mb-6">$99<span class="text-lg text-gray-600">/month</span></div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Up to 1,000 leads</li>
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Basic mapping</li>
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Email support</li>
-                    </ul>
-                    <button onclick="selectPlan('starter')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">Get Started</button>
-                </div>
-                <div class="card-hover bg-white p-8 rounded-lg shadow-lg border-4 border-blue-600 relative">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-sm">Most Popular</div>
-                    <h3 class="text-2xl font-bold mb-4">Professional</h3>
-                    <div class="text-3xl font-bold text-blue-600 mb-6">$299<span class="text-lg text-gray-600">/month</span></div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Up to 10,000 leads</li>
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Advanced AI analytics</li>
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Priority support</li>
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Custom integrations</li>
-                    </ul>
-                    <button onclick="selectPlan('professional')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">Get Started</button>
-                </div>
-                <div class="card-hover bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
-                    <div class="text-3xl font-bold text-blue-600 mb-6">$999<span class="text-lg text-gray-600">/month</span></div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Unlimited leads</li>
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>White-label solution</li>
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Dedicated support</li>
-                        <li class="flex items-center"><span class="text-green-500 mr-2">✓</span>Custom development</li>
-                    </ul>
-                    <button onclick="selectPlan('enterprise')" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">Contact Sales</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-4xl font-bold text-gray-900 mb-8">About DWC Systems</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">We're revolutionizing how businesses discover, track, and convert leads through cutting-edge geospatial intelligence and AI-powered automation. Our platform has helped thousands of companies transform their sales processes and achieve unprecedented growth.</p>
-                <div class="grid md:grid-cols-3 gap-8 mt-16">
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-blue-600 mb-2" id="active-leads-count">50+</div>
-                        <div class="text-gray-600">Active Leads</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-blue-600 mb-2">14</div>
-                        <div class="text-gray-600">AI Modules</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-blue-600 mb-2">24/7</div>
-                        <div class="text-gray-600">Live System</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <div class="text-2xl font-bold mb-4">DWC Systems</div>
-                <p class="text-gray-400 mb-8">Advanced Enterprise Intelligence Platform</p>
-                <div class="flex justify-center space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-white">Contact</a>
-                </div>
-                <div class="mt-8 text-gray-400">
-                    © 2024 DWC Systems. All rights reserved.
-                </div>
-            </div>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        function handleLogin() {
-            // Create form for authentication
-            const loginForm = document.createElement('div');
-            loginForm.innerHTML = `
-                <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div class="bg-white p-8 rounded-lg max-w-md w-full mx-4">
-                        <h3 class="text-2xl font-bold mb-6">Login to Dashboard</h3>
-                        <form id="loginForm">
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
-                                <input type="text" id="username" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
-                            </div>
-                            <div class="mb-6">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                                <input type="password" id="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
-                            </div>
-                            <div class="flex justify-between">
-                                <button type="button" onclick="closeLogin()" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
-                                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(loginForm);
+        // Quantum particle field generation
+        function createParticleField() {
+            const particleField = document.getElementById('particleField');
+            const particleCount = 50;
             
-            document.getElementById('loginForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                
-                try {
-                    const response = await fetch('/api/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username, password })
-                    });
-                    
-                    if (response.ok) {
-                        window.location.href = '/dashboard';
-                    } else {
-                        alert('Invalid credentials');
-                    }
-                } catch (error) {
-                    alert('Login failed. Please try again.');
-                }
-            });
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (3 + Math.random() * 3) + 's';
+                particleField.appendChild(particle);
+            }
         }
         
-        function closeLogin() {
-            document.querySelector('.fixed').remove();
+        // Navigation functions
+        function accessDashboard() {
+            window.location.href = '/dashboard';
         }
         
-        function handleGetStarted() {
-            window.location.href = '#pricing';
+        function viewDemo() {
+            // Redirect to dashboard with demo parameter
+            window.location.href = '/dashboard?demo=true';
         }
         
-        function showDemo() {
-            alert('Demo coming soon! Contact us for a personalized demonstration.');
-        }
-        
-        function selectPlan(plan) {
-            alert(`You selected the ${plan} plan. Redirecting to checkout...`);
-        }
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticleField();
+        });
     </script>
 </body>
 </html>
