@@ -266,13 +266,50 @@
             }
         }
 
+        // Enhanced Button Hover Effects
+        function addButtonHoverEffects() {
+            const buttons = document.querySelectorAll('button, .cta-button, .nav-cta, .btn, [role="button"], input[type="submit"], .pricing-cta, .contact-btn');
+            
+            buttons.forEach(button => {
+                if (!button.dataset.hoverAttached) {
+                    button.dataset.hoverAttached = 'true';
+                    
+                    // Add hover effect
+                    button.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-3px)';
+                        this.style.boxShadow = '0 15px 35px rgba(0, 212, 255, 0.4)';
+                        this.style.filter = 'brightness(1.1)';
+                    });
+                    
+                    button.addEventListener('mouseleave', function() {
+                        this.style.transform = '';
+                        this.style.boxShadow = '';
+                        this.style.filter = '';
+                    });
+                    
+                    // Add click effect
+                    button.addEventListener('mousedown', function() {
+                        this.style.transform = 'translateY(-1px)';
+                    });
+                    
+                    button.addEventListener('mouseup', function() {
+                        this.style.transform = 'translateY(-3px)';
+                    });
+                }
+            });
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             updateKPIMetrics();
             createQuantumParticles();
+            addButtonHoverEffects();
             
             // Update KPIs every 15 seconds
             setInterval(updateKPIMetrics, 15000);
+            
+            // Re-apply hover effects periodically for dynamic content
+            setInterval(addButtonHoverEffects, 5000);
         });
     </script>
 </body>
