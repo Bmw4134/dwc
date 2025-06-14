@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
+import path from "path";
 import { z } from "zod";
 import Stripe from "stripe";
 import { nexusMasterControl } from "./nexus-master-control";
@@ -400,6 +401,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         lastHealthCheck: new Date().toISOString()
       }
     });
+  });
+
+  // Direct Dashboard Route (bypasses landing page)
+  app.get('/dashboard', (req, res) => {
+    console.log('[ROUTING] Serving modular dashboard (auth bypassed)');
+    res.sendFile(path.join(__dirname, '../dashboard-internal.html'));
+  });
+
+  // Root redirect to dashboard
+  app.get('/', (req, res) => {
+    console.log('[ROUTING] Redirecting root to dashboard');
+    res.redirect('/dashboard');
   });
 
   // NEXUS API Vault Recovery endpoints
