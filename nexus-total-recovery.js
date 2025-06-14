@@ -536,14 +536,10 @@ class NEXUSTotalRecovery {
     }
 }
 
-// Auto-initialize recovery
+// Initialize recovery system but don't auto-start
 document.addEventListener('DOMContentLoaded', function() {
     window.nexusRecovery = new NEXUSTotalRecovery();
-    
-    // Auto-start recovery if needed
-    setTimeout(() => {
-        window.nexusRecovery.executeNEXUSRecovery();
-    }, 1000);
+    console.log('[NEXUS-RECOVERY] Recovery system ready (manual activation only)');
 });
 
 // Global recovery function
