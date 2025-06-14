@@ -259,8 +259,9 @@ app.get('/api/metrics', (req, res) => {
     res.json(metrics);
 });
 
-// Static file serving
+// Static file serving - exclude HTML files to prevent route conflicts
 app.use(express.static(process.cwd(), {
+    index: false, // Disable directory index serving
     setHeaders: (res, path) => {
         if (path.endsWith('.css')) {
             res.setHeader('Content-Type', 'text/css');
@@ -268,7 +269,10 @@ app.use(express.static(process.cwd(), {
         if (path.endsWith('.js')) {
             res.setHeader('Content-Type', 'application/javascript');
         }
-    }
+    },
+    // Only serve non-HTML static files
+    dotfiles: 'ignore',
+    extensions: ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg']
 }));
 
 // Primary routing - serve quantum-optimized NEXUS landing page FIRST
