@@ -634,34 +634,35 @@
         });
     </script>
 
-    <!-- NEXUS Strict Diagnostic Injection -->
-    <script src="/nexus-strict-diagnostic.js"></script>
+    <!-- NEXUS Auto-Fix System -->
+    <script src="/nexus-auto-fix-execution.js"></script>
     <script>
-        // Auto-execute diagnostic when dashboard loads
+        // Execute targeted fixes while preserving stable components
         window.addEventListener('load', () => {
             setTimeout(() => {
-                if (window.NEXUSStrictDiagnostic) {
-                    console.log('🧠 NEXUS DEEP DIAGNOSTIC MODE - PHASE LOCK: STABILIZATION');
-                    const diagnostic = new NEXUSStrictDiagnostic();
-                    diagnostic.initializeStrictDiagnostic().then(manifest => {
-                        // Store in global scope and log results
-                        window.nexusModuleDiagnostic = manifest;
-                        console.log('📋 NEXUS Module Diagnostic Complete');
-                        console.log('Results available at: window.nexusModuleDiagnostic');
-                        
-                        // Download manifest as JSON file
-                        const blob = new Blob([JSON.stringify(manifest, null, 2)], {type: 'application/json'});
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'nexus_module_diagnostic.json';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                    });
+                console.log('Executing infrastructure auto-fix with stability preservation');
+                
+                // Verify stable components first
+                const stableComponents = {
+                    revenue: document.querySelector('.pipeline-value')?.textContent?.includes('2,635,000'),
+                    llcFiling: typeof window.fileLLCTonight === 'function',
+                    intelligenceReport: typeof window.generateIntelligenceReport === 'function'
+                };
+                
+                if (stableComponents.revenue && stableComponents.llcFiling && stableComponents.intelligenceReport) {
+                    console.log('Stable components verified - proceeding with enhancements');
+                    
+                    if (window.NEXUSAutoFixExecution) {
+                        const autoFix = new NEXUSAutoFixExecution();
+                        autoFix.initializeAutoFix().then(report => {
+                            window.nexusAutoFixReport = report;
+                            console.log('Auto-fix execution complete');
+                        });
+                    }
+                } else {
+                    console.log('Stability check failed - preserving current state');
                 }
-            }, 2000); // Wait for dashboard to fully load
+            }, 1500);
         });
     </script>
 </body>
