@@ -724,7 +724,19 @@ app.get('/dashboard', (req, res) => {
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('X-Auth-Bypass', 'true');
     console.log(`[ROUTING] Serving NEXUS quantum dashboard with 47 modules`);
-    res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+    
+    // Serve enhanced dashboard with unified design system
+    const dashboardPath = path.join(process.cwd(), 'dashboard-enhanced.html');
+    try {
+        const dashboardContent = fs.readFileSync(dashboardPath, 'utf8');
+        res.set('Content-Type', 'text/html; charset=utf-8');
+        res.send(dashboardContent);
+        console.log('[NEXUS] Enhanced dashboard with unified design system served');
+    } catch (error) {
+        console.error('[ERROR] Failed to read dashboard-enhanced.html:', error);
+        // Fallback to original dashboard
+        res.sendFile(path.join(process.cwd(), 'dashboard.html'));
+    }
 });
 
 // Logout route

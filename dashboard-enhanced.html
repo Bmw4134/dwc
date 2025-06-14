@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS Intelligence Platform - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="nexus-design-system.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="min-h-screen">
+    <!-- Quantum Background -->
+    <div class="quantum-bg"></div>
+    
+    <!-- Top Navigation Bar -->
+    <header class="nexus-header">
+        <nav class="nav-container">
+            <div class="logo-section">
+                <h1 class="text-brand">NEXUS</h1>
+                <span class="logo-subtitle">Intelligence Platform</span>
+            </div>
+            <div class="nav-actions flex items-center gap-4">
+                <div class="user-profile flex items-center gap-3">
+                    <div class="user-avatar">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-quantum-blue to-nexus-purple flex items-center justify-center text-sm font-semibold">
+                            U
+                        </div>
+                    </div>
+                    <span class="text-sm text-secondary">Dashboard Admin</span>
+                </div>
+                <button class="btn btn-ghost btn-sm">Settings</button>
+                <button class="btn btn-outline btn-sm">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="dashboard-layout">
+        <!-- Enhanced Sidebar -->
+        <aside class="nexus-sidebar">
+            <div class="sidebar-header p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-brand text-lg">47 AI Modules</h2>
+                        <p class="text-xs text-muted">Production Ready</p>
+                    </div>
+                    <button id="sidebar-toggle" class="btn btn-ghost btn-sm">
+                        <span class="hamburger-icon">☰</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="sidebar-content">
+                <!-- Core Dashboard Section -->
+                <div class="module-section">
+                    <h3 class="section-title">Core Dashboard</h3>
+                    <div class="module-list">
+                        <a href="#dashboard" class="module-item active" data-module="dashboard">
+                            <span class="module-icon">📊</span>
+                            <span class="module-name">Overview</span>
+                        </a>
+                        <a href="#analytics" class="module-item" data-module="analytics">
+                            <span class="module-icon">📈</span>
+                            <span class="module-name">Analytics</span>
+                        </a>
+                        <a href="#qnis-map" class="module-item" data-module="qnis-map">
+                            <span class="module-icon">🗺️</span>
+                            <span class="module-name">QNIS Lead Map</span>
+                        </a>
+                        <a href="#metrics" class="module-item" data-module="metrics">
+                            <span class="module-icon">⚡</span>
+                            <span class="module-name">Live Metrics</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- AI Intelligence Suite -->
+                <div class="module-section">
+                    <h3 class="section-title">AI Intelligence Suite</h3>
+                    <div class="module-list">
+                        <a href="#vision-ai" class="module-item" data-module="vision-ai">
+                            <span class="module-icon">👁️</span>
+                            <span class="module-name">Vision AI Scanner</span>
+                        </a>
+                        <a href="#nlp-parser" class="module-item" data-module="nlp-parser">
+                            <span class="module-icon">🧠</span>
+                            <span class="module-name">NLP Query Parser</span>
+                        </a>
+                        <a href="#lead-engine" class="module-item" data-module="lead-engine">
+                            <span class="module-icon">🎯</span>
+                            <span class="module-name">Lead Generation</span>
+                        </a>
+                        <a href="#ai-insights" class="module-item" data-module="ai-insights">
+                            <span class="module-icon">🔮</span>
+                            <span class="module-name">AI Insights</span>
+                        </a>
+                        <a href="#prediction" class="module-item" data-module="prediction">
+                            <span class="module-icon">🎲</span>
+                            <span class="module-name">Predictive Analytics</span>
+                        </a>
+                        <a href="#sentiment" class="module-item" data-module="sentiment">
+                            <span class="module-icon">💭</span>
+                            <span class="module-name">Sentiment Analysis</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Business Operations -->
+                <div class="module-section">
+                    <h3 class="section-title">Business Operations</h3>
+                    <div class="module-list">
+                        <a href="#crm" class="module-item" data-module="crm">
+                            <span class="module-icon">👥</span>
+                            <span class="module-name">CRM Management</span>
+                        </a>
+                        <a href="#pipeline" class="module-item" data-module="pipeline">
+                            <span class="module-icon">🔄</span>
+                            <span class="module-name">Sales Pipeline</span>
+                        </a>
+                        <a href="#automation" class="module-item" data-module="automation">
+                            <span class="module-icon">🤖</span>
+                            <span class="module-name">Automation Hub</span>
+                        </a>
+                        <a href="#workflow" class="module-item" data-module="workflow">
+                            <span class="module-icon">⚙️</span>
+                            <span class="module-name">Workflow Engine</span>
+                        </a>
+                        <a href="#notifications" class="module-item" data-module="notifications">
+                            <span class="module-icon">🔔</span>
+                            <span class="module-name">Smart Notifications</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Financial Intelligence -->
+                <div class="module-section">
+                    <h3 class="section-title">Financial Intelligence</h3>
+                    <div class="module-list">
+                        <a href="#revenue" class="module-item" data-module="revenue">
+                            <span class="module-icon">💰</span>
+                            <span class="module-name">Revenue Analytics</span>
+                        </a>
+                        <a href="#forecasting" class="module-item" data-module="forecasting">
+                            <span class="module-icon">📊</span>
+                            <span class="module-name">Financial Forecasting</span>
+                        </a>
+                        <a href="#investments" class="module-item" data-module="investments">
+                            <span class="module-icon">📈</span>
+                            <span class="module-name">Investment Tracking</span>
+                        </a>
+                        <a href="#billing" class="module-item" data-module="billing">
+                            <span class="module-icon">🧾</span>
+                            <span class="module-name">Billing Management</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Development Tools -->
+                <div class="module-section">
+                    <h3 class="section-title">Development Tools</h3>
+                    <div class="module-list">
+                        <a href="#api-vault" class="module-item" data-module="api-vault">
+                            <span class="module-icon">🔐</span>
+                            <span class="module-name">API Key Vault</span>
+                        </a>
+                        <a href="#monitoring" class="module-item" data-module="monitoring">
+                            <span class="module-icon">📡</span>
+                            <span class="module-name">System Monitoring</span>
+                        </a>
+                        <a href="#security" class="module-item" data-module="security">
+                            <span class="module-icon">🛡️</span>
+                            <span class="module-name">Security Center</span>
+                        </a>
+                        <a href="#database" class="module-item" data-module="database">
+                            <span class="module-icon">🗄️</span>
+                            <span class="module-name">Database Manager</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Overview -->
+            <div id="dashboard-content" class="module-view active">
+                <div class="module-header">
+                    <h1 class="h2 text-gradient">Dashboard Overview</h1>
+                    <p class="text-secondary">Real-time intelligence platform monitoring</p>
+                </div>
+
+                <!-- KPI Cards Grid -->
+                <div class="grid grid-4 gap-6 mb-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-muted text-sm">Active Leads</p>
+                                    <p id="dashboard-leads" class="h3 text-brand">19</p>
+                                </div>
+                                <div class="stat-icon">🎯</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-muted text-sm">Pipeline Value</p>
+                                    <p id="dashboard-pipeline" class="h3 text-brand">$1.06M</p>
+                                </div>
+                                <div class="stat-icon">💰</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-muted text-sm">QNIS Score</p>
+                                    <p id="dashboard-qnis" class="h3 text-brand">87.3</p>
+                                </div>
+                                <div class="stat-icon">⚡</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-muted text-sm">System Health</p>
+                                    <p class="h3 status-success">98.5%</p>
+                                </div>
+                                <div class="stat-icon">🛡️</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-2 gap-6 mb-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="h5">Lead Generation Trend</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="leadChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="h5">Revenue Analytics</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="h5">Recent Activity</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="activity-feed" class="activity-list">
+                            <!-- Activity items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QNIS Lead Map Module -->
+            <div id="qnis-map-content" class="module-view">
+                <div class="module-header">
+                    <h1 class="h2 text-gradient">QNIS Lead Map</h1>
+                    <p class="text-secondary">Real-time geospatial lead intelligence</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="flex items-center justify-between">
+                            <h3 class="h5">Interactive Lead Map</h3>
+                            <button class="btn btn-outline btn-sm" onclick="toggleFullscreen()">
+                                Fullscreen
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="qnis-map" style="height: 600px; width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Module -->
+            <div id="analytics-content" class="module-view">
+                <div class="module-header">
+                    <h1 class="h2 text-gradient">Analytics Center</h1>
+                    <p class="text-secondary">Advanced business intelligence and reporting</p>
+                </div>
+
+                <div class="grid grid-3 gap-6 mb-8">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="stat-icon mb-4">📊</div>
+                            <h4 class="h4 mb-2">Data Processing</h4>
+                            <p class="h3 text-brand">892,441</p>
+                            <p class="text-muted text-sm">Data points processed</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="stat-icon mb-4">🎯</div>
+                            <h4 class="h4 mb-2">Conversion Rate</h4>
+                            <p class="h3 status-success">34.2%</p>
+                            <p class="text-muted text-sm">Lead to customer</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="stat-icon mb-4">⚡</div>
+                            <h4 class="h4 mb-2">Response Time</h4>
+                            <p class="h3 text-brand">127ms</p>
+                            <p class="text-muted text-sm">Average API response</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="h5">Performance Analytics</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="performanceChart" width="800" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vision AI Module -->
+            <div id="vision-ai-content" class="module-view">
+                <div class="module-header">
+                    <h1 class="h2 text-gradient">Vision AI Scanner</h1>
+                    <p class="text-secondary">Advanced image recognition and business intelligence extraction</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="h5">Image Upload & Analysis</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="vision-upload-area" class="upload-zone">
+                            <div class="upload-content">
+                                <div class="upload-icon">📸</div>
+                                <h4 class="h5 mb-2">Drop images here or click to upload</h4>
+                                <p class="text-muted">Supports JPG, PNG, HEIC formats</p>
+                                <input type="file" id="vision-file-input" accept="image/*" multiple style="display: none;">
+                                <button class="btn btn-primary mt-4" onclick="document.getElementById('vision-file-input').click()">
+                                    Select Images
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="vision-results" class="mt-6" style="display: none;">
+                            <h4 class="h5 mb-4">Analysis Results</h4>
+                            <div id="vision-analysis-output" class="analysis-results">
+                                <!-- Results will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <style>
+        /* Enhanced Dashboard Styles */
+        .nexus-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-glow);
+            z-index: var(--z-header);
+        }
+
+        .nav-container {
+            height: 100%;
+            max-width: none;
+            padding: 0 var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-subtitle {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+            margin-top: -2px;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .nexus-sidebar {
+            width: 280px;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid var(--border-glow);
+            overflow-y: auto;
+            transition: transform var(--transition-base);
+        }
+
+        .sidebar-header {
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .sidebar-content {
+            padding: var(--space-4);
+        }
+
+        .module-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .section-title {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-3);
+            padding: 0 var(--space-3);
+        }
+
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .module-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .module-item:hover {
+            background: var(--card-glass);
+            color: var(--quantum-blue);
+            transform: translateX(4px);
+        }
+
+        .module-item.active {
+            background: linear-gradient(135deg, var(--quantum-blue), var(--nexus-purple));
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .module-icon {
+            font-size: 1.2em;
+            width: 20px;
+            text-align: center;
+        }
+
+        .module-name {
+            font-weight: 500;
+            font-size: var(--font-size-sm);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: var(--space-8);
+            overflow-y: auto;
+        }
+
+        .module-view {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .module-view.active {
+            display: block;
+        }
+
+        .module-header {
+            margin-bottom: var(--space-8);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            opacity: 0.7;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            background: var(--card-glass);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-glow);
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-glow);
+            border-radius: var(--radius-xl);
+            padding: var(--space-16);
+            text-align: center;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--quantum-blue);
+            background: var(--card-glass);
+        }
+
+        .upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-4);
+            opacity: 0.7;
+        }
+
+        .analysis-results {
+            background: var(--card-glass);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nexus-sidebar {
+                position: fixed;
+                left: 0;
+                top: 70px;
+                height: calc(100vh - 70px);
+                transform: translateX(-100%);
+                z-index: var(--z-sidebar);
+            }
+
+            .nexus-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .grid-4,
+            .grid-3,
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        // Dashboard functionality
+        class NEXUSDashboard {
+            constructor() {
+                this.currentModule = 'dashboard';
+                this.sidebarOpen = false;
+                this.charts = {};
+                this.init();
+            }
+
+            init() {
+                this.setupNavigation();
+                this.setupCharts();
+                this.loadDashboardData();
+                this.setupVisionAI();
+                this.startLiveUpdates();
+            }
+
+            setupNavigation() {
+                document.querySelectorAll('.module-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const module = item.dataset.module;
+                        this.navigateToModule(module);
+                    });
+                });
+
+                document.getElementById('sidebar-toggle').addEventListener('click', () => {
+                    this.toggleSidebar();
+                });
+            }
+
+            navigateToModule(module) {
+                // Update active sidebar item
+                document.querySelectorAll('.module-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelector(`[data-module="${module}"]`).classList.add('active');
+
+                // Show module content
+                document.querySelectorAll('.module-view').forEach(view => {
+                    view.classList.remove('active');
+                });
+                document.getElementById(`${module}-content`).classList.add('active');
+
+                this.currentModule = module;
+
+                // Initialize module-specific functionality
+                if (module === 'qnis-map') {
+                    this.initQNISMap();
+                }
+            }
+
+            toggleSidebar() {
+                const sidebar = document.querySelector('.nexus-sidebar');
+                sidebar.classList.toggle('open');
+                this.sidebarOpen = !this.sidebarOpen;
+            }
+
+            setupCharts() {
+                // Lead Generation Chart
+                const leadCtx = document.getElementById('leadChart').getContext('2d');
+                this.charts.lead = new Chart(leadCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Leads Generated',
+                            data: [45, 67, 89, 123, 156, 189],
+                            borderColor: '#00d4ff',
+                            backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#ffffff'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { color: '#ffffff' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#ffffff' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            }
+                        }
+                    }
+                });
+
+                // Revenue Chart
+                const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+                this.charts.revenue = new Chart(revenueCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        datasets: [{
+                            label: 'Revenue ($K)',
+                            data: [245, 389, 467, 623],
+                            backgroundColor: 'rgba(0, 212, 255, 0.7)',
+                            borderColor: '#00d4ff',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#ffffff'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { color: '#ffffff' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#ffffff' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            loadDashboardData() {
+                this.updateActivityFeed();
+                this.updateKPICards();
+            }
+
+            updateActivityFeed() {
+                const activities = [
+                    { icon: '🎯', text: 'New lead generated in San Francisco', time: '2 minutes ago' },
+                    { icon: '📊', text: 'Analytics report completed', time: '15 minutes ago' },
+                    { icon: '🔮', text: 'AI prediction model updated', time: '1 hour ago' },
+                    { icon: '💰', text: 'Revenue milestone reached: $2.6M', time: '3 hours ago' }
+                ];
+
+                const feedElement = document.getElementById('activity-feed');
+                feedElement.innerHTML = activities.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-icon">${activity.icon}</div>
+                        <div class="flex-1">
+                            <p class="text-sm">${activity.text}</p>
+                            <p class="text-xs text-muted">${activity.time}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            async updateKPICards() {
+                try {
+                    const response = await fetch('/api/leads');
+                    const leads = await response.json();
+                    
+                    document.getElementById('dashboard-leads').textContent = leads.length;
+                    document.getElementById('dashboard-pipeline').textContent = 
+                        `$${(leads.length * 56).toFixed(0)}K`;
+                    document.getElementById('dashboard-qnis').textContent = '87.3';
+                } catch (error) {
+                    console.error('Error updating KPI cards:', error);
+                }
+            }
+
+            initQNISMap() {
+                if (this.map) return;
+
+                this.map = L.map('qnis-map').setView([39.8283, -98.5795], 4);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(this.map);
+
+                this.loadMapData();
+            }
+
+            async loadMapData() {
+                try {
+                    const response = await fetch('/api/leads');
+                    const leads = await response.json();
+                    
+                    leads.forEach(lead => {
+                        if (lead.coordinates) {
+                            const marker = L.marker([lead.coordinates.lat, lead.coordinates.lng])
+                                .addTo(this.map);
+                            
+                            marker.bindPopup(`
+                                <div class="map-popup">
+                                    <h4>${lead.companyName}</h4>
+                                    <p>Location: ${lead.location}</p>
+                                    <p>QNIS Score: ${lead.qnisScore}</p>
+                                    <p>Value: $${lead.estimatedValue?.toLocaleString()}</p>
+                                </div>
+                            `);
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error loading map data:', error);
+                }
+            }
+
+            setupVisionAI() {
+                const fileInput = document.getElementById('vision-file-input');
+                const uploadArea = document.getElementById('vision-upload-area');
+                
+                uploadArea.addEventListener('click', () => {
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    this.processVisionFiles(e.target.files);
+                });
+
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.style.borderColor = '#00d4ff';
+                });
+
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.style.borderColor = '';
+                    this.processVisionFiles(e.dataTransfer.files);
+                });
+            }
+
+            async processVisionFiles(files) {
+                const resultsDiv = document.getElementById('vision-results');
+                const outputDiv = document.getElementById('vision-analysis-output');
+                
+                resultsDiv.style.display = 'block';
+                outputDiv.innerHTML = '<div class="animate-pulse">Analyzing images...</div>';
+
+                for (const file of files) {
+                    try {
+                        const base64 = await this.fileToBase64(file);
+                        const analysis = await this.analyzeImage(base64);
+                        
+                        outputDiv.innerHTML += `
+                            <div class="analysis-item mb-4">
+                                <h5 class="h6 mb-2">${file.name}</h5>
+                                <p class="text-sm text-secondary">${analysis}</p>
+                            </div>
+                        `;
+                    } catch (error) {
+                        console.error('Error analyzing image:', error);
+                        outputDiv.innerHTML += `
+                            <div class="analysis-item mb-4">
+                                <h5 class="h6 mb-2">${file.name}</h5>
+                                <p class="text-sm status-error">Analysis failed</p>
+                            </div>
+                        `;
+                    }
+                }
+            }
+
+            fileToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.onerror = error => reject(error);
+                });
+            }
+
+            async analyzeImage(base64) {
+                const response = await fetch('/api/vision-analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: base64 })
+                });
+                
+                const result = await response.json();
+                return result.analysis || 'No analysis available';
+            }
+
+            startLiveUpdates() {
+                setInterval(() => {
+                    this.updateKPICards();
+                }, 15000);
+            }
+        }
+
+        // Global functions
+        function toggleFullscreen() {
+            const mapContainer = document.getElementById('qnis-map').parentElement.parentElement;
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                mapContainer.requestFullscreen();
+            }
+        }
+
+        // Initialize dashboard when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.nexusDashboard = new NEXUSDashboard();
+        });
+    </script>
+</body>
+</html>
