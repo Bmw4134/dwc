@@ -331,10 +331,10 @@ class NEXUSFinalDeployment {
 
         // Auto-minimize after 20 seconds
         setTimeout(() => {
-            const interface = document.getElementById('nexus-deployment-interface');
-            if (interface) {
-                interface.style.transform = 'scale(0.8)';
-                interface.style.opacity = '0.7';
+            const deploymentInterface = document.getElementById('nexus-deployment-interface');
+            if (deploymentInterface) {
+                deploymentInterface.style.transform = 'scale(0.8)';
+                deploymentInterface.style.opacity = '0.7';
             }
         }, 20000);
     }
