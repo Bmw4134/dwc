@@ -377,109 +377,7 @@
         📊 47 AI Modules
     </button>
     
-    <!-- NEXUS Sidebar Navigation -->
-    <div class="nexus-sidebar" id="nexusSidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-title">NEXUS Platform</div>
-            <div class="sidebar-subtitle">47 AI Modules Active</div>
-        </div>
-        
-        <div class="module-section">
-            <div class="section-title">Core Intelligence</div>
-            <div class="module-item" onclick="loadModule('executive-dashboard')">
-                <div class="module-status"></div>
-                <div class="module-name">Executive Dashboard</div>
-            </div>
-            <div class="module-item" onclick="loadModule('system-metrics')">
-                <div class="module-status"></div>
-                <div class="module-name">System Metrics</div>
-            </div>
-            <div class="module-item" onclick="loadModule('real-time-monitor')">
-                <div class="module-status"></div>
-                <div class="module-name">Real-time Monitor</div>
-            </div>
-            <div class="module-item" onclick="loadModule('alert-center')">
-                <div class="module-status"></div>
-                <div class="module-name">Alert Center</div>
-            </div>
-        </div>
-        
-        <div class="module-section">
-            <div class="section-title">AI Engine Suite</div>
-            <div class="module-item" onclick="loadModule('perplexity-ai')">
-                <div class="module-status"></div>
-                <div class="module-name">Perplexity AI</div>
-            </div>
-            <div class="module-item" onclick="loadModule('openai-gpt')">
-                <div class="module-status"></div>
-                <div class="module-name">OpenAI GPT</div>
-            </div>
-            <div class="module-item" onclick="loadModule('claude-ai')">
-                <div class="module-status"></div>
-                <div class="module-name">Claude AI</div>
-            </div>
-            <div class="module-item" onclick="loadModule('watson-ai')">
-                <div class="module-status"></div>
-                <div class="module-name">Watson AI</div>
-            </div>
-            <div class="module-item" onclick="loadModule('nlp-processor')">
-                <div class="module-status"></div>
-                <div class="module-name">NLP Processor</div>
-            </div>
-            <div class="module-item" onclick="loadModule('sentiment-analyzer')">
-                <div class="module-status"></div>
-                <div class="module-name">Sentiment Analyzer</div>
-            </div>
-        </div>
-        
-        <div class="module-section">
-            <div class="section-title">QNIS Intelligence</div>
-            <div class="module-item" onclick="loadModule('qnis-mapping')">
-                <div class="module-status"></div>
-                <div class="module-name">QNIS Lead Mapping</div>
-            </div>
-            <div class="module-item" onclick="loadModule('geospatial-analytics')">
-                <div class="module-status"></div>
-                <div class="module-name">Geospatial Analytics</div>
-            </div>
-            <div class="module-item" onclick="loadModule('lead-generation')">
-                <div class="module-status"></div>
-                <div class="module-name">Lead Generation</div>
-            </div>
-            <div class="module-item" onclick="loadModule('predictive-analytics')">
-                <div class="module-status"></div>
-                <div class="module-name">Predictive Analytics</div>
-            </div>
-        </div>
-        
-        <div class="module-section">
-            <div class="section-title">Business Operations</div>
-            <div class="module-item" onclick="loadModule('crm-integration')">
-                <div class="module-status"></div>
-                <div class="module-name">CRM Integration</div>
-            </div>
-            <div class="module-item" onclick="loadModule('sales-automation')">
-                <div class="module-status"></div>
-                <div class="module-name">Sales Automation</div>
-            </div>
-            <div class="module-item" onclick="loadModule('financial-modeling')">
-                <div class="module-status"></div>
-                <div class="module-name">Financial Modeling</div>
-            </div>
-            <div class="module-item" onclick="loadModule('roi-calculator')">
-                <div class="module-status"></div>
-                <div class="module-name">ROI Calculator</div>
-            </div>
-        </div>
-        
-        <div class="module-section">
-            <div class="section-title">All 47 Modules</div>
-            <div class="module-item" onclick="showAllModules()">
-                <div class="module-status"></div>
-                <div class="module-name">View Complete Suite</div>
-            </div>
-        </div>
-    </div>
+
     
     <!-- NEXUS Sidebar -->
     <div class="nexus-sidebar" id="sidebar">
@@ -1847,7 +1745,7 @@
 
         // Toggle sidebar functionality
         function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
+            const sidebar = document.querySelector('.nexus-sidebar') || document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
             
             if (sidebar) {
@@ -1855,6 +1753,80 @@
                 if (mainContent) {
                     mainContent.classList.toggle('sidebar-collapsed');
                 }
+            }
+        }
+
+        // Global fullscreen toggle functionality
+        function toggleFullscreen(elementId) {
+            const element = elementId ? document.getElementById(elementId) : document.documentElement;
+            
+            if (!document.fullscreenElement) {
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Add floating fullscreen buttons
+        function addFullscreenButtons() {
+            // QNIS Map fullscreen button
+            const mapContainer = document.getElementById('leafletMap');
+            if (mapContainer && !document.getElementById('map-fullscreen-btn')) {
+                const mapBtn = document.createElement('button');
+                mapBtn.id = 'map-fullscreen-btn';
+                mapBtn.innerHTML = '⛶';
+                mapBtn.style.cssText = `
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    z-index: 9999;
+                    background: rgba(0, 0, 0, 0.7);
+                    color: white;
+                    border: none;
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 16px;
+                `;
+                mapBtn.onclick = () => toggleFullscreen('leafletMap');
+                mapContainer.parentElement.style.position = 'relative';
+                mapContainer.parentElement.appendChild(mapBtn);
+            }
+
+            // Dashboard fullscreen button
+            const dashboardContainer = document.querySelector('.main-content');
+            if (dashboardContainer && !document.getElementById('dashboard-fullscreen-btn')) {
+                const dashBtn = document.createElement('button');
+                dashBtn.id = 'dashboard-fullscreen-btn';
+                dashBtn.innerHTML = '⛶';
+                dashBtn.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 10000;
+                    background: rgba(74, 158, 255, 0.8);
+                    color: white;
+                    border: none;
+                    padding: 10px 14px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    backdrop-filter: blur(10px);
+                `;
+                dashBtn.onclick = () => toggleFullscreen();
+                document.body.appendChild(dashBtn);
             }
         }
 

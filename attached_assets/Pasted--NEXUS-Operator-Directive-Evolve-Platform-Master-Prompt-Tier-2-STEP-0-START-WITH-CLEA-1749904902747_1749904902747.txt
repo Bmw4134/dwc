@@ -1,0 +1,60 @@
+🧠 NEXUS Operator Directive: Evolve Platform (Master Prompt – Tier 2)
+---
+
+✅ STEP 0: START WITH CLEAN SNAPSHOT  
+Ensure no pending partial changes or uncommitted stacks—agent must begin from last stable state (47 modules, working map, landing page, no duplicates, valid API keys).
+
+---
+
+1. **Audit & Consolidate Sidebar Navigation**  
+   • Scan all 47 modules and nested routes  
+   • Find and remove any duplicate entries  
+   • Reorder by module family and usage frequency  
+   • Confirm all views are reachable with no broken links
+
+2. **Fix Landing Page Layout**  
+   • Remove duplicate Login buttons  
+   • Apply responsive header/footer and consistent branding  
+   • Inject real-time KPI bar (active leads count, pipeline $ value, avg QNIS score) above the fold
+
+3. **Fully Operationalize QNIS Lead Map**  
+   • Validate Leaflet container initialization and CSS visibility  
+   • Ensure live lead markers appear and populate with correct data  
+   • Popup details must show fields: city, score, pipeline, priority breakdown  
+   • Enable full toggle switch and dynamic layers  
+
+4. **Enable Fullscreen Toggle Globally**  
+   • Implement `toggleFullscreen()` utility if absent  
+   • Ensure fullscreen works on:  
+     ○ QNIS Map  
+     ○ Dashboard root container  
+     ○ Any mobile-responsive view  
+   • Add floating fullscreen icon buttons only if none exist
+
+5. **Trigger AI Self‑Validation Sweep**  
+   • Autonomously click through all modules and views  
+   • Detect hidden console errors, rendering issues  
+   • Silence fixable errors via fallback templates  
+   • Generate a comprehensive “Validation Audit Report”
+
+6. **Reactivate Vision AI “Photo Reader”**  
+   • Confirm OpenAI Vision API key is valid  
+   • Allow image upload and extract business text (OCR)  
+   • Parse signage or truck signage into contact/enrichment data  
+   • Append parsed info into CRM lead object
+
+7. **Generate Final Audit Summary**  
+   • List: Fixed components, removed duplicates, landing page updates, responsive fixes, map sync status, fullscreen toggle created, vision scan results  
+   • Provide overall NEXUS production‑readiness score (must be ≥ 95%)
+
+---
+
+🚀 **Optional Bonus (activate only if platform is stable):**  
+• Embed on landing page a mini “Website Scrape + Prototype” demo tool: visitor enters URL, system scrapes and generates a simplified site rendition with CTAs to book consult or request branding/white-label buildout
+
+---
+
+**Important:**  
+• Do NOT apply any prior shortcuts or stacking patches  
+• Work from current stable system snapshot—no “undoing”—only evolve forward  
+• After execution, output the full audit report and confirmation on readiness  
