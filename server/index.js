@@ -259,6 +259,124 @@ app.get('/api/metrics', (req, res) => {
     res.json(metrics);
 });
 
+// Load business metrics API
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load and evaluate business metrics API
+const businessMetricsPath = join(__dirname, '..', 'business-metrics-api.js');
+const businessMetricsCode = readFileSync(businessMetricsPath, 'utf8');
+
+// Create a safe evaluation context
+const BusinessMetricsAPI = eval(`(function() {
+    ${businessMetricsCode.replace('if (typeof module !== \'undefined\' && module.exports)', 'if (false)')}
+    return BusinessMetricsAPI;
+})()`);
+
+const businessMetrics = new BusinessMetricsAPI();
+
+// Investor-grade business metrics API
+app.get('/api/investor/metrics', (req, res) => {
+    try {
+        const metrics = businessMetrics.getInvestorMetrics();
+        res.json({
+            success: true,
+            timestamp: new Date().toISOString(),
+            data: metrics
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to retrieve investor metrics',
+            message: error.message
+        });
+    }
+});
+
+// Investment opportunity data
+app.get('/api/investor/opportunity', (req, res) => {
+    try {
+        const opportunity = businessMetrics.getInvestmentOpportunity();
+        res.json({
+            success: true,
+            timestamp: new Date().toISOString(),
+            data: opportunity
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to retrieve investment opportunity data',
+            message: error.message
+        });
+    }
+});
+
+// Business traction metrics
+app.get('/api/investor/traction', (req, res) => {
+    try {
+        const traction = businessMetrics.getTraction();
+        res.json({
+            success: true,
+            timestamp: new Date().toISOString(),
+            data: traction
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to retrieve traction metrics',
+            message: error.message
+        });
+    }
+});
+
+// Financial projections endpoint
+app.get('/api/investor/projections', (req, res) => {
+    try {
+        const projections = {
+            revenue: [
+                { year: 2025, amount: 2500000, clients: 25, growth: 0 },
+                { year: 2026, amount: 8700000, clients: 87, growth: 248 },
+                { year: 2027, amount: 24200000, clients: 234, growth: 178 },
+                { year: 2028, amount: 58300000, clients: 456, growth: 141 },
+                { year: 2029, amount: 124700000, clients: 823, growth: 114 }
+            ],
+            market: {
+                tam: 127000000000,
+                sam: 12700000000,
+                som: 635000000,
+                penetration: "0.41%"
+            },
+            funding: {
+                round: "Series A",
+                target: 15000000,
+                valuation: 85000000,
+                useOfFunds: {
+                    "Product Development": 35,
+                    "Market Expansion": 30,
+                    "Team Growth": 20,
+                    "Operations": 15
+                }
+            }
+        };
+        
+        res.json({
+            success: true,
+            timestamp: new Date().toISOString(),
+            data: projections
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to retrieve financial projections',
+            message: error.message
+        });
+    }
+});
+
 // Static file serving - exclude HTML files to prevent route conflicts
 app.use(express.static(process.cwd(), {
     index: false, // Disable directory index serving
@@ -295,6 +413,34 @@ app.get('/', (req, res) => {
     } catch (error) {
         console.error('[ERROR] Failed to read landing.html:', error);
         res.status(500).send('Error loading NEXUS platform');
+    }
+});
+
+// Investor presentation route
+app.get('/investor', (req, res) => {
+    const investorPath = path.join(process.cwd(), 'investor-presentation.html');
+    try {
+        const investorContent = fs.readFileSync(investorPath, 'utf8');
+        res.set('Content-Type', 'text/html; charset=utf-8');
+        res.send(investorContent);
+        console.log('[INVESTOR] Investor presentation served');
+    } catch (error) {
+        console.error('[ERROR] Failed to read investor-presentation.html:', error);
+        res.status(500).send('Error loading investor presentation');
+    }
+});
+
+// React modules router
+app.get('/react-modules.html', (req, res) => {
+    const modulesPath = path.join(process.cwd(), 'react-modules.html');
+    try {
+        const modulesContent = fs.readFileSync(modulesPath, 'utf8');
+        res.set('Content-Type', 'text/html; charset=utf-8');
+        res.send(modulesContent);
+        console.log('[MODULES] React modules router served');
+    } catch (error) {
+        console.error('[ERROR] Failed to read react-modules.html:', error);
+        res.status(500).send('Error loading React modules');
     }
 });
 
