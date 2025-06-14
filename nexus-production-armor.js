@@ -300,11 +300,19 @@ class NEXUSProductionArmor {
     }
 
     async validateVisionAI() {
-        const visionModule = document.getElementById('vision-ai-content');
+        const safeGetElement = (id) => {
+            try { return document.getElementById(id); } catch(e) { return null; }
+        };
+        
+        const safeQuery = window.DOMGuard ? window.DOMGuard.safeQuerySelector.bind(window.DOMGuard) : (sel, ctx) => {
+            try { return (ctx || document).querySelector(sel); } catch(e) { return null; }
+        };
+
+        const visionModule = safeGetElement('vision-ai-content');
         if (!visionModule) return false;
 
-        const uploadArea = visionModule.querySelector('#vision-upload-area');
-        const fileInput = visionModule.querySelector('#vision-file-input');
+        const uploadArea = safeQuery('#vision-upload-area', visionModule);
+        const fileInput = safeQuery('#vision-file-input', visionModule);
         
         if (!uploadArea || !fileInput) {
             this.log('Vision AI components missing', 'error');
@@ -327,7 +335,11 @@ class NEXUSProductionArmor {
     }
 
     validateQNISMap() {
-        const mapContainer = document.getElementById('qnis-map');
+        const safeGetElement = (id) => {
+            try { return document.getElementById(id); } catch(e) { return null; }
+        };
+
+        const mapContainer = safeGetElement('qnis-map');
         if (!mapContainer) return false;
 
         // Check if Leaflet is loaded
@@ -336,9 +348,14 @@ class NEXUSProductionArmor {
             return false;
         }
 
-        // Validate map initialization
-        const mapInstance = window.nexusDashboard?.map;
-        return !!mapInstance;
+        // Validate map initialization with safe access
+        try {
+            const mapInstance = window.nexusDashboard?.map || window.qnisMap?.getMap?.();
+            return !!mapInstance;
+        } catch(e) {
+            this.log('Error validating map instance', 'warning');
+            return false;
+        }
     }
 
     // Self-Healing System
