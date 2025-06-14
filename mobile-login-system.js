@@ -196,27 +196,15 @@ class MobileLoginSystem {
         const username = document.getElementById('mobile-username')?.value;
         const loginBtn = document.getElementById('mobile-login-btn');
 
-        if (!accessCode && !username) {
-            this.showMobileAlert('Please enter access code or username');
-            return;
-        }
-
         // Show loading state
         loginBtn.textContent = 'Authenticating...';
         loginBtn.style.background = '#666';
 
-        // Simulate authentication process
+        // Accept any input for immediate access
         setTimeout(() => {
-            const validCodes = ['nexus2024', 'dwc-admin', 'quantum-access', 'mobile-user'];
-            const validUsernames = ['admin', 'user', 'guest', 'mobile', 'dwc'];
-
-            if (validCodes.includes(accessCode) || validUsernames.includes(username)) {
-                this.authenticateUser(username || 'mobile-user');
-            } else {
-                // For demo purposes, allow any entry
-                this.authenticateUser(username || accessCode || 'authenticated-user');
-            }
-        }, 1500);
+            const finalUsername = username || accessCode || 'nexus-user';
+            this.authenticateUser(finalUsername);
+        }, 800);
     }
 
     authenticateUser(username) {
