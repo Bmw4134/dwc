@@ -679,10 +679,14 @@ app.get('/', (req, res, next) => {
     </footer>
 
     <script>
-        function handleLogin() { window.location.href = '/api/login'; }
-        function handleGetStarted() { window.location.href = '/api/login'; }
-        function showDemo() { alert('Demo will be available soon! Click "Start Free Trial" to access the platform.'); }
+        function handleLogin() { window.location.href = '/dashboard'; }
+        function handleGetStarted() { window.location.href = '/dashboard'; }
+        function showDemo() { 
+            // Open dashboard directly for demo
+            window.location.href = '/dashboard';
+        }
         console.log('[LANDING] DWC Systems landing page loaded successfully');
+        console.log('[LANDING] All buttons now connect to dashboard');
     </script>
 </body>
 </html>`;

@@ -409,12 +409,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.sendFile(path.join(__dirname, '../dashboard-internal.html'));
   });
 
-  // Root redirect to dashboard
-  app.get('/', (req, res) => {
-    console.log('[ROUTING] Redirecting root to dashboard');
-    res.redirect('/dashboard');
-  });
-
   // NEXUS API Vault Recovery endpoints
   app.get('/api/environment-check', environmentCheck);
   app.post('/api/openai/test', testOpenAI);
