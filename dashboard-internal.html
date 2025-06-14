@@ -11367,5 +11367,35 @@ Industries: Technology, Healthcare, Gaming, Photography, Transportation, Corpora
 
     <!-- Enhanced Sidebar System with AI-Powered Search -->
     <script src="/enhanced-sidebar-system.js"></script>
+    
+    <!-- Visual Lead Scanner Integration -->
+    <script src="/nexus-visual-lead-scanner.js"></script>
+    
+    <script>
+    // Visual Lead Scanner Global Function
+    window.showNEXUSVisualScanner = function() {
+        console.log('[NEXUS-VISUAL] Activating Visual Lead Scanner...');
+        if (typeof NEXUSVisualLeadScanner !== 'undefined') {
+            const scanner = new NEXUSVisualLeadScanner();
+            scanner.initializeVisualScanner();
+            scanner.showScanner();
+        } else if (typeof nexusVisualScanner !== 'undefined') {
+            nexusVisualScanner.showScanner();
+        } else {
+            console.error('[NEXUS-VISUAL] Scanner not loaded');
+        }
+    };
+    
+    // Auto-initialize Visual Lead Scanner when dashboard loads
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            if (typeof NEXUSVisualLeadScanner !== 'undefined') {
+                window.nexusVisualScanner = new NEXUSVisualLeadScanner();
+                window.nexusVisualScanner.initializeVisualScanner();
+                console.log('[NEXUS-VISUAL] Scanner initialized and ready');
+            }
+        }, 2000);
+    });
+    </script>
 </body>
 </html>

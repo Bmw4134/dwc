@@ -448,6 +448,46 @@ function formatExtractedLead(leadId, extractedData) {
 }
 
 // Process uploaded images for lead extraction
+app.post('/api/nexus/visual-scanner/process', async (req, res) => {
+    try {
+        console.log('[VISUAL-SCANNER] Processing image for lead extraction');
+        const { imageData, extractionType } = req.body;
+        
+        if (!imageData) {
+            return res.status(400).json({ error: 'No image data provided' });
+        }
+        
+        // Use screenshot lead extractor for processing
+        const extractor = new ScreenshotLeadExtractor();
+        const extractedLeads = await extractor.extractFromScreenshot();
+        
+        console.log(`[VISUAL-SCANNER] Extracted ${extractedLeads.length} leads from image`);
+        
+        res.json({
+            success: true,
+            leads: extractedLeads,
+            extractionType: extractionType || 'general',
+            timestamp: new Date().toISOString()
+        });
+        
+    } catch (error) {
+        console.error('[VISUAL-SCANNER] Processing error:', error);
+        res.status(500).json({ 
+            error: 'Image processing failed',
+            details: error.message 
+        });
+    }
+});
+
+// Get Visual Lead Scanner status
+app.get('/api/nexus/visual-scanner/status', (req, res) => {
+    res.json({
+        status: 'active',
+        capabilities: ['OCR', 'business_card_reading', 'storefront_analysis', 'truck_signage'],
+        supportedFormats: ['JPEG', 'PNG', 'WebP'],
+        maxFileSize: '10MB'
+    });
+});
 app.post('/api/process-image-upload', async (req, res) => {
     try {
         const { imageData, fileName } = req.body;
