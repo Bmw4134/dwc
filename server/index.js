@@ -331,10 +331,11 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-// Login route - go to dashboard
+// Login route - serve login page
 app.get('/login', (req, res) => {
-    console.log('[AUTH] User login requested');
-    res.redirect('/dashboard');
+    console.log('[AUTH] Serving login page');
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.sendFile(path.join(process.cwd(), 'login.html'));
 });
 
 // DWC Sales Portal - separate from client login

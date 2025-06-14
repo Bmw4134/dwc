@@ -277,6 +277,11 @@
         <div class="sidebar-header">
             <div class="sidebar-logo">NEXUS</div>
             <div class="module-counter">47 Modules</div>
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div style="font-size: 0.8rem; color: var(--quantum-blue); margin-bottom: 0.5rem;">Logged in as:</div>
+                <div id="username" style="font-weight: 600; color: white;">User</div>
+                <button onclick="logout()" style="margin-top: 0.5rem; width: 100%; background: transparent; border: 1px solid var(--quantum-blue); color: var(--quantum-blue); padding: 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Logout</button>
+            </div>
         </div>
         
         <!-- Core Dashboard -->
@@ -762,12 +767,29 @@
         
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const isAuthenticated = localStorage.getItem('nexus_authenticated');
+            if (!isAuthenticated) {
+                window.location.href = '/login';
+                return;
+            }
+            
             console.log('[NEXUS] Dashboard initialized with 47 modules');
             console.log('[NEXUS] Quantum intelligence platform ready');
             
-            // Validation suite disabled for clean operation
-            // loadValidationSuite();
+            // Initialize user info
+            const username = localStorage.getItem('nexus_user') || 'User';
+            document.getElementById('username').textContent = username;
+            
+            // Load dashboard by default
+            activateModule('dashboard');
         });
+        
+        function logout() {
+            localStorage.removeItem('nexus_authenticated');
+            localStorage.removeItem('nexus_user');
+            window.location.href = '/login';
+        }
         
         function loadValidationSuite() {
             const script = document.createElement('script');
