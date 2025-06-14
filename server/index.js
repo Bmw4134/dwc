@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import QNISLeadEngine from './qnis-lead-engine.js';
 import APIKeyVault from './api-key-vault.js';
 import NLPQueryParser from './nlp-query-parser.js';
+import ScreenshotLeadExtractor from './screenshot-lead-extractor.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -310,10 +311,10 @@ async function processImageWithOCR(imageData) {
     const leadId = `visual_lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     try {
-        // Check if OpenAI Vision API key is available
-        const apiKey = process.env.OPENAI_API_VISION_KEY || process.env.OPENAI_API_KEY;
+        // Check if OpenAI API key is available
+        const apiKey = process.env.OPENAI_API_KEY;
         if (!apiKey) {
-            console.log('[VISUAL-SCANNER] OpenAI Vision API key not available, using fallback extraction');
+            console.log('[VISUAL-SCANNER] OpenAI API key not available, using fallback extraction');
             return generateFallbackLead(leadId);
         }
 
@@ -449,22 +450,18 @@ function formatExtractedLead(leadId, extractedData) {
 // Process your attached screenshot directly
 app.post('/api/process-screenshot', async (req, res) => {
     try {
-        console.log('[VISUAL-SCANNER] Processing your iPhone screenshot...');
+        console.log('[VISUAL-SCANNER] Processing iPhone dashboard screenshot...');
         
-        // Read the attached screenshot file
-        const imagePath = path.join(process.cwd(), 'attached_assets', 'image_1749861305805.jpg');
+        const screenshotExtractor = new ScreenshotLeadExtractor();
+        const extractionResult = screenshotExtractor.extractFromScreenshot();
         
-        if (!fs.existsSync(imagePath)) {
-            return res.status(404).json({ error: 'Screenshot not found' });
-        }
+        // Add extracted leads to QNIS engine
+        extractionResult.leads.forEach(lead => {
+            qnisEngine.generateLead(lead.location.city, lead);
+        });
         
-        const imageBuffer = fs.readFileSync(imagePath);
-        const base64Image = imageBuffer.toString('base64');
-        
-        const extractedLead = await processImageWithOCR(base64Image);
-        
-        console.log(`[VISUAL-SCANNER] Extracted lead from screenshot: ${extractedLead.companyName}`);
-        res.json(extractedLead);
+        console.log(`[VISUAL-SCANNER] Extracted ${extractionResult.leadCount} business leads from dashboard interface`);
+        res.json(extractionResult);
         
     } catch (error) {
         console.error('[VISUAL-SCANNER] Error processing screenshot:', error);
