@@ -447,6 +447,39 @@ function formatExtractedLead(leadId, extractedData) {
     };
 }
 
+// Process uploaded images for lead extraction
+app.post('/api/process-image-upload', async (req, res) => {
+    try {
+        const { imageData, fileName } = req.body;
+        
+        if (!imageData) {
+            return res.status(400).json({ error: 'No image data provided' });
+        }
+
+        console.log(`[VISUAL-SCANNER] Processing uploaded image: ${fileName}`);
+        
+        const extractedLead = await processImageWithOCR(imageData);
+        
+        // Add to QNIS engine
+        qnisEngine.generateLead(extractedLead.location?.city || 'Unknown', extractedLead);
+        
+        console.log(`[VISUAL-SCANNER] Extracted lead from uploaded image: ${extractedLead.companyName}`);
+        res.json({
+            success: true,
+            lead: extractedLead,
+            message: 'Lead extracted successfully'
+        });
+        
+    } catch (error) {
+        console.error('[VISUAL-SCANNER] Error processing uploaded image:', error);
+        res.status(500).json({ 
+            success: false,
+            error: 'Failed to process uploaded image',
+            message: error.message 
+        });
+    }
+});
+
 // Process your attached screenshot directly
 app.post('/api/process-screenshot', async (req, res) => {
     try {

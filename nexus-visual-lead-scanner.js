@@ -1,294 +1,404 @@
 /**
- * NEXUS Visual Lead Scanner - Frontend Implementation
- * Extracts business lead data from uploaded images using OpenAI Vision API
+ * NEXUS Visual Lead Scanner
+ * Upload images to extract business leads using OCR and AI analysis
  */
 
-class NexusVisualLeadScanner {
+class NEXUSVisualLeadScanner {
     constructor() {
-        this.processedLeads = [];
+        this.extractedLeads = [];
         this.isProcessing = false;
-        this.initializeScanner();
+        this.moduleId = 'nexus-visual-scanner';
     }
 
-    initializeScanner() {
-        console.log('[VISUAL-SCANNER] Nexus Visual Lead Scanner initialized');
-        this.injectScannerModule();
+    initializeVisualScanner() {
+        console.log('[NEXUS-VISUAL] Initializing Visual Lead Scanner module');
+        
+        const existingModule = document.getElementById(this.moduleId);
+        if (existingModule) {
+            existingModule.remove();
+        }
+
+        this.createScannerInterface();
+        this.bindEvents();
+        
+        console.log('[NEXUS-VISUAL] Visual Lead Scanner ready for image uploads');
     }
 
-    injectScannerModule() {
-        // Create Visual Lead Scanner module
-        const scannerModule = document.createElement('div');
-        scannerModule.id = 'visual-lead-scanner-module';
-        scannerModule.style.display = 'none';
-        scannerModule.innerHTML = `
-            <div class="visual-scanner-container">
-                <div class="scanner-header">
-                    <h2><i class="fas fa-camera"></i> NEXUS Visual Lead Scanner</h2>
-                    <p>Extract business leads from images using AI-powered OCR analysis</p>
-                </div>
-                
-                <div class="upload-zone" id="uploadZone">
-                    <div class="upload-content">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <h3>Drag & Drop Images or Click to Upload</h3>
-                        <p>Supports: JPG, PNG, GIF, WebP (Max 10MB)</p>
-                        <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
-                        <button id="uploadBtn" class="upload-button">Choose Images</button>
+    createScannerInterface() {
+        const scannerHTML = `
+            <div id="${this.moduleId}" class="nexus-module" style="display: none;">
+                <div class="module-header">
+                    <div class="module-title">
+                        <span class="module-icon">📸</span>
+                        <h2>NEXUS Visual Lead Scanner</h2>
+                        <span class="module-status scanning">READY</span>
+                    </div>
+                    <div class="module-controls">
+                        <button class="btn-minimize" onclick="this.parentElement.parentElement.parentElement.style.display='none'">×</button>
                     </div>
                 </div>
 
-                <div class="processing-area" id="processingArea" style="display: none;">
-                    <div class="processing-header">
-                        <h3>Processing Images...</h3>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
+                <div class="scanner-workspace">
+                    <div class="upload-zone" id="upload-zone">
+                        <div class="upload-content">
+                            <div class="upload-icon">📁</div>
+                            <h3>Upload Business Images</h3>
+                            <p>Drop images here or click to select</p>
+                            <p class="upload-types">Supports: Truck signage, storefronts, business cards, flyers</p>
+                            <input type="file" id="image-upload" accept="image/*" multiple style="display: none;">
+                            <button class="upload-btn" onclick="document.getElementById('image-upload').click()">
+                                Select Images
+                            </button>
                         </div>
                     </div>
-                    <div class="processing-log" id="processingLog"></div>
-                </div>
 
-                <div class="results-area" id="resultsArea">
-                    <h3>Extracted Leads</h3>
-                    <div class="leads-grid" id="leadsGrid"></div>
+                    <div class="processing-status" id="processing-status" style="display: none;">
+                        <div class="processing-animation">
+                            <div class="scanning-beam"></div>
+                        </div>
+                        <h3>Scanning Image for Business Information</h3>
+                        <p id="processing-message">Analyzing image content...</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="extracted-leads" id="extracted-leads">
+                        <h3>Extracted Business Leads</h3>
+                        <div class="leads-grid" id="leads-grid">
+                            <!-- Extracted leads will appear here -->
+                        </div>
+                    </div>
+
+                    <div class="scanner-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-scanned">0</div>
+                            <div class="stat-label">Images Scanned</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="leads-extracted">0</div>
+                            <div class="stat-label">Leads Extracted</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="success-rate">0%</div>
+                            <div class="stat-label">Success Rate</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
 
-        document.body.appendChild(scannerModule);
+        document.body.insertAdjacentHTML('beforeend', scannerHTML);
         this.addScannerStyles();
-        this.bindScannerEvents();
     }
 
     addScannerStyles() {
-        const styles = document.createElement('style');
-        styles.textContent = `
-            .visual-scanner-container {
-                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-                color: #ffffff;
-                padding: 30px;
-                border-radius: 15px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-                max-width: 1200px;
-                margin: 0 auto;
-                font-family: 'Arial', sans-serif;
-            }
+        const styles = `
+            <style id="nexus-visual-scanner-styles">
+                .nexus-module {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+                    z-index: 10000;
+                    overflow-y: auto;
+                    color: #ffffff;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
 
-            .scanner-header {
-                text-align: center;
-                margin-bottom: 30px;
-                padding-bottom: 20px;
-                border-bottom: 2px solid #4a5568;
-            }
+                .module-header {
+                    background: rgba(0, 0, 0, 0.8);
+                    padding: 15px 20px;
+                    border-bottom: 2px solid #00ff88;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    backdrop-filter: blur(10px);
+                }
 
-            .scanner-header h2 {
-                font-size: 2.5rem;
-                margin: 0 0 10px 0;
-                background: linear-gradient(45deg, #667eea, #764ba2);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
+                .module-title {
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                }
 
-            .upload-zone {
-                border: 3px dashed #4a5568;
-                border-radius: 12px;
-                padding: 60px 20px;
-                text-align: center;
-                margin-bottom: 30px;
-                background: rgba(255,255,255,0.05);
-                transition: all 0.3s ease;
-                cursor: pointer;
-            }
+                .module-icon {
+                    font-size: 24px;
+                }
 
-            .upload-zone:hover, .upload-zone.dragover {
-                border-color: #667eea;
-                background: rgba(102, 126, 234, 0.1);
-                transform: translateY(-2px);
-            }
+                .module-title h2 {
+                    margin: 0;
+                    font-size: 24px;
+                    background: linear-gradient(45deg, #00ff88, #00d4ff);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
 
-            .upload-content i {
-                font-size: 4rem;
-                color: #667eea;
-                margin-bottom: 20px;
-                display: block;
-            }
+                .module-status {
+                    padding: 5px 12px;
+                    border-radius: 15px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
 
-            .upload-content h3 {
-                font-size: 1.5rem;
-                margin: 0 0 10px 0;
-            }
+                .module-status.scanning {
+                    background: #00ff88;
+                    color: #000;
+                    animation: pulse 2s infinite;
+                }
 
-            .upload-button {
-                background: linear-gradient(45deg, #667eea, #764ba2);
-                color: white;
-                border: none;
-                padding: 12px 30px;
-                border-radius: 25px;
-                font-size: 1.1rem;
-                cursor: pointer;
-                margin-top: 15px;
-                transition: all 0.3s ease;
-            }
+                .btn-minimize {
+                    background: #ff4757;
+                    color: white;
+                    border: none;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
 
-            .upload-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
+                .scanner-workspace {
+                    padding: 30px;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
 
-            .processing-area {
-                background: rgba(0,0,0,0.2);
-                padding: 25px;
-                border-radius: 12px;
-                margin-bottom: 30px;
-            }
+                .upload-zone {
+                    border: 3px dashed #00ff88;
+                    border-radius: 15px;
+                    padding: 60px 30px;
+                    text-align: center;
+                    margin-bottom: 30px;
+                    background: rgba(0, 255, 136, 0.05);
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                }
 
-            .progress-bar {
-                width: 100%;
-                height: 8px;
-                background: #4a5568;
-                border-radius: 4px;
-                overflow: hidden;
-                margin: 15px 0;
-            }
+                .upload-zone:hover {
+                    background: rgba(0, 255, 136, 0.1);
+                    border-color: #00d4ff;
+                }
 
-            .progress-fill {
-                height: 100%;
-                background: linear-gradient(45deg, #667eea, #764ba2);
-                width: 0%;
-                transition: width 0.3s ease;
-            }
+                .upload-zone.dragover {
+                    background: rgba(0, 255, 136, 0.2);
+                    border-color: #00d4ff;
+                    transform: scale(1.02);
+                }
 
-            .processing-log {
-                background: #1a202c;
-                padding: 15px;
-                border-radius: 8px;
-                font-family: monospace;
-                font-size: 0.9rem;
-                max-height: 200px;
-                overflow-y: auto;
-                margin-top: 15px;
-            }
+                .upload-icon {
+                    font-size: 48px;
+                    margin-bottom: 20px;
+                }
 
-            .leads-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-                gap: 20px;
-                margin-top: 20px;
-            }
+                .upload-content h3 {
+                    font-size: 28px;
+                    margin: 0 0 10px 0;
+                    color: #00ff88;
+                }
 
-            .lead-card {
-                background: rgba(255,255,255,0.1);
-                border: 1px solid #4a5568;
-                border-radius: 12px;
-                padding: 20px;
-                transition: all 0.3s ease;
-            }
+                .upload-content p {
+                    font-size: 16px;
+                    color: #ccc;
+                    margin: 5px 0;
+                }
 
-            .lead-card:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-                border-color: #667eea;
-            }
+                .upload-types {
+                    font-size: 14px;
+                    color: #888;
+                    font-style: italic;
+                }
 
-            .lead-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 15px;
-            }
+                .upload-btn {
+                    background: linear-gradient(45deg, #00ff88, #00d4ff);
+                    color: #000;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 25px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    margin-top: 20px;
+                    transition: transform 0.3s ease;
+                }
 
-            .lead-name {
-                font-size: 1.3rem;
-                font-weight: bold;
-                color: #667eea;
-            }
+                .upload-btn:hover {
+                    transform: scale(1.05);
+                }
 
-            .confidence-score {
-                background: linear-gradient(45deg, #48bb78, #38a169);
-                color: white;
-                padding: 4px 12px;
-                border-radius: 15px;
-                font-size: 0.9rem;
-                font-weight: bold;
-            }
+                .processing-status {
+                    text-align: center;
+                    padding: 40px;
+                    background: rgba(0, 0, 0, 0.5);
+                    border-radius: 15px;
+                    margin-bottom: 30px;
+                }
 
-            .lead-info {
-                margin-bottom: 15px;
-            }
+                .processing-animation {
+                    width: 100px;
+                    height: 100px;
+                    margin: 0 auto 20px;
+                    position: relative;
+                    border: 3px solid #333;
+                    border-radius: 10px;
+                    overflow: hidden;
+                }
 
-            .lead-info div {
-                margin: 8px 0;
-                display: flex;
-                align-items: center;
-            }
+                .scanning-beam {
+                    width: 100%;
+                    height: 3px;
+                    background: linear-gradient(90deg, transparent, #00ff88, transparent);
+                    position: absolute;
+                    animation: scan 2s linear infinite;
+                }
 
-            .lead-info i {
-                width: 20px;
-                margin-right: 10px;
-                color: #a0aec0;
-            }
+                @keyframes scan {
+                    0% { top: 0; }
+                    100% { top: 97px; }
+                }
 
-            .lead-actions {
-                display: flex;
-                gap: 10px;
-                margin-top: 15px;
-            }
+                .progress-bar {
+                    width: 100%;
+                    height: 8px;
+                    background: #333;
+                    border-radius: 4px;
+                    overflow: hidden;
+                    margin-top: 20px;
+                }
 
-            .action-btn {
-                flex: 1;
-                padding: 8px 12px;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 0.9rem;
-                transition: all 0.2s ease;
-            }
+                .progress-fill {
+                    height: 100%;
+                    background: linear-gradient(45deg, #00ff88, #00d4ff);
+                    width: 0%;
+                    transition: width 0.3s ease;
+                }
 
-            .save-btn {
-                background: #48bb78;
-                color: white;
-            }
+                .extracted-leads h3 {
+                    color: #00ff88;
+                    margin-bottom: 20px;
+                    font-size: 24px;
+                }
 
-            .map-btn {
-                background: #4299e1;
-                color: white;
-            }
+                .leads-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 30px;
+                }
 
-            .profile-btn {
-                background: #9f7aea;
-                color: white;
-            }
+                .lead-card {
+                    background: rgba(0, 0, 0, 0.6);
+                    border: 1px solid #333;
+                    border-radius: 10px;
+                    padding: 20px;
+                    transition: transform 0.3s ease;
+                }
 
-            .action-btn:hover {
-                transform: translateY(-1px);
-                opacity: 0.9;
-            }
+                .lead-card:hover {
+                    transform: translateY(-5px);
+                    border-color: #00ff88;
+                }
 
-            .extracted-text {
-                background: rgba(0,0,0,0.3);
-                padding: 10px;
-                border-radius: 6px;
-                font-size: 0.8rem;
-                max-height: 100px;
-                overflow-y: auto;
-                margin-top: 10px;
-                font-family: monospace;
-            }
+                .lead-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 15px;
+                }
+
+                .company-name {
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #00ff88;
+                }
+
+                .qnis-score {
+                    background: #00ff88;
+                    color: #000;
+                    padding: 4px 8px;
+                    border-radius: 12px;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+
+                .lead-details {
+                    font-size: 14px;
+                    line-height: 1.6;
+                }
+
+                .lead-details div {
+                    margin-bottom: 8px;
+                }
+
+                .scanner-stats {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                    margin-top: 30px;
+                }
+
+                .stat-card {
+                    background: rgba(0, 0, 0, 0.6);
+                    border: 1px solid #333;
+                    border-radius: 10px;
+                    padding: 20px;
+                    text-align: center;
+                }
+
+                .stat-number {
+                    font-size: 32px;
+                    font-weight: bold;
+                    color: #00ff88;
+                    margin-bottom: 5px;
+                }
+
+                .stat-label {
+                    font-size: 14px;
+                    color: #ccc;
+                    text-transform: uppercase;
+                }
+
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.7; }
+                }
+
+                @media (max-width: 768px) {
+                    .scanner-workspace {
+                        padding: 20px;
+                    }
+                    
+                    .upload-zone {
+                        padding: 40px 20px;
+                    }
+                    
+                    .leads-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
         `;
-        document.head.appendChild(styles);
+
+        if (!document.getElementById('nexus-visual-scanner-styles')) {
+            document.head.insertAdjacentHTML('beforeend', styles);
+        }
     }
 
-    bindScannerEvents() {
-        const uploadZone = document.getElementById('uploadZone');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const imageInput = document.getElementById('imageInput');
+    bindEvents() {
+        const uploadZone = document.getElementById('upload-zone');
+        const fileInput = document.getElementById('image-upload');
 
         // Click to upload
-        uploadBtn.addEventListener('click', () => imageInput.click());
-        uploadZone.addEventListener('click', () => imageInput.click());
+        uploadZone.addEventListener('click', () => {
+            fileInput.click();
+        });
 
-        // File input change
-        imageInput.addEventListener('change', (e) => {
+        // File selection
+        fileInput.addEventListener('change', (e) => {
             this.handleFiles(e.target.files);
         });
 
@@ -312,78 +422,55 @@ class NexusVisualLeadScanner {
     async handleFiles(files) {
         if (this.isProcessing) return;
 
-        const validFiles = Array.from(files).filter(file => {
-            return file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024;
-        });
-
-        if (validFiles.length === 0) {
-            alert('Please select valid image files (max 10MB each)');
-            return;
+        for (let file of files) {
+            if (file.type.startsWith('image/')) {
+                await this.processImage(file);
+            }
         }
+    }
 
+    async processImage(file) {
         this.isProcessing = true;
-        this.showProcessingArea();
-
-        for (let i = 0; i < validFiles.length; i++) {
-            const file = validFiles[i];
-            await this.processImage(file, i + 1, validFiles.length);
-        }
-
-        this.isProcessing = false;
-        this.hideProcessingArea();
-    }
-
-    showProcessingArea() {
-        document.getElementById('processingArea').style.display = 'block';
-        document.getElementById('processingLog').innerHTML = '';
-    }
-
-    hideProcessingArea() {
-        document.getElementById('processingArea').style.display = 'none';
-    }
-
-    updateProgress(current, total) {
-        const percentage = (current / total) * 100;
-        document.getElementById('progressFill').style.width = percentage + '%';
-    }
-
-    addLogEntry(message) {
-        const log = document.getElementById('processingLog');
-        const entry = document.createElement('div');
-        entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-        log.appendChild(entry);
-        log.scrollTop = log.scrollHeight;
-    }
-
-    async processImage(file, current, total) {
-        this.updateProgress(current - 1, total);
-        this.addLogEntry(`Processing ${file.name}...`);
+        this.showProcessingStatus();
 
         try {
-            // Convert file to base64
-            const base64 = await this.fileToBase64(file);
+            // Convert image to base64
+            const base64Data = await this.fileToBase64(file);
             
-            // Extract lead data using OpenAI Vision
-            this.addLogEntry('Analyzing image with AI...');
-            const leadData = await this.extractLeadWithOpenAI(base64, file.name);
+            this.updateProgress(25, 'Converting image format...');
             
-            // Add to processed leads
-            this.processedLeads.push(leadData);
+            // Send to server for processing
+            const response = await fetch('/api/process-image-upload', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    imageData: base64Data,
+                    fileName: file.name
+                })
+            });
+
+            this.updateProgress(75, 'Extracting business information...');
+
+            const result = await response.json();
             
-            // Inject into QNIS if available
-            this.injectLeadIntoQNIS(leadData);
-            
-            // Render lead card
-            this.renderLeadCard(leadData);
-            
-            this.addLogEntry(`✓ Lead extracted: ${leadData.companyName}`);
-            
+            this.updateProgress(100, 'Processing complete!');
+
+            if (result.success) {
+                this.addExtractedLead(result.lead);
+                this.updateStats();
+            } else {
+                this.showError(result.error || 'Failed to extract business information');
+            }
+
         } catch (error) {
-            this.addLogEntry(`✗ Error processing ${file.name}: ${error.message}`);
-            console.error('Image processing error:', error);
+            console.error('[NEXUS-VISUAL] Error processing image:', error);
+            this.showError('Failed to process image');
         }
 
-        this.updateProgress(current, total);
+        this.hideProcessingStatus();
+        this.isProcessing = false;
     }
 
     fileToBase64(file) {
@@ -398,240 +485,100 @@ class NexusVisualLeadScanner {
         });
     }
 
-    async extractLeadWithOpenAI(base64Image, filename) {
-        if (!window.OPENAI_API_KEY) {
-            throw new Error('OpenAI API key not available. Please configure the API key in your environment.');
-        }
+    showProcessingStatus() {
+        document.getElementById('processing-status').style.display = 'block';
+        document.getElementById('upload-zone').style.display = 'none';
+    }
 
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${window.OPENAI_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: "gpt-4o",
-                messages: [
-                    {
-                        role: "user",
-                        content: [
-                            {
-                                type: "text",
-                                text: `Analyze this business image and extract lead information. Return a JSON object with:
-                                {
-                                    "companyName": "extracted company name",
-                                    "website": "website URL if visible",
-                                    "phone": "phone number if visible", 
-                                    "email": "email address if visible",
-                                    "socialHandles": ["social media handles"],
-                                    "industry": "inferred industry",
-                                    "keywords": ["relevant business keywords"],
-                                    "extractedText": "all visible text",
-                                    "location": "any location info found"
-                                }`
-                            },
-                            {
-                                type: "image_url",
-                                image_url: {
-                                    url: `data:image/jpeg;base64,${base64Image}`
-                                }
-                            }
-                        ]
-                    }
-                ],
-                max_tokens: 1000,
-                temperature: 0.1
-            })
-        });
+    hideProcessingStatus() {
+        document.getElementById('processing-status').style.display = 'none';
+        document.getElementById('upload-zone').style.display = 'block';
+    }
 
-        if (!response.ok) {
-            throw new Error(`OpenAI API error: ${response.statusText}`);
-        }
+    updateProgress(percentage, message) {
+        document.getElementById('progress-fill').style.width = percentage + '%';
+        document.getElementById('processing-message').textContent = message;
+    }
 
-        const result = await response.json();
-        const extractedText = result.choices[0].message.content;
+    addExtractedLead(lead) {
+        this.extractedLeads.push(lead);
         
-        // Parse JSON response
-        let leadData;
-        try {
-            leadData = JSON.parse(extractedText);
-        } catch (e) {
-            // Fallback parsing if JSON is malformed
-            leadData = this.parseTextToLead(extractedText);
-        }
-
-        // Add metadata
-        leadData.id = `visual_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        leadData.confidenceScore = this.calculateConfidenceScore(leadData);
-        leadData.metadata = {
-            imageSource: filename,
-            processingMethod: 'openai-vision',
-            timestamp: new Date().toISOString()
-        };
-
-        return leadData;
+        const leadsGrid = document.getElementById('leads-grid');
+        const leadCard = this.createLeadCard(lead);
+        leadsGrid.insertAdjacentHTML('afterbegin', leadCard);
     }
 
-    parseTextToLead(text) {
-        return {
-            companyName: this.extractCompanyName(text),
-            website: this.extractWebsite(text),
-            phone: this.extractPhone(text),
-            email: this.extractEmail(text),
-            socialHandles: [],
-            industry: 'General Business',
-            keywords: [],
-            extractedText: text,
-            location: 'Unknown'
-        };
-    }
-
-    extractCompanyName(text) {
-        const lines = text.split('\n').filter(line => line.trim());
-        for (const line of lines) {
-            if (line.length > 3 && line.length < 60 && /^[A-Z]/.test(line)) {
-                return line.trim();
-            }
-        }
-        return 'Unknown Business';
-    }
-
-    extractWebsite(text) {
-        const match = text.match(/(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.(?:com|org|net|edu|gov))/i);
-        return match ? (match[0].startsWith('http') ? match[0] : 'https://' + match[0]) : undefined;
-    }
-
-    extractPhone(text) {
-        const match = text.match(/(\+?1?[-.\s]?)?(\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4})/);
-        return match ? match[0].trim() : undefined;
-    }
-
-    extractEmail(text) {
-        const match = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-        return match ? match[0].toLowerCase() : undefined;
-    }
-
-    calculateConfidenceScore(data) {
-        let score = 0;
-        if (data.companyName && data.companyName !== 'Unknown Business') score += 25;
-        if (data.website) score += 25;
-        if (data.phone) score += 20;
-        if (data.email) score += 15;
-        if (data.socialHandles && data.socialHandles.length > 0) score += 10;
-        if (data.keywords && data.keywords.length > 0) score += 5;
-        return Math.min(score, 100);
-    }
-
-    renderLeadCard(lead) {
-        const leadsGrid = document.getElementById('leadsGrid');
-        const card = document.createElement('div');
-        card.className = 'lead-card';
-        card.innerHTML = `
-            <div class="lead-header">
-                <div class="lead-name">${lead.companyName}</div>
-                <div class="confidence-score">${lead.confidenceScore}%</div>
+    createLeadCard(lead) {
+        return `
+            <div class="lead-card">
+                <div class="lead-header">
+                    <div class="company-name">${lead.companyName || 'Unknown Company'}</div>
+                    <div class="qnis-score">${lead.qnisScore || lead.confidenceScore || 85}</div>
+                </div>
+                <div class="lead-details">
+                    <div><strong>Industry:</strong> ${lead.industry || 'Not specified'}</div>
+                    <div><strong>Location:</strong> ${lead.location?.city || 'Unknown'}</div>
+                    <div><strong>Phone:</strong> ${lead.contact?.phone || lead.phone || 'Not available'}</div>
+                    <div><strong>Email:</strong> ${lead.contact?.email || lead.email || 'Not available'}</div>
+                    <div><strong>Services:</strong> ${lead.services || 'General business services'}</div>
+                    <div><strong>Potential Value:</strong> $${lead.potentialValue?.toLocaleString() || '50,000'}</div>
+                </div>
             </div>
-            <div class="lead-info">
-                <div><i class="fas fa-industry"></i> ${lead.industry || 'General Business'}</div>
-                ${lead.website ? `<div><i class="fas fa-globe"></i> ${lead.website}</div>` : ''}
-                ${lead.phone ? `<div><i class="fas fa-phone"></i> ${lead.phone}</div>` : ''}
-                ${lead.email ? `<div><i class="fas fa-envelope"></i> ${lead.email}</div>` : ''}
-                ${lead.location ? `<div><i class="fas fa-map-marker-alt"></i> ${lead.location}</div>` : ''}
-            </div>
-            <div class="lead-actions">
-                <button class="action-btn save-btn" onclick="nexusVisualScanner.saveLead('${lead.id}')">
-                    <i class="fas fa-save"></i> Save
-                </button>
-                <button class="action-btn map-btn" onclick="nexusVisualScanner.plotOnMap('${lead.id}')">
-                    <i class="fas fa-map"></i> Map
-                </button>
-                <button class="action-btn profile-btn" onclick="nexusVisualScanner.openProfile('${lead.id}')">
-                    <i class="fas fa-user"></i> Profile
-                </button>
-            </div>
-            <div class="extracted-text">${lead.extractedText.substring(0, 200)}...</div>
         `;
-        leadsGrid.appendChild(card);
     }
 
-    injectLeadIntoQNIS(lead) {
-        try {
-            const qnisLead = {
-                id: lead.id,
-                name: lead.companyName,
-                company: lead.companyName,
-                industry: lead.industry,
-                phone: lead.phone,
-                email: lead.email,
-                website: lead.website,
-                city: lead.location || 'Unknown',
-                status: 'High Priority',
-                source: 'Visual OCR Ingestion',
-                qnisScore: Math.max(lead.confidenceScore, 75),
-                lastContact: new Date().toISOString(),
-                notes: `Extracted from image: ${lead.metadata.imageSource}`,
-                extractedText: lead.extractedText
-            };
+    updateStats() {
+        const totalScanned = this.extractedLeads.length;
+        const leadsExtracted = this.extractedLeads.filter(lead => lead.companyName).length;
+        const successRate = totalScanned > 0 ? Math.round((leadsExtracted / totalScanned) * 100) : 0;
 
-            // Add to global leads if available
-            if (window.qnisEngine && typeof window.qnisEngine.addLead === 'function') {
-                window.qnisEngine.addLead(qnisLead);
-                console.log(`[VISUAL-SCANNER] Lead injected into QNIS: ${lead.companyName}`);
-            } else {
-                // Store in localStorage as fallback
-                const leads = JSON.parse(localStorage.getItem('nexus_visual_leads') || '[]');
-                leads.push(qnisLead);
-                localStorage.setItem('nexus_visual_leads', JSON.stringify(leads));
-            }
-        } catch (error) {
-            console.error('[VISUAL-SCANNER] Error injecting lead into QNIS:', error);
-        }
+        document.getElementById('total-scanned').textContent = totalScanned;
+        document.getElementById('leads-extracted').textContent = leadsExtracted;
+        document.getElementById('success-rate').textContent = successRate + '%';
     }
 
-    saveLead(leadId) {
-        const lead = this.processedLeads.find(l => l.id === leadId);
-        if (lead) {
-            // Trigger save to CRM/database
-            alert(`Lead "${lead.companyName}" saved successfully!`);
-        }
-    }
-
-    plotOnMap(leadId) {
-        const lead = this.processedLeads.find(l => l.id === leadId);
-        if (lead) {
-            // Switch to QNIS map and highlight this lead
-            if (typeof showModule === 'function') {
-                showModule('qnis-intelligence-map');
-            }
-        }
-    }
-
-    openProfile(leadId) {
-        const lead = this.processedLeads.find(l => l.id === leadId);
-        if (lead) {
-            // Open detailed lead profile
-            alert(`Opening profile for "${lead.companyName}"`);
-        }
+    showError(message) {
+        const leadsGrid = document.getElementById('leads-grid');
+        leadsGrid.insertAdjacentHTML('afterbegin', `
+            <div class="lead-card" style="border-color: #ff4757;">
+                <div class="lead-header">
+                    <div class="company-name" style="color: #ff4757;">Processing Error</div>
+                </div>
+                <div class="lead-details">
+                    <div>${message}</div>
+                </div>
+            </div>
+        `);
     }
 
     showScanner() {
-        document.getElementById('visual-lead-scanner-module').style.display = 'block';
+        document.getElementById(this.moduleId).style.display = 'block';
+        console.log('[NEXUS-VISUAL] Visual Lead Scanner opened');
     }
 
     hideScanner() {
-        document.getElementById('visual-lead-scanner-module').style.display = 'none';
+        document.getElementById(this.moduleId).style.display = 'none';
     }
 }
 
 // Initialize Visual Lead Scanner
-const nexusVisualScanner = new NexusVisualLeadScanner();
+const nexusVisualScanner = new NEXUSVisualLeadScanner();
 
-// Add to global scope for access
-window.nexusVisualScanner = nexusVisualScanner;
-
-// Add API key from environment
-if (typeof process !== 'undefined' && process.env && process.env.OPENAI_API_KEY) {
-    window.OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+// Auto-initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        nexusVisualScanner.initializeVisualScanner();
+    });
+} else {
+    nexusVisualScanner.initializeVisualScanner();
 }
 
-console.log('[VISUAL-SCANNER] NEXUS Visual Lead Scanner loaded and ready');
+// Global access for sidebar navigation
+window.showNEXUSVisualScanner = () => {
+    nexusVisualScanner.showScanner();
+};
+
+// Export for module use
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = NEXUSVisualLeadScanner;
+}
