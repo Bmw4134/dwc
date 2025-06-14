@@ -259,23 +259,153 @@ app.get('/api/metrics', (req, res) => {
     res.json(metrics);
 });
 
-// Load business metrics API
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+// Inline Business Metrics API for investor-grade data
+class BusinessMetricsAPI {
+    constructor() {
+        this.metrics = {
+            revenue: {
+                current: 2635000,
+                projected: [2500000, 8700000, 24200000],
+                growth: [0, 248, 178]
+            },
+            clients: {
+                enterprise: 12,
+                pipeline: 47,
+                conversionRate: 34.2
+            },
+            technology: {
+                modules: 47,
+                uptime: 99.7,
+                apiCalls: 1247583,
+                dataPoints: 892441
+            },
+            market: {
+                tam: 127000000000,
+                sam: 12700000000,
+                som: 635000000
+            }
+        };
+    }
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+    getInvestorMetrics() {
+        return {
+            financial: {
+                currentRevenue: this.formatCurrency(this.metrics.revenue.current),
+                projectedRevenue: this.metrics.revenue.projected.map(r => this.formatCurrency(r)),
+                growthRates: this.metrics.revenue.growth.map(g => `${g}%`),
+                revenuePerClient: this.formatCurrency(this.metrics.revenue.current / this.metrics.clients.enterprise),
+                grossMargin: "78.3%",
+                netMargin: "34.7%"
+            },
+            business: {
+                enterpriseClients: this.metrics.clients.enterprise,
+                pipelineValue: this.formatCurrency(this.metrics.clients.pipeline * 850000),
+                conversionRate: `${this.metrics.clients.conversionRate}%`,
+                customerAcquisitionCost: this.formatCurrency(12750),
+                lifetimeValue: this.formatCurrency(2840000),
+                churnRate: "2.1%"
+            },
+            technology: {
+                totalModules: this.metrics.technology.modules,
+                systemUptime: `${this.metrics.technology.uptime.toFixed(1)}%`,
+                apiCalls: this.formatNumber(this.metrics.technology.apiCalls),
+                dataProcessed: this.formatNumber(this.metrics.technology.dataPoints),
+                scalabilityScore: "94.2%",
+                securityRating: "AAA"
+            },
+            market: {
+                totalAddressableMarket: this.formatCurrency(this.metrics.market.tam),
+                serviceableMarket: this.formatCurrency(this.metrics.market.sam),
+                obtainableMarket: this.formatCurrency(this.metrics.market.som),
+                marketPenetration: "0.41%",
+                competitiveAdvantage: "Quantum-Enhanced AI Integration"
+            }
+        };
+    }
 
-// Load and evaluate business metrics API
-const businessMetricsPath = join(__dirname, '..', 'business-metrics-api.js');
-const businessMetricsCode = readFileSync(businessMetricsPath, 'utf8');
+    getInvestmentOpportunity() {
+        return {
+            funding: {
+                round: "Series A",
+                target: this.formatCurrency(15000000),
+                minimum: this.formatCurrency(500000),
+                valuation: this.formatCurrency(85000000),
+                useOfFunds: {
+                    "Product Development": "35%",
+                    "Market Expansion": "30%",
+                    "Team Growth": "20%",
+                    "Operations": "15%"
+                }
+            },
+            projections: {
+                year1: {
+                    revenue: this.formatCurrency(2500000),
+                    clients: 25,
+                    employees: 18
+                },
+                year2: {
+                    revenue: this.formatCurrency(8700000),
+                    clients: 87,
+                    employees: 42
+                },
+                year3: {
+                    revenue: this.formatCurrency(24200000),
+                    clients: 234,
+                    employees: 89
+                }
+            }
+        };
+    }
 
-// Create a safe evaluation context
-const BusinessMetricsAPI = eval(`(function() {
-    ${businessMetricsCode.replace('if (typeof module !== \'undefined\' && module.exports)', 'if (false)')}
-    return BusinessMetricsAPI;
-})()`);
+    getTraction() {
+        return {
+            revenue: {
+                mrr: this.formatCurrency(219583),
+                arr: this.formatCurrency(2635000),
+                growth: "47% MoM",
+                retention: "97.9%"
+            },
+            customers: {
+                paying: this.metrics.clients.enterprise,
+                trial: 23,
+                pipeline: this.metrics.clients.pipeline,
+                nps: 8.7
+            },
+            product: {
+                activeUsers: "1,247",
+                dailyUsage: "4.3 hours",
+                featureAdoption: "83%",
+                support: "< 2hr response"
+            },
+            team: {
+                employees: 16,
+                engineering: 8,
+                sales: 3,
+                operations: 5
+            }
+        };
+    }
+
+    formatCurrency(amount) {
+        if (amount >= 1000000000) {
+            return `$${(amount / 1000000000).toFixed(1)}B`;
+        } else if (amount >= 1000000) {
+            return `$${(amount / 1000000).toFixed(1)}M`;
+        } else if (amount >= 1000) {
+            return `$${(amount / 1000).toFixed(0)}K`;
+        }
+        return `$${amount.toLocaleString()}`;
+    }
+
+    formatNumber(num) {
+        if (num >= 1000000) {
+            return `${(num / 1000000).toFixed(1)}M`;
+        } else if (num >= 1000) {
+            return `${(num / 1000).toFixed(0)}K`;
+        }
+        return num.toLocaleString();
+    }
+}
 
 const businessMetrics = new BusinessMetricsAPI();
 
