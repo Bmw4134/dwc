@@ -866,7 +866,9 @@
                 // Populate leads grid
                 const liveLeadsContainer = document.getElementById('live-leads-grid');
                 if (liveLeadsContainer) {
-                    liveLeadsContainer.innerHTML = leads.map(lead => `
+                    // Ensure leads is an array before using map
+                    const leadsArray = Array.isArray(leads) ? leads : (leads && leads.leads ? leads.leads : []);
+                    liveLeadsContainer.innerHTML = leadsArray.map(lead => `
                         <div class="lead-card">
                             <div class="lead-city">${lead.city}</div>
                             <div class="lead-value">$${Math.floor(lead.revenue / 1000)}K</div>
@@ -1829,14 +1831,31 @@
         }
 
         // Generate AI contact information
-        async function generateAIContact() {
+        function generateAIContact() {
             const domains = ['tech', 'digital', 'systems', 'solutions', 'corp'];
             const names = ['alex', 'jordan', 'casey', 'taylor', 'morgan'];
             
             const name = names[Math.floor(Math.random() * names.length)];
             const domain = domains[Math.floor(Math.random() * domains.length)];
             
-            return `${name}@${domain}lead.com`;
+            return {
+                name: name.charAt(0).toUpperCase() + name.slice(1),
+                email: `${name}@${domain}leads.com`,
+                phone: `+1-${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`
+            };
+        }
+
+        // Toggle sidebar functionality
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (sidebar) {
+                sidebar.classList.toggle('collapsed');
+                if (mainContent) {
+                    mainContent.classList.toggle('sidebar-collapsed');
+                }
+            }
         }
 
         function generateFallbackCompanyName() {
