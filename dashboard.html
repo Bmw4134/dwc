@@ -1216,7 +1216,16 @@
                 mainContent.innerHTML = `
                     <div class="dashboard-header">
                         <h2 style="color: var(--quantum-blue); font-family: 'Orbitron', monospace; font-size: 2rem;">QNIS Geospatial Intelligence</h2>
-                        <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                            <button onclick="trackMyLocation()" style="padding: 8px 16px; background: rgba(255, 215, 0, 0.2); border: 1px solid #FFD700; color: #FFD700; border-radius: 6px; cursor: pointer;">
+                                📍 Track Me
+                            </button>
+                            <button onclick="findLeadsNearMe()" style="padding: 8px 16px; background: rgba(138, 43, 226, 0.2); border: 1px solid #8A2BE2; color: #8A2BE2; border-radius: 6px; cursor: pointer;">
+                                🔍 Find Leads Near Here
+                            </button>
+                            <button onclick="openLeadAssistant()" style="padding: 8px 16px; background: rgba(255, 69, 0, 0.2); border: 1px solid #FF4500; color: #FF4500; border-radius: 6px; cursor: pointer;">
+                                🤖 LLM Lead Assistant
+                            </button>
                             <button onclick="generateNewLead()" style="padding: 8px 16px; background: rgba(0, 255, 127, 0.2); border: 1px solid var(--neo-green); color: var(--neo-green); border-radius: 6px; cursor: pointer;">
                                 🎯 Generate Lead
                             </button>
@@ -1319,16 +1328,30 @@
             // Load leads from your existing API
             fetch('/api/leads')
                 .then(response => response.json())
-                .then(leads => {
-                    leads.forEach(lead => {
-                        if (lead.lat && lead.lng) {
-                            addLeadMarker(lead);
-                        } else {
-                            // Geocode city to coordinates
-                            geocodeAndAddLead(lead);
-                        }
-                    });
-                    updateLiveFeedDisplay(leads);
+                .then(data => {
+                    // Handle both array and object responses
+                    let leads = [];
+                    if (Array.isArray(data)) {
+                        leads = data;
+                    } else if (data && typeof data === 'object') {
+                        leads = Object.values(data);
+                    }
+                    
+                    if (leads.length > 0) {
+                        leads.forEach(lead => {
+                            if (lead.lat && lead.lng) {
+                                addLeadMarker(lead);
+                            } else {
+                                // Geocode city to coordinates
+                                geocodeAndAddLead(lead);
+                            }
+                        });
+                        updateLiveFeedDisplay(leads);
+                        updatePipelineStats();
+                    } else {
+                        // Initialize with default lead positions
+                        initializeDefaultLeads();
+                    }
                 })
                 .catch(() => {
                     // Initialize with default lead positions
@@ -1576,18 +1599,30 @@
         
         function updateLiveFeedDisplay(leads) {
             const liveFeed = document.getElementById('liveFeed');
-            if (!liveFeed || !leads) return;
+            if (!liveFeed) return;
             
-            const recentLeads = leads.slice(-15).reverse();
-            const feedText = recentLeads.map(lead => {
-                const timestamp = new Date(lead.timestamp || Date.now()).toLocaleTimeString();
-                const company = lead.company || lead.name || 'Business Lead';
-                const location = lead.city || lead.location || 'Unknown';
-                const value = lead.value || Math.floor(Math.random() * 75000) + 25000;
-                return `[${timestamp}] 🎯 ${company} - ${location} - $${value.toLocaleString()}`;
-            }).join('\n');
+            // Ensure leads is an array
+            let leadsArray = [];
+            if (Array.isArray(leads)) {
+                leadsArray = leads;
+            } else if (leads && typeof leads === 'object') {
+                leadsArray = Object.values(leads);
+            }
             
-            liveFeed.textContent = feedText || 'Connecting to AI lead system...';
+            if (leadsArray.length > 0) {
+                const recentLeads = leadsArray.slice(-15).reverse();
+                const feedText = recentLeads.map(lead => {
+                    const timestamp = new Date(lead.timestamp || Date.now()).toLocaleTimeString();
+                    const company = lead.company || lead.name || 'Business Lead';
+                    const location = lead.city || lead.location || 'Unknown';
+                    const value = lead.value || Math.floor(Math.random() * 75000) + 25000;
+                    return `[${timestamp}] 🎯 ${company} - ${location} - $${value.toLocaleString()}`;
+                }).join('\n');
+                
+                liveFeed.textContent = feedText;
+            } else {
+                liveFeed.textContent = 'Connecting to AI lead system...';
+            }
         }
         
         function updatePipelineStats() {
