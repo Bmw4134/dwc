@@ -633,5 +633,36 @@
             setInterval(updateLiveMetrics, 30000);
         });
     </script>
+
+    <!-- NEXUS Strict Diagnostic Injection -->
+    <script src="/nexus-strict-diagnostic.js"></script>
+    <script>
+        // Auto-execute diagnostic when dashboard loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (window.NEXUSStrictDiagnostic) {
+                    console.log('🧠 NEXUS DEEP DIAGNOSTIC MODE - PHASE LOCK: STABILIZATION');
+                    const diagnostic = new NEXUSStrictDiagnostic();
+                    diagnostic.initializeStrictDiagnostic().then(manifest => {
+                        // Store in global scope and log results
+                        window.nexusModuleDiagnostic = manifest;
+                        console.log('📋 NEXUS Module Diagnostic Complete');
+                        console.log('Results available at: window.nexusModuleDiagnostic');
+                        
+                        // Download manifest as JSON file
+                        const blob = new Blob([JSON.stringify(manifest, null, 2)], {type: 'application/json'});
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'nexus_module_diagnostic.json';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    });
+                }
+            }, 2000); // Wait for dashboard to fully load
+        });
+    </script>
 </body>
 </html>
