@@ -1,0 +1,12 @@
+Platform,Natural Language Queries,Automated Insights,Predictive Analytics,Real-time Processing,Anomaly Detection,Pricing Model
+Tableau Pulse,Yes - AI-powered insights,Yes - Proactive insights,Yes - Forecast models,Yes - Live data,Yes - AI-powered,Enterprise/Creator licensing
+Power BI Copilot,Yes - Copilot chat,Yes - Auto-generated insights,Yes - Built-in forecasting,Yes - Real-time streaming,Yes - Built-in detection,Per user/month
+Grafana,Limited - through plugins,Basic anomaly detection,Through ML plugins,Yes - Native real-time,Yes - Alerting rules,Open source + enterprise
+Sisense Intelligence,Yes - Conversational interface,Yes - Smart suggestions,Yes - Forecast capabilities,Yes - Real-time dashboards,Yes - Smart alerts,Usage-based pricing
+Qlik Sense,Yes - Natural language search,Yes - Insight Advisor,Yes - AutoML,Yes - Live streaming,Yes - ML-based,Per user licensing
+Streamlit,Custom implementation,Custom ML models,Full ML capabilities,Yes - WebSocket support,Custom implementations,Open source/cloud hosting
+Retool,Via AI integrations,Custom implementations,Custom ML integrations,Yes - Real-time APIs,Custom alerting,Per user/month
+Observable,Limited - custom code,Custom analytics,Custom implementation,Yes - Observable streaming,Custom analytics,Team/Pro subscriptions
+Datadog,Yes - Bits AI copilot,Yes - Watchdog insights,Yes - Anomaly prediction,Yes - Sub-second updates,Yes - AI anomaly detection,Usage-based SaaS
+New Relic,Yes - NRQL assistant,Yes - Applied Intelligence,Yes - Incident prediction,Yes - Real-time monitoring,Yes - ML anomaly detection,Usage-based SaaS
+Dynatrace Davis,Yes - Davis CoPilot,Yes - Causal AI insights,Yes - Predictive AI,Yes - Real-time observability,Yes - Davis AI engine,Usage-based SaaS
