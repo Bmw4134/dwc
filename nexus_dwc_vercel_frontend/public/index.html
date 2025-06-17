@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NEXUS DWC Dashboard (Vercel)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>NEXUS DWC Dashboard</h1>
+  <div id="data"></div>
+
+  <script>
+    fetch('https://nexus-dwc.replit.app/api/status')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('data').innerText = JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        document.getElementById('data').innerText = "Error contacting backend.";
+      });
+  </script>
+</body>
+</html>
