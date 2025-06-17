@@ -1,28 +1,9 @@
 {
   "version": 2,
-  "name": "dwc-systems-nexus",
   "builds": [
-    {
-      "src": "server/index.js",
-      "use": "@vercel/node"
-    }
+    { "src": "api/*.py", "use": "@vercel/python" }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/server/index.js"
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "functions": {
-    "server/index.js": {
-      "maxDuration": 30
-    }
-  }
+    { "src": "/api/(.*)", "dest": "/api/\\1.py" }
+  ]
 }
